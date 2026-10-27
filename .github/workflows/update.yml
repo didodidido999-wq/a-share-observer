@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "auto = only new trading day; backfill = archive from 2026-06-10; rebuild = no API"
+        description: "auto = daily; refresh = latest 10-day event/feedback fill; backfill = expensive full; rebuild = no API"
         type: choice
         required: true
         default: auto
@@ -12,6 +12,7 @@ on:
           - auto
           - backfill
           - rebuild
+          - refresh
   schedule:
     # Beijing 16:00 (UTC 08:00), Mon-Fri; the collector verifies actual trading dates.
     - cron: '0 8 * * 1-5'
