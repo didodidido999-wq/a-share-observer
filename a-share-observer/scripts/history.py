@@ -26,6 +26,7 @@ import pandas as pd
 import requests
 import update as base
 import v3_events
+import v3_feedback
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'docs' / 'data'
@@ -240,7 +241,7 @@ def fetch_parquet(kind, start_date, end_date):
                 for chunk in response.iter_content(4*1024*1024):
                     if chunk:out.write(chunk)
         parquet=pq.ParquetFile(local)
-        selected=['thscode','date_ms','close_price','turnover']
+        selected=['thscode','date_ms','open_price','high_price','low_price','close_price','volume','turnover']
         if not set(selected).issubset(parquet.schema_arrow.names):
             raise base.ApiError('Parquet缺失必要行情字段')
         from_ms=base.since_ms(start_date - timedelta(days=14))
@@ -366,6 +367,10 @@ def today():
     existing=read_json(archive_path(day),{})
     if existing.get('market') and sum(x.get('close') is not None for x in existing.get('sectors',[]))>=400 and existing.get('limits') is not None:
         v3_events.enrich_if_enabled(day, base, read_json, archive_path, merge_day)
+        preceding = [d for d in days if d < day]
+        if preceding:
+            v3_feedback.enrich_feedback(day, preceding[-1], read_json,
+                                        archive_path, merge_day, fetch_parquet, base.TZ)
         print(f'{day}基础归档已存在，V3增量采集已核对');create_dashboard();return
     items,asof=get_stock_snapshot()
     if asof!=day:raise base.ApiError(f'全市场快照尚未更新为{day}，当前为{asof}')
@@ -382,6 +387,10 @@ def today():
     merge_day(day,{'market':market,'styles':styles,'indices':indices,'sectors':sectors,
                    'limits':limit_summary(day,pool),'stock_list':pool})
     v3_events.enrich_if_enabled(day, base, read_json, archive_path, merge_day)
+    preceding = [d for d in days if d < day]
+    if preceding:
+        v3_feedback.enrich_feedback(day, preceding[-1], read_json,
+                                    archive_path, merge_day, fetch_parquet, base.TZ)
     create_dashboard()
     print(json.dumps({'mode':'auto','date':day,'market_samples':market['samples'],
                       'sectors':ok,'stocks':len(pool)},ensure_ascii=False))
