@@ -97,8 +97,9 @@ function initDate(){const select=$('rep-date'),list=host.state.archive||host.sta
  select.replaceChildren();for(const d of list){const opt=el('option',d);opt.value=d;select.append(opt);}
  select.value=list.includes(host.state.selected)?host.state.selected:(list.includes(old)?old:list.at(-1));
 }
-async function render(context){host=context;if(!dataset&&!fetching)fetching=fetch('data/representatives.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json();}).then(r=>{dataset=r;fetching=null;}).catch(err=>{fetching=null;pending=err;});
- if(fetching)await fetching;
+async function load(){if(!dataset&&!fetching)fetching=fetch('data/representatives.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json();}).then(r=>{dataset=r;fetching=null;}).catch(err=>{fetching=null;pending=err;});
+ if(fetching)await fetching;return dataset;}
+async function render(context){host=context;await load();
  if(!dataset){$('rep-status').textContent='代表性股票价格尚未生成：'+(pending?.message||'数据源未就绪')+'。不使用模拟排名。';return;}
  if(context.state.page!=='history')return;
  initDate();updateCategory();redraw();
@@ -107,5 +108,5 @@ function bind(){for(const id of ['rep-date','rep-window','rep-category','rep-met
  $('rep-dimension')?.addEventListener('change',()=>{updateCategory();redraw();});
  $('rep-search')?.addEventListener('input',ranking);
 }
-bind();window.MarketScopeHistory={render};
+bind();window.MarketScopeHistory={render,load};
 })();

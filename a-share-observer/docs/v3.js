@@ -49,14 +49,18 @@ function populateSelect(id,values,selected){const e=$(id);e.replaceChildren();va
 function setSelectors(){const d=state.days;for(const name of ['compare-base','event-date'])populateSelect(name,d.map(x=>({value:x,label:x})),name==='compare-base'?(state.compareBase||d[0]):state.selected);let ind=indexList();for(const name of ['index-select','sector-benchmark']){let former=$(name).value;populateSelect(name,ind.map(x=>({value:x.code,label:x.name})),ind.some(x=>x.code===former)?former:'000300.SH');} $('range-start').value=d[0]||'';$('range-end').value=last(d)||'';$('first-day').textContent=d[0]||'—';$('last-day').textContent=last(d)||'—';$('day-slider').max=String(Math.max(d.length-1,0));$('day-slider').value=String(Math.max(d.indexOf(state.selected),0));$('range-info').textContent=`${d.length} 个已归档交易日`;$('archive-days').textContent=`总归档 ${state.archive.length} 日`;
 }
 async function applyRange(preset){if(state.loadingRange)return;stop();const avail=state.archive;let wanted=[];if(preset==='custom'){let a=$('range-start').value,b=$('range-end').value;if(!a||!b||a>b){notice('自定义日期范围无效');return;}wanted=avail.filter(d=>d>=a&&d<=b);}else if(preset==='all'){wanted=[...avail];}else{wanted=avail.slice(-Number(preset||10));}if(!wanted.length){notice('所选区间没有已归档交易日');return;}state.loadingRange=true;$('apply-range').disabled=true;notice(`正在按需读取 ${wanted.length} 个交易日的历史归档…`);await loadRange(wanted);state.days=wanted.filter(d=>state.snapshots.has(d));state.selected=last(state.days);state.sectorPage=0;state.compareBase=state.days[0];setSelectors();state.loadingRange=false;$('apply-range').disabled=false;notice(`已载入 ${state.days.length} 个交易日。所有指标均来自实际归档；未采集项显示 —。`,true);renderPage();}
-function renderToday(){const d=state.selected,m=market(d),l=limits(d),days=state.days,i=days.indexOf(d),prev=days[i-1],p=market(prev),pl=limits(prev),base=state.compare?state.compareBase:prev,bm=market(base),bl=limits(base);let host=cleared('kpi-grid');
+function renderToday(){const d=state.selected;if(!state.detailLoaded.has(d))fullSnapshot(d).then(()=>{if(state.detailLoaded.has(d)&&state.selected===d&&state.page==='today')renderToday();});const m=market(d),l=limits(d),days=state.days,i=days.indexOf(d),prev=days[i-1],p=market(prev),pl=limits(prev),base=state.compare?state.compareBase:prev,bm=market(base),bl=limits(base);let host=cleared('kpi-grid');
  const v=[
  ['上涨家数',m.up,'只',base?valueDifference(m.up,bm.up,0,' 只'):'当前交易日',null,'history'],
  ['下跌家数',m.down,'只',base?valueDifference(m.down,bm.down,0,' 只'):'当前交易日',null,'history'],
  ['全市场成交额',m.turnover_100m,' 亿元',base?valueDifference(m.turnover_100m,bm.turnover_100m,0,' 亿元'):'亿元',0,'history'],
  ['涨跌幅中位数',m.median,'%',base?valueDifference(m.median,bm.median,2,'百分点'):'当日股票等权分布中位数',2,'history'],
  ['非ST涨停',l.non_st,'只',base?valueDifference(l.non_st,bl.non_st,0,' 只'):'全量涨停池（不含ST）',0,'events'],
- ['最高连板',l.highest,'板',base?valueDifference(l.highest,bl.highest,0,' 板'):'非ST涨停股票最高板位',0,'events']
+ ['最高连板',l.highest,'板',base?valueDifference(l.highest,bl.highest,0,' 板'):'非ST涨停股票最高板位',0,'events'],
+ ['跌停收录',Array.isArray(snapshot(d).limit_down_events)?snapshot(d).limit_down_events.length:null,'只',
+   snapshot(d).quality_manifest?.limit_down_events?.status==='partial'?'仅有效代码，名单不完整':'当日已归档跌停股票',0,'events'],
+ ['炸板收录',Array.isArray(snapshot(d).limit_break_events)?snapshot(d).limit_break_events.length:null,'只',
+   snapshot(d).quality_manifest?.limit_break_events?.status==='partial'?'事件池部分完整':'当日已归档炸板股票',0,'events']
  ];for(const [title,num,unit,delta,dec,dest] of v){host.append(kpiCard(title,N(num)==null?'—':number(num,dec==null?0:dec)+unit,delta,changeClass(title.includes('中位数')?num:null),()=>nav(dest)));}
  const idx=$('index-select').value||'000001.SH';const xs=days.map(dateShort),baseDay=days[0];let first=indexValue(baseDay,idx).close;let series=[];
  for(const code of [idx,...['000001.SH','399006.SZ','000300.SH'].filter(x=>x!==idx)].slice(0,3)){const name=indexList().find(x=>x.code===code)?.name||code;let v=indexValue(baseDay,code).close;const list=days.map(t=>{let close=indexValue(t,code).close;return N(close)!=null&&N(v)>0?Number((close/v*100).toFixed(3)):null;});if(list.some(x=>x!==null))series.push({name,type:'line',symbolSize:3,showSymbol:false,smooth:false,lineStyle:{width:2},markLine:mark(),data:list});}
@@ -120,7 +124,18 @@ function renderSectors(){const kind=state.sectorKind=$('sector-kind').value,metr
  renderSectorDetail();}
 async function renderSectorDetail(){const target=$('sector-inline-detail');if(!target)return;const host=target;host.replaceChildren();const code=state.sectorFocus;if(!code){fact(host,'暂无选中板块','从上方选择板块或点击热力矩阵行名');return;}const obj=sectorCatalog().find(s=>s.code===code);let p=sectorValue(state.selected,code);fact(host,`${obj?.name||code} · ${state.selected}`,`当日涨跌：${pct(p.pct)} · 成交额：${N(p.turnover)==null?'—':number(p.turnover/1e8,2)+' 亿元'} · 所选期间累计：${pct(cumulativeSector(code,state.days.length-1))}`);
  const up=metricValue(code,state.selected,'limit_up_count'),down=metricValue(code,state.selected,'limit_down_count');fact(host,'板块涨跌停双向归属',`涨停 ${up??'—'} 只 · 跌停 ${down??'—'} 只。缺少当日成分股快照时均显示 —。`,up==null&&down==null);
- const archive=snapshot(state.selected),focus=(archive.sector_focus_stocks||[]).filter(x=>x.sector_code===code);if(focus.length){for(const item of focus.slice(0,18)){let tags=(item.factual_tags||[]).map(t=>typeof t==='object'?t.label||JSON.stringify(t):t);fact(host,`${item.stock_name||item.stock_code||'重点股票'} · ${tags.join(' · ')}`,`客观归档：${(item.selection_reasons||[]).join('、')} · ${item.trade_date||state.selected}`);}}else fact(host,'重点股票客观标签档案','当前日期尚未取得可核验的板块成分归属与客观筛选证据；不基于涨幅猜测“龙头”身份。',true);}
+ const archive=snapshot(state.selected),focus=(archive.sector_focus_stocks||[]).filter(x=>x.sector_code===code);if(focus.length){for(const item of focus.slice(0,18)){let tags=(item.factual_tags||[]).map(t=>typeof t==='object'?t.label||JSON.stringify(t):t);fact(host,`${item.stock_name||item.stock_code||'重点股票'} · ${tags.join(' · ')}`,`客观归档：${(item.selection_reasons||[]).join('、')} · ${item.trade_date||state.selected}`);}}else fact(host,'板块当日正式成分档案','该日期缺少可靠成分快照，因此不推断涨跌停股与该板块的正式归属。',true);
+ const rep=await window.MarketScopeHistory?.load?.();if(!rep||$('sector-inline-detail')!==target||state.sectorFocus!==code)return;
+ const references=(rep.universe||[]).filter(r=>r.industry===obj?.name||(r.tags||[]).includes(obj?.name)).slice(0,10);
+ if(references.length){
+   fact(host,'高辨识度股票观察池（人工分类）','以下为预设行业/题材标签匹配的代表性公司，不等于该交易日官方板块成分名单。');
+   for(const item of references){
+     const bar=(rep.prices?.[item.code]||[]).find(x=>x.date===state.selected);
+     fact(host,item.name+' · '+item.code+' · '+item.economic_style,
+       '人工标签：'+item.industry+' / '+(item.tags||[]).join('、')+' · '+state.selected+'前复权收盘：'+(bar?number(bar.close,2):'—'));
+   }
+ }
+}
 function compareValue(a,b,formatter,unit){return N(a)==null||N(b)==null?'—':formatter(Number(b)-Number(a))+(unit||'');}
 function renderHistory(){const a=$('history-a').value||state.days[0],b=$('history-b').value||last(state.days),x=market(a),y=market(b),lx=limits(a),ly=limits(b);let host=cleared('history-comparison');for(const [label,key,unit] of MARKET_FIELDS){const va=key==='non_st'||key==='highest'?lx[key]:x[key],vb=key==='non_st'||key==='highest'?ly[key]:y[key];let el=text('div','','comparison-card');el.append(text('small',label+' · '+a+' → '+b));el.append(text('strong',N(va)==null||N(vb)==null?'—':signed(vb-va,key==='median'||key==='turnover_100m'?2:0,unit)));el.append(text('span',`${N(va)==null?'—':number(va)} → ${N(vb)==null?'—':number(vb)} ${unit}`));host.append(el);}
  const days=state.days;const data1=[{name:'非ST涨停',type:'line',data:days.map(d=>N(limits(d).non_st)),showSymbol:false},{name:'涨幅中位数（右轴）',type:'line',yAxisIndex:1,data:days.map(d=>N(market(d).median)),showSymbol:false}];if(data1.some(s=>s.data.some(x=>x!=null)))chart('history-sentiment',{xAxis:{type:'category',data:days.map(dateShort)},yAxis:[{type:'value',name:'只'},{type:'value',name:'%',scale:true}],series:data1},e=>{if(e.dataIndex!=null){$('history-b').value=days[e.dataIndex];renderHistory();}});else noChart('history-sentiment','历史赚钱效应数据不可用。');
