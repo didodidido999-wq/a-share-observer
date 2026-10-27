@@ -1,0 +1,34 @@
+name: Verify EdgeOne static deployment
+on:
+  pull_request:
+    paths:
+      - 'edgeone.json'
+      - 'package.json'
+      - 'verify-edgeone-build.mjs'
+      - '.github/workflows/verify-edgeone.yml'
+      - 'a-share-observer/docs/**'
+      - 'a-share-observer/scripts/build-site.mjs'
+      - 'a-share-observer/package.json'
+  push:
+    branches: [main]
+    paths:
+      - 'edgeone.json'
+      - 'package.json'
+      - 'verify-edgeone-build.mjs'
+      - '.github/workflows/verify-edgeone.yml'
+      - 'a-share-observer/docs/index.html'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build using repository root configuration
+        run: npm run build
+      - name: Verify generated static files
+        run: node verify-edgeone-build.mjs
