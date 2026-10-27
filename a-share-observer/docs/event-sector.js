@@ -13,7 +13,7 @@ const record=d=>a?.state?.snapshots.get(d)||{};
 const list=(day,type)=>{let r=record(day),v=type==='up'?r.stock_list:type==='down'?r.limit_down_events:type==='break'?r.limit_break_events:type==='hot'?r.hot_rank_daily:type==='anomaly'?r.anomaly_daily:r.sector_focus_stocks;return Array.isArray(v)?v:null;};
 function tags(reason){if(!reason||reason==='原因未披露')return[];return [...new Set(String(reason).split(/[+＋、，,；;|｜/]/).map(x=>x.trim()).filter(x=>x&&x!=='原因未披露'&&x.length<25))].slice(0,6);}
 function evidence(code,at,source){let found={tags:[],date:null,official:false};for(let d of dates()){if(d>at)break;let hit=(list(d,'up')||[]).find(x=>x.thscode===code);if(hit){let t=tags(hit.reason||hit.limit_up_reason);if(t.length){found.tags=t;found.date=d;}}}
- const now=source&&tags(source.reason||source.limit_up_reason);if(now?.length){found.tags=now;found.date=at;}
+ const now=source&&tags(source.reason||source.limit_up_reason);if(now?.length){const observed=source.date&&source.date<=at?source.date:at;found.tags=now;found.date=observed;}
  const official=record(at).event_sector_map?.[code];if(Array.isArray(official)){found.official=true;let extra=official.map(x=>typeof x==='string'?x:x.name).filter(Boolean);found.tags=[...new Set([...found.tags,...extra])];}
  return found;}
 function model(){let out=new Map(),day=selected();
