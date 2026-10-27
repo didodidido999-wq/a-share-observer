@@ -1,0 +1,13 @@
+{
+  "name": "a-share-observer",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A-share market dashboard (static EdgeOne site)",
+  "scripts": {
+    "build": "node scripts/build-site.mjs"
+  },
+  "dependencies": {
+    "echarts": "5.5.1"
+  }
+}
