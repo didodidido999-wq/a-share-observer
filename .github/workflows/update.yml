@@ -1,0 +1,40 @@
+name: Update A-share dashboard
+on:
+  workflow_dispatch:
+  schedule:
+    # Beijing 17:30 = UTC 09:30 year-round; weekdays, no daylight saving in China.
+    - cron: '30 9 * * 1-5'
+permissions:
+  contents: write
+concurrency:
+  group: a-share-dashboard
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: a-share-observer/requirements.txt
+      - run: pip install -r a-share-observer/requirements.txt
+      - run: pytest -q a-share-observer/tests
+      - name: Update real data (never publish an incomplete run)
+        env:
+          HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
+          PYTHONUNBUFFERED: '1'
+        run: python a-share-observer/scripts/update.py
+      - name: Commit derived aggregate JSON only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add a-share-observer/docs/data/dashboard.json a-share-observer/docs/data/history/
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh market dashboard"
+            git push
+          fi
