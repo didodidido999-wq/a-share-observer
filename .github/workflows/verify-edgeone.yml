@@ -17,6 +17,7 @@ on:
       - 'verify-edgeone-build.mjs'
       - '.github/workflows/verify-edgeone.yml'
       - 'a-share-observer/docs/index.html'
+      - 'a-share-observer/docs/event-sector.js'
 permissions:
   contents: read
 jobs:
@@ -32,3 +33,7 @@ jobs:
         run: npm run build
       - name: Verify generated static files
         run: node verify-edgeone-build.mjs
+      - name: Validate JavaScript syntax
+        run: |
+          node --check a-share-observer/docs/v3.js
+          node --check a-share-observer/docs/event-sector.js
