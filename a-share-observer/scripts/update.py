@@ -164,7 +164,12 @@ def get_limit_pool(dt):
                 'is_st':bool(x.get('is_st')),'is_new':bool(x.get('is_new')),
                 'boards':int(x.get('continue_day_cnt') or 1),
                 'reason':x.get('limit_up_reason') or '原因未披露',
-                'price':num(x.get('last_price'))})
+                'price':num(x.get('last_price')),
+                'limit_up_time':x.get('limit_up_time'),
+                'seal_money':num(x.get('seal_money')),
+                'max_seal_money':num(x.get('max_seal_money')),
+                'price_change_ratio_pct':num(x.get('price_change_ratio_pct')),
+                'continue_day_text':x.get('continue_day_text')})
         pg=d.get('pagination') or {}
         if page >= pg.get('pages',100) or len(chunk)<100: break
     return vals
