@@ -1,6 +1,6 @@
 /* MarketScope event replay: source-dated event themes, no live API credentials. */
 (()=>{'use strict';
-let a=null,ready='',loading=null,sector='',search='',timer=null;
+let a=null,ready='',loading=null,sector='',search='',timer=null,relayMode='up';
 const $=id=>document.getElementById(id);
 const num=v=>v==null||v===''||!Number.isFinite(Number(v))?null:Number(v);
 const fmt=(v,dp=2)=>num(v)==null?'—':Number(v).toLocaleString('zh-CN',{minimumFractionDigits:dp,maximumFractionDigits:dp});
@@ -17,9 +17,12 @@ function evidence(code,at,source){let found={tags:[],date:null,official:false};f
  const official=record(at).event_sector_map?.[code];if(Array.isArray(official)){found.official=true;let extra=official.map(x=>typeof x==='string'?x:x.name).filter(Boolean);found.tags=[...new Set([...found.tags,...extra])];}
  return found;}
 function model(){let out=new Map(),day=selected();
- for(let date of dates()){if(date>day)break;for(let row of list(date,'up')||[]){if(!row.thscode||row.is_st)continue;
+ for(let date of dates()){if(date>day)break;for(let row of list(date,relayMode)||[]){if(!row.thscode||(relayMode==='up'&&row.is_st))continue;
  let x=out.get(row.thscode)||{code:row.thscode,name:row.name||row.thscode,boards:{},latest:date,row};
- x.name=row.name||x.name;x.boards[date]=num(row.boards)??num(row.continue_day_cnt)??1;x.latest=date;x.row=row;out.set(x.code,x);}}
+ x.name=row.name||x.name;
+ let prev=dates()[dates().indexOf(date)-1];
+ x.boards[date]=relayMode==='up'?(num(row.boards)??num(row.continue_day_cnt)??1):relayMode==='down'?((x.boards[prev]||0)+1):1;
+ x.latest=date;x.row=row;out.set(x.code,x);}}
  for(let x of out.values()){let ev=evidence(x.code,day,x.row);x.tags=ev.tags;x.evidenceDay=ev.date;x.official=ev.official;x.group=x.tags[0]||'归属待核验';}
  return [...out.values()];}
 function filterModel(items){const q=search.toLowerCase();return items.filter(x=>(!sector||x.tags.includes(sector))&&(!q||[x.code,x.name,...x.tags].join(' ').toLowerCase().includes(q)));}
@@ -69,17 +72,17 @@ function relay(items){let hit=filterModel(items),day=selected(),ds=dates(),host=
  for(let x of hit){let key=sector||x.group;if(!group.has(key))group.set(key,[]);group.get(key).push(x);}
  let order=[...group].sort((a,b)=>b[1].filter(x=>x.boards[day]!=null).length-a[1].filter(x=>x.boards[day]!=null).length||b[1].length-a[1].length);
  let mat=node('div',undefined,'event-relay-matrix');mat.style.gridTemplateColumns='minmax(190px,260px) repeat('+ds.length+',minmax(56px,1fr))';
- mat.append(node('div','个股 / 题材归属','event-relay-head'));
+ mat.append(node('div',relayMode==='up'?'涨停个股 / 题材':relayMode==='down'?'跌停个股 / 题材':'炸板个股 / 题材','event-relay-head'));
  for(let d of ds){let b=node('button',d.slice(5),'event-relay-head'+(d===day?' is-current':''));b.type='button';b.addEventListener('click',()=>a.setDay(d));mat.append(b);}
  let shown=0;const limit=70;
  for(let [groupName,arr]of order){if(shown>=limit)break;arr.sort((a,b)=>(b.boards[day]||0)-(a.boards[day]||0)||Math.max(...Object.values(b.boards))-Math.max(...Object.values(a.boards)));
  let top=node('div',groupName+' · '+arr.filter(x=>x.boards[day]!=null).length+'只当日 / '+arr.length+'只区间','event-relay-group');top.style.gridColumn='1 / span '+(ds.length+1);mat.append(top);
  for(let x of arr){if(shown>=limit)break;shown++;let name=node('button',undefined,'event-relay-name');name.type='button';name.append(node('strong',x.name),node('small',x.code));let chips=node('span',undefined,'event-row-tags');stampTags(chips,x.tags,x.official);name.append(chips);
  name.addEventListener('click',()=>a.showDialog(x.name,[['代码',x.code],['可核验题材',x.tags.join(' / ')||'未收录'],['最近来源日',x.evidenceDay||'未收录'],['逐日板数',ds.filter(d=>x.boards[d]!=null).map(d=>d+'：'+x.boards[d]+'板').join('；')]]));mat.append(name);
- for(let d of ds){let v=x.boards[d],valid=list(d,'up')!==null,lab=!valid?'—':v!=null?v+'板':'·';let b=node('button',lab,'event-relay-cell'+(v!=null?' has-limit':'')+(d===day?' is-current':'')+(!valid?' no-data':'')+(d>day?' is-future':''));b.type='button';b.style.setProperty('--level',Math.min(1,Math.max(0,((v||0)-1)/6)));b.title=x.name+' '+d+'：'+(v!=null?v+'连板':valid?'未在当日涨停池':'数据未采集');b.addEventListener('click',()=>a.setDay(d));mat.append(b);}}
+ for(let d of ds){let v=x.boards[d],valid=list(d,relayMode)!==null,lab=!valid?'—':v!=null?(relayMode==='up'?v+'板':relayMode==='down'?v+'跌':'炸'):'·';let b=node('button',lab,'event-relay-cell'+(v!=null?(relayMode==='up'?' has-limit':relayMode==='down'?' has-down':' has-break'):'')+(d===day?' is-current':'')+(!valid?' no-data':'')+(d>day?' is-future':''));b.type='button';b.style.setProperty('--level',Math.min(1,Math.max(0,((v||0)-1)/6)));b.title=x.name+' '+d+'：'+(v!=null?(relayMode==='up'?v+'连板':relayMode==='down'?v+'连续跌停':'炸板事件'):valid?'未出现在当日事件池':'数据未采集');b.addEventListener('click',()=>a.setDay(d));mat.append(b);}}
  }
  if(hit.length)host.append(mat);else host.append(node('p','当前题材和搜索条件下没有对应的历史个股。','inline-note'));
- $('event-relay-footer').textContent='展示 '+shown+'/'+hit.length+' 只 · 彩色格为实际连板数，· 为当日未进入收盘涨停池，— 为归档缺失；该图按题材归因分组，不伪造历史成分关系。';}
+ $('event-relay-footer').textContent='展示 '+shown+'/'+hit.length+' 只 · '+(relayMode==='up'?'红色为实际连板高度':relayMode==='down'?'绿色为连续跌停次数':'橙色为当日炸板事件')+'；· 为当日未进入对应事件池，— 为未采集；题材线索不等同于正式板块归属。';}
 function poolTable(){let d=selected(),type=$('event-type').value,rows=list(d,type),body=reset('event-list'),head=reset('event-head'),header=node('tr');
  for(let c of ['股票 / 代码','题材 / 板块线索','板数 / 排名','价格','事件原因'])header.append(node('th',c));head.append(header);
  const states={up:'limits',down:'limit_down_events',break:'limit_break_events',hot:'hot_rank_daily',anomaly:'anomaly_daily',focus:'sector_focus_stocks'},q=record(d).quality_manifest?.[states[type]]?.status;
@@ -96,7 +99,7 @@ function renderNow(){if(!$('events-day-slider'))return;renderTimeline();
  let today=record(selected()),l=today.limits||{},host=reset('event-kpis');
  for(let [label,val]of [['非ST涨停',l.non_st],['首板',l.first],['连板',l.continued],['最高板',l.highest],['跌停已归档',list(selected(),'down')?.length],['炸板已归档',list(selected(),'break')?.length]]){let box=node('div',undefined,'kpi');box.append(node('small',label),node('strong',num(val)==null?'—':fmt(val,0)));host.append(box);}
  let items=model(),counts=tagCounts(items);refreshFilters(counts);renderGroups(counts);
- $('event-sector-quality').textContent='截至所选交易日，区间共有 '+items.length+' 只曾涨停个股 · '+counts.length+' 个事件题材线索。一个股票可对应多个题材，因此类别计数不可求和；题材来源于该日或此前事件原因，不等于同花顺板块正式成分。';
+ $('event-sector-quality').textContent='截至所选交易日，所选事件池区间共有 '+items.length+' 只个股 · '+counts.length+' 个事件题材线索。一个股票可对应多个题材，因此类别计数不可求和；题材来源于该日或此前事件原因，不等于同花顺板块正式成分。';
  feedback();relay(items);poolTable();}
 async function render(context){a=context;let key=dates().join('/');
  if(key!==ready){if(!loading)loading=context.loadRange([...dates()]).finally(()=>{loading=null;ready=key;});await loading;}
@@ -107,7 +110,8 @@ function binding(){if(window.__eventsBound)return;window.__eventsBound=true;
  $('event-sector-filter')?.addEventListener('change',ev=>{sector=ev.target.value;renderNow();$('event-relay-anchor').scrollIntoView({behavior:'smooth',block:'start'});});
  $('event-clear-filter')?.addEventListener('click',()=>{sector='';search='';$('event-stock-filter').value='';$('event-search').value='';renderNow();});
  $('event-stock-filter')?.addEventListener('input',ev=>{search=ev.target.value.trim();renderNow();});
- $('event-type')?.addEventListener('change',poolTable);$('event-search')?.addEventListener('input',poolTable);
+ $('event-relay-mode')?.addEventListener('change',ev=>{relayMode=ev.target.value;sector='';$('event-type').value=relayMode;renderNow();$('event-relay-anchor').scrollIntoView({behavior:'smooth',block:'start'});});
+ $('event-type')?.addEventListener('change',ev=>{if(['up','down','break'].includes(ev.target.value)){relayMode=ev.target.value;$('event-relay-mode').value=relayMode;}renderNow();});$('event-search')?.addEventListener('input',poolTable);
  document.querySelectorAll('#navigation [data-page]').forEach(b=>b.addEventListener('click',stop));
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});window.addEventListener('pagehide',stop);}
 binding();window.MarketScopeEvents={render,stop};

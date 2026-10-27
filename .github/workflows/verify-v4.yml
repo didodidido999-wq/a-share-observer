@@ -1,0 +1,61 @@
+name: Verify MarketScope V4 interfaces
+on:
+  pull_request:
+    paths:
+      - 'a-share-observer/docs/**'
+      - 'a-share-observer/scripts/v4_representatives.py'
+      - 'a-share-observer/tests/test_v4_representatives.py'
+      - '.github/workflows/verify-v4.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'a-share-observer/docs/index.html'
+      - 'a-share-observer/docs/v3.js'
+      - 'a-share-observer/docs/event-sector.js'
+      - 'a-share-observer/docs/representatives.js'
+      - '.github/workflows/verify-v4.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: a-share-observer/requirements.txt
+      - name: Install test dependencies
+        run: python -m pip install -r a-share-observer/requirements.txt
+      - name: Python unit tests including V4 collector
+        run: python -m pytest -q a-share-observer/tests
+      - name: JavaScript parsing (all page controllers)
+        run: |
+          node --check a-share-observer/docs/v3.js
+          node --check a-share-observer/docs/event-sector.js
+          node --check a-share-observer/docs/representatives.js
+      - name: EdgeOne asset build and output verification
+        run: npm run build
+      - name: Basic HTML integration smoke assertions
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          const h=fs.readFileSync('a-share-observer/docs/index.html','utf8');
+          const app=fs.readFileSync('a-share-observer/docs/v3.js','utf8');
+          const events=fs.readFileSync('a-share-observer/docs/event-sector.js','utf8');
+          const history=fs.readFileSync('a-share-observer/docs/representatives.js','utf8');
+          const keys=['event-relay-mode','event-sector-filter','events-day-slider',
+            'event-feedback-grid','sector-heat','rep-style-summary','rep-ranking','rep-date',
+            'rep-window','rep-dimension','rep-category','rep-metric','rep-table-body'];
+          for(const id of keys)if(!h.includes('id="'+id+'"'))throw Error('Missing UI control '+id);
+          for(const script of ['v3.js','event-sector.js','representatives.js'])if(!h.includes('src="'+script+'?'))throw Error('Missing script '+script);
+          if(!events.includes("relayMode==='down'")||!events.includes(" has-break"))throw Error('Negative event modes missing');
+          if(!app.includes("sector-inline-detail")||!app.includes("MarketScopeHistory.render"))throw Error('Page routing/sector expansion missing');
+          if(!history.includes('drawdown')||!history.includes('up_ratio'))throw Error('Loss dimension missing');
+          console.log('V4 DOM controls and interactions integrated.');
+          JS
