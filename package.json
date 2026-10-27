@@ -1,0 +1,9 @@
+{
+  "name": "marketscope-edgeone-deploy-wrapper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Repository-root build wrapper for the MarketScope static Pages project",
+  "scripts": {
+    "build": "npm install --prefix ./a-share-observer --no-audit --no-fund && npm run build --prefix ./a-share-observer && node ./verify-edgeone-build.mjs"
+  }
+}
