@@ -76,3 +76,15 @@ def test_pagination_duplicate_source_rows_does_not_mislabel_coverage():
                 'pagination':{'total':3,'pages':2}}
     rows=v3.fetch_paged(client,'/pool',{},'2026-10-27')
     assert {r['thscode'] for r in rows}=={'000001.SZ','000002.SZ'}
+
+
+def test_invalid_upstream_code_is_retained_as_partial_without_losing_valid_rows():
+    def client(_path, _params):
+        return {'item':[{'thscode':'000001.SZ','name':'verified'},
+                        {'ticker':'000002','name':'code missing'}],
+                'pagination':{'total':2,'pages':1}}
+    issues=[]
+    rows=v3.fetch_paged(client,'/limit-down',{},'2026-10-27',issues=issues)
+    assert len(rows)==1
+    assert rows[0]['thscode']=='000001.SZ'
+    assert issues==['record_missing_stock_code']
