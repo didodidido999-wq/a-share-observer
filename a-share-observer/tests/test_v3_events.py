@@ -53,3 +53,26 @@ def test_failed_collection_does_not_replace_existing_data():
                     lambda d:'file.json',lambda d,data:write.append(data))
     assert write and 'limit_down_events' not in write[0]
     assert write[0]['quality_manifest']['limit_down_events']['status']=='missing'
+
+def test_pagination_handles_silent_per_page_cap_without_false_incomplete_error():
+    observed=[]
+    def client(_path, params):
+        observed.append(params['page'])
+        records=[{'thscode':f'{i:06d}.SZ'} for i in range(120)]
+        start=(params['page']-1)*50
+        return {'item':records[start:start+50],
+                'pagination':{'total':120,'pages':3,'page':params['page'],'size':50}}
+    rows=v3.fetch_paged(client,'/pool',{},'2026-10-27')
+    assert len(rows)==120
+    assert observed==[1,2,3]
+
+
+def test_pagination_duplicate_source_rows_does_not_mislabel_coverage():
+    def client(_path, params):
+        if params['page']==1:
+            return {'item':[{'thscode':'000001.SZ'},{'thscode':'000001.SZ'}],
+                    'pagination':{'total':3,'pages':2}}
+        return {'item':[{'thscode':'000002.SZ'}],
+                'pagination':{'total':3,'pages':2}}
+    rows=v3.fetch_paged(client,'/pool',{},'2026-10-27')
+    assert {r['thscode'] for r in rows}=={'000001.SZ','000002.SZ'}
