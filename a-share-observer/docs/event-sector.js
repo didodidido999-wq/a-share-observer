@@ -70,7 +70,7 @@ function poolTable(){let d=selected(),type=$('event-type').value,rows=list(d,typ
  $('event-quality').textContent=d+' · '+(q||'旧归档')+' · '+(rows?.length??'—')+' 条原始事件；选中题材 '+(sector||'全部');
  if(!rows){let tr=node('tr'),td=node('td','该日未采集此事件池；未知不等于0。');td.colSpan=5;tr.append(td);body.append(tr);return;}
  let found=0;for(let r of rows){let code=r.thscode||r.stock_code,ev=evidence(code,d,r),tags=ev.tags,name=r.name||r.stock_name||code||'—',text=$('event-search').value.toLowerCase().trim();
- if(sector&&!tags.includes(sector))continue;if(text&&![name,code,r.reason,r.event_reason,r.limit_up_reason,...tags].join(' ').toLowerCase().indexOf(text)<0)continue;
+ if(sector&&!tags.includes(sector))continue;if(text&&![name,code,r.reason,r.event_reason,r.limit_up_reason,...tags].join(' ').toLowerCase().includes(text))continue;
  found++;if(found>500)continue;let tr=node('tr',undefined,'clickable'),n=node('td');n.append(node('strong',name),node('small',code));tr.append(n);let tagcell=node('td'),sp=node('div',undefined,'event-row-tags');stampTags(sp,tags,ev.official);tagcell.append(sp);tr.append(tagcell);
  tr.append(node('td',r.boards??r.continue_day_cnt??r.rank??r.event_type??'—'),node('td',fmt(r.price??r.last_price)),node('td',r.reason||r.limit_up_reason||r.event_reason||r.limit_down_reason||r.tag_name||'—'));
  tr.addEventListener('click',()=>a.showDialog(name,Object.entries(r)));body.append(tr);}
