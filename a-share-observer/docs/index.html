@@ -3,9 +3,9 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#12273a"><meta name="description" content="MarketScope V3 — A股历史市场环境、异动、板块与风格交互研究终端">
 <title>MarketScope V3｜A股市场研究</title>
-<link rel="stylesheet" href="v3.css?v=4.1.0">
-<script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=4.1.0"></script>
-<script defer src="event-sector.js?v=4.1.0"></script>
+<link rel="stylesheet" href="v3.css?v=4.2.0">
+<script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=4.2.0"></script>
+<script defer src="event-sector.js?v=4.2.0"></script><script defer src="representatives.js?v=4.2.0"></script>
 </head><body>
 <div class="shell">
 <aside class="sidebar" id="sidebar">
@@ -53,8 +53,8 @@
     <div class="chart" id="event-feedback-chart"></div>
   </article>
   <article class="panel" id="event-relay-anchor">
-    <div class="panel-header"><div><div class="kicker">STOCK RELAY × SECTOR</div><h2>板块与个股连板接力</h2></div><span class="meta">每日收盘涨停池 · 逐股历史轨迹</span></div>
-    <div class="event-filters"><label>题材 / 板块线索 <select id="event-sector-filter" aria-label="按题材筛选个股"><option value="">全部板块线索</option></select></label><label>个股搜索 <input id="event-stock-filter" type="search" placeholder="名称 / 代码 / 题材"></label><button type="button" id="event-clear-filter" class="btn">清除筛选</button></div>
+    <div class="panel-header"><div><div class="kicker">STOCK RELAY × SECTOR</div><h2>板块与个股事件轨迹</h2></div><span class="meta">每日收盘涨停池 · 逐股历史轨迹</span></div>
+    <div class="event-filters"><label>轨迹类型 <select id="event-relay-mode"><option value="up">涨停接力</option><option value="down">跌停接力</option><option value="break">炸板变化</option></select></label><label>题材 / 板块线索 <select id="event-sector-filter" aria-label="按题材筛选个股"><option value="">全部板块线索</option></select></label><label>个股搜索 <input id="event-stock-filter" type="search" placeholder="名称 / 代码 / 题材"></label><button type="button" id="event-clear-filter" class="btn">清除筛选</button></div>
     <div id="event-sector-summary" class="event-sector-summary"></div>
     <div id="event-sector-quality" class="inline-note"></div>
     <div class="event-relay-scroll" id="event-relay-chart" aria-label="按板块分组的个股每日连板情况"></div>
@@ -72,10 +72,18 @@
   <article class="panel"><div class="panel-header"><div><h2>板块详情与重点股票</h2><p>可验证客观标签，绝不自动推断龙头、中军、补涨身份。</p></div></div><div id="sector-detail" class="fact-list"></div></article>
  </section>
 
- <section id="history" class="page"><div class="section-head"><div><div class="kicker">HISTORICAL STUDY</div><h2>历史研究</h2><p>不同交易日的同口径对照、指数与风格演变。</p></div><div class="filters"><label>基准日<select id="history-a"></select></label><label>对照日<select id="history-b"></select></label><button class="btn solid" id="history-compare" type="button">更新比较</button></div></div>
- <div id="history-comparison" class="comparison-grid"></div><div class="plot-grid"><article class="panel"><div class="panel-header"><h2>赚钱效应历史变化</h2></div><div class="chart" id="history-sentiment"></div></article><article class="panel"><div class="panel-header"><h2>市场风格历史变化</h2></div><div class="chart" id="history-style"></div></article></div>
- <article class="panel"><div class="panel-header"><h2>数据覆盖与历史限制</h2></div><div id="history-quality" class="fact-list"></div></article>
- </section>
+ 
+<section id="history" class="page">
+ <div class="section-head"><div><div class="kicker">REPRESENTATIVE STOCK RESEARCH</div><h2>代表性股票与风格研究</h2><p>固定高辨识度股票观察池 · 区间排名 · 经济风格与题材分组；涨跌两侧同步研究。</p></div><div class="filters"><label>截止交易日 <select id="rep-date"></select></label><label>排名窗口 <select id="rep-window"><option value="5">最近5个交易日</option><option value="10" selected>最近10个交易日</option><option value="20">最近20个交易日</option><option value="40">最近40个交易日</option><option value="60">最近60个交易日</option></select></label></div></div>
+ <div id="rep-status" class="inline-note" role="status"></div>
+ <article class="panel"><div class="panel-header"><div><div class="kicker">STYLE COMPARISON</div><h2>经济风格强弱分布</h2></div><span class="meta">基于固定代表性观察池 · 非全市场</span></div>
+ <div id="rep-style-summary" class="rep-style-summary"></div><div id="rep-style-chart" class="chart"></div></article>
+ <article class="panel" id="rep-ranking"><div class="panel-header"><div><div class="kicker">STOCK LEADERBOARD</div><h2>代表性股票区间排名</h2></div><span class="meta">按真实交易日行情计算 · 上涨与下跌同时排名</span></div>
+ <div class="rep-filters"><label>类别 <select id="rep-dimension"><option value="all">全部</option><option value="economic_style">经济风格</option><option value="industry">行业</option><option value="tags">题材标签</option></select></label><label>标签 <select id="rep-category"><option value="">全部</option></select></label><label>指标 <select id="rep-metric"><option value="return">区间涨跌幅</option><option value="drawdown">区间最大回撤</option><option value="up_ratio">上涨天数占比</option><option value="volatility">日波动率</option><option value="turnover">日均成交额</option></select></label><label>方向 <select id="rep-direction"><option value="desc">由高到低</option><option value="asc">由低到高</option></select></label><label>查找 <input id="rep-search" type="search" placeholder="股票名称 / 代码"></label></div>
+ <div id="rep-ranking-info" class="inline-note"></div><div class="table-wrap rep-table-wrap"><table><thead id="rep-table-head"></thead><tbody id="rep-table-body"></tbody></table></div>
+ </article>
+ <article class="panel"><div class="panel-header"><h2>标签与区间表现</h2><span class="meta">同一股票可归属多个题材，分组数据不应直接求和</span></div><div id="rep-tag-summary" class="rep-tag-summary"></div></article>
+</section>
  <footer>MarketScope V3 <span>数据源：hithink-finance / 历史归档；仅供研究，不构成投资建议。</span><span>所有日期为北京时间交易日</span></footer>
 </main></div></div>
 <div class="modal-backdrop" id="detail-dialog" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><button id="close-dialog" type="button" aria-label="关闭详情" class="modal-close">✕</button><h2 id="dialog-title">事件详情</h2><div id="dialog-body"></div></div></div>
