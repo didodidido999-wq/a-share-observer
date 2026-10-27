@@ -3,8 +3,9 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#12273a"><meta name="description" content="MarketScope V3 — A股历史市场环境、异动、板块与风格交互研究终端">
 <title>MarketScope V3｜A股市场研究</title>
-<link rel="stylesheet" href="v3.css?v=3.0.1">
-<script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=3.0.1"></script>
+<link rel="stylesheet" href="v3.css?v=4.1.0">
+<script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=4.1.0"></script>
+<script defer src="event-sector.js?v=4.1.0"></script>
 </head><body>
 <div class="shell">
 <aside class="sidebar" id="sidebar">
@@ -12,7 +13,7 @@
   <div class="sidebar-label">研究工作区</div>
   <nav id="navigation" aria-label="主导航">
     <button class="active" type="button" data-page="today"><span>◫</span>今日市场</button>
-    <button type="button" data-page="events"><span>⚡</span>异动与线索</button>
+    <button type="button" data-page="events"><span>◇</span>异动与线索</button>
     <button type="button" data-page="sectors"><span>▦</span>板块研究</button>
     <button type="button" data-page="history"><span>◷</span>历史研究</button>
   </nav>
@@ -38,9 +39,31 @@
   <article class="panel"><div class="panel-header"><div><div class="kicker">06 / DAILY LEDGER</div><h2>历史市场账本</h2></div><span class="meta">点击任意一日，联动回放</span></div><div class="table-wrap"><table><thead><tr><th>日期</th><th>上涨</th><th>下跌</th><th>中位数</th><th>成交额（亿）</th><th>非ST涨停</th><th>最高连板</th></tr></thead><tbody id="daily-ledger"></tbody></table></div></article>
  </section>
 
- <section id="events" class="page"><div class="section-head"><div><div class="kicker">EVENT-DRIVEN RESEARCH</div><h2>异动与线索</h2><p>事件池、接力结构与正负反馈；没有采集的历史指标不会显示为0。</p></div><label>交易日 <select id="event-date"></select></label></div>
-   <div class="kpi-grid" id="event-kpis"></div><article class="panel"><div class="panel-header"><div><div class="kicker">EVENT ARCHIVE</div><h2>市场事件池</h2></div><div class="filters"><select id="event-type"><option value="up">涨停</option><option value="down">跌停</option><option value="break">炸板</option><option value="anomaly">异动</option><option value="hot">历史热股</option><option value="focus">重点股票档案</option></select><input id="event-search" type="search" placeholder="股票名 / 代码 / 事件原因" aria-label="搜索事件"></div></div><div id="event-quality" class="inline-note"></div><div class="table-wrap"><table><thead id="event-head"></thead><tbody id="event-list"></tbody></table></div></article>
-   <div class="split-grid"><article class="panel"><div class="panel-header"><h2>连板接力结构</h2><span class="meta">全量涨停池；非官方有限天梯</span></div><div class="chart" id="ladder-chart"></div></article><article class="panel"><div class="panel-header"><h2>次日正负反馈</h2><span class="meta">所有事件股样本，非模拟收益</span></div><div id="feedback-panel" class="fact-list"></div></article></div>
+ <section id="events" class="page">
+  <div class="section-head"><div><div class="kicker">EVENT-DRIVEN RESEARCH</div><h2>异动与线索</h2><p>次日正负反馈 · 板块线索 · 个股接力轨迹，全部随所选交易日更新。</p></div><label>定位日期 <select id="event-date" aria-label="事件研究日期"></select></label></div>
+  <div class="event-timeline" id="events-timeline" aria-label="异动与线索交易日回放">
+    <div class="event-timeline-heading"><strong>接力时间轴</strong><span>联动全站交易日</span><b id="events-slider-date">—</b></div>
+    <div class="event-slider-controls"><button id="events-prev" type="button" aria-label="前一交易日">‹</button><span id="events-first-day">—</span><input type="range" id="events-day-slider" min="0" max="9" step="1" aria-label="拖动回放交易日"><span id="events-last-day">—</span><button id="events-next" type="button" aria-label="后一交易日">›</button><button id="events-play" type="button" class="btn">▶ 回放</button></div>
+  </div>
+  <div id="event-kpis" class="kpi-grid"></div>
+  <article class="panel event-feedback-panel" id="event-feedback-anchor">
+    <div class="panel-header"><div><div class="kicker">T+1 REALIZED FEEDBACK</div><h2>次日赚钱 / 亏钱效应</h2></div><span class="meta" id="event-feedback-context">按日真实行情计算</span></div>
+    <div class="event-feedback-grid" id="event-feedback-grid"></div>
+    <div id="event-feedback-scope" class="inline-note"></div>
+    <div class="chart" id="event-feedback-chart"></div>
+  </article>
+  <article class="panel" id="event-relay-anchor">
+    <div class="panel-header"><div><div class="kicker">STOCK RELAY × SECTOR</div><h2>板块与个股连板接力</h2></div><span class="meta">每日收盘涨停池 · 逐股历史轨迹</span></div>
+    <div class="event-filters"><label>题材 / 板块线索 <select id="event-sector-filter" aria-label="按题材筛选个股"><option value="">全部板块线索</option></select></label><label>个股搜索 <input id="event-stock-filter" type="search" placeholder="名称 / 代码 / 题材"></label><button type="button" id="event-clear-filter" class="btn">清除筛选</button></div>
+    <div id="event-sector-summary" class="event-sector-summary"></div>
+    <div id="event-sector-quality" class="inline-note"></div>
+    <div class="event-relay-scroll" id="event-relay-chart" aria-label="按板块分组的个股每日连板情况"></div>
+    <div id="event-relay-footer" class="event-relay-footer"></div>
+  </article>
+  <article class="panel" id="event-pool-anchor">
+    <div class="panel-header"><div><div class="kicker">DAILY EVENT ARCHIVE</div><h2>股票事件池</h2></div><div class="filters"><select id="event-type" aria-label="事件池类型"><option value="up">涨停</option><option value="down">跌停</option><option value="break">炸板</option><option value="anomaly">异动</option><option value="hot">历史热股</option><option value="focus">重点股票</option></select><input id="event-search" type="search" placeholder="股票 / 板块 / 事件原因"></div></div>
+    <div id="event-quality" class="inline-note"></div><div class="table-wrap"><table><thead id="event-head"></thead><tbody id="event-list"></tbody></table></div>
+  </article>
  </section>
 
  <section id="sectors" class="page"><div class="section-head"><div><div class="kicker">SECTOR ANALYSIS / NO SUBJECTIVE SCORES</div><h2>板块研究</h2><p>行业与概念分开比较；缺失的成分股归属、涨跌停数保持缺失。</p></div><div class="filters"><label>板块类型<select id="sector-kind"><option value="industry">行业</option><option value="cn_concept">概念</option></select></label><label>指标<select id="sector-metric"><option value="cum">区间累计涨幅</option><option value="pct">每日涨跌幅</option><option value="relative">相对基准累计收益</option><option value="turnover">成交额（亿）</option><option value="activity">成交额/MA5</option><option value="limit_up_count">涨停归属数</option><option value="limit_up_ratio">涨停占比</option><option value="limit_down_count">跌停归属数</option><option value="limit_down_ratio">跌停占比</option><option value="limit_diff">涨跌停净差</option><option value="member_up_ratio">成分上涨占比</option><option value="member_median">成分涨幅中位数</option><option value="hot_count">热股上榜数</option></select></label></div></div>

@@ -7,6 +7,7 @@ const required = [
   'index.html',
   'v3.css',
   'v3.js',
+  'event-sector.js',
   join('vendor','echarts.min.js'),
   join('data','dashboard.json'),
   join('data','dates.json')
