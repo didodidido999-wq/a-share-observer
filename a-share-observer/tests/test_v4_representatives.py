@@ -8,8 +8,11 @@ import v4_representatives as rep
 
 def test_universe_has_unique_codes_and_fixed_valid_economic_styles():
     items=rep.universe()
-    assert 30 <= len(items) <= 120
+    assert len(items) == 300
     assert len({row['code'] for row in items}) == len(items)
+    assert len({row['industry'] for row in items}) >= 18
+    assert len({row['name'] for row in items}) == len(items)
+    assert all(row['tags'] for row in items)
     assert set(rep.ECONOMIC_STYLES)=={'弹性成长','景气成长','稳定红利','价格周期','政策复苏'}
     assert all(row['economic_style'] in rep.ECONOMIC_STYLES for row in items)
     assert next(row for row in items if row['name']=='比亚迪')['industry']=='汽车整车'
@@ -46,3 +49,23 @@ def test_missing_api_item_list_raises_instead_of_claiming_no_stock_bars(monkeypa
         assert False
     except ValueError as exc:
         assert 'missing item' in str(exc)
+
+
+def test_curated_stock_selection_balances_multiple_industries():
+    original = len(rep.BASE_RAW)
+    roster = rep.build_roster()
+    assert original == 48
+    assert len(roster) == 300
+    from collections import Counter
+    families = Counter(r[2] for r in roster[original:])
+    assert len(families) >= 17
+    assert min(families.values()) >= 10
+    assert max(families.values()) <= 18
+
+
+def test_existing_universe_core_entries_retained():
+    rows = rep.universe()
+    by_code = {row["code"]: row for row in rows}
+    for code in ("002594.SZ", "300750.SZ", "600519.SH", "000333.SZ",
+                 "600036.SH", "601899.SH", "688981.SH"):
+        assert code in by_code
