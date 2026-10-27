@@ -58,7 +58,7 @@ def calculate_feedback(previous_day, current_day, previous_archive, bars):
             result['sources'][name] = {'status': 'not_collected', 'sample_size': 0}
             continue
         codes = sorted({r.get('thscode') for r in pool if r.get('thscode')})
-        op, cl = [], []
+        op, cl, samples = [], [], []
         missing = 0
         for code in codes:
             current = by_key.get((code, current_day))
@@ -69,8 +69,12 @@ def calculate_feedback(previous_day, current_day, previous_archive, bars):
             if prior_close is None or current_open is None or current_close is None:
                 missing += 1
                 continue
-            op.append((current_open / prior_close - 1) * 100)
-            cl.append((current_close / prior_close - 1) * 100)
+            opening = (current_open / prior_close - 1) * 100
+            closing = (current_close / prior_close - 1) * 100
+            op.append(opening)
+            cl.append(closing)
+            samples.append({'code': code, 'open_pct': round(opening, 4),
+                            'close_pct': round(closing, 4)})
         row = {
             'total_events': len(codes), 'sample_size': len(op),
             'excluded_no_prices': missing,
@@ -78,6 +82,7 @@ def calculate_feedback(previous_day, current_day, previous_archive, bars):
             'open_positive_ratio': round(100 * sum(x > 0 for x in op) / len(op), 2) if op else None,
             'close_mean_pct': _mean(cl), 'close_median_pct': _median(cl),
             'close_positive_ratio': round(100 * sum(x > 0 for x in cl) / len(cl), 2) if cl else None,
+            'samples': samples,
         }
         status = 'complete' if missing == 0 else 'partial'
         if missing:
@@ -97,8 +102,12 @@ def enrich_feedback(day, previous_day, read_json, archive_path, merge_day,
     if not snap.get('market') or not prior.get('limits'):
         return None
     q = snap.get('quality_manifest') or {}
-    if q.get('next_day_feedback', {}).get('status') == 'complete':
-        return snap.get('next_day_feedback')
+    old_feedback = snap.get('next_day_feedback') or {}
+    if (q.get('next_day_feedback', {}).get('status') == 'complete'
+            and all(not isinstance(old_feedback.get(k), dict)
+                    or isinstance(old_feedback[k].get('samples'), list)
+                    for k in ('limit_up', 'limit_down', 'limit_break'))):
+        return old_feedback
     try:
         bars = parquet_loader('10d', date.fromisoformat(previous_day),
                               date.fromisoformat(day))
