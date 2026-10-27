@@ -37,3 +37,10 @@ jobs:
         run: |
           node --check a-share-observer/docs/v3.js
           node --check a-share-observer/docs/event-sector.js
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Test market and T+1 calculation
+        run: |
+          python -m pip install -r a-share-observer/requirements.txt
+          python -m pytest -q a-share-observer/tests
