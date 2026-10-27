@@ -82,12 +82,19 @@ def _capture(record, trade_date):
     keys = ('thscode','name','is_st','is_new','last_price','continue_day_cnt',
             'first_limit_time','last_limit_time','open_times','limit_down_reason',
             'limit_up_reason','reason','rank','rank_change','tag_name','tag_type',
-            'event_type','event_reason','date','timestamp','keyword','keywords')
+            'event_type','event_reason','date','timestamp','keyword','keywords',
+            'stock_name','analysis_content','keyword_list','price_change_ratio_pct',
+            'turnover_ratio_pct','turnover','seal_money','max_seal_money',
+            'limit_up_time','first_limit_time','last_limit_time','continue_day_text')
     obj = {'date': trade_date}
     for key in keys:
         if record.get(key) is not None:
             obj['source_date' if key == 'date' else key] = record[key]
-    obj['name'] = obj.get('name') or obj.get('thscode') or '—'
+    obj['name'] = obj.get('name') or obj.get('stock_name') or obj.get('thscode') or '—'
+    if obj.get('analysis_content') and not obj.get('reason'):
+        obj['reason'] = obj['analysis_content']
+    if isinstance(obj.get('keyword_list'), list):
+        obj['keywords'] = obj['keyword_list']
     if obj.get('last_price') is not None:
         obj['price'] = obj['last_price']
     if obj.get('limit_down_reason') or obj.get('limit_up_reason') or obj.get('event_reason'):
@@ -133,8 +140,12 @@ def fetch_list(client_get, path, params, day):
     payload = client_get(path, params)
     items = _items(payload)
     total = (payload.get('pagination') or {}).get('total', payload.get('total'))
-    if not items and total is None:
+    if not items and total is None and not (
+        payload.get('timestamp') is not None or payload.get('date') == day
+    ):
         raise ValueError('cannot prove empty response was completed')
+    if path == ENDPOINTS['hot_rank_daily'] and payload.get('date') != day:
+        raise ValueError('historical hot rank returned a different date')
     # Top-N lists may be provider-capped; the archive stores precisely the returned rank entries.
     return [_capture(x, day) for x in items if isinstance(x, dict)]
 
@@ -173,6 +184,12 @@ def enrich_today(day, base, read_json, archive_path, merge_day):
             quality[domain] = quality_entry('missing', day, captured_at=now,
                                             error_class=type(exc).__name__)
             print(f'WARN V3 event {domain}: {type(exc).__name__}; original archive preserved')
+    if 'limit_down_events' in patch or 'limit_break_events' in patch:
+        patch['event_summary'] = {
+            **(snap.get('event_summary') or {}),
+            **({'limit_down_count':len(patch['limit_down_events'])} if 'limit_down_events' in patch else {}),
+            **({'limit_break_count':len(patch['limit_break_events'])} if 'limit_break_events' in patch else {})
+        }
     if patch or quality:
         merge_day(day, {**patch, 'quality_manifest':quality})
     return quality
@@ -180,6 +197,6 @@ def enrich_today(day, base, read_json, archive_path, merge_day):
 
 def enrich_if_enabled(day, base, read_json, archive_path, merge_day):
     """Publication requires explicit confirmation of API access and reuse rights."""
-    if os.getenv('V3_ENABLE_EVENTS', '').strip() != '1':
+    if os.getenv('V3_ENABLE_EVENTS', '1').strip() != '1':
         return None
     return enrich_today(day, base, read_json, archive_path, merge_day)
