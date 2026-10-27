@@ -1,11 +1,27 @@
-# EdgeOne Pages 快速上线
+# 本次升级说明（2026-06-10 起）
 
-1. 解压项目，将内部全部文件放进 GitHub `didodidido999-wq/a-share-observer` 仓库 **根目录** 并推送 main。
-2. 登录 https://pages.edgeone.ai/ → 创建项目 → **导入Git仓库** → 选择上述仓库。
-3. 保持：根目录 `./`；构建 `npm run build`；输出 `./docs`；Node 22；安装 `npm install`。
-4. 区域选 **全球可用区（不含中国大陆）**，免ICP备案。构建完成后获取地址。
-5. GitHub 仓库 Actions → Update A-share dashboard → Run workflow 检查真实数据。已保存的 `HITHINK_FINANCE_API_KEY` 不要贴到网页或代码。
-6. EdgeOne → 域名管理 → 添加自定义域名，按照界面操作 DNS 验证及CNAME。选择大陆节点前先完成ICP备案。
+## 上传至已有 GitHub 仓库
 
-如 GitHub Actions 推送数据被拒绝，打开仓库 Settings → Actions → General → Workflow permissions，赋予 Read and write permissions。
-注意：GitHub Actions 每次更新数据并推送到main后，EdgeOne从GitHub自动重新部署，无需额外 EdgeOne API token。
+目标仓库 `didodidido999-wq/a-share-observer`，保持原有两层布局：
+
+1. `.github/workflows/update.yml` （替换现有文件）
+2. `a-share-observer/scripts/history.py` （新增）
+3. `a-share-observer/docs/app.js` （替换）
+4. `a-share-observer/docs/index.html` （替换）
+5. `a-share-observer/docs/styles.css` （替换）
+6. `a-share-observer/tests/test_history.py` （新增）
+7. `a-share-observer/README.md` 和 `SETUP.md` （更新）
+
+**不要删除已有的** `scripts/update.py`、旧的 `history/*.json`、`dashboard.json` 或 `package.json`。`history.py` 复用 `update.py` 中经过测试的API调用与计算逻辑。
+
+## 首次回补
+
+1. 打开 GitHub → Actions → `Update A-share dashboard` → `Run workflow`。
+2. 选 `mode: backfill`，执行一次性历史采集。这次会下载全量Parquet、回查板块和涨停数据；时间明显长于日常更新。
+3. 任务变绿以后，查看 `a-share-observer/docs/data/dates.json` 的 `configured_start`, `earliest`, `latest`, `archive_days`。如果某些历史接口无数据，工作流日志会提示缺失而不造假。
+4. EdgeOne若已绑定GitHub，代码和数据推送后应自动部署；如前台仍显示旧值，检查EdgeOne最新部署记录及缓存。
+5. 后续默认 `mode: auto`，每天16:00只抓新的交易日。当日已归档会跳过API采集。
+
+## 说明
+
+GitHub接口给当前ChatGPT连接返回了403写入权限错误，因此这份压缩包是可直接上传的代码更新，**并不意味着已提交到线上GitHub仓库**。

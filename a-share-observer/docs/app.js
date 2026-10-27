@@ -2,8 +2,9 @@
 (() => {
 'use strict';
 let data={dates:[],indices:[],market:[],sectors:[],styles:[],limits:[],stock_list:[]};
-let page='overview', pickedSector=null;
-const labels={overview:['市场总览','同一时间轴观察价格、量能、市场广度与短线情绪。'],sectors:['板块轮动','全部行业与概念指数，统一最近10个交易日的横向对比。'],styles:['炒作风格','固定风格分档，观察上涨占比、涨幅中位数与涨停分布。'],stocks:['个股明细','每个交易日的涨停事实与连板梯队。']};
+let page='overview', pickedSector=null, archiveDates=[], sectorPage=0, latestData=null;
+const SECTOR_PAGE_SIZE=60;
+const labels={overview:['市场总览','同一时间轴观察价格、量能、市场广度与短线情绪。'],sectors:['板块轮动','全部行业与概念指数，统一所选交易日区间的横向对比。'],styles:['炒作风格','固定风格分档，观察上涨占比、涨幅中位数与涨停分布。'],stocks:['个股明细','每个交易日的涨停事实与连板梯队。']};
 const $=id=>document.getElementById(id);
 const fmt=(x,d=2)=>x===null||x===undefined||!Number.isFinite(Number(x))?'—':Number(x).toLocaleString('zh-CN',{minimumFractionDigits:d,maximumFractionDigits:d});
 const ns=x=>x===null||x===undefined||Number.isNaN(Number(x))?null:Number(x);
@@ -25,7 +26,7 @@ function chart(id,option){const el=$(id);if(!el)return; if(typeof echarts==='und
 function noplot(id,reason){const el=$(id);if(!el)return;charts.get(id)?.dispose();charts.delete(id);el.innerHTML='';let wrap=text('div',reason||'暂无可核验数据','');wrap.style.cssText='display:flex;align-items:center;justify-content:center;height:100%;color:#9aaab5;font-size:12px;text-align:center;padding:26px';el.append(wrap);}
 function valByDate(rows,d){return (rows||[]).find(x=>x.date===d)||{};}
 function last(arr){return arr?.length?arr[arr.length-1]:undefined;}
-function kpi(name,value,subtitle,klass){let el=document.createElement('div');el.className='kpi';el.append(text('small',name));el.append(text('strong',value,klass||''));el.append(text('div',subtitle||'最近10交易日','delta'));return el;}
+function kpi(name,value,subtitle,klass){let el=document.createElement('div');el.className='kpi';el.append(text('small',name));el.append(text('strong',value,klass||''));el.append(text('div',subtitle||'当前区间','delta'));return el;}
 function renderOverview(){let market=data.market||[],lim=data.limits||[], dates=data.dates||[];
  let latest=valByDate(market,last(dates)), prev=valByDate(market,dates.at(-2)), lastLimits=valByDate(lim,last(dates));
  let grid=$('market-kpis');grid.replaceChildren(
@@ -55,7 +56,7 @@ function heatBg(v,metric){if(v==null)return null;let val=Number(v);if(!Number.is
  let a=Math.min(Math.abs(val)/5,.87);return val>=0?`rgba(204,76,79,${.13+a*.65})`:`rgba(32,154,117,${.13+a*.68})`;
 }
 function makeHeat(target,rows,dates,metric,format,onSelect){let host=$(target);host.replaceChildren();if(!rows.length||!dates.length){let emptyDiv=text('div','暂未取得可用于10日对比的同口径数据');emptyDiv.style.cssText='padding:64px 12px;text-align:center;color:#a1afb9';host.append(emptyDiv);return;}
- let grid=document.createElement('div');grid.className='heat-grid';grid.append(text('div','板块 / 风格','heat-head'));
+ let grid=document.createElement('div');grid.className='heat-grid';grid.style.gridTemplateColumns=`180px repeat(${dates.length},minmax(66px,72px))`;grid.append(text('div','板块 / 风格','heat-head'));
  dates.forEach(d=>grid.append(text('div',d.slice(5),'heat-head')));
  rows.forEach((r,i)=>{let label=text('div',r.name||r.group,'heat-label'+((r.code||r.group)===pickedSector?' selected':''));label.title=r.name||r.group;
  let rank=text('em',String(i+1).padStart(2,'0'));label.append(rank);
@@ -76,7 +77,11 @@ function renderSectors(){let dates=data.dates||[],kind=$('sector-kind').value,q=
  function cumulative(s){let x=dates.map(d=>valByDate(s.points,d).pct);if(x.some(v=>v==null))return null;return (x.reduce((a,v)=>a*(1+v/100),1)-1)*100;}
  arr.sort((a,b)=>{if(sort==='name')return a.name.localeCompare(b.name,'zh');let av=sort==='latest'?ns(valByDate(a.points,last(dates))[metric]):cumulative(a),bv=sort==='latest'?ns(valByDate(b.points,last(dates))[metric]):cumulative(b);return (bv??-99999)-(av??-99999);});
  $('sector-coverage').replaceChildren(text('span',`${kind==='industry'?'行业':'概念'}板块 ${original.length} · 当前筛选 ${arr.length} · ${metric==='pct'?'日涨跌幅(%)':'按最新行业成分股计算涨停数，历史成分未回溯'}`),text('b',dates.length?dates[0]+' — '+last(dates):'尚无日期'));
- makeHeat('sector-heat',arr,dates,metric,v=>metric==='pct'?(v>0?'+':'')+fmt(v,2):fmt(v,0),s=>{pickedSector=s.code;sectorCharts(s);});
+ const pages=Math.max(1,Math.ceil(arr.length/SECTOR_PAGE_SIZE));sectorPage=Math.min(Math.max(sectorPage,0),pages-1);
+ $('sector-page-info').textContent=`第 ${sectorPage+1} / ${pages} 页 · 每页最多60板块`;
+ $('sector-page-prev').disabled=sectorPage===0;
+ $('sector-page-next').disabled=sectorPage>=pages-1;
+ makeHeat('sector-heat',arr.slice(sectorPage*SECTOR_PAGE_SIZE,(sectorPage+1)*SECTOR_PAGE_SIZE),dates,metric,v=>metric==='pct'?(v>0?'+':'')+fmt(v,2):fmt(v,0),s=>{pickedSector=s.code;sectorCharts(s);});
  let selection=arr.find(s=>s.code===pickedSector)||arr[0];if(selection){pickedSector=selection.code;sectorCharts(selection);}else{noplot('sector-detail');noplot('sector-volume');}
 }
 function sectorCharts(s){let dates=data.dates||[];if(!s?.points?.length){noplot('sector-detail');noplot('sector-volume');return;}
@@ -114,13 +119,66 @@ function renderAll(){let dates=data.dates||[]; $('window-label').textContent=dat
  $('build-stamp').textContent=data.generated_at?'生成于 '+data.generated_at.slice(0,16).replace('T',' '):'未更新';
  let ok=data.status==='live',warning=data.status==='partial';$('data-state').textContent=ok?'真实数据 · 已同步':warning?'真实数据 · 部分缺失':'尚未接入真实数据';
  document.querySelector('.live-dot').classList.toggle('live',ok);let messages=(data.warnings||[]);
- if(ok)setNotice('已连接同花顺真实数据。所有时间线默认使用最近10个交易日；部分官方未提供的字段继续显示缺失。',true);
+ if(ok)setNotice('已连接同花顺真实数据；所选日期区间内的缺失字段保留空值。',true);
  else if(warning)setNotice('数据已部分接入，但有接口未返回完整数据：'+messages.slice(0,3).join('；'));
  else setNotice('网站结构已经完成，尚未配置运行同花顺API密钥。当前没有展示任何虚构行情。请按照README开启GitHub Actions。');
  renderOverview(); renderSectors();renderStyles();renderStocks();
 }
 function setPage(id){page=id;document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id===id));document.querySelectorAll('#nav button').forEach(el=>el.classList.toggle('active',el.dataset.page===id));$('crumb').textContent=labels[id][0];$('page-title').textContent=labels[id][0];$('page-sub').textContent=labels[id][1];$('sidebar').classList.remove('open');
  window.requestAnimationFrame(()=>{charts.forEach(c=>c.resize());if(id==='sectors')renderSectors();if(id==='styles')renderStyles();});
+}
+function buildRange(days,snapshots){
+ const index=new Map(), sectors=new Map(), market=[], limits=[], styles=[], stock_list=[], warnings=[];
+ for(let i=0;i<snapshots.length;i++){
+  const s=snapshots[i];if(!s){warnings.push(`历史归档 ${days[i]} 未能加载`);continue;}
+  if(s.market)market.push(s.market);else warnings.push(`${days[i]} 全市场统计缺失`);
+  if(s.limits)limits.push(s.limits);else warnings.push(`${days[i]} 涨停池缺失`);
+  if(!s.sectors?.length)warnings.push(`${days[i]} 板块指数历史缺失`);
+  for(const row of s.styles||[])styles.push(row);
+  for(const row of s.stock_list||[])stock_list.push(row);
+  for(const x of s.indices||[]){if(!x.code)continue;
+   const o=index.get(x.code)||{name:x.name,code:x.code,points:[]};
+   o.points.push({date:days[i],close:x.close??null,pct:x.pct??null,turnover:x.turnover??null});index.set(x.code,o);}
+  for(const x of s.sectors||[]){if(!x.code)continue;
+   const o=sectors.get(x.code)||{name:x.name,code:x.code,tag:x.tag,points:[]};
+   o.points.push({date:days[i],close:x.close??null,pct:x.pct??null,turnover:x.turnover??null,limit_up_proxy:x.limit_up_proxy??null});sectors.set(x.code,o);}
+ }
+ if(warnings.length)warnings.unshift('选定区间存在缺失档案，未填补假数据');
+ return {...(latestData||{}),dates:days,latest_date:days.at(-1),indices:[...index.values()],sectors:[...sectors.values()],
+  market,limits,styles,stock_list,status:warnings.length?'partial':'live',warnings,
+  generated_at:latestData?.generated_at};
+}
+async function selectRange(start,end){
+ if(!archiveDates.length)return;
+ if(start>end){setNotice('起始日期不能晚于结束日期');return;}
+ const days=archiveDates.filter(d=>d>=start&&d<=end);
+ if(!days.length){setNotice('选定区间没有已保存的A股交易日');return;}
+ const action=$('range-apply');action.disabled=true;
+ try{
+  if(latestData&&days.length===latestData.dates.length&&days.every((d,i)=>d===latestData.dates[i])){
+   data=latestData;
+  }else{
+   const results=new Array(days.length);
+   let cursor=0,finished=0;
+   const workers=Array.from({length:Math.min(6,days.length)},async()=>{
+    while(cursor<days.length){const i=cursor++;
+     try{const response=await fetch(`data/history/${days[i]}.json`,{cache:'default'});
+      if(!response.ok)throw Error(`HTTP ${response.status}`);
+      results[i]=await response.json();
+     }catch(e){results[i]=null;}
+     finished++;
+     if(finished%12===0||finished===days.length)setNotice(`正在读取历史数据：${finished}/${days.length} 个交易日`);
+    }
+   });
+   await Promise.all(workers);
+   data=buildRange(days,results);
+  }
+  sectorPage=0;pickedSector=null;renderAll();
+  $('range-start').value=days[0];$('range-end').value=days.at(-1);
+  $('archive-info').textContent=`已载入 ${days.length} 个交易日 / 共 ${archiveDates.length} 日`;
+  $('sidebar').classList.remove('open');
+ }catch(e){setNotice('日期范围加载失败，请刷新后重试。');}
+ finally{action.disabled=false;}
 }
 async function start(){document.querySelectorAll('#nav button').forEach(btn=>btn.addEventListener('click',()=>setPage(btn.dataset.page)));
  $('menu-btn').addEventListener('click',()=>$('sidebar').classList.toggle('open'));
@@ -129,7 +187,24 @@ async function start(){document.querySelectorAll('#nav button').forEach(btn=>btn
  ['stocks-date','stocks-query'].forEach(id=>$(id).addEventListener(id==='stocks-query'?'input':'change',renderStocks));
  try {let response=await fetch('data/dashboard.json?ts='+Date.now(),{cache:'no-store'});if(!response.ok)throw Error('HTTP '+response.status);
   data=await response.json(); if(!Array.isArray(data.dates))throw Error('JSON schema invalid');
+  latestData=data;
  }catch(e){data={dates:[],warnings:[],status:'not_configured'};setNotice('数据文件暂时无法读取；请检查部署路径与更新状态。');}
+ try{const m=await fetch('data/dates.json?ts='+Date.now(),{cache:'no-store'});
+  if(m.ok){const listing=await m.json();archiveDates=(listing.dates||[]).filter(x=>x>='2026-06-10');}
+ }catch(e){}
+ if(!archiveDates.length)archiveDates=data.dates||[];
+ const minimum=archiveDates[0]||'2026-06-10',maximum=archiveDates.at(-1)||minimum;
+ $('range-start').min=minimum;$('range-end').min=minimum;
+ $('range-start').max=maximum;$('range-end').max=maximum;
+ $('range-start').value=data.dates?.[0]||minimum;
+ $('range-end').value=data.dates?.at(-1)||maximum;
+ $('archive-info').textContent=`历史覆盖 ${minimum} 至 ${maximum} · ${archiveDates.length} 日`;
+ $('range-apply').addEventListener('click',()=>selectRange($('range-start').value,$('range-end').value));
+ $('range-recent').addEventListener('click',()=>selectRange(archiveDates.at(-10)||minimum,maximum));
+ $('range-all').addEventListener('click',()=>selectRange(minimum,maximum));
+ ['sector-kind','sector-sort','sector-search','sector-metric'].forEach(id=>$(id).addEventListener(id==='sector-search'?'input':'change',()=>{sectorPage=0;}));
+ $('sector-page-prev').addEventListener('click',()=>{sectorPage=Math.max(0,sectorPage-1);renderSectors();});
+ $('sector-page-next').addEventListener('click',()=>{sectorPage++;renderSectors();});
  renderAll();window.addEventListener('resize',()=>charts.forEach(c=>c.resize()));
 }
 window.addEventListener('DOMContentLoaded',start);
