@@ -54,7 +54,7 @@ jobs:
             'rep-window','rep-dimension','rep-category','rep-metric','rep-table-body'];
           for(const id of keys)if(!h.includes('id="'+id+'"'))throw Error('Missing UI control '+id);
           for(const script of ['v3.js','event-sector.js','representatives.js'])if(!h.includes('src="'+script+'?'))throw Error('Missing script '+script);
-          if(!events.includes("relayMode==='down'")||!events.includes("relayMode==='break'"))throw Error('Negative event modes missing');
+          if(!events.includes("relayMode==='down'")||!events.includes(" has-break"))throw Error('Negative event modes missing');
           if(!app.includes("sector-inline-detail")||!app.includes("MarketScopeHistory.render"))throw Error('Page routing/sector expansion missing');
           if(!history.includes('drawdown')||!history.includes('up_ratio'))throw Error('Loss dimension missing');
           console.log('V4 DOM controls and interactions integrated.');
