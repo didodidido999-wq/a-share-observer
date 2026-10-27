@@ -25,6 +25,7 @@ from urllib.parse import urlparse
 import pandas as pd
 import requests
 import update as base
+import v3_events
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'docs' / 'data'
@@ -94,6 +95,15 @@ def merge_day(day, additions):
                 past = objects.get(key, {})
                 objects[key] = {k:(v if v is not None else past.get(k)) for k,v in {**past, **x}.items()}
             merged[field] = list(objects.values())
+    for field in ('limit_down_events', 'limit_break_events', 'hot_rank_daily',
+                  'anomaly_daily', 'sector_focus_stocks', 'event_summary',
+                  'next_day_feedback'):
+        if field in additions and additions[field] is not None:
+            merged[field] = additions[field]
+    if isinstance(additions.get('quality_manifest'), dict):
+        merged['quality_manifest'] = {**(prev.get('quality_manifest') or {}),
+                                      **additions['quality_manifest']}
+    merged['schema_version'] = 3
     merged['generated_at'] = datetime.now(base.TZ).isoformat()
     if 'notes' in additions:
         merged['notes'] = sorted(set((prev.get('notes') or []) + additions['notes']))
@@ -146,7 +156,7 @@ def archive_manifest():
 
 def create_dashboard():
     """Build current 10-day view without historical API calls."""
-    maybe_trim_archive()
+    # Keep all previously archived trading dates even if storage exceeds soft budget.
     manifest = archive_manifest()
     days = manifest['dates'][-DEFAULT_WINDOW:]
     old = read_json(DATA/'dashboard.json', {})
@@ -162,7 +172,10 @@ def create_dashboard():
             code = obj.get('code')
             if not code: continue
             item = sectors.setdefault(code, {'name':obj.get('name',code),'code':code,'tag':obj.get('tag'),'points':[]})
-            item['points'].append({k:v for k,v in obj.items() if k in ('date','close','pct','turnover','limit_up_proxy')})
+            item['points'].append({k:v for k,v in obj.items() if k in
+                ('date','close','pct','turnover','limit_up_count','limit_down_count',
+                 'limit_up_ratio','limit_down_ratio','member_up_ratio',
+                 'member_median','hot_count','member_metrics')})
     market = [s['market'] for s in snaps if s.get('market') is not None]
     limits = [s['limits'] for s in snaps if s.get('limits') is not None]
     styles = [row for s in snaps for row in s.get('styles', [])]
@@ -176,7 +189,11 @@ def create_dashboard():
     for s in snaps:
         warnings.extend(s.get('notes', []))
     warnings = list(dict.fromkeys(warnings))[:20]
-    data = {'status':'live' if not warnings else 'partial', 'source':'hithink-finance',
+    quality = v3_events.dashboard_quality(snaps)
+    if quality['status'] != 'complete':
+        warnings.append('部分V3指标尚未采集：请参见quality_manifest覆盖情况')
+    data = {'schema_version': 3, 'quality_manifest':quality,
+            'status':'live' if not warnings else 'partial', 'source':'hithink-finance',
             'generated_at':datetime.now(base.TZ).isoformat(), 'latest_date':days[-1] if days else None,
             'dates':days,'indices':list(indices.values()),'sectors':list(sectors.values()),
             'market':market,'styles':styles,'limits':limits,'stock_list':stock_list,
@@ -348,7 +365,8 @@ def today():
         create_dashboard();return
     existing=read_json(archive_path(day),{})
     if existing.get('market') and sum(x.get('close') is not None for x in existing.get('sectors',[]))>=400 and existing.get('limits') is not None:
-        print(f'{day}已有归档，跳过重复采集');create_dashboard();return
+        v3_events.enrich_if_enabled(day, base, read_json, archive_path, merge_day)
+        print(f'{day}基础归档已存在，V3增量采集已核对');create_dashboard();return
     items,asof=get_stock_snapshot()
     if asof!=day:raise base.ApiError(f'全市场快照尚未更新为{day}，当前为{asof}')
     pool=base.get_limit_pool(day)
@@ -363,6 +381,7 @@ def today():
     # Point-in-time membership not guaranteed, so avoid historical proxy.
     merge_day(day,{'market':market,'styles':styles,'indices':indices,'sectors':sectors,
                    'limits':limit_summary(day,pool),'stock_list':pool})
+    v3_events.enrich_if_enabled(day, base, read_json, archive_path, merge_day)
     create_dashboard()
     print(json.dumps({'mode':'auto','date':day,'market_samples':market['samples'],
                       'sectors':ok,'stocks':len(pool)},ensure_ascii=False))
