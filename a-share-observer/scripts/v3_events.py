@@ -102,7 +102,7 @@ def _capture(record, trade_date):
     return obj
 
 
-def fetch_paged(client_get: Callable, path: str, params: dict, day: str):
+def fetch_paged(client_get: Callable, path: str, params: dict, day: str, issues=None):
     output, seen = [], set()
     received = 0
     for page in range(1, MAX_PAGES+1):
@@ -118,6 +118,9 @@ def fetch_paged(client_get: Callable, path: str, params: dict, day: str):
                 raise ValueError('malformed record')
             code = record.get('thscode')
             if not code:
+                if issues is not None:
+                    issues.append('record_missing_stock_code')
+                    continue
                 raise ValueError('record missing stock code')
             if code in seen: continue
             seen.add(code)
@@ -172,9 +175,10 @@ def enrich_today(day, base, read_json, archive_path, merge_day):
         if prior[domain]['status']=='complete':
             continue
         try:
+            issues = []
             if domain in ('limit_down_events','limit_break_events'):
                 params = {'date_ms': base.since_ms(datetime.strptime(day, '%Y-%m-%d').date())}
-                records = fetch_paged(base.client_get, ENDPOINTS[domain], params, day)
+                records = fetch_paged(base.client_get, ENDPOINTS[domain], params, day, issues=issues)
             elif domain=='hot_rank_daily':
                 records = fetch_list(base.client_get, ENDPOINTS[domain], {'date':day}, day)
             else:
@@ -184,7 +188,9 @@ def enrich_today(day, base, read_json, archive_path, merge_day):
                     continue
                 records = fetch_list(base.client_get, ENDPOINTS[domain], {}, day)
             patch[domain] = records
-            quality[domain] = quality_entry('complete', day, count=len(records), captured_at=now)
+            quality[domain] = quality_entry('partial' if issues else 'complete',
+                                            day, count=len(records), captured_at=now,
+                                            error_class='IncompleteUpstreamCodes' if issues else None)
         except Exception as exc:
             quality[domain] = quality_entry('missing', day, captured_at=now,
                                             error_class=type(exc).__name__)
@@ -193,7 +199,8 @@ def enrich_today(day, base, read_json, archive_path, merge_day):
     if 'limit_down_events' in patch or 'limit_break_events' in patch:
         patch['event_summary'] = {
             **(snap.get('event_summary') or {}),
-            **({'limit_down_count':len(patch['limit_down_events'])} if 'limit_down_events' in patch else {}),
+            **({'limit_down_count':len(patch['limit_down_events']) if quality['limit_down_events']['status']=='complete' else None}
+               if 'limit_down_events' in patch else {}),
             **({'limit_break_count':len(patch['limit_break_events'])} if 'limit_break_events' in patch else {})
         }
     if patch or quality:
