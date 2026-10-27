@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/representatives.yml'
+      - 'a-share-observer/scripts/representative_roster.py'
   schedule:
     # Beijing 16:25 on weekdays, after base daily archive collector.
     - cron: '25 8 * * 1-5'
@@ -16,7 +17,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v5
         with:
@@ -33,6 +34,7 @@ jobs:
         env:
           HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
           PYTHONUNBUFFERED: '1'
+          V4_MIN_COVERAGE: '270'
         run: python a-share-observer/scripts/v4_representatives.py
       - name: Commit verified derived series only
         shell: bash
