@@ -17,6 +17,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/update.yml'
+      - 'a-share-observer/scripts/v3_events.py'
   schedule:
     # Beijing 16:00 (UTC 08:00), Mon-Fri; the collector verifies actual trading dates.
     - cron: '0 8 * * 1-5'
