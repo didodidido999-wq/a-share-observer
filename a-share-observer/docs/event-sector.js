@@ -41,14 +41,30 @@ function feedbackCard(title,detail){let card=node('article',undefined,'event-fee
  card.append(node('b',pct(detail.close_median_pct),'event-feedback-value'+(num(detail.close_median_pct)<0?' is-negative':'')),node('span','次日收盘中位数','event-feedback-label'));
  let grid=node('div',undefined,'event-feedback-metrics');for(let [lab,key]of [['开盘中位数','open_median_pct'],['收盘均值','close_mean_pct'],['开盘上涨比','open_positive_ratio'],['收盘上涨比','close_positive_ratio']]){let p=node('div',undefined,'event-feedback-metric');p.append(node('small',lab),node('strong',pct(detail[key])));grid.append(p);}card.append(grid);
  card.append(node('p','有价格 '+(detail.sample_size??'—')+'/'+(detail.total_events??'—')+' 只 · 未匹配 '+(detail.excluded_no_prices??'—')+' 只','event-feedback-note'));return card;}
+function sectorFeedback(d,key){let info=record(d).next_day_feedback,original=info?.[key];
+ if(!sector)return original||null;
+ if(!info||!Array.isArray(original?.samples))return null;
+ const previous=info.reference_date;
+ if(!record(previous)?.stock_list)return null;
+ let rows=original.samples.filter(r=>evidence(r.code,previous).tags.includes(sector));
+ if(!rows.length)return null;
+ const summarize=(name)=>{let vals=rows.map(x=>num(x[name])).filter(x=>x!==null).sort((a,b)=>a-b);if(!vals.length)return null;let mid=Math.floor(vals.length/2);return {avg:vals.reduce((a,b)=>a+b,0)/vals.length,med:vals.length%2?vals[mid]:(vals[mid-1]+vals[mid])/2,pos:100*vals.filter(x=>x>0).length/vals.length};};
+ let op=summarize('open_pct'),cl=summarize('close_pct');if(!op||!cl)return null;
+ return {sample_size:rows.length,total_events:rows.length,excluded_no_prices:0,
+ open_median_pct:op.med,open_mean_pct:op.avg,open_positive_ratio:op.pos,
+ close_median_pct:cl.med,close_mean_pct:cl.avg,close_positive_ratio:cl.pos};
+}
 function feedback(){let data=record(selected()).next_day_feedback||{},ref=data.reference_date;
  $('event-feedback-context').textContent=ref?'事件 '+ref+' → 收益 '+selected():'所选日期尚无T+1明细';
- let host=reset('event-feedback-grid');host.append(feedbackCard('前日涨停 · T+1',data.limit_up),feedbackCard('前日炸板 · T+1',data.limit_break),feedbackCard('前日跌停 · T+1',data.limit_down));
- $('event-feedback-scope').textContent='反馈指标来自全市场完整事件样本，随日期滑块切换；当前题材筛选尚不改变反馈样本，避免将全市场收益冒充该板块收益。';
- const keys=[['limit_up','涨停股'],['limit_break','炸板股'],['limit_down','跌停股']];let ds=dates();
- const series=keys.map(([key,name])=>({type:'line',name,connectNulls:false,symbolSize:6,data:ds.map(d=>num(record(d).next_day_feedback?.[key]?.close_median_pct))}));
+ let host=reset('event-feedback-grid');
+ host.append(feedbackCard('前日涨停 · T+1',sectorFeedback(selected(),'limit_up')),
+             feedbackCard('前日炸板 · T+1',sectorFeedback(selected(),'limit_break')),
+             feedbackCard('前日跌停 · T+1',sectorFeedback(selected(),'limit_down')));
+ $('event-feedback-scope').textContent=sector?'已按「'+sector+'」筛选：仅用上一交易日已有题材证据且带有真实次日开收盘价的个股重新计算；没有归属或逐股价格的样本不推断。':'默认全市场事件池全部有效样本。滑块切换交易日；收益均是实际开盘价与收盘价变动，不是模拟交易。';
+ const keys=[['limit_up','涨停股'],['limit_break','炸板股'],['limit_down','跌停股']],ds=dates();
+ const series=keys.map(([key,name])=>({type:'line',name,connectNulls:false,symbolSize:6,data:ds.map(d=>num(sectorFeedback(d,key)?.close_median_pct))}));
  if(series.some(x=>x.data.some(y=>y!==null)))a.chart('event-feedback-chart',{xAxis:{type:'category',data:ds.map(x=>x.slice(5))},yAxis:{type:'value',scale:true,name:'次日收盘中位数 %'},legend:{top:0,type:'scroll'},series},event=>{if(event.dataIndex!=null){a.setDay(ds[event.dataIndex]);$('event-feedback-anchor').scrollIntoView({block:'start',behavior:'smooth'});}});
- else a.noChart('event-feedback-chart','当前窗口尚无次日正负反馈的真实归档数据。');}
+ else a.noChart('event-feedback-chart','所选区间 / 题材没有可复核的次日正负反馈，未知不等于0。');}
 function relay(items){let hit=filterModel(items),day=selected(),ds=dates(),host=reset('event-relay-chart'),group=new Map();
  for(let x of hit){let key=sector||x.group;if(!group.has(key))group.set(key,[]);group.get(key).push(x);}
  let order=[...group].sort((a,b)=>b[1].filter(x=>x.boards[day]!=null).length-a[1].filter(x=>x.boards[day]!=null).length||b[1].length-a[1].length);
