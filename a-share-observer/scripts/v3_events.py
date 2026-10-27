@@ -104,12 +104,14 @@ def _capture(record, trade_date):
 
 def fetch_paged(client_get: Callable, path: str, params: dict, day: str):
     output, seen = [], set()
+    received = 0
     for page in range(1, MAX_PAGES+1):
         payload = client_get(path, {**params, 'page': page, 'size': PAGE_SIZE})
         batch = _items(payload)
+        received += len(batch)
         paging = payload.get('pagination') or {}
         total = paging.get('total', payload.get('total'))
-        if not batch and page==1 and total is None:
+        if not batch and page==1 and total is None and paging.get('pages') not in (0, 1):
             raise ValueError('ambiguous empty first page (no verified total)')
         for i, record in enumerate(batch):
             if not isinstance(record, dict):
@@ -123,16 +125,19 @@ def fetch_paged(client_get: Callable, path: str, params: dict, day: str):
         pages = paging.get('pages')
         if pages is not None and page >= int(pages):
             break
-        if total is not None and len(output)>=int(total):
+        if paging.get('pages') is not None:
+            # Always honor the provider's page count even if requested size is capped.
+            continue
+        if total is not None and received>=int(total):
             break
         if len(batch)<PAGE_SIZE:
-            if total is not None and len(output)<int(total):
-                raise ValueError('pagination incomplete vs total')
+            if total is not None and received<int(total):
+                continue  # Provider may silently cap requested page size.
             break
     else:
         raise ValueError('pagination ceiling reached before completion')
-    if total is not None and len(output)!=int(total):
-        raise ValueError('deduped count differs from source total; manual inspection required')
+    if total is not None and received<int(total):
+        raise ValueError('fewer raw event records than pagination total')
     return output
 
 
@@ -183,7 +188,8 @@ def enrich_today(day, base, read_json, archive_path, merge_day):
         except Exception as exc:
             quality[domain] = quality_entry('missing', day, captured_at=now,
                                             error_class=type(exc).__name__)
-            print(f'WARN V3 event {domain}: {type(exc).__name__}; original archive preserved')
+            detail = str(exc) if isinstance(exc, ValueError) else type(exc).__name__
+            print(f'WARN V3 event {domain}: {detail}; original archive preserved')
     if 'limit_down_events' in patch or 'limit_break_events' in patch:
         patch['event_summary'] = {
             **(snap.get('event_summary') or {}),
