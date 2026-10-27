@@ -69,6 +69,40 @@ RAW = [
 ("601888.SH","中国中免","旅游零售","政策复苏","消费,旅游"),
 ("002352.SZ","顺丰控股","快递物流","景气成长","物流,消费"),
 ]
+# Preserve 48 original reference firms, then balance selection across
+# 18 editorial industry families instead of taking only the biggest firms.
+from representative_roster import EXTRA_GROUPS
+
+BASE_RAW = tuple(RAW)
+MAX_UNIVERSE = 300
+
+
+def build_roster(limit=MAX_UNIVERSE):
+    result = list(BASE_RAW)
+    seen = {r[0] for r in result}
+    buckets = []
+    for industry, style, tags, raw in EXTRA_GROUPS:
+        rows = []
+        for token in raw.split(";"):
+            code, name = token.split("|", 1)
+            assert code.endswith((".SH", ".SZ", ".BJ")), code
+            if code not in seen:
+                rows.append((code, name, industry, style, tags))
+        buckets.append(rows)
+    # Round-robin across sectors: neither financials nor AI displace smaller industries.
+    while len(result) < limit and any(buckets):
+        for bucket in buckets:
+            while bucket and bucket[0][0] in seen:
+                bucket.pop(0)
+            if bucket and len(result) < limit:
+                item=bucket.pop(0)
+                result.append(item)
+                seen.add(item[0])
+    return result
+
+
+RAW = build_roster()
+
 def universe():
     return [{"code":c,"name":n,"industry":industry,"economic_style":style,
              "tags":tags.split(","),"editorial":True} for c,n,industry,style,tags in RAW]
@@ -100,17 +134,26 @@ def main():
         try: previous=json.loads(DEST.read_text(encoding="utf-8"))
         except (OSError,ValueError): pass
     now=datetime.now(api.TZ)
-    begin=api.since_ms((now-timedelta(days=180)).date())
+    # Fetch a 180-day history only for new additions. Existing symbols need
+    # just a short overlap to correct revisions without repeating months of K.
     end=api.since_ms((now+timedelta(days=1)).date())
     selected=universe()
-    # Explicit throttle/limit for initial API cost troubleshooting; default full roster.
     cap=int(os.getenv("V4_REP_LIMIT","0") or 0)
     if cap>0:selected=selected[:cap]
     collected=dict(previous.get("prices") or {})
     status={}
     def work(row):
-        try:return row["code"],_bars(row["code"],begin,end),None
-        except Exception as exc:return row["code"],None,type(exc).__name__
+        code=row["code"]
+        old=collected.get(code) or []
+        start=(now-timedelta(days=180)).date()
+        if old:
+            try:
+                last_date=datetime.strptime(old[-1]["date"],"%Y-%m-%d").date()
+                start=max(start,last_date-timedelta(days=12))
+            except (KeyError,ValueError,TypeError):
+                pass
+        try:return code,_bars(code,api.since_ms(start),end),None
+        except Exception as exc:return code,None,type(exc).__name__
     with ThreadPoolExecutor(max_workers=max(1,min(3,int(os.getenv("V4_REP_WORKERS","2"))))) as pool:
         results=list(pool.map(work,selected))
     newest=None
@@ -126,12 +169,18 @@ def main():
             print(f"WARN representative {code}: {error or 'empty'}; older valid bars retained")
     if not any(collected.get(x["code"]) for x in selected):
         raise RuntimeError("No representative history available; refusing to erase published file")
+    # Reject obviously incomplete first-time augmentation. Existing stable
+    # public archive is not replaced with a mostly empty 300-stock shell.
+    available=sum(bool(collected.get(x["code"])) for x in selected)
+    minimum=int(os.getenv("V4_MIN_COVERAGE","0") or 0)
+    if minimum and available<minimum:
+        raise RuntimeError(f"Insufficient representative prices: {available}/{len(selected)}; minimum={minimum}")
     # Keep canonical complete roster even if capped collection or API errors.
     result={"schema_version":1,"generated_at":now.isoformat(),"source":"hithink-finance / forward-adjusted daily K",
-            "editorial_note":"股票观察池与经济风格/题材为人工固定分类，不是API官方身份；排名只依据真实日K，在本观察池内计算。",
+            "editorial_note":"约300只高辨识度A股观察池，按行业均衡抽选，行业/经济风格/题材为人工固定分类，不是官方成分股或热度排名；涨跌表现只依据真实历史日K计算。",
             "economic_styles":ECONOMIC_STYLES,
             "universe":universe(),"prices":collected,
-            "quality":{"requested":len(selected),"with_prices":sum(bool(collected.get(x["code"])) for x in selected),
+            "quality":{"requested":len(selected),"with_prices":available,
                        "latest_available":newest,"per_stock":status}}
     temp=DEST.with_suffix(".json.tmp")
     temp.write_text(json.dumps(result,ensure_ascii=False,separators=(",",":"),allow_nan=False),encoding="utf-8")
