@@ -59,3 +59,16 @@ def test_missing_required_open_price_fails_explicitly():
         assert False
     except ValueError as exc:
         assert 'missing price columns' in str(exc)
+
+
+def test_t1_preserves_per_stock_realized_prices_for_sector_filter():
+    prior = {'limits': {'total': 2}, 'stock_list': [
+        {'thscode': '000001.SZ'}, {'thscode': '000002.SZ'}]}
+    result, state = calculate_feedback('2026-10-26', '2026-10-27', prior, sample_bars())
+    sample = {r['code']: r for r in result['limit_up']['samples']}
+    assert set(sample) == {'000001.SZ', '000002.SZ'}
+    assert sample['000001.SZ']['open_pct'] == 10.0
+    assert sample['000001.SZ']['close_pct'] == -10.0
+    assert sample['000002.SZ']['open_pct'] == -10.0
+    assert sample['000002.SZ']['close_pct'] == 10.0
+    assert result['limit_up']['sample_size'] == len(sample)
