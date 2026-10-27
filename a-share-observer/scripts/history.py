@@ -512,12 +512,42 @@ def backfill():
        'status':output['status']},ensure_ascii=False))
 
 
+def refresh_recent():
+    """Selective V3 backfill for saved recent trading days; never calls 10-year dump."""
+    days = saved_dates()[-DEFAULT_WINDOW:]
+    if not days:
+        raise base.ApiError('no archived dates to enrich')
+    frame = None
+
+    def cached_ten_day_dump(kind, start, end):
+        nonlocal frame
+        if kind != '10d':
+            raise ValueError('refresh only permits rolling 10-day dump')
+        if frame is None:
+            frame = fetch_parquet('10d', date.fromisoformat(days[0]),
+                                  date.fromisoformat(days[-1]))
+        return frame
+
+    for i, day in enumerate(days):
+        v3_events.enrich_if_enabled(day, base, read_json, archive_path, merge_day)
+        if i > 0:
+            v3_feedback.enrich_feedback(
+                day, days[i-1], read_json, archive_path,
+                merge_day, cached_ten_day_dump, base.TZ)
+    output = create_dashboard()
+    print(json.dumps({'mode': 'refresh', 'days': len(days),
+                      'latest_date': output['latest_date'],
+                      'quality': output.get('quality_manifest', {}).get('status')},
+                     ensure_ascii=False))
+
+
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--mode',choices=('auto','backfill','rebuild'),default='auto')
+    parser.add_argument('--mode',choices=('auto','backfill','rebuild','refresh'),default='auto')
     args=parser.parse_args()
     if args.mode=='backfill':backfill()
     elif args.mode=='auto':today()
+    elif args.mode=='refresh':refresh_recent()
     else:create_dashboard()
 
 if __name__=='__main__':main()
