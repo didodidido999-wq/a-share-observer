@@ -65,7 +65,11 @@ function render({state,chart,noChart}){
   box.append(node('summary',fund.name+' · '+fund.code));
   const body=node('div','','fund-holder-content');
   const named=(fund.holders_top||[]).filter(h=>h.publish_date&&h.publish_date<=state.selected);
-  body.append(node('p','定期披露 · 查询快照 '+fund.observed_at+' · 不是当日持仓与资金流','inline-note'));
+  const reportDates=named.map(h=>h.report_date).filter(Boolean).sort();
+  const publishDates=named.map(h=>h.publish_date).filter(Boolean).sort();
+  body.append(node('p','前十大持有人：报告期 '+(reportDates.at(-1)||'未提供')+
+     ' · 公布日 '+(publishDates.at(-1)||'未提供')+
+     ' · 数据采集 '+fund.observed_at+'；不是当日资金流。','inline-note'));
   if(!named.length)body.append(node('p','持有人公布日缺失，无法验证本交易日是否已知。','inline-note'));
   for(const h of named){
     const line=node('div','','fund-holder-row');
