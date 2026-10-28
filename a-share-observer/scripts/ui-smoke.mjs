@@ -13,6 +13,26 @@ try{
  await page.waitForFunction(()=>document.querySelector('#status')?.textContent?.includes('最近有效'),{timeout:25000});
  check(await visible('#today'),'Home should render');
  check(await page.locator('#day-slider').count()===1,'Global timeline missing');
+ // Funding KPI arithmetic is tied to the archive trading calendar, never to a sparse quote list.
+ await page.waitForSelector('#fund-summary .fund-card-value',{timeout:25000});
+ check((await page.locator('#fund-summary .fund-card-value').count())===4,'Funding KPI cards missing');
+ const funding=await page.evaluate(async()=>{
+   const [margin,dates]=await Promise.all([
+     fetch('data/funds-observer.json').then(r=>r.json()),
+     fetch('data/dates.json').then(r=>r.json())
+   ]);
+   const day=dates.dates.at(-1),window=dates.dates.filter(d=>d<=day).slice(-10);
+   const byDay=new Map(margin.financing.rows.map(r=>[r.date,r]));
+   const rows=window.map(d=>byDay.get(d));
+   const complete=window.length===10&&rows.every(r=>r&&r.financing_net_buy_100m!=null);
+   return {complete,expected:complete?rows.reduce((sum,r)=>sum+r.financing_net_buy_100m,0):null};
+ });
+ const flowText=await page.locator('#fund-summary .fund-card-value').nth(2).innerText();
+ if(!funding.complete)check(flowText.trim()==='—','Missing funding days must not be skipped or filled with zero');
+ else check(Math.abs(Number(flowText.replace(/[,亿+]/g,''))-funding.expected)<0.011,
+  '10-trading-day net buy total must agree with archived daily flows');
+ check((await page.locator('#fund-summary .fund-card-title').nth(2).innerText()).includes('10日净买入'),
+  'Funding flow KPI must clearly distinguish cumulative net buys from balance changes');
  await click('#navigation [data-page="sectors"]');
  await page.waitForSelector('#sector-turnover-rank .sector-rank-item',{timeout:30000});
  check(await visible('#sector-heat'),'Heatmap missing');
