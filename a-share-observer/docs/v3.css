@@ -205,3 +205,21 @@ button.event-relay-head{border-left:0;cursor:pointer;color:#466677}
 .fund-holder-row.fund-explicit{background:#e9f1f5;border-left:2px solid #537f96}
 @media(max-width:960px){.fund-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.fund-views{grid-template-columns:1fr}}
 @media(max-width:560px){.fund-views{padding:0 10px 12px}.fund-summary{margin:10px}.fund-card-value{font-size:16px}}
+
+/* ETF official-share evidence, deliberately distinct from claimed state-team trading. */
+.state-etf{border-top:1px solid #e0eaf0;margin:12px 16px 16px;padding-top:18px}
+.state-etf-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.state-etf-heading h3{font-size:17px;font-weight:700;letter-spacing:-.015em;margin:3px 0}
+.state-etf-heading .inline-note{margin:5px 0 8px}
+.state-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:10px 0}
+.state-summary-card{background:#f6f9fb;border:1px solid #e4edf1;border-radius:7px;padding:11px;min-width:0}
+.state-summary-card small,.state-summary-card span{display:block;color:#748b98;font-size:11px}
+.state-summary-card strong{display:block;font-size:18px;color:#1b5268;margin:5px 0;font-variant-numeric:tabular-nums}
+.state-etf .chart{height:280px}
+.state-etf .state-table-wrap{max-height:345px;overflow:auto}
+.state-etf .state-table-wrap th,.state-etf .state-table-wrap td{font-size:11px;padding:9px;white-space:nowrap}
+.state-etf .state-table-wrap td:first-child{font-weight:600}
+.state-etf .state-table-wrap .clickable{cursor:pointer}
+.state-etf .state-table-wrap .clickable:hover,.state-etf .state-table-wrap .selected{background:#ecf4f7}
+.state-evidence{color:#42758c}
+@media(max-width:720px){.state-summary{grid-template-columns:1fr}.state-etf{margin:10px;padding-top:14px}.state-etf .chart{height:235px}}
