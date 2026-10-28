@@ -1,8 +1,8 @@
-"""Daily observed THS sector constituents + factual sector breadth/events.
+"""Weekly captured THS constituents and daily factual sector breadth/events.
 
-The provider only offers *current* membership, never historical membership.
-This collector refuses requests for prior trade dates and archives the actual
-observation date. Never use a later membership list for historical research.
+Membership is snapshot-only. Weekend/current weekly rosters carry an observed
+as-of date; weekday derived metrics use the last archived weekly roster and
+the actual same-date event pool. Never backdate a weekly roster to history.
 """
 from __future__ import annotations
 import argparse
@@ -14,7 +14,7 @@ import sys
 import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from pathlib import Path
 from statistics import median
 
@@ -69,7 +69,7 @@ def compute_sector(members, prices, up, down, hot, down_complete, up_complete=Tr
     }
 
 
-def pick_focus(code, members, prices, up, down, broken, hot, representatives, day, max_items=6):
+def pick_focus(code, members, prices, up, down, broken, hot, representatives, day, max_items=6, membership_date=None):
     events = up | down | broken | (hot or set())
     ranked = []
     for stock_code, name in members.items():
@@ -97,7 +97,7 @@ def pick_focus(code, members, prices, up, down, broken, hot, representatives, da
     for _, stock_code, name, change, reasons in ranked[:max_items]:
         result.append({'trade_date': day, 'sector_code': code, 'stock_code': stock_code,
                        'stock_name': name, 'pct': change, 'factual_tags': reasons,
-                       'selection_reasons': reasons, 'membership_observed_date': day})
+                       'selection_reasons': reasons, 'membership_observed_date': membership_date or day})
     return result
 
 
@@ -117,148 +117,169 @@ def archive_gzip(day, memberships):
     return output
 
 
+
+def _write_weekly(members, observed_date, expected, errors):
+    """Keep immutable weekly point-in-time member file and current pointer."""
+    MEMBER_DIR.mkdir(parents=True, exist_ok=True)
+    obj = {'observed_date': observed_date, 'source': ENDPOINT,
+           'expected_count': expected, 'observed_count': len(members),
+           'status': 'complete' if len(members)==expected else 'partial',
+           'failed_count': len(errors), 'members': members}
+    raw=json.dumps(obj, ensure_ascii=False, separators=(',',':')).encode('utf-8')
+    with io.BytesIO() as stream:
+        with gzip.GzipFile(fileobj=stream, mode='wb', filename='', mtime=0, compresslevel=8) as z:
+            z.write(raw)
+        compressed=stream.getvalue()
+    weekly=MEMBER_DIR / (f'weekly-{observed_date}.json.gz')
+    weekly.write_bytes(compressed)
+    current=MEMBER_DIR / 'current.json.gz'
+    current.write_bytes(compressed)
+    return weekly
+
+
+def _load_weekly():
+    pointer=MEMBER_DIR / 'current.json.gz'
+    if not pointer.exists():
+        return None
+    with gzip.open(pointer, 'rt', encoding='utf-8') as f:
+        obj=json.load(f)
+    if not isinstance(obj.get('members'), dict) or not obj.get('observed_date'):
+        raise ValueError('Weekly constituent cache missing provenance')
+    return obj
+
+
+def weekly(client_get=None, workers=None, observed_date=None):
+    """Fetch provider constituents only on weekly schedule or explicit bootstrap."""
+    observed_date = observed_date or datetime.now(base.TZ).strftime('%Y-%m-%d')
+    client_get=client_get or base.client_get
+    dashboard=history.read_json(DATA/'dashboard.json', {})
+    sectors={r['code'] for r in dashboard.get('sectors', []) if r.get('code')}
+    if not sectors:
+        raise RuntimeError('Cannot fetch members without verified sector catalog')
+    previous=_load_weekly()
+    # A repeated run in the same week skips sectors that were already captured.
+    prev_rows=(previous.get('members') or {}) if previous and previous['observed_date']==observed_date else {}
+    max_workers=max(1,min(4,int(workers or os.getenv('SECTOR_MEMBERS_WORKERS','2'))))
+    def fetch(code):
+        if code in prev_rows:
+            return code, prev_rows[code], None
+        try:
+            time.sleep(float(os.getenv('SECTOR_MEMBERS_THROTTLE','0.5')))
+            return code,current_members(client_get, code),None
+        except Exception as e:
+            return code,None,type(e).__name__
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        rows=list(executor.map(fetch, sorted(sectors)))
+    members={c:m for c,m,error in rows if m is not None}
+    errors=[{'code':c,'error':error} for c,m,error in rows if error]
+    if not members:
+        raise RuntimeError('Weekly API returned no verified constituent lists')
+    _write_weekly(members, observed_date, len(sectors), errors)
+    result={'mode':'weekly-membership','date':observed_date,'expected':len(sectors),
+            'observed':len(members),'failed':len(errors),
+            'status':'complete' if len(members)==len(sectors) else 'partial',
+            'error_preview':errors[:8]}
+    print(json.dumps(result, ensure_ascii=False))
+    return result
+
+
 def run(day=None, client_get=None, stock_snapshot=None, workers=None):
-    now = datetime.now(base.TZ)
-    today = now.strftime('%Y-%m-%d')
-    day = day or today
-    if day != today:
-        raise ValueError('Current-only constituents cannot be backdated to ' + day)
-    if now.hour < 16 and os.getenv('SECTOR_ALLOW_EARLY') != '1':
-        print('Before 16:00 Beijing: skip unfinalized membership/market snapshot')
-        return {'status': 'not_ready'}
-    snap = history.read_json(history.archive_path(day), {})
+    """Day-close enrichment reusing latest prior weekly roster; no membership API."""
+    now=datetime.now(base.TZ)
+    today=now.strftime('%Y-%m-%d')
+    day=day or today
+    if day!=today:
+        raise ValueError('Daily enrichment cannot backdate current market snapshot')
+    if now.hour<16 and os.getenv('SECTOR_ALLOW_EARLY')!='1':
+        print('Before Beijing 16:00: do not publish unclosed market observations')
+        return {'status':'not_ready'}
+    snap=history.read_json(history.archive_path(day), {})
     if not snap.get('market') or not snap.get('sectors'):
-        print(f'{day}: no completed base market archive; sector collection deferred')
-        return {'status': 'not_ready'}
-    # Same-day idempotence: a fully archived result is not requested twice.
-    # A partial result can still be retried at 17:00, using locally cached members.
-    q = snap.get('quality_manifest') or {}
-    if all(q.get(name, {}).get('status') == 'complete' for name in (
-            'sector_members', 'sector_internal_metrics', 'sector_focus_stocks')):
-        print(f'{day}: sector members, internals and focus already complete; no API calls.')
-        return {'status': 'complete', 'total': 0, 'observed': 0, 'skipped': True}
-    # Never overwrite historical facts. Re-running today can repair missing sectors.
-    archive_file = MEMBER_DIR / (day + '.json.gz')
-    previous = {}
-    if archive_file.exists():
-        try:
-            with gzip.open(archive_file, 'rt', encoding='utf-8') as f:
-                prior = json.load(f)
-            if prior.get('date') == day: previous = prior.get('members') or {}
-        except (OSError, ValueError, KeyError):
-            previous = {}
-    client_get = client_get or base.client_get
+        print(f'{day}: daily market base archive not ready')
+        return {'status':'not_ready'}
+    quality=snap.get('quality_manifest') or {}
+    if all(quality.get(k,{}).get('status')=='complete' for k in
+           ('sector_members','sector_internal_metrics','sector_focus_stocks')):
+        return {'status':'complete','skipped':True,'total':0,'observed':0}
+    weekly_data=_load_weekly()
+    if not weekly_data or weekly_data['observed_date']>day:
+        print(f'{day}: no eligible weekly member snapshot; not using future constituents')
+        return {'status':'not_ready'}
+    catalog={x['code']:x for x in snap['sectors'] if x.get('code')}
+    member_lists=weekly_data['members']
+    member_date=weekly_data['observed_date']
     if stock_snapshot is None:
-        stock_snapshot, asof = history.get_stock_snapshot()
+        stock_snapshot, asof=history.get_stock_snapshot()
     else:
-        asof = day
-    if asof != day:
-        raise base.ApiError('Price snapshot date differs from membership observation date')
-    prices = {x['thscode']: x for x in stock_snapshot if x.get('thscode')}
-    sectors = {x['code']: x for x in snap['sectors'] if x.get('code')}
-    up_rows = snap.get('stock_list')
-    down_rows = snap.get('limit_down_events')
-    broken_rows = snap.get('limit_break_events')
-    hot_rows = snap.get('hot_rank_daily')
-    up = {r['thscode'] for r in (up_rows or []) if r.get('thscode')}
-    down = {r['thscode'] for r in (down_rows or []) if r.get('thscode')}
-    broken = {r['thscode'] for r in (broken_rows or []) if r.get('thscode')}
-    hot = {r['thscode'] for r in hot_rows if r.get('thscode')} if hot_rows is not None else None
-    down_complete = (snap.get('quality_manifest') or {}).get('limit_down_events', {}).get('status') == 'complete'
-    up_complete = up_rows is not None and snap.get('limits') is not None
-    representatives_data = history.read_json(DATA / 'representatives.json', {})
-    representatives = {r.get('code') for r in representatives_data.get('universe', []) if r.get('code')}
-    max_workers = max(1, min(4, int(workers or os.getenv('SECTOR_MEMBERS_WORKERS', '2'))))
-    max_sectors = int(os.getenv('SECTOR_MEMBERS_LIMIT', '0') or 0)
-    sector_codes = sorted(sectors)[:max_sectors] if max_sectors > 0 else sorted(sectors)
-
-    def one(code):
-        if code in previous and previous[code]:
-            return code, previous[code], None
-        try:
-            # Respect conservative shared API request rate; at two workers
-            # approximately <=4 calls/s excluding response latency.
-            time.sleep(float(os.getenv('SECTOR_MEMBERS_THROTTLE', '0.5')))
-            members = current_members(client_get, code)
-            return code, members, None
-        except Exception as exc:
-            return code, None, type(exc).__name__
-
-    with ThreadPoolExecutor(max_workers=max_workers) as pool:
-        results = list(pool.map(one, sector_codes))
-    captured = dict(previous)
-    errors = []
-    for code, members, err in results:
-        if members is not None:
-            captured[code] = members
-        else:
-            errors.append({'code': code, 'error': err})
-    # Any successful recorded membership observation is worth preserving,
-    # but missing items never become zero counts.
-    observed = sum(code in captured for code in sector_codes)
-    if not observed:
-        raise RuntimeError('No valid sector membership obtained; refusing to publish')
-    archive_gzip(day, captured)
-    derived = []
-    stocks = []
-    reverse = defaultdict(set)
-    for code in sector_codes:
-        members = captured.get(code)
+        asof=day
+    if asof!=day:
+        raise base.ApiError('Market snapshot day mismatches current trading day')
+    prices={x['thscode']:x for x in stock_snapshot if x.get('thscode')}
+    pool=snap.get('stock_list')
+    down_pool=snap.get('limit_down_events')
+    broken_pool=snap.get('limit_break_events')
+    hot_pool=snap.get('hot_rank_daily')
+    up={x['thscode'] for x in (pool or []) if x.get('thscode')}
+    down={x['thscode'] for x in (down_pool or []) if x.get('thscode')}
+    broken={x['thscode'] for x in (broken_pool or []) if x.get('thscode')}
+    hot={x['thscode'] for x in hot_pool if x.get('thscode')} if hot_pool is not None else None
+    up_ok=pool is not None and snap.get('limits') is not None
+    down_ok=quality.get('limit_down_events',{}).get('status')=='complete'
+    reps=history.read_json(DATA/'representatives.json', {})
+    representatives={x['code'] for x in reps.get('universe',[]) if x.get('code')}
+    metrics_rows=[]
+    focus_rows=[]
+    reverse=defaultdict(set)
+    for code,meta in catalog.items():
+        members=member_lists.get(code)
         if members is None:
             continue
+        values=compute_sector(members,prices,up,down,hot,down_ok,up_ok)
+        metrics_rows.append({'code':code,'name':meta.get('name',code),
+            'tag':meta.get('tag'),'date':day,'membership_observed_date':member_date,**values})
         for stock in members:
             if stock in up or stock in down or stock in broken or (hot is not None and stock in hot):
-                reverse[stock].add(sectors[code].get('name') or code)
-        metrics = compute_sector(members, prices, up, down, hot, down_complete, up_complete)
-        derived.append({'code': code, 'name': sectors[code].get('name') or code,
-                        'tag': sectors[code].get('tag'), 'date': day,
-                        'membership_observed_date': day, **metrics})
-        stocks.extend(pick_focus(code, members, prices, up, down, broken, hot,
-                                 representatives, day))
-    quality = 'complete' if observed == len(sector_codes) else 'partial'
-    coverage_ok = sum((x.get('member_count') or 0) == 0 or (x.get('member_price_sample') or 0) >= .90 * x['member_count'] for x in derived)
-    inner_quality = ('complete' if (quality == 'complete' and down_complete and up_complete
-                                      and coverage_ok == observed) else 'partial')
-    captured_at = datetime.now(base.TZ).isoformat()
-    patch = {
-        'sectors': derived,
-        'sector_focus_stocks': stocks,
-        'event_sector_map': {k: sorted(v) for k, v in reverse.items()},
-        'quality_manifest': {
-            'sector_members': {'trade_date': day, 'status': quality,
-                               'items_count': observed, 'expected_count': len(sector_codes),
-                               'source': ENDPOINT, 'collected_at': captured_at,
-                               'failed_count': len(errors)},
-            'sector_internal_metrics': {'trade_date': day, 'status': inner_quality,
-                                        'items_count': coverage_ok, 'expected_count': len(sector_codes),
-                                        'source': 'same-date constituents + same-date stock snapshot',
-                                        'collected_at': captured_at},
-            'sector_focus_stocks': {'trade_date': day, 'status': quality if (down_complete and up_complete) else 'partial',
-                                    'items_count': len(stocks), 'source': 'observed constituents + daily snapshot',
-                                    'collected_at': captured_at}
+                reverse[stock].add(meta.get('name',code))
+        focus_rows.extend(pick_focus(code,members,prices,up,down,broken,hot,
+            representatives,day,membership_date=member_date))
+    observed=len(metrics_rows)
+    total=len(catalog)
+    coverage=sum(x['member_count']==0 or
+                 x['member_price_sample']>=.90*x['member_count'] for x in metrics_rows)
+    member_quality='complete' if observed==total else 'partial'
+    internals_quality='complete' if (member_quality=='complete' and coverage==observed
+                                     and up_ok and down_ok) else 'partial'
+    status={'trade_date':day,'status':member_quality,'items_count':observed,
+            'expected_count':total,'source':f'weekly-member-snapshot:{member_date}',
+            'membership_observed_date':member_date,
+            'collected_at':datetime.now(base.TZ).isoformat()}
+    history.merge_day(day,{
+        'sectors':metrics_rows,
+        'sector_focus_stocks':focus_rows,
+        'event_sector_map':{code:sorted(groups) for code,groups in reverse.items()},
+        'quality_manifest':{
+            'sector_members':status,
+            'sector_internal_metrics':{**status, 'status':internals_quality,
+                'items_count':coverage, 'source':'weekly members + actual daily stock returns/events'},
+            'sector_focus_stocks':{**status,'status':member_quality if (up_ok and down_ok) else 'partial',
+                'items_count':len(focus_rows)}
         }
-    }
-    history.merge_day(day, patch)
+    })
     history.create_dashboard()
-    print(json.dumps({'mode': 'sector-enrichment', 'date': day,
-                      'sectors': len(sector_codes), 'observed': observed,
-                      'failed': len(errors), 'focus_stocks': len(stocks),
-                      'status': quality, 'errors_preview': errors[:8]}, ensure_ascii=False))
-    return {'status': quality, 'total': len(sector_codes), 'observed': observed,
-            'errors': errors}
-
+    result={'mode':'daily-from-weekly','date':day,'membership_observed_date':member_date,
+            'observed':observed,'total':total,'breadth_covered':coverage,
+            'status':internals_quality}
+    print(json.dumps(result, ensure_ascii=False))
+    return result
 
 def main():
-    p = argparse.ArgumentParser()
-    p.add_argument('--date', default=None)
-    args = p.parse_args()
-    result = run(day=args.date)
-    # Visible CI failure on serious outages; partial data remains on disk for a
-    # follow-up run, never mislabeled as complete.
-    if result.get('status') == 'not_ready':
+    p=argparse.ArgumentParser()
+    p.add_argument('--date',default=None)
+    p.add_argument('--mode',choices=('daily','weekly'),default='daily')
+    args=p.parse_args()
+    result=weekly(observed_date=args.date) if args.mode=='weekly' else run(day=args.date)
+    if result.get('status')=='not_ready':
         raise SystemExit(2)
-    # CI evaluates coverage after committing partial but valid history, so
-    # outages never discard successfully collected point-in-time observations.
 
 
 if __name__ == '__main__':
