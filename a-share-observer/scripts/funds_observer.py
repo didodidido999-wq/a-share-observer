@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import argparse
 import sys
 from datetime import datetime, timedelta, date
 from pathlib import Path
@@ -195,20 +196,24 @@ def build(prev, margin_rows, disclosures, collected_at):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", choices=("all","margin","disclosure"), default="all")
+    args = parser.parse_args()
     prev = json.loads(OUTPUT.read_text("utf-8")) if OUTPUT.exists() else {}
     now = datetime.now(ASIA).isoformat()
     problems = []
-    try:
-        margin = get_margin()
-    except (requests.RequestException, ValueError) as e:
-        problems.append("margin:" + type(e).__name__)
-        margin = []
-    if os.getenv("HITHINK_FINANCE_API_KEY"):
-        disclosures, failed = get_disclosures()
-        problems.extend(failed)
-    else:
-        disclosures = []
-        problems.append("fund-holder:missing-existing-key")
+    margin, disclosures = [], []
+    if args.mode in ("all","margin"):
+        try:
+            margin = get_margin()
+        except (requests.RequestException, ValueError) as e:
+            problems.append("margin:" + type(e).__name__)
+    if args.mode in ("all","disclosure"):
+        if os.getenv("HITHINK_FINANCE_API_KEY"):
+            disclosures, failed = get_disclosures()
+            problems.extend(failed)
+        else:
+            problems.append("fund-holder:missing-existing-key")
     data = build(prev, margin, disclosures, now)
     # Do not manufacture empty "success" data or timestamp-only commits.
     if not data["financing"]["rows"] and not data["disclosures"]:
