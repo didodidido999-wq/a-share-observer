@@ -15,11 +15,11 @@ on:
     paths:
       - '.github/workflows/sectors.yml'
   schedule:
-    # Beijing Sunday 16:00: confirm current member roster once per week.
-    - cron: '0 8 * * 0'
-    # Beijing weekdays 16:30 and 17:00: daily prices/events, reuse the weekly roster.
-    - cron: '30 8 * * 1-5'
-    - cron: '0 9 * * 1-5'
+    # Beijing Sunday 16:07: confirm current member roster once per week.
+    - cron: '7 8 * * 0'
+    # Beijing weekdays 16:34 and 17:09: daily prices/events, reuse the weekly roster.
+    - cron: '34 8 * * 1-5'
+    - cron: '9 9 * * 1-5'
 permissions:
   contents: write
 concurrency:
@@ -48,7 +48,7 @@ jobs:
           SECTOR_MEMBERS_WORKERS: '2'
           SECTOR_MEMBERS_THROTTLE: '0.5'
           PYTHONUNBUFFERED: '1'
-        run: python a-share-observer/scripts/v5_sector.py --mode "${{ (github.event_name == 'push' || github.event.schedule == '0 8 * * 0') && 'weekly' || github.event.inputs.mode || 'daily' }}"
+        run: python a-share-observer/scripts/v5_sector.py --mode "${{ (github.event_name == 'push' || github.event.schedule == '7 8 * * 0') && 'weekly' || github.event.inputs.mode || 'daily' }}"
       - name: Commit derived sector archive and daily quality
         shell: bash
         run: |
@@ -73,7 +73,7 @@ jobs:
           done
           exit 1
       - name: Fail visibly if data coverage is critically low
-        if: github.event_name != 'push' && github.event.schedule != '0 8 * * 0' && github.event.inputs.mode != 'weekly'
+        if: github.event_name != 'push' && github.event.schedule != '7 8 * * 0' && github.event.inputs.mode != 'weekly'
         run: |
           python - <<'PY'
           import json
