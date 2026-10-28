@@ -3,8 +3,8 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#12273a"><meta name="description" content="MarketScope V3 — A股历史市场环境、异动、板块与风格交互研究终端">
 <title>MarketScope V3｜A股市场研究</title>
-<link rel="stylesheet" href="v3.css?v=4.5.0">
-<script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=4.5.0"></script>
+<link rel="stylesheet" href="v3.css?v=4.6.0">
+<script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=4.6.0"></script>
 <script defer src="event-sector.js?v=4.2.0"></script><script defer src="representatives.js?v=4.4.0"></script>
 </head><body>
 <div class="shell">
@@ -66,10 +66,28 @@
   </article>
  </section>
 
- <section id="sectors" class="page"><div class="section-head"><div><div class="kicker">SECTOR ANALYSIS / NO SUBJECTIVE SCORES</div><h2>板块研究</h2><p>行业与概念分开比较。历史涨跌停允许按2026-10-28确认的成分名单回算，并明确标注口径。</p></div><div class="filters"><label>板块类型<select id="sector-kind"><option value="industry">行业</option><option value="cn_concept">概念</option></select></label><label>指标<select id="sector-metric"><option value="cum">区间累计涨幅</option><option value="pct">每日涨跌幅</option><option value="relative">相对基准累计收益</option><option value="turnover">成交额（亿）</option><option value="activity">成交额/MA5</option><option value="limit_up_count">涨停归属数</option><option value="limit_up_ratio">涨停占比</option><option value="limit_down_count">跌停归属数</option><option value="limit_down_ratio">跌停占比</option><option value="limit_diff">涨跌停净差</option><option value="member_up_ratio">成分上涨占比</option><option value="member_median">成分涨幅中位数</option><option value="hot_count">热股上榜数</option></select></label></div></div>
-  <article class="panel"><div class="panel-header"><div><div class="kicker">MULTI-SECTOR COMPARISON</div><h2>多板块 · 多指标对比</h2><p id="sector-chart-help">按所选区间累计涨幅自动选择领先板块；点击热力矩阵加入对比</p></div><div class="filters"><select id="sector-view"><option value="lines">趋势对比</option><option value="quadrant">强弱象限</option></select><select id="sector-benchmark" aria-label="相对收益基准"></select><button id="sector-reset" type="button">恢复默认</button></div></div><div class="sector-chooser"><input type="search" id="sector-search" list="sector-suggestions" placeholder="输入板块名称或代码后添加" aria-label="搜索添加板块"><datalist id="sector-suggestions"></datalist><button type="button" id="sector-add" class="btn solid">添加板块</button><div class="chips" id="sector-chips"></div></div><div class="chart huge" id="sector-chart"></div><div class="inline-note" id="sector-metric-status"></div></article>
-  <article class="panel"><div class="panel-header"><div><div class="kicker">HISTORICAL HEAT MATRIX</div><h2>全部板块历史热力矩阵</h2><p>按热力指标查看板块历史变化；前十卡片和排序联动。点击色块在对应板块下方展开信息栏。</p></div><div class="filters"><label>热力指标<select id="heat-metric"><option value="pct">每日涨跌幅</option><option value="turnover">成交额（亿元）</option><option value="activity">成交额/MA5</option><option value="limit_up_count">涨停数</option><option value="limit_down_count">跌停数</option><option value="limit_up_ratio">涨停占比</option><option value="limit_down_ratio">跌停占比</option><option value="member_up_ratio">内部上涨占比</option></select></label><label>排序<select id="sector-sort"><option value="metric_desc">所选指标 · 高→低</option><option value="metric_asc">所选指标 · 低→高</option><option value="metric_range">所选指标 · 区间汇总</option><option value="cum">区间累计涨幅</option><option value="latest">所选日涨幅</option><option value="turnover">所选日成交额</option><option value="name">名称</option></select></label><label>日期<select id="sector-date" aria-label="选择板块热力图关注日期"></select></label><input type="search" id="heat-search" placeholder="筛选板块" aria-label="筛选热力矩阵"><button id="heat-prev" type="button">上一页</button><span id="heat-page">—</span><button id="heat-next" type="button">下一页</button></div></div><div id="sector-market-status" class="inline-note"></div><div id="sector-turnover-rank" class="sector-turnover-rank" aria-label="随热力指标变化的板块前十卡片"></div><div class="heat-scroll" id="sector-heat"></div><p class="inline-note" id="heat-note">缺失数据以 — 表示，不能解释为零。</p></article>
-
+ <section id="sectors" class="page">
+ <div class="section-head"><div><div class="kicker">SECTOR RESEARCH / CONNECTED VIEWS</div><h2>板块研究</h2><p>一套筛选贯穿排名、趋势与热力图；历史事件归属标明成分名单日期。</p></div></div>
+ <article class="panel sector-research-panel" id="sector-research-panel">
+  <div class="panel-header sector-research-head"><div><div class="kicker">01 / SHARED RESEARCH FILTERS</div><h2>板块指标与历史变化</h2><p>选指标 → 看领先板块 → 比较趋势 → 点击热力图展开个股结构</p></div></div>
+  <div class="sector-controls">
+   <label>板块类型<select id="sector-kind"><option value="industry">行业</option><option value="cn_concept">概念</option></select></label>
+   <label>研究指标<select id="heat-metric"><option value="pct">每日涨跌幅</option><option value="cum">区间累计涨幅</option><option value="relative">相对基准累计收益</option><option value="turnover">成交额（亿元）</option><option value="activity">成交额/MA5</option><option value="limit_up_count">涨停数</option><option value="limit_down_count">跌停数</option><option value="limit_up_ratio">涨停占比</option><option value="limit_down_ratio">跌停占比</option><option value="limit_diff">涨跌停净差</option><option value="member_up_ratio">成分上涨占比</option><option value="member_median">成分涨幅中位数</option><option value="hot_count">热榜上榜数</option></select></label>
+   <label id="sector-benchmark-wrap" hidden>相对收益基准<select id="sector-benchmark" aria-label="相对收益基准"></select></label>
+   <label>排名与热力排序<select id="sector-sort"><option value="metric_desc">指标高→低</option><option value="metric_asc">指标低→高</option><option value="metric_range">指标区间汇总</option><option value="cum">区间累计涨幅</option><option value="latest">所选日涨幅</option><option value="turnover">所选日成交额</option><option value="name">名称</option></select></label>
+   <label>交易日<select id="sector-date" aria-label="选择板块热力图关注日期"></select></label>
+   <label class="sector-search-label">筛选板块<input type="search" id="heat-search" placeholder="名称 / 代码" aria-label="筛选排名趋势与热力图"></label>
+   <button type="button" id="sector-clear" class="btn">重置筛选</button>
+  </div>
+  <div class="inline-note" id="sector-market-status"></div>
+  <div id="sector-turnover-rank" class="sector-turnover-rank" aria-label="所选指标领先板块卡片"></div>
+  <div class="panel-header sector-trend-title"><div><div class="kicker">02 / TOP-10 TREND</div><h2>前10板块 · 历史趋势</h2><p id="sector-chart-help">折线图对应上方卡片；点击某条线可定位到热力矩阵</p></div><span id="sector-trend-legend" class="meta"></span></div>
+  <div class="chart huge" id="sector-chart"></div>
+  <div class="inline-note" id="sector-metric-status"></div>
+  <div class="panel-header sector-heat-title" id="sector-heat-anchor"><div><div class="kicker">03 / SECTOR HEATMAP</div><h2>全部板块历史热力矩阵</h2><p>点击板块名称或日期色块，在相应行展开成员与当日指标详情。</p></div><div class="sector-heat-pager"><button id="heat-prev" type="button">上一页</button><span id="heat-page">—</span><button id="heat-next" type="button">下一页</button></div></div>
+  <div class="heat-scroll" id="sector-heat"></div>
+  <p class="inline-note" id="heat-note">数据缺失显示 —，跌停部分归档以 ≥ 提示已知下限。</p>
+ </article>
  </section>
 
  

@@ -1,0 +1,54 @@
+name: Bootstrap first dated sector stock index
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bootstrap-sector-index-once.yml'
+permissions:
+  contents: write
+concurrency:
+  group: bootstrap-sector-index
+  cancel-in-progress: false
+jobs:
+  index:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+      - name: Materialize immutable 2026-10-28 member index, without API requests
+        run: |
+          python3 - <<'PY'
+          import gzip,json,pathlib
+          root=pathlib.Path('a-share-observer/docs/data')
+          date='2026-10-28'
+          source=root/'sector-members'/f'weekly-{date}.json.gz'
+          with gzip.open(source,'rt',encoding='utf-8') as fh:
+              data=json.load(fh)
+          assert data.get('observed_date')==date
+          assert len(data.get('members',{}))>=700
+          out=root/'sector-member-index'
+          out.mkdir(exist_ok=True)
+          target=out/f'{date}.json'
+          target.write_text(json.dumps({'observed_date':date,'status':data['status'],
+                  'members':data['members']},ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+          print('Fixed-cohort browser member index:',target,'sectors',len(data['members']))
+          PY
+      - name: Commit versioned browser member index
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add a-share-observer/docs/data/sector-member-index/
+          if git diff --cached --quiet; then echo 'Already indexed'; exit 0; fi
+          git commit -m 'data: initial sector-member browser index (as of 2026-10-28)'
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            if ! git rebase origin/main; then git rebase --abort || true; exit 1; fi
+            sleep "$attempt"
+          done
+          exit 1

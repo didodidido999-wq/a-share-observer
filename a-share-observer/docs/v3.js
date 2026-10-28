@@ -103,7 +103,8 @@ function metricValue(code,day,metric){const p=sectorValue(day,code),idx=state.da
 function heatMetricAggregate(code,metric){
  const ds=state.days,values=ds.map(d=>metricValue(code,d,metric));
  if(!values.length||values.some(v=>v==null))return null;
- if(metric==='pct')return cumulativeSector(code,ds.length-1);
+ if(metric==='pct'||metric==='cum')return cumulativeSector(code,ds.length-1);
+ if(metric==='relative')return metricValue(code,ds[ds.length-1],metric);
  const sum=values.reduce((a,b)=>a+b,0);
  return ['activity','member_up_ratio','limit_up_ratio','limit_down_ratio','member_median'].includes(metric)?sum/values.length:sum;
 }
@@ -141,161 +142,324 @@ function syncHeatControls(){
    sort.options[2].textContent=metric==='pct'?'区间累计涨幅':label+(avg?' · 区间日均':' · 区间合计');
  }
 }
-function initializeSectors(kind){let all=sectorCatalog().filter(s=>s.tag===kind),selected=state.sectorSelection[kind];if(state.sectorManual[kind])return selected;let ranked=all.map(x=>({code:x.code,v:cumulativeSector(x.code,state.days.length-1)})).filter(x=>x.v!=null).sort((a,b)=>b.v-a.v);selected=ranked.slice(0,5).map(x=>x.code);state.sectorSelection[kind]=selected;return selected;}
-function updateSectorChips(){const host=cleared('sector-chips'),kind=state.sectorKind;let all=sectorCatalog();for(const code of initializeSectors(kind)){const s=all.find(x=>x.code===code);let chip=text('span',s?.name||code,'chip');let button=text('button','×');button.setAttribute('aria-label',`移除 ${s?.name||code}`);button.type='button';button.addEventListener('click',()=>{state.sectorSelection[kind]=state.sectorSelection[kind].filter(x=>x!==code);state.sectorManual[kind]=true;renderSectors();});chip.append(button);host.append(chip);}}
-function sectorAdd(code){const obj=sectorCatalog().find(x=>x.tag===state.sectorKind&&(x.code===code||x.name===code));if(!obj){notice('没有找到匹配当前行业/概念类型的板块');return;}let list=state.sectorSelection[state.sectorKind];if(list.includes(obj.code))return;if(list.length>=6){notice('主图最多同时显示6条板块曲线；请先移除一个板块。');return;}list.push(obj.code);state.sectorManual[state.sectorKind]=true;state.sectorFocus=obj.code;renderSectors();}
-function renderSectors(){syncHeatControls();if(state.page==='sectors'&&state.days.some(d=>!state.detailLoaded.has(d))&&!state.sectorDetailLoading){
- state.sectorDetailLoading=true;
- loadRange([...state.days]).then(()=>{if(state.page==='sectors')renderSectors();}).finally(()=>{state.sectorDetailLoading=false;});
- }
- const kind=state.sectorKind=$('sector-kind').value,metric=state.sectorMetric=$('sector-metric').value,sel=initializeSectors(kind),days=state.days;let all=sectorCatalog().filter(s=>s.tag===kind);const suggestions=cleared('sector-suggestions');all.forEach(s=>{const o=text('option','');o.value=s.name;o.label=s.code;suggestions.append(o);});updateSectorChips();let view=$('sector-view').value,unit=SECTOR_META[metric][1];$('sector-chart-help').textContent=`${SECTOR_META[metric][0]}（${unit}） · 首日按实际数据计算，不人为归零；保持人工选择的板块`;
- if(view==='lines'){let series=sel.map(code=>{const s=all.find(x=>x.code===code);return {name:s?.name||code,type:'line',connectNulls:false,showSymbol:false,emphasis:{focus:'series'},lineStyle:{width:2.4},data:days.map(d=>{const v=metricValue(code,d,metric);return v==null?null:Number(v.toFixed(3));})};}).filter(x=>x.data.some(v=>v!=null));if(series.length)chart('sector-chart',{xAxis:{type:'category',data:days.map(dateShort)},yAxis:{type:'value',scale:!['limit_up_count','limit_down_count','limit_up_ratio','limit_down_ratio','hot_count'].includes(metric),name:unit},series},e=>{if(e.dataIndex!=null)setDay(days[e.dataIndex]);});else noChart('sector-chart','所选指标暂无可核验的板块历史数据。可切换为涨幅或成交额。');
- }else{const benchmark=$('sector-benchmark').value;let scatter=all.map(x=>{const m=days.length,half=Math.floor(m/2);if(half<2||m<half*2)return null;const first=days.slice(m-half*2,m-half),second=days.slice(m-half);const a=compound(first.map(d=>sectorValue(d,x.code).pct)),b=compound(second.map(d=>sectorValue(d,x.code).pct));const ai=compound(first.map(d=>indexValue(d,benchmark).pct)),bi=compound(second.map(d=>indexValue(d,benchmark).pct));const full=cumulativeSector(x.code,m-1),fullBench=cumulativeIndex(benchmark,m-1);if([a,b,ai,bi,full,fullBench].some(v=>v==null))return null;return {name:x.name,code:x.code,value:[Number((full-fullBench).toFixed(2)),Number(((b-bi)-(a-ai)).toFixed(2))]};}).filter(Boolean);if(scatter.length)chart('sector-chart',{tooltip:{trigger:'item',formatter:p=>`${p.data.name}<br>区间超额：${signed(p.value[0])}百分点<br>近期改善：${signed(p.value[1])}百分点`},xAxis:{type:'value',name:'区间超额（百分点）',nameLocation:'middle',nameGap:28,splitLine:{lineStyle:{type:'dashed'}}},yAxis:{type:'value',name:'近期改善（百分点）',splitLine:{lineStyle:{type:'dashed'}}},dataZoom:[{type:'inside'}],series:[{type:'scatter',symbolSize:9,data:scatter,itemStyle:{opacity:.6},markLine:{silent:true,symbol:'none',data:[{xAxis:0},{yAxis:0}],label:{show:false},lineStyle:{color:'#829da9',type:'dashed'}}}]},e=>{if(e.data?.code)sectorAdd(e.data.code);});else noChart('sector-chart','象限需要至少4个完整交易日，以及板块与基准两段可验证的涨幅。');}
 
- const q=$('heat-search').value.toLowerCase().trim(),sort=$('sector-sort').value,heatMetric=$('heat-metric').value;
- let filtered=all.filter(x=>x.name.toLowerCase().includes(q)||x.code.toLowerCase().includes(q));
- const ascending=sort==='metric_asc'||sort==='name';
- filtered.sort((a,b)=>{
-   if(sort==='name')return a.name.localeCompare(b.name,'zh');
-   const va=heatSortValue(a.code,sort,heatMetric),vb=heatSortValue(b.code,sort,heatMetric);
-   if(va==null&&vb==null)return a.name.localeCompare(b.name,'zh');
-   if(va==null)return 1;if(vb==null)return -1;
-   return (ascending?va-vb:vb-va)||a.name.localeCompare(b.name,'zh');
+// A single view model drives cards, trend and heatmap. No manual line selection.
+const memberIndexCache=new Map();
+function loadMemberIndex(date){
+ if(!date)return Promise.resolve(null);
+ if(!memberIndexCache.has(date)){
+   const path='data/sector-member-index/'+date+'.json';
+   memberIndexCache.set(date,json(path).catch(err=>{
+     console.warn('Member index unavailable',date,err.message);return null;
+   }));
+ }
+ return memberIndexCache.get(date);
+}
+function focusHeatSector(code){
+ const all=sectorCatalog().filter(x=>x.tag===$('sector-kind').value);
+ const obj=all.find(x=>x.code===code);
+ if(!obj)return;
+ state.sectorFocus=code;
+ // The user may have filtered this board away or switched page.
+ const q=$('heat-search').value.trim().toLowerCase();
+ if(q&&!obj.name.toLowerCase().includes(q)&&!obj.code.toLowerCase().includes(q))
+   $('heat-search').value='';
+ const metric=$('heat-metric').value,sort=$('sector-sort').value;
+ let filtered=all.filter(x=>!$('heat-search').value||x.name.toLowerCase().includes($('heat-search').value.toLowerCase())||x.code.toLowerCase().includes($('heat-search').value.toLowerCase()));
+ filtered=sortHeatSectors(filtered,metric,sort);
+ const index=filtered.findIndex(x=>x.code===code);
+ state.sectorPage=Math.max(0,Math.floor(Math.max(0,index)/40));
+ renderSectors();
+ window.requestAnimationFrame(()=>{
+   const target=$('sector-inline-detail')||document.querySelector('.heat-label-button.is-expanded');
+   if(target)target.scrollIntoView({behavior:'smooth',block:'center'});
  });
+}
+function sortHeatSectors(arr,metric,sort){
+ const ascending=sort==='metric_asc'||sort==='name';
+ return [...arr].sort((a,b)=>{
+   if(sort==='name')return a.name.localeCompare(b.name,'zh');
+   const av=heatSortValue(a.code,sort,metric),bv=heatSortValue(b.code,sort,metric);
+   if(av==null&&bv==null)return a.name.localeCompare(b.name,'zh');
+   if(av==null)return 1;
+   if(bv==null)return -1;
+   return (ascending?av-bv:bv-av)||a.name.localeCompare(b.name,'zh');
+ });
+}
+function renderSectors(){
+ syncHeatControls();
+ if(state.page==='sectors'&&state.days.some(d=>!state.detailLoaded.has(d))&&!state.sectorDetailLoading){
+   state.sectorDetailLoading=true;
+   loadRange([...state.days]).then(()=>{if(state.page==='sectors')renderSectors();})
+     .finally(()=>{state.sectorDetailLoading=false;});
+ }
+ const kind=state.sectorKind=$('sector-kind').value,metric=$('heat-metric').value;
+ state.sectorMetric=metric;
+ $('sector-benchmark-wrap').hidden=metric!=='relative';
+ const days=state.days,all=sectorCatalog().filter(x=>x.tag===kind);
+ const q=$('heat-search').value.toLowerCase().trim(),sort=$('sector-sort').value;
+ const filtered=sortHeatSectors(all.filter(x=>x.name.toLowerCase().includes(q)||x.code.toLowerCase().includes(q)),metric,sort);
  const pages=Math.max(1,Math.ceil(filtered.length/40));
  state.sectorPage=Math.max(0,Math.min(state.sectorPage,pages-1));
  $('heat-page').textContent=(state.sectorPage+1)+'/'+pages+' · '+filtered.length+' 板块';
  $('heat-prev').disabled=state.sectorPage===0;$('heat-next').disabled=state.sectorPage>=pages-1;
- const top=all.map(x=>({...x,value:metricValue(x.code,state.selected,heatMetric)}))
-   .filter(x=>x.value!=null).sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'zh')).slice(0,10);
- const tHost=cleared('sector-turnover-rank'),metricLabel=SECTOR_META[heatMetric]?.[0]||heatMetric;
- const heading=text('div','','sector-rank-caption');
- heading.append(text('strong',metricLabel+' · 前10板块'),
-   text('span',state.selected+' · '+(kind==='industry'?'行业':'概念')+' · '+SECTOR_META[heatMetric][1]));
- tHost.append(heading);
+ const top=all.filter(x=>x.name.toLowerCase().includes(q)||x.code.toLowerCase().includes(q))
+  .map(x=>({...x,value:metricValue(x.code,state.selected,metric)}))
+  .filter(x=>x.value!=null)
+  .sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'zh')).slice(0,10);
+ const unit=SECTOR_META[metric]?.[1]||'',label=SECTOR_META[metric]?.[0]||metric;
+ const host=cleared('sector-turnover-rank'),heading=text('div','','sector-rank-caption');
+ heading.append(text('strong',label+' · 前'+top.length+'板块'),
+   text('span',state.selected+' · '+(kind==='industry'?'行业':'概念')+' · 点击卡片定位热力矩阵'));
+ host.append(heading);
  const cards=text('div','','sector-rank-list');
- for(let i=0;i<top.length;i++){
-   const item=top[i],lower=heatIsLowerBound(item.code,state.selected,heatMetric);
+ top.forEach((item,i)=>{
+   const lower=heatIsLowerBound(item.code,state.selected,metric);
    const card=text('button','','sector-rank-item'+(state.sectorFocus===item.code?' is-selected':''));
    card.type='button';
-   card.setAttribute('aria-label','排名'+(i+1)+'，'+item.name+'，'+heatValueText(item.value,heatMetric,lower)+'，点击定位板块');
-   card.title=item.name+'｜'+state.selected+'｜'+metricLabel+': '+heatValueText(item.value,heatMetric,lower)+(lower?'（已收录下限）':'');
+   card.setAttribute('aria-label','第'+(i+1)+'名 '+item.name+' '+heatValueText(item.value,metric,lower)+unit+'，查看对应板块');
    card.append(text('small',String(i+1)),text('span',item.name),
-     text('strong',heatValueText(item.value,heatMetric,lower)+(SECTOR_META[heatMetric][1]==='亿元'?'亿':SECTOR_META[heatMetric][1])));
-   card.addEventListener('click',()=>{
-     state.sectorFocus=item.code;
-     $('heat-search').value='';
-     $('sector-sort').value='metric_desc';
-     state.sectorPage=0;
-     renderSectors();
-     window.requestAnimationFrame(()=>$('sector-inline-detail')?.scrollIntoView({behavior:'smooth',block:'center'}));
-   });
+      text('strong',heatValueText(item.value,metric,lower)+unit));
+   card.title=item.name+'｜'+state.selected+'｜'+label+' '+heatValueText(item.value,metric,lower)+unit+
+     (lower?'（部分跌停池，已知下限）':'');
+   card.addEventListener('click',()=>focusHeatSector(item.code));
    cards.append(card);
- }
- if(top.length)tHost.append(cards);
- else tHost.append(text('p','所选日该指标缺少可计算的板块数据，请切换日期或指标。','inline-note'));
- const daily=snapshot(state.selected),limit=daily.limits||{};
- const down=daily.limit_down_events,breaks=daily.limit_break_events;
- const nup=limit.non_st??null,ndown=Array.isArray(down)?down.length:null,nbr=Array.isArray(breaks)?breaks.length:null;
- const qualityByDate=daily.quality_manifest||{},status=cleared('sector-market-status');
- status.append(text('strong','全市场事件 · '+state.selected+'：'));
- status.append(text('span','涨停 '+(nup??'—')+'只 ｜ 跌停 '+(ndown??'—')+'只 ｜ 炸板 '+(nbr??'—')+'只。'));
- status.append(text('span','板块涨跌停归属以成员快照计算；未存成员的历史日期显示—，不是零。'));
- if(qualityByDate.limit_down_events?.status==='partial')status.append(text('span','（跌停名单不完整，≥表示已知下限）'));
+ });
+ if(top.length)host.append(cards);else host.append(text('p','所选日期及筛选条件下没有可核验数据。','inline-note'));
+ $('sector-chart-help').textContent='对应上方'+top.length+'张卡片的'+label+'历史日线；点击任意一条线跳转热力图对应板块。';
+ $('sector-trend-legend').textContent=days[0]+' — '+last(days)+' · '+unit;
+ const series=top.map((item,i)=>({name:item.name,type:'line',connectNulls:false,
+   showSymbol:days.length<=10,symbolSize:5,emphasis:{focus:'series'},
+   lineStyle:{width:item.code===state.sectorFocus?3.4:2,opacity:.93},
+   data:days.map(d=>{
+     const value=metricValue(item.code,d,metric);
+     return value==null?null:Number(value.toFixed(3));
+   })}));
+ if(series.some(x=>x.data.some(v=>v!=null))){
+   const byName=new Map(top.map(x=>[x.name,x.code]));
+   chart('sector-chart',{
+     legend:{top:3,type:'scroll',right:0},
+     tooltip:{trigger:'axis'},
+     xAxis:{type:'category',data:days.map(dateShort)},
+     yAxis:{type:'value',name:unit,scale:!['limit_up_count','limit_down_count','hot_count','limit_up_ratio','limit_down_ratio','member_up_ratio'].includes(metric)},
+     series
+   },ev=>{const code=byName.get(ev.seriesName);if(code)focusHeatSector(code);});
+ }else noChart('sector-chart','对应指标暂无可计算的折线记录；数据缺失不连线。');
+ $('sector-metric-status').textContent='曲线严格对应当前前10卡片，随指标、日期、板块类型及搜索变化；缺失日期断线。';
+
+ const daily=snapshot(state.selected),l=daily.limits||{},
+  down=daily.limit_down_events,breaks=daily.limit_break_events,quality=daily.quality_manifest||{};
+ const status=cleared('sector-market-status');
+ status.append(text('strong','全市场 · '+state.selected));
+ status.append(text('span','涨停 '+(l.non_st??'—')+'只 · 跌停 '+(Array.isArray(down)?down.length:'—')+
+        '只 · 炸板 '+(Array.isArray(breaks)?breaks.length:'—')+'只'));
+ if(quality.limit_down_events?.status==='partial')
+   status.append(text('span','跌停池部分完整 · ≥为已知下限'));
  const example=all[0]&&sectorValue(state.selected,all[0].code);
- if(example?.membership_mode==='backcast_current')status.append(text('span','回算口径：按'+example.membership_observed_date+'确定的成员计算，不代表当时真实归属。'));
- else if(example?.membership_observed_date)status.append(text('span','成分名单版本：'+example.membership_observed_date));
- let host=cleared('sector-heat'),grid=text('div','','heat-grid');grid.style.gridTemplateColumns=`160px repeat(${days.length},minmax(68px,1fr))`;grid.append(text('div','板块 / 交易日','heat-head'));for(const d of days)grid.append(text('div',dateShort(d),'heat-head'));let countKnown=0,totalCells=0;
- for(const sectorItem of filtered.slice(state.sectorPage*40,state.sectorPage*40+40)){
-   const opening=state.sectorFocus===sectorItem.code;
-   let label=text('button',sectorItem.name+(opening?' ▴':' ▾'),'heat-label heat-label-button'+(opening?' is-expanded':''));label.type='button';label.title=sectorItem.name+' · '+sectorItem.code+'（点击展开信息栏）';label.setAttribute('aria-expanded',String(opening));
-   label.addEventListener('click',()=>{state.sectorFocus=opening?null:sectorItem.code;renderSectors();if(!opening)window.requestAnimationFrame(()=>$('sector-inline-detail')?.scrollIntoView({behavior:'smooth',block:'nearest'}));});
-   grid.append(label);
+ if(example?.membership_mode==='backcast_current')
+   status.append(text('span','历史回算：'+example.membership_observed_date+'固定成分口径（非当时成分）'));
+ else if(example?.membership_observed_date)
+   status.append(text('span','成员快照：'+example.membership_observed_date));
+
+ const heat=cleared('sector-heat'),grid=text('div','','heat-grid');
+ grid.style.gridTemplateColumns='160px repeat('+days.length+',minmax(68px,1fr))';
+ grid.append(text('div','板块 / 日期','heat-head'));
+ for(const d of days)grid.append(text('div',dateShort(d),'heat-head'+(d===state.selected?' is-current':'')));
+ let known=0,total=0;
+ for(const item of filtered.slice(state.sectorPage*40,state.sectorPage*40+40)){
+   const open=item.code===state.sectorFocus;
+   const title=text('button',item.name+(open?' ▴':' ▾'),'heat-label heat-label-button'+(open?' is-expanded':''));
+   title.type='button';title.setAttribute('aria-expanded',String(open));
+   title.title='点击'+(open?'收起':'展开')+item.name+'当日详情';
+   title.addEventListener('click',()=>{
+     state.sectorFocus=open?null:item.code;
+     renderSectors();
+     if(!open)window.requestAnimationFrame(()=>$('sector-inline-detail')?.scrollIntoView({behavior:'smooth',block:'nearest'}));
+   });
+   grid.append(title);
    for(const d of days){
-     const v=metricValue(sectorItem.code,d,heatMetric);totalCells++;
-     const partial=heatIsLowerBound(sectorItem.code,d,heatMetric);
-     const cell=text('button',heatValueText(v,heatMetric,partial),'heat-cell heat-cell-button'+(v==null?' no-data':'')+(partial?' is-lower-bound':''));
-     cell.type='button';cell.title=sectorItem.name+'｜'+d+'｜'+(SECTOR_META[heatMetric][0]||heatMetric)+'：'+heatValueText(v,heatMetric,partial)+(partial?'（已收录下限）':'')+(sectorValue(d,sectorItem.code).membership_mode==='backcast_current'?' · 按'+sectorValue(d,sectorItem.code).membership_observed_date+'成分回算':'')+' · 点击展开';
-     if(v!=null){countKnown++;let abs=Math.abs(v),ratio=Math.min(abs/(['limit_up_count','limit_down_count'].includes(heatMetric)?15:heatMetric==='turnover'?2500:heatMetric==='activity'?2:5),1);let hue=['limit_down_count','limit_down_ratio'].includes(heatMetric)?'35,145,118':['turnover','activity'].includes(heatMetric)?'49,115,151':v>=0?'192,73,85':'35,145,118';cell.style.background='rgba('+hue+','+(.1+ratio*.55)+')';}
-     cell.addEventListener('click',()=>{const wasOpen=state.sectorFocus===sectorItem.code&&state.selected===d;state.sectorFocus=wasOpen?null:sectorItem.code;if(state.selected!==d)setDay(d);else renderSectors();if(!wasOpen)window.requestAnimationFrame(()=>$('sector-inline-detail')?.scrollIntoView({behavior:'smooth',block:'nearest'}));});
+     const v=metricValue(item.code,d,metric),lower=heatIsLowerBound(item.code,d,metric);
+     const cell=text('button',heatValueText(v,metric,lower),'heat-cell heat-cell-button'+(v==null?' no-data':'')+(lower?' is-lower-bound':'')+(d===state.selected?' is-current':''));
+     cell.type='button';total++;if(v!=null)known++;
+     const point=sectorValue(d,item.code);
+     cell.title=item.name+' · '+d+' · '+label+' '+heatValueText(v,metric,lower)+unit+
+       (point.membership_mode==='backcast_current'?' · 以'+point.membership_observed_date+'成员回算':'');
+     if(v!=null){
+       const ratio=Math.min(Math.abs(v)/(['limit_up_count','limit_down_count'].includes(metric)?15:metric==='turnover'?2500:metric==='activity'?2:5),1);
+       const rgb=['limit_down_count','limit_down_ratio'].includes(metric)?'35,145,118':
+          ['turnover','activity'].includes(metric)?'49,115,151':v>=0?'192,73,85':'35,145,118';
+       cell.style.background='rgba('+rgb+','+(.1+ratio*.55)+')';
+     }
+     cell.addEventListener('click',()=>{
+       const toggled=state.sectorFocus===item.code&&state.selected===d;
+       state.sectorFocus=toggled?null:item.code;
+       if(state.selected!==d)setDay(d);else renderSectors();
+       if(!toggled)window.requestAnimationFrame(()=>$('sector-inline-detail')?.scrollIntoView({behavior:'smooth',block:'nearest'}));
+     });
      grid.append(cell);
    }
-   if(opening){let inline=text('div','','heat-inline-panel');inline.id='sector-inline-detail';inline.style.gridColumn='1 / span '+(days.length+1);grid.append(inline);}
+   if(open){
+     const panel=text('div','','heat-inline-panel');
+     panel.id='sector-inline-detail';panel.style.gridColumn='1 / span '+(days.length+1);
+     grid.append(panel);
+   }
  }
- host.append(grid);$('heat-note').textContent=`已显示 ${Math.min(40,filtered.length-state.sectorPage*40)} 个板块 · ${countKnown}/${totalCells} 单元可核验。历史回算与周度成员指标均标注计算口径；部分跌停仅显示≥下限，缺失仍为—。`;$('sector-metric-status').textContent=`${sel.length} 个已选板块 · ${days[0]} 至 ${last(days)} · ${SECTOR_META[metric][0]}。日期缺口断线显示，不填充为零。`;
- renderSectorDetail();}
+ heat.append(grid);
+ $('heat-note').textContent='本页展示 '+Math.max(0,Math.min(40,filtered.length-state.sectorPage*40))+
+   ' 个板块 · '+known+'/'+total+' 可核验格。热力图和折线图使用同一指标与日期窗口，展开查看对应股票。';
+ renderSectorDetail();
+}
+
 async function renderSectorDetail(){
- const host=$('sector-inline-detail'), code=state.sectorFocus;
+ const host=$('sector-inline-detail'),code=state.sectorFocus;
  if(!host||!code)return;
  host.replaceChildren();
- const obj=sectorCatalog().find(x=>x.code===code),day=state.selected,point=sectorValue(day,code);
- host.setAttribute('role','region');
- host.setAttribute('aria-label',(obj?.name||code)+'板块展开信息');
- // A single flat information band: concise heading, metrics, representative chips.
- const header=text('div','','sector-band-header');
- const identity=text('div','','sector-band-identity');
- identity.append(text('strong',obj?.name||code),text('span',code+' · '+day+' · 点击上方板块行收起'));
+ const selectedDate=state.selected,metric=$('heat-metric').value,board=sectorCatalog().find(x=>x.code===code);
+ const point=sectorValue(selectedDate,code),asof=point.membership_observed_date,archive=snapshot(selectedDate);
+ const header=text('div','','sector-band-header'),identity=text('div','','sector-band-identity');
+ identity.append(text('strong',board?.name||code),text('span',selectedDate+' · '+code));
+ identity.append(text('span',point.membership_mode==='backcast_current'?
+   '按'+asof+'成分名单历史回算，不代表当时真实成分':
+   asof?'使用'+asof+'确认的周度成分名单':'成分关系尚未采集','sector-band-source'));
  header.append(identity);
  const metrics=text('div','','sector-band-metrics');
- const addMetric=(name,value,hint)=>{
-   const item=text('div','','sector-band-metric');
-   item.append(text('small',name),text('b',value==null?'—':value));
-   if(hint)item.title=hint;
-   metrics.append(item);
- };
- const membershipCaption=point.membership_mode==='backcast_current'?'按'+point.membership_observed_date+'成分名单回算（非历史真实归属）':point.membership_observed_date?'使用'+point.membership_observed_date+'周度成分名单':'无成分名单';
- identity.append(text('span',membershipCaption,'sector-band-source'));
- const turnover=N(point.turnover)==null?null:number(point.turnover/1e8,2)+'亿';
- const dayPct=N(point.pct)==null?null:pct(point.pct);
- const idx=state.days.indexOf(day);
- const cum=idx>=0?cumulativeSector(code,idx):null;
- const up=metricValue(code,day,'limit_up_count'),down=metricValue(code,day,'limit_down_count');
- addMetric('当日涨跌',dayPct);
- addMetric('截至当日区间收益',cum==null?null:pct(cum));
- addMetric('板块成交额',turnover);
- addMetric('涨停归属',N(up)==null?null:number(up,0)+'只','根据来源标记的成员名单与对应日期涨停池统计');
- addMetric('跌停归属',N(down)==null?null:heatValueText(down,'limit_down_count',heatIsLowerBound(code,day,'limit_down_count'))+'只','部分跌停列表仅显示已知下限');
- header.append(metrics);
- host.append(header);
- const footer=text('div','','sector-band-footer');
- const caption=text('span','代表股票 · 编辑观察池','sector-band-caption');
- footer.append(caption);
- const chipRow=text('div','','sector-band-chips');chipRow.append(text('span','加载中…','sector-band-empty'));
- footer.append(chipRow);
- host.append(footer);
- const archive=snapshot(day);
- const factual=(archive.sector_focus_stocks||[]).filter(x=>x.sector_code===code);
- if(factual.length){
-   const line=text('div','','sector-band-factual');
-   line.append(text('span','当日归档关注','sector-band-caption'));
-   for(const stock of factual.slice(0,8)){
-     const name=stock.stock_name||stock.stock_code;
-     const token=text('span',name,'sector-band-stock');
-     line.append(token);
+ function box(label,value){
+   const el=text('div','','sector-band-metric');
+   el.append(text('small',label),text('b',value==null?'—':value));metrics.append(el);
+ }
+ const val=metricValue(code,selectedDate,metric),up=metricValue(code,selectedDate,'limit_up_count'),
+ down=metricValue(code,selectedDate,'limit_down_count');
+ box('当前指标 · '+SECTOR_META[metric][0],val==null?null:heatValueText(val,metric,heatIsLowerBound(code,selectedDate,metric))+SECTOR_META[metric][1]);
+ box('当日板块涨跌',N(point.pct)==null?null:pct(point.pct));
+ box('板块成交额',N(point.turnover)==null?null:number(point.turnover/1e8,2)+'亿元');
+ box('成分数量',N(point.member_count)==null?null:number(point.member_count,0)+'只');
+ box('归属涨停',N(up)==null?null:number(up,0)+'只');
+ box('归属跌停',N(down)==null?null:heatValueText(down,'limit_down_count',heatIsLowerBound(code,selectedDate,'limit_down_count'))+'只');
+ header.append(metrics);host.append(header);
+ const loading=text('p','加载当日股票和成分关系…','sector-detail-empty');host.append(loading);
+ const [memberFile,rep]=await Promise.all([
+   loadMemberIndex(asof),
+   window.MarketScopeHistory?.load?.()||Promise.resolve(null)
+ ]);
+ if($('sector-inline-detail')!==host||state.sectorFocus!==code||state.selected!==selectedDate||$('heat-metric').value!==metric)return;
+ loading.remove();
+ const members=memberFile?.members?.[code];
+ if(!members){host.append(text('p','此日期缺少可验证成员名单，个股排名不做推断。','sector-detail-empty'));return;}
+ const basePrices=rep?.prices||{},u=new Map((rep?.universe||[]).map(x=>[x.code,x]));
+ const items=new Map();
+ for(const [ticker,name]of Object.entries(members)){
+   if(!u.has(ticker))continue;
+   const bars=basePrices[ticker]||[],at=bars.findIndex(x=>x.date===selectedDate);
+   if(at<0)continue;
+   const bar=bars[at],prev=at>0?bars[at-1]:null;
+   if(N(bar.close)==null)continue;
+   const change=prev?.close>0?(bar.close/prev.close-1)*100:null;
+   const back=bars.find(x=>x.date===state.days[0]),cum=back?.close>0?(bar.close/back.close-1)*100:null;
+   const slice=at>=4?bars.slice(at-4,at+1).map(x=>N(x.turnover_100m)):null;
+   const activity=slice&&!slice.some(x=>x==null)&&slice.reduce((a,b)=>a+b,0)>0?
+     slice[4]/(slice.reduce((a,b)=>a+b,0)/5):null;
+   items.set(ticker,{code:ticker,name:name||u.get(ticker).name,pct:change,
+     turnover:N(bar.turnover_100m),price:bar.close,cum,activity,event:'代表池',boards:null});
+ }
+ const matched={up:[],down:[],break:[],hot:[]};
+ for(const [type,list]of [['up',archive.stock_list||[]],['down',archive.limit_down_events||[]],
+                          ['break',archive.limit_break_events||[]],['hot',archive.hot_rank_daily||[]]]){
+   for(const row of list){
+     const ticker=row.thscode||row.stock_code;
+     if(!Object.prototype.hasOwnProperty.call(members,ticker))continue;
+     const item=items.get(ticker)||{code:ticker,name:members[ticker],pct:null,turnover:null,
+       price:null,cum:null,activity:null,boards:null,event:''};
+     if(N(row.price_change_ratio_pct)!=null)item.pct=N(row.price_change_ratio_pct);
+     if(N(row.turnover)!=null)item.turnover=N(row.turnover)/1e8;
+     if(N(row.price??row.last_price)!=null)item.price=N(row.price??row.last_price);
+     if(N(row.boards)!=null)item.boards=N(row.boards);
+     if(N(row.rank)!=null)item.rank=N(row.rank);
+     item.event={up:'涨停',down:'跌停',break:'炸板',hot:'热榜'}[type];
+     item.reason=row.reason||row.limit_up_reason||row.limit_down_reason||item.reason||'';
+     items.set(ticker,item);matched[type].push(item);
    }
-   host.append(line);
  }
- const note=text('p','人工观察池标签不是当日官方板块成分；涨跌停归属缺失显示—，不等于0。','sector-band-note');
- host.append(note);
- const rep=await window.MarketScopeHistory?.load?.();
- if($('sector-inline-detail')!==host||state.sectorFocus!==code||state.selected!==day)return;
- chipRow.replaceChildren();
- if(!rep){
-   chipRow.append(text('span','代表性股票档案尚未生成','sector-band-empty'));return;
+ for(const row of archive.sector_focus_stocks||[]){
+   if(row.sector_code!==code||!Object.prototype.hasOwnProperty.call(members,row.stock_code))continue;
+   const item=items.get(row.stock_code)||{code:row.stock_code,name:row.stock_name||members[row.stock_code],
+     pct:null,turnover:null,price:null,cum:null,activity:null,event:''};
+   if(N(row.pct)!=null)item.pct=N(row.pct);
+   if(N(row.turnover_100m)!=null)item.turnover=N(row.turnover_100m);
+   items.set(item.code,item);
  }
- const name=obj?.name||'';
- const rows=(rep.universe||[]).filter(r=>name&&(r.industry===name||r.industry?.includes(name)||(r.tags||[]).includes(name))).slice(0,12);
- if(!rows.length){chipRow.append(text('span','暂无对应的固定观察池股票','sector-band-empty'));return;}
- for(const stock of rows){
-   const item=text('button',stock.name,'sector-band-stock');
-   item.type='button';
-   item.title=stock.code+' · '+stock.economic_style+' · 编辑行业：'+stock.industry;
-   item.addEventListener('click',()=>showDialog(stock.name+' · '+stock.code,[
-     ['编辑行业',stock.industry],['经济风格',stock.economic_style],
-     ['题材标签',(stock.tags||[]).join('、')],['归属说明','固定观察池人工分类，并非历史官方板块成分'],
-     ['当日收盘价',rep.prices?.[stock.code]?.find(x=>x.date===day)?.close??'—']]));
-   chipRow.append(item);
+ const priced=[...items.values()].filter(x=>N(x.pct)!=null||N(x.turnover)!=null);
+ const desc=k=>priced.filter(x=>N(x[k])!=null).sort((a,b)=>b[k]-a[k]).slice(0,6);
+ const asc=k=>priced.filter(x=>N(x[k])!=null).sort((a,b)=>a[k]-b[k]).slice(0,6);
+ const main=[...priced].sort((a,b)=>Number(u.has(b.code))-Number(u.has(a.code))||
+   (b.turnover??-1)-(a.turnover??-1)).slice(0,6);
+ const upList=[...matched.up].sort((a,b)=>(b.boards??0)-(a.boards??0)||(b.turnover??0)-(a.turnover??0)).slice(0,8);
+ const downList=[...matched.down].sort((a,b)=>(a.pct??0)-(b.pct??0)).slice(0,8);
+ let signal=[],title='',evidence='';
+ if(['limit_up_count','limit_up_ratio'].includes(metric)){
+   signal=upList;title='涨停接力前排';evidence='按真实连板高度排序';
+ }else if(['limit_down_count','limit_down_ratio'].includes(metric)){
+   signal=downList;title='跌停前排';evidence='按当日跌幅排序';
+ }else if(metric==='limit_diff'){
+   signal=[...upList.slice(0,4),...downList.slice(0,4)];title='涨跌停两端';evidence='涨停接力与跌停并列';
+ }else if(metric==='hot_count'){
+   signal=[...matched.hot].sort((a,b)=>(a.rank??999)-(b.rank??999)).slice(0,6);
+   title='热榜前排';evidence='按归档热榜排名';
+ }else if(metric==='turnover'){
+   signal=desc('turnover');title='成交额前排';evidence='按有日K的代表股样本排序';
+ }else if(metric==='activity'){
+   signal=desc('activity');title='成交活跃度前排';evidence='近5个交易日成交额 / 日均';
+ }else if(['cum','relative'].includes(metric)){
+   signal=desc('cum');title='区间涨幅前排';evidence='有历史日K的代表股样本';
+ }else if(['member_up_ratio','member_median'].includes(metric)){
+   signal=[...desc('pct').slice(0,4),...asc('pct').slice(0,4)];
+   title='内部涨跌两端';evidence='代表股样本中强弱股票';
+ }else{
+   signal=desc('pct');title='日涨幅前排';evidence='代表股样本中按日涨幅';
  }
+ const layout=text('div','','sector-detail-columns');
+ function makeBlock(name,subtitle,rows){
+   const box=text('div','','sector-detail-section'),h=text('div','','sector-detail-heading');
+   h.append(text('strong',name),text('span',subtitle));box.append(h);
+   if(!rows.length){box.append(text('p','所选日期暂无可核验的个股记录。','sector-detail-empty'));return box;}
+   const tbl=text('table','','sector-detail-table'),tr=text('tr','');
+   for(const n of ['股票','涨跌幅','成交额','指标证据'])tr.append(text('th',n));
+   const head=text('thead','');head.append(tr);tbl.append(head);
+   const body=text('tbody','');
+   for(const x of rows){
+     const tr=text('tr',''),id=text('td','');
+     const link=text('button',x.name,'sector-stock-link');
+     link.type='button';
+     link.addEventListener('click',()=>showDialog(x.name+' · '+x.code,[
+       ['所属板块',board?.name||code],['成分名单日期',asof],
+       ['当日涨跌幅',N(x.pct)==null?'—':signed(x.pct,2,'%')],
+       ['成交额',N(x.turnover)==null?'—':number(x.turnover,2)+'亿元'],
+       ['收盘价',N(x.price)==null?'—':number(x.price,2)],
+       ['连板',x.boards==null?'—':x.boards+'板'],['事件',x.reason||x.event||'—']
+     ]));
+     id.append(link,text('small',x.code));
+     tr.append(id,text('td',N(x.pct)==null?'—':signed(x.pct,2,'%'),
+       N(x.pct)==null?'':x.pct>=0?'stock-positive':'stock-negative'));
+     tr.append(text('td',N(x.turnover)==null?'—':number(x.turnover,2)+'亿'));
+     const extra=x.boards!=null?x.boards+'板':metric==='activity'&&x.activity!=null?
+       number(x.activity,2)+'倍':metric==='cum'&&x.cum!=null?signed(x.cum,2,'%'):
+       x.rank!=null?'榜单第'+x.rank:x.event||'—';
+     tr.append(text('td',extra));body.append(tr);
+   }
+   tbl.append(body);box.append(tbl);return box;
+ }
+ layout.append(makeBlock('主要成分股 · 有价格样本','成员名单 × 300只代表股观察池优先 · 按成交额展示',main));
+ layout.append(makeBlock(title,evidence,signal));
+ host.append(layout);
+ const extras=text('div','','sector-detail-summary');
+ if(['limit_up_count','limit_up_ratio','limit_diff'].includes(metric)){
+   const highest=Math.max(0,...matched.up.map(x=>N(x.boards)||0));
+   extras.append(text('span','最高连板 '+(highest?highest+'板':'—')));
+   extras.append(text('span','2板及以上 '+matched.up.filter(x=>(N(x.boards)||0)>=2).length+'只'));
+ }
+ if(['limit_down_count','limit_down_ratio','limit_diff'].includes(metric))
+   extras.append(text('span','跌停 '+(N(down)==null?'—':heatValueText(down,'limit_down_count',heatIsLowerBound(code,selectedDate,'limit_down_count'))+'只')));
+ host.append(extras);
+ host.append(text('p','个股价格样本可能仅覆盖300只代表股及当日事件股票，不应理解为全体成分股涨幅/成交额排名。历史成分回算与缺失数据均按来源标记。','sector-band-note'));
 }
 function compareValue(a,b,formatter,unit){return N(a)==null||N(b)==null?'—':formatter(Number(b)-Number(a))+(unit||'');}
 function renderHistory(){const a=$('history-a').value||state.days[0],b=$('history-b').value||last(state.days),x=market(a),y=market(b),lx=limits(a),ly=limits(b);let host=cleared('history-comparison');for(const [label,key,unit] of MARKET_FIELDS){const va=key==='non_st'||key==='highest'?lx[key]:x[key],vb=key==='non_st'||key==='highest'?ly[key]:y[key];let el=text('div','','comparison-card');el.append(text('small',label+' · '+a+' → '+b));el.append(text('strong',N(va)==null||N(vb)==null?'—':signed(vb-va,key==='median'||key==='turnover_100m'?2:0,unit)));el.append(text('span',`${N(va)==null?'—':number(va)} → ${N(vb)==null?'—':number(vb)} ${unit}`));host.append(el);}
@@ -317,13 +481,19 @@ function bind(){document.querySelectorAll('#navigation [data-page]').forEach(el=
  $('style-dimension').addEventListener('change',renderPage);$('style-metric').addEventListener('change',renderPage);
  $('event-date').addEventListener('change',e=>{setDay(e.target.value);});$('event-type').addEventListener('change',renderEvents);$('event-search').addEventListener('input',renderEvents);
  $('sector-kind').addEventListener('change',e=>{state.sectorKind=e.target.value;state.sectorPage=0;state.sectorFocus=null;renderSectors();});
- $('sector-metric').addEventListener('change',renderSectors);$('sector-view').addEventListener('change',renderSectors);$('sector-benchmark').addEventListener('change',renderSectors);
- $('sector-add').addEventListener('click',()=>{sectorAdd($('sector-search').value.trim());$('sector-search').value='';});
- $('sector-search').addEventListener('keydown',e=>{if(e.key==='Enter'){$('sector-add').click();}});
- $('sector-reset').addEventListener('click',()=>{state.sectorManual[state.sectorKind]=false;state.sectorSelection[state.sectorKind]=[];renderSectors();});
- $('heat-metric').addEventListener('change',()=>{state.sectorPage=0;$('sector-sort').value='metric_desc';renderSectors();});
- $('sector-date').addEventListener('change',ev=>{if(state.days.includes(ev.target.value)){setDay(ev.target.value);$('sector-turnover-rank')?.scrollIntoView({behavior:'smooth',block:'nearest'});}});$('sector-sort').addEventListener('change',()=>{state.sectorPage=0;renderSectors();});$('heat-search').addEventListener('input',()=>{state.sectorPage=0;renderSectors();});
- $('heat-prev').addEventListener('click',()=>{state.sectorPage--;renderSectors();});$('heat-next').addEventListener('click',()=>{state.sectorPage++;renderSectors();});
+ $('heat-metric').addEventListener('change',()=>{state.sectorPage=0;state.sectorFocus=null;$('sector-sort').value='metric_desc';renderSectors();});
+ $('sector-benchmark').addEventListener('change',renderSectors);
+ $('sector-sort').addEventListener('change',()=>{state.sectorPage=0;renderSectors();});
+ $('sector-date').addEventListener('change',e=>{if(state.days.includes(e.target.value)){setDay(e.target.value);}});
+ $('heat-search').addEventListener('input',()=>{state.sectorPage=0;renderSectors();});
+ $('sector-clear').addEventListener('click',()=>{
+   $('sector-kind').value='industry';$('heat-metric').value='pct';
+   $('sector-sort').value='metric_desc';$('heat-search').value='';
+   state.sectorFocus=null;state.sectorPage=0;
+   setDay(last(state.days));$('sector-research-panel')?.scrollIntoView({behavior:'smooth',block:'start'});
+ });
+ $('heat-prev').addEventListener('click',()=>{state.sectorPage--;renderSectors();$('sector-heat-anchor')?.scrollIntoView({behavior:'smooth',block:'start'});});
+ $('heat-next').addEventListener('click',()=>{state.sectorPage++;renderSectors();$('sector-heat-anchor')?.scrollIntoView({behavior:'smooth',block:'start'});});
  /* Historical representative-stock controls bind in representatives.js. */
  $('close-dialog').addEventListener('click',()=>$('detail-dialog').hidden=true);$('detail-dialog').addEventListener('click',e=>{if(e.target===$('detail-dialog'))$('detail-dialog').hidden=true;});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('detail-dialog').hidden=true;stop();}});

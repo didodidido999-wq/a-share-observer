@@ -86,6 +86,7 @@ def test_current_day_complete_sector_data_is_idempotent(monkeypatch):
 def test_weekly_roster_reuses_fetched_members_and_daily_metrics_use_cached_asof(monkeypatch,tmp_path):
     from datetime import datetime
     monkeypatch.setattr(sector,'MEMBER_DIR',tmp_path)
+    monkeypatch.setattr(sector,'DATA',tmp_path)
     roster={'code':'881101.TI','name':'农业'}
     prices=[
       {'thscode':'000001.SZ','price_change_ratio_pct':10,'turnover':2_000_000},
@@ -118,6 +119,10 @@ def test_weekly_roster_reuses_fetched_members_and_daily_metrics_use_cached_asof(
     second=sector.weekly(client_get=source,observed_date=observed)
     assert second['observed']==1
     assert len(member_calls)==1, 'rerun must reuse weekly cached members'
+    import json
+    web_index=json.loads((tmp_path/'sector-member-index'/(observed+'.json')).read_text(encoding='utf-8'))
+    assert web_index['observed_date']==observed
+    assert web_index['members']['881101.TI']['000001.SZ']=='甲'
     writes=[]
     monkeypatch.setattr(sector.history,'merge_day',lambda date,patch:writes.append((date,patch)))
     monkeypatch.setattr(sector.history,'create_dashboard',lambda:None)
