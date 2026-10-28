@@ -8,14 +8,27 @@ const signed=(v,d=2)=>typeof v!=='number'||!Number.isFinite(v)?'—':(v>0?'+':''
 const bench={'510300.SH':'000300.SH','510310.SH':'000300.SH','510330.SH':'000300.SH',
  '159919.SZ':'000300.SH','510050.SH':'000016.SH','510500.SH':'000905.SH',
  '588000.SH':'000688.SH','159915.SZ':'399006.SZ'};
+const fallbacks={
+ '510300.SH':'沪深300ETF华泰柏瑞','510310.SH':'沪深300ETF易方达',
+ '510330.SH':'沪深300ETF华夏','159919.SZ':'沪深300ETF嘉实',
+ '510050.SH':'上证50ETF华夏','510500.SH':'中证500ETF南方',
+ '588000.SH':'科创50ETF华夏','159915.SZ':'创业板ETF易方达'
+};
 let data=null,filings=null,promise=null,focus='verified',mounted=false;
 function load(){
  if(promise)return promise;
  promise=Promise.all([
-  fetch('data/etf-shares.json',{cache:'no-store'}).then(r=>r.ok?r.json():{watch:{},rows:[]}),
-  fetch('data/funds-observer.json',{cache:'no-store'}).then(r=>r.ok?r.json():{disclosures:[]})
- ]).then(([a,b])=>{data=a;filings=b;}).catch(e=>{
-  console.warn('ETF share evidence missing',e);data={watch:{},rows:[]};filings={disclosures:[]};
+  fetch('data/etf-shares.json',{cache:'no-store'})
+   .then(r=>r.ok?r.json():{watch:{},rows:[]}).catch(()=>({watch:{},rows:[]})),
+  window.MarketScopeFunds?.load() ||
+   fetch('data/funds-observer.json',{cache:'no-store'}).then(r=>r.ok?r.json():{disclosures:[]})
+ ]).then(([a,b])=>{
+  // Missing shares must not hide the ETF watchlist or already disclosed holder facts.
+  data={...a,watch:{...fallbacks,...(a?.watch||{})},rows:Array.isArray(a?.rows)?a.rows:[]};
+  filings=b||{disclosures:[]};
+ }).catch(e=>{
+  console.warn('ETF share evidence missing',e);
+  data={watch:fallbacks,rows:[]};filings={disclosures:[]};
  });
  return promise;
 }
@@ -41,13 +54,13 @@ function render({state,chart,noChart}){
  if(!$('state-etf-table'))return;
  if(data===null){
   $('state-etf-status').textContent='正在加载交易所ETF份额与机构持有人披露…';
-  load().then(()=>{if(state.page==='today')render({state,chart,noChart});});return;
+  load().then(()=>{if(state.page==='today'&&!$('funds-etf-view')?.hidden)render({state,chart,noChart});});return;
  }
  const asof=state.selected;
  const dates=(state.archive||[]).filter(x=>x<=asof);
  const windowDays=dates.slice(-10);
  const byDay=new Map((data.rows||[]).map(x=>[x.date,x.funds||{}]));
- const all=Object.keys(data.watch||{});
+ const all=Object.keys(data.watch||fallbacks);
  const latestDates=(data.rows||[]).filter(x=>x.date<=asof);
  const known=latestDates.at(-1)?.date||null;
  $('state-etf-status').textContent=known?
