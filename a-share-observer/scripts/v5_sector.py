@@ -96,7 +96,10 @@ def pick_focus(code, members, prices, up, down, broken, hot, representatives, da
     result = []
     for _, stock_code, name, change, reasons in ranked[:max_items]:
         result.append({'trade_date': day, 'sector_code': code, 'stock_code': stock_code,
-                       'stock_name': name, 'pct': change, 'factual_tags': reasons,
+                       'stock_name': name, 'pct': change,
+                       'turnover_100m': round(turnover/1e8,3) if turnover is not None else None,
+                       'price': base.num(p.get('last_price')),
+                       'factual_tags': reasons,
                        'selection_reasons': reasons, 'membership_observed_date': membership_date or day})
     return result
 
