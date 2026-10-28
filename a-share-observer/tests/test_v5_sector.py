@@ -52,6 +52,41 @@ def test_focus_has_factual_reasons_not_hallucinated_roles():
     assert all("龙头" not in ",".join(r["factual_tags"]) for r in focus)
 
 
+
+def test_focus_stock_prices_and_turnover_follow_each_symbol_after_sorting():
+    members = {"600001.SH": "甲", "600002.SH": "乙", "600003.SH": "丙"}
+    prices = {
+        "600001.SH": {"price_change_ratio_pct": 7.0, "turnover": 260_000_000, "last_price": 13.28},
+        "600002.SH": {"price_change_ratio_pct": -9.0, "turnover": 530_000_000, "last_price": 42.16},
+        # This unselected last member must never leak values into selected rows.
+        "600003.SH": {"price_change_ratio_pct": 0.1, "turnover": 990_000_000, "last_price": 99.99},
+    }
+    focus = sector.pick_focus("881101.TI", members, prices,
+                              {"600001.SH"}, {"600002.SH"}, set(), set(),
+                              set(), "2026-10-28")
+    by_code = {row["stock_code"]: row for row in focus}
+    assert set(by_code) == {"600001.SH", "600002.SH"}
+    assert by_code["600001.SH"]["turnover_100m"] == 2.6
+    assert by_code["600001.SH"]["price"] == 13.28
+    assert by_code["600002.SH"]["turnover_100m"] == 5.3
+    assert by_code["600002.SH"]["price"] == 42.16
+    assert [row["stock_code"] for row in focus] == ["600002.SH", "600001.SH"]
+
+
+def test_focus_missing_quote_stays_missing_and_not_previous_symbol_value():
+    members = {"600001.SH": "甲", "600002.SH": "乙"}
+    prices = {"600001.SH": {"price_change_ratio_pct": 8.0,
+                            "turnover": 123_000_000, "last_price": 10.15}}
+    rows = sector.pick_focus("881101.TI", members, prices,
+                             {"600001.SH", "600002.SH"}, set(), set(), set(),
+                             set(), "2026-10-28")
+    by_code = {row["stock_code"]: row for row in rows}
+    assert by_code["600001.SH"]["turnover_100m"] == 1.23
+    assert by_code["600001.SH"]["price"] == 10.15
+    assert by_code["600002.SH"]["turnover_100m"] is None
+    assert by_code["600002.SH"]["price"] is None
+
+
 def test_gz_membership_history_is_dated_and_readable(monkeypatch,tmp_path):
     monkeypatch.setattr(sector,"MEMBER_DIR",tmp_path)
     path=sector.archive_gzip("2026-10-27",{"881101.TI":{"000001.SZ":"A"}})

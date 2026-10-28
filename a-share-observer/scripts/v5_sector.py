@@ -91,14 +91,14 @@ def pick_focus(code, members, prices, up, down, broken, hot, representatives, da
         priority = (1 if stock_code in events else 0, 1 if stock_code in representatives else 0,
                     abs(change) if change is not None else -1,
                     turnover if turnover is not None else -1)
-        ranked.append((priority, stock_code, name, change, reasons))
+        ranked.append((priority, stock_code, name, change, turnover, base.num(p.get('last_price')), reasons))
     ranked.sort(key=lambda x: (x[0], x[1]), reverse=True)
     result = []
-    for _, stock_code, name, change, reasons in ranked[:max_items]:
+    for _, stock_code, name, change, turnover, close_price, reasons in ranked[:max_items]:
         result.append({'trade_date': day, 'sector_code': code, 'stock_code': stock_code,
                        'stock_name': name, 'pct': change,
                        'turnover_100m': round(turnover/1e8,3) if turnover is not None else None,
-                       'price': base.num(p.get('last_price')),
+                       'price': close_price,
                        'factual_tags': reasons,
                        'selection_reasons': reasons, 'membership_observed_date': membership_date or day})
     return result
