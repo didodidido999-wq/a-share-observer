@@ -118,3 +118,36 @@ def test_treasury_invalid_xml_does_not_destroy_existing(tmp_path, monkeypatch):
     except ValueError:
         pass
     assert (tmp_path / "ust_2y.json").read_bytes() == before
+
+
+def test_domestic_sc_future_requires_futures_identity(tmp_path, monkeypatch):
+    monkeypatch.setattr(g, "OUT", tmp_path)
+    r = g.crude_sc(caller=lambda *_: {"item": [{"thscode": "SC00.INE", "name": "别的品种",
+                                               "asset_type": "forex"}]},
+                   today=date(2026, 10, 28))
+    assert r["status"] == "identity_unverified"
+    assert not list(tmp_path.glob("*.json"))
+
+
+def test_sc_future_daily_is_not_wti_and_preserves_real_session(tmp_path, monkeypatch):
+    monkeypatch.setattr(g, "OUT", tmp_path)
+    day = date(2026, 10, 27)
+    calls = []
+    def caller(path, params):
+        calls.append((path, params))
+        if path == "/api/meta/tickers/search":
+            return {"item": [{"thscode": "SC00.INE", "name": "原油连续", "asset_type": "futures"}]}
+        assert path == "/api/futures/prices/daily"
+        assert params["thscode"] == "SC00.INE"
+        assert params["time_period"] == "day_1"
+        return {"item": [{"timestamp": g._date_ms(day), "close_price": 445.7,
+                          "turnover": 100_000_000}]}
+    r = g.crude_sc(caller=caller, today=day)
+    assert r["status"] == "verified_daily"
+    record = json.loads((tmp_path / "sc_crude_continuous.json").read_text("utf-8"))
+    assert record["unit"] == "CNY/barrel"
+    assert record["symbol"] == "SC00.INE"
+    assert record["do_not_use_roll_jumps_as_returns"] is True
+    assert "WTI" in record["name"]
+    assert record["rows"] == [{"date": "2026-10-27", "value": 445.7, "turnover": 100000000.0}]
+    assert g.crude_sc(caller=caller, today=day)["file_changed"] is False
