@@ -33,6 +33,14 @@ try{
   '10-trading-day net buy total must agree with archived daily flows');
  check((await page.locator('#fund-summary .fund-card-title').nth(2).innerText()).includes('10日净买入'),
   'Funding flow KPI must clearly distinguish cumulative net buys from balance changes');
+ await page.waitForFunction(()=>{
+  const el=document.querySelector('#state-etf-status');
+  return el && (el.textContent.includes('尚未取得') || el.textContent.includes('最新归档'));
+ },{timeout:25000});
+ check(await visible('#state-etf-chart'),'ETF-share evidence chart container missing');
+ check((await page.locator('#state-etf-brief .state-summary-card').count())===3,
+   'ETF-share evidence summary must contain 3 clear evidence cards');
+ check(await visible('#state-etf-focus'),'ETF-share evidence filter missing');
  await click('#navigation [data-page="sectors"]');
  await page.waitForSelector('#sector-turnover-rank .sector-rank-item',{timeout:30000});
  check(await visible('#sector-heat'),'Heatmap missing');

@@ -3,10 +3,10 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#12273a"><meta name="description" content="MarketScope V3 — A股历史市场环境、异动、板块与风格交互研究终端">
 <title>MarketScope V3｜A股市场研究</title>
-<link rel="stylesheet" href="v3.css?v=4.6.0">
-<script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=4.6.0"></script>
+<link rel="stylesheet" href="v3.css?v=4.7.0">
+<script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=4.7.0"></script>
 <script defer src="event-sector.js?v=4.2.0"></script><script defer src="representatives.js?v=4.4.0"></script>
-<script defer src="funds-observer.js?v=1.2.0"></script>
+<script defer src="funds-observer.js?v=1.2.0"></script><script defer src="etf-state.js?v=1.0.0"></script>
 </head><body>
 <div class="shell">
 <aside class="sidebar" id="sidebar">
@@ -41,6 +41,20 @@
    <div class="panel-header"><div><div class="kicker">06 / CAPITAL OBSERVATIONS</div><h2>资金观察 · 融资杠杆与机构披露</h2><p>融资余额是实际信用资金存量；机构持有人是定期披露，不等于国家队当日买卖</p></div><label class="tool-select">资金曲线<select id="fund-chart-metric"><option value="balance">融资余额</option><option value="change">单日余额变化</option><option value="net">融资净买入额</option></select></label></div>
    <div id="fund-status" class="inline-note" role="status">读取资金归档中…</div>
    <div id="fund-summary" class="fund-summary"></div>
+   <section class="state-etf" aria-label="国家队相关ETF资金线索">
+     <div class="state-etf-heading"><div><div class="kicker">ETF CREATION / REDEMPTION EVIDENCE</div>
+       <h3>国家队动向线索 · 宽基ETF份额</h3>
+       <p class="inline-note">实际每日基金总份额 × 已公开的汇金持有人披露。份额增加不是国家队买入；数据仅作间接观察。</p></div>
+       <label class="tool-select">趋势对象 <select id="state-etf-focus" aria-label="ETF份额趋势筛选"></select></label></div>
+     <div id="state-etf-status" class="inline-note" role="status">读取交易所ETF份额归档中…</div>
+     <div id="state-etf-brief" class="state-summary"></div>
+     <div id="state-etf-chart" class="chart"></div>
+     <p class="inline-note">走势图以观察窗口首日的基金份额为100；每日变化使用交易所官方基金份额统计日期，缺失不补零。点击ETF所在表格行切换走势。</p>
+     <div class="table-wrap state-table-wrap"><table><thead><tr>
+       <th>ETF与代码</th><th>汇金系披露证据</th><th>所选日基金总份额</th>
+       <th>较前日份额变化</th><th>10交易日首末变化</th><th>当日事实</th>
+     </tr></thead><tbody id="state-etf-table"></tbody></table></div>
+   </section>
    <div class="fund-views">
      <div><div id="fund-chart" class="chart"></div><div class="table-wrap"><table><thead><tr><th>交易日</th><th>融资余额（亿）</th><th>余额日变动（亿）</th><th>融资净买入（亿）</th><th>融资买入（亿）</th><th>融资偿还（亿）</th><th>融券余额（亿）</th></tr></thead><tbody id="fund-history-body"></tbody></table></div></div>
      <div class="fund-disclosure"><h3>重要宽基ETF · 持有人披露</h3><p class="inline-note">仅按真实姓名及披露日期展示，不根据ETF成交额推断国家级资金交易。</p><div id="fund-holders"></div></div>
