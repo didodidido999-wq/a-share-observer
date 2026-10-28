@@ -201,7 +201,10 @@ function renderSectors(){syncHeatControls();if(state.page==='sectors'&&state.day
  status.append(text('strong','全市场事件 · '+state.selected+'：'));
  status.append(text('span','涨停 '+(nup??'—')+'只 ｜ 跌停 '+(ndown??'—')+'只 ｜ 炸板 '+(nbr??'—')+'只。'));
  status.append(text('span','板块涨跌停归属以成员快照计算；未存成员的历史日期显示—，不是零。'));
- if(qualityByDate.limit_down_events?.status==='partial')status.append(text('span','（跌停池部分完整）'));
+ if(qualityByDate.limit_down_events?.status==='partial')status.append(text('span','（跌停名单不完整，≥表示已知下限）'));
+ const example=all[0]&&sectorValue(state.selected,all[0].code);
+ if(example?.membership_mode==='backcast_current')status.append(text('span','回算口径：按'+example.membership_observed_date+'确定的成员计算，不代表当时真实归属。'));
+ else if(example?.membership_observed_date)status.append(text('span','成分名单版本：'+example.membership_observed_date));
  let host=cleared('sector-heat'),grid=text('div','','heat-grid');grid.style.gridTemplateColumns=`160px repeat(${days.length},minmax(68px,1fr))`;grid.append(text('div','板块 / 交易日','heat-head'));for(const d of days)grid.append(text('div',dateShort(d),'heat-head'));let countKnown=0,totalCells=0;
  for(const sectorItem of filtered.slice(state.sectorPage*40,state.sectorPage*40+40)){
    const opening=state.sectorFocus===sectorItem.code;
@@ -210,15 +213,16 @@ function renderSectors(){syncHeatControls();if(state.page==='sectors'&&state.day
    grid.append(label);
    for(const d of days){
      const v=metricValue(sectorItem.code,d,heatMetric);totalCells++;
-     const cell=text('button',v==null?'—':number(v,['limit_up_count','limit_down_count'].includes(heatMetric)?0:2),'heat-cell heat-cell-button'+(v==null?' no-data':''));
-     cell.type='button';cell.title=sectorItem.name+'｜'+d+'｜'+(SECTOR_META[heatMetric][0]||heatMetric)+'：'+(v==null?'缺失':number(v))+' · 点击展开';
-     if(v!=null){countKnown++;let abs=Math.abs(v),ratio=Math.min(abs/(['limit_up_count','limit_down_count'].includes(heatMetric)?15:heatMetric==='activity'?2:5),1);cell.style.background=v>=0?'rgba(192,73,85,'+(.1+ratio*.55)+')':'rgba(35,145,118,'+(.1+ratio*.55)+')';}
+     const partial=heatIsLowerBound(sectorItem.code,d,heatMetric);
+     const cell=text('button',heatValueText(v,heatMetric,partial),'heat-cell heat-cell-button'+(v==null?' no-data':'')+(partial?' is-lower-bound':''));
+     cell.type='button';cell.title=sectorItem.name+'｜'+d+'｜'+(SECTOR_META[heatMetric][0]||heatMetric)+'：'+heatValueText(v,heatMetric,partial)+(partial?'（已收录下限）':'')+(sectorValue(d,sectorItem.code).membership_mode==='backcast_current'?' · 按'+sectorValue(d,sectorItem.code).membership_observed_date+'成分回算':'')+' · 点击展开';
+     if(v!=null){countKnown++;let abs=Math.abs(v),ratio=Math.min(abs/(['limit_up_count','limit_down_count'].includes(heatMetric)?15:heatMetric==='turnover'?2500:heatMetric==='activity'?2:5),1);let hue=['limit_down_count','limit_down_ratio'].includes(heatMetric)?'35,145,118':['turnover','activity'].includes(heatMetric)?'49,115,151':v>=0?'192,73,85':'35,145,118';cell.style.background='rgba('+hue+','+(.1+ratio*.55)+')';}
      cell.addEventListener('click',()=>{const wasOpen=state.sectorFocus===sectorItem.code&&state.selected===d;state.sectorFocus=wasOpen?null:sectorItem.code;if(state.selected!==d)setDay(d);else renderSectors();if(!wasOpen)window.requestAnimationFrame(()=>$('sector-inline-detail')?.scrollIntoView({behavior:'smooth',block:'nearest'}));});
      grid.append(cell);
    }
    if(opening){let inline=text('div','','heat-inline-panel');inline.id='sector-inline-detail';inline.style.gridColumn='1 / span '+(days.length+1);grid.append(inline);}
  }
- host.append(grid);$('heat-note').textContent=`已显示 ${Math.min(40,filtered.length-state.sectorPage*40)} 个板块 · ${countKnown}/${totalCells} 单元可核验。无历史成分映射时涨跌停归属一律为 —，不使用旧 limit_up_proxy。`;$('sector-metric-status').textContent=`${sel.length} 个已选板块 · ${days[0]} 至 ${last(days)} · ${SECTOR_META[metric][0]}。日期缺口断线显示，不填充为零。`;
+ host.append(grid);$('heat-note').textContent=`已显示 ${Math.min(40,filtered.length-state.sectorPage*40)} 个板块 · ${countKnown}/${totalCells} 单元可核验。历史回算与周度成员指标均标注计算口径；部分跌停仅显示≥下限，缺失仍为—。`;$('sector-metric-status').textContent=`${sel.length} 个已选板块 · ${days[0]} 至 ${last(days)} · ${SECTOR_META[metric][0]}。日期缺口断线显示，不填充为零。`;
  renderSectorDetail();}
 async function renderSectorDetail(){
  const host=$('sector-inline-detail'), code=state.sectorFocus;
@@ -239,6 +243,8 @@ async function renderSectorDetail(){
    if(hint)item.title=hint;
    metrics.append(item);
  };
+ const membershipCaption=point.membership_mode==='backcast_current'?'按'+point.membership_observed_date+'成分名单回算（非历史真实归属）':point.membership_observed_date?'使用'+point.membership_observed_date+'周度成分名单':'无成分名单';
+ identity.append(text('span',membershipCaption,'sector-band-source'));
  const turnover=N(point.turnover)==null?null:number(point.turnover/1e8,2)+'亿';
  const dayPct=N(point.pct)==null?null:pct(point.pct);
  const idx=state.days.indexOf(day);
@@ -247,8 +253,8 @@ async function renderSectorDetail(){
  addMetric('当日涨跌',dayPct);
  addMetric('截至当日区间收益',cum==null?null:pct(cum));
  addMetric('板块成交额',turnover);
- addMetric('涨停归属',N(up)==null?null:number(up,0)+'只','仅当日有可靠成分关系才统计');
- addMetric('跌停归属',N(down)==null?null:number(down,0)+'只','仅当日有可靠成分关系才统计');
+ addMetric('涨停归属',N(up)==null?null:number(up,0)+'只','根据来源标记的成员名单与对应日期涨停池统计');
+ addMetric('跌停归属',N(down)==null?null:heatValueText(down,'limit_down_count',heatIsLowerBound(code,day,'limit_down_count'))+'只','部分跌停列表仅显示已知下限');
  header.append(metrics);
  host.append(header);
  const footer=text('div','','sector-band-footer');
@@ -315,12 +321,14 @@ function bind(){document.querySelectorAll('#navigation [data-page]').forEach(el=
  $('sector-add').addEventListener('click',()=>{sectorAdd($('sector-search').value.trim());$('sector-search').value='';});
  $('sector-search').addEventListener('keydown',e=>{if(e.key==='Enter'){$('sector-add').click();}});
  $('sector-reset').addEventListener('click',()=>{state.sectorManual[state.sectorKind]=false;state.sectorSelection[state.sectorKind]=[];renderSectors();});
- $('heat-metric').addEventListener('change',()=>{state.sectorPage=0;renderSectors();});$('sector-sort').addEventListener('change',()=>{state.sectorPage=0;renderSectors();});$('heat-search').addEventListener('input',()=>{state.sectorPage=0;renderSectors();});
+ $('heat-metric').addEventListener('change',()=>{state.sectorPage=0;$('sector-sort').value='metric_desc';renderSectors();});
+ $('sector-date').addEventListener('change',ev=>{if(state.days.includes(ev.target.value)){setDay(ev.target.value);$('sector-turnover-rank')?.scrollIntoView({behavior:'smooth',block:'nearest'});}});$('sector-sort').addEventListener('change',()=>{state.sectorPage=0;renderSectors();});$('heat-search').addEventListener('input',()=>{state.sectorPage=0;renderSectors();});
  $('heat-prev').addEventListener('click',()=>{state.sectorPage--;renderSectors();});$('heat-next').addEventListener('click',()=>{state.sectorPage++;renderSectors();});
  /* Historical representative-stock controls bind in representatives.js. */
  $('close-dialog').addEventListener('click',()=>$('detail-dialog').hidden=true);$('detail-dialog').addEventListener('click',e=>{if(e.target===$('detail-dialog'))$('detail-dialog').hidden=true;});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('detail-dialog').hidden=true;stop();}});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});window.addEventListener('pagehide',stop);
+ window.addEventListener('hashchange',()=>{const page=location.hash.replace('#','');if(['today','events','sectors','history'].includes(page)&&page!==state.page)nav(page);});
  window.addEventListener('resize',()=>state.chartMap.forEach(c=>c.resize()));
 }
 async function bootstrap(){bind();try{const [dash,manifest]=await Promise.all([json('data/dashboard.json'),json('data/dates.json')]);if(!Array.isArray(dash.dates)||!dash.dates.length)throw new Error('最近市场档案无可用交易日');state.dash=dash;state.archive=(manifest.dates||dash.dates).filter(x=>typeof x==='string').sort();synthesizeDashboard(dash);state.days=[...dash.dates];state.selected=last(state.days);state.compareBase=state.days[0];setSelectors();$('status').textContent=`最近有效 ${dash.latest_date||state.selected} · ${dash.status||'未标记状态'}`;const scope=(dash.coverage?.archive_days)||state.archive.length;notice(`已载入 ${scope} 个归档交易日的索引，默认展示最近 ${state.days.length} 日。新增事件及成分归属仅在实际采集后出现。`,true);let initial=(location.hash||'#today').replace('#','');nav(['today','events','sectors','history'].includes(initial)?initial:'today');}catch(e){console.error(e);notice(`未能读取历史归档：${e.message}。检查部署路径和 JSON 数据文件。`);$('status').textContent='数据读取失败';}}
