@@ -178,6 +178,7 @@ def test_weekly_roster_reuses_fetched_members_and_daily_metrics_use_cached_asof(
 def test_current_day_cannot_use_future_weekly_roster(monkeypatch,tmp_path):
     from datetime import datetime,timedelta
     monkeypatch.setattr(sector,'MEMBER_DIR',tmp_path)
+    monkeypatch.setattr(sector,'DATA',tmp_path)
     monkeypatch.setenv('SECTOR_ALLOW_EARLY','1')
     today=datetime.now(sector.base.TZ).strftime('%Y-%m-%d')
     future=(datetime.now(sector.base.TZ)+timedelta(days=5)).strftime('%Y-%m-%d')
