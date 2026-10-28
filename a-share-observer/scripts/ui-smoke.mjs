@@ -24,7 +24,7 @@ try{
    const day=dates.dates.at(-1),window=dates.dates.filter(d=>d<=day).slice(-10);
    const byDay=new Map(margin.financing.rows.map(r=>[r.date,r]));
    const rows=window.map(d=>byDay.get(d));
-   const complete=window.length===10&&rows.every(r=>r&&r.financing_net_buy_100m!=null);
+   const complete=window.length===10&&rows.every(r=>r&&typeof r.financing_net_buy_100m==='number'&&Number.isFinite(r.financing_net_buy_100m));
    return {complete,expected:complete?rows.reduce((sum,r)=>sum+r.financing_net_buy_100m,0):null};
  });
  const flowText=await page.locator('#fund-summary .fund-card-value').nth(2).innerText();
