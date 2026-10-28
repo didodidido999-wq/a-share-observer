@@ -82,7 +82,11 @@ def parse_margin_rows(obj):
                        "financing_buy_100m": round(numeric(entry["RZMRE"]) / 1e8, 3)
                            if numeric(entry.get("RZMRE")) is not None else None,
                        "financing_repay_100m": round(numeric(entry["RZCHE"]) / 1e8, 3)
-                           if numeric(entry.get("RZCHE")) is not None else None})
+                           if numeric(entry.get("RZCHE")) is not None else None,
+                       "financing_net_buy_100m": round(
+                           (numeric(entry["RZMRE"]) - numeric(entry["RZCHE"])) / 1e8, 3)
+                           if numeric(entry.get("RZMRE")) is not None
+                           and numeric(entry.get("RZCHE")) is not None else None})
     # Never mistake unrelated report fields for a financing balance.
     return sorted({x["date"]: x for x in parsed}.values(), key=lambda x: x["date"])
 
@@ -171,17 +175,36 @@ def build(prev, margin_rows, disclosures, collected_at):
     all_rows = [old_margin[k] for k in sorted(old_margin) if k >= START]
     prior_disclosures = {x["code"]: x for x in prev.get("disclosures", [])
                          if isinstance(x, dict) and x.get("code")}
+    # Preserve every distinct *filed disclosure version*, not a weekly price-like
+    # observation. Identical reports should not create a fictional time series.
+    disclosure_history = list(prev.get("disclosure_history", []))
+    known_versions = {json.dumps({k: v for k, v in x.items() if k != "observed_at"},
+                                 sort_keys=True, ensure_ascii=False)
+                      for x in disclosure_history}
+    def archive_disclosure(record):
+        sig = json.dumps({k: v for k, v in record.items() if k != "observed_at"},
+                         sort_keys=True, ensure_ascii=False)
+        if sig not in known_versions:
+            disclosure_history.append(record)
+            known_versions.add(sig)
+
+    for old in prior_disclosures.values():
+        archive_disclosure(old)
     for row in disclosures:
         before = prior_disclosures.get(row["code"])
-        # Do not delete verified older records because this fetch was partial.
-        if row["holders_top"] or row["holder_structure"]:
-            old_holders = before.get("holders_top", []) if before else []
-            old_structure = before.get("holder_structure", []) if before else []
+        if not row["holders_top"] and not row["holder_structure"]:
+            continue
+        if before is not None:
             if not row["holders_top"]:
-                row["holders_top"] = old_holders
+                row["holders_top"] = before.get("holders_top", [])
             if not row["holder_structure"]:
-                row["holder_structure"] = old_structure
-            prior_disclosures[row["code"]] = row
+                row["holder_structure"] = before.get("holder_structure", [])
+            same = {k:v for k,v in row.items() if k!="observed_at"} == {
+                k:v for k,v in before.items() if k!="observed_at"}
+            if same:
+                continue
+        prior_disclosures[row["code"]] = row
+        archive_disclosure(row)
     return {"schema_version": 1,
             "financing": {"source": "Eastmoney republication of exchange margin summaries",
                           "source_url": "https://data.eastmoney.com/rzrq/total.html",
@@ -190,6 +213,7 @@ def build(prev, margin_rows, disclosures, collected_at):
                           "financing_change_is_balance_difference": True,
                           "rows": all_rows},
             "disclosures": list(prior_disclosures.values()),
+            "disclosure_history": disclosure_history,
             "disclosure_source": "hithink-finance periodic fund holder filings",
             "disclosure_is_daily_capital_flow": False,
             "updated_at": collected_at if (margin_rows or disclosures) else prev.get("updated_at")}

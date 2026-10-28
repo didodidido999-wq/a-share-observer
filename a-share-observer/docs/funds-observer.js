@@ -30,19 +30,20 @@ function render({state,chart,noChart}){
  card(host,'融资余额',a!=null?fmt(a)+'亿':'—',latest?'归档日期 '+latest.date:'暂缺');
  card(host,'较前一记录变化',delta!=null?signed(delta)+'亿':'—',prev?'余额差额，并非融资净买入额':'前一记录不足');
  card(host,'最近10次记录变化',ten!=null?signed(ten)+'亿':'—',ten!=null?sample[0].date+' 至 '+sample[9].date:'样本未满10日');
- card(host,'融资买入额',exact?.financing_buy_100m!=null?fmt(exact.financing_buy_100m)+'亿':'—',
-      exact?.financing_buy_100m!=null?state.selected:'源未提供时留空，不拿余额变化冒充');
+ card(host,'融资净买入额',exact?.financing_net_buy_100m!=null?signed(exact.financing_net_buy_100m)+'亿':'—',
+      exact?.financing_net_buy_100m!=null?'当日融资买入额－融资偿还额':'仅在买入和偿还均可得时计算');
  const days=state.days||[],metric=$('fund-chart-metric').value;
  const values=days.map((day,i)=>{
   const r=byDate.get(day);if(!r)return null;
   if(metric==='balance')return r.financing_balance_100m??null;
+  if(metric==='net')return r.financing_net_buy_100m??null;
   const p=i?byDate.get(days[i-1]):null;
   return r.financing_balance_100m!=null&&p?.financing_balance_100m!=null?
     Number((r.financing_balance_100m-p.financing_balance_100m).toFixed(3)):null;
  });
  if(values.some(v=>v!==null))chart('fund-chart',{xAxis:{type:'category',data:days.map(d=>d.slice(5))},
   yAxis:{type:'value',scale:true,name:'亿元'},
-  series:[{type:metric==='balance'?'line':'bar',name:metric==='balance'?'融资余额':'融资余额日变动',
+  series:[{type:metric==='balance'?'line':'bar',name:metric==='balance'?'融资余额':metric==='net'?'融资净买入':'融资余额日变动',
            showSymbol:true,symbolSize:5,data:values}]});
  else noChart('fund-chart','所选区间缺少真实融资数据；不补零。');
  const table=$('fund-history-body');table.replaceChildren();
@@ -51,7 +52,7 @@ function render({state,chart,noChart}){
   const diff=r?.financing_balance_100m!=null&&p?.financing_balance_100m!=null?
     r.financing_balance_100m-p.financing_balance_100m:null;
   for(const v of [day,fmt(r?.financing_balance_100m),signed(diff),
-                  fmt(r?.short_balance_100m),fmt(r?.financing_buy_100m)])
+                  signed(r?.financing_net_buy_100m),fmt(r?.financing_buy_100m),fmt(r?.financing_repay_100m),fmt(r?.short_balance_100m)])
     tr.append(node('td',v));
   table.append(tr);
  }
