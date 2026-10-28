@@ -81,3 +81,44 @@ def test_no_dangerous_force_push_in_provided_workflow():
     assert "cron: '7 8 * * 1-5'" in flow
     assert 'git push --force' not in flow
     assert 'git rebase origin/main' in flow
+
+
+def test_index_snapshot_isolates_invalid_code_1002_and_keeps_real_quotes(monkeypatch):
+    records=[{'code':'000300.SH','name':'沪深300'},
+             {'code':'000510.CSI','name':'中证A500'},
+             {'code':'399006.SZ','name':'创业板指'},
+             {'code':'000688.SH','name':'科创50'}]
+    calls=[]
+    def fake_client(endpoint, params=None):
+        assert endpoint=='/api/a-share-index/prices/snapshot'
+        codes=params['thscodes'].split(',')
+        calls.append(codes)
+        if '000510.CSI' in codes:
+            raise history.base.ApiError('API业务代码 1002 (/api/a-share-index/prices/snapshot)')
+        return {'item':[{'thscode':code,'last_price':100.0,
+                         'price_change_ratio_pct':1.2,'turnover':2000000}
+                        for code in codes]}
+    monkeypatch.setattr(history.base,'client_get',fake_client)
+    result=history.snapshot_index_rows(records,'2026-10-28')
+    by={x['code']:x for x in result}
+    assert len(result)==len(records)
+    assert [x['code'] for x in result]==[x['code'] for x in records]
+    assert by['000510.CSI']['close'] is None
+    assert by['000510.CSI']['pct'] is None
+    for code in ('000300.SH','399006.SZ','000688.SH'):
+        assert by[code]['close']==100
+        assert by[code]['turnover']==2000000
+    assert any(len(call)>1 for call in calls)
+    assert ['000510.CSI'] in calls
+
+
+def test_index_snapshot_must_not_swallow_auth_or_quota_errors(monkeypatch):
+    def broken(endpoint, params=None):
+        raise history.base.ApiError('API业务代码 2003 ('+endpoint+')')
+    monkeypatch.setattr(history.base,'client_get',broken)
+    try:
+        history.snapshot_index_rows([{'code':'000300.SH','name':'沪深300'}],
+                                    '2026-10-28')
+        assert False,'Provider credentials failure cannot be converted into missing quotes'
+    except history.base.ApiError as error:
+        assert '2003' in str(error)
