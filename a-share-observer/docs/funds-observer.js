@@ -75,28 +75,35 @@ function render({state,chart,noChart}){
 function renderHoldings({state}){
  if(!data&&!error){load().then(()=>{if(state.page==='today')renderHoldings({state});});return;}
  const holder=$('fund-holders');holder.replaceChildren();
- const observed=(data?.disclosures||[]).filter(x=>x.observed_at<=state.selected);
+ // Public dated top-holder filings may predate our collection; never imply today's holdings.
+ const observed=(data?.disclosures||[]).filter(x=>
+   (x.holders_top||[]).some(h=>h.publish_date&&h.publish_date<=state.selected&&h.report_date) ||
+   (x.observed_at<=state.selected&&(x.holder_structure||[]).length));
  if(!observed.length){
-  holder.append(node('p','所选日暂无可验证的ETF持有人披露记录；不能由成交额推断国家队交易。','inline-note'));
+  holder.append(node('p','所选日尚无已知的持有人披露证据；不能从ETF成交额推断国家队交易。','inline-note'));
  }else for(const fund of observed){
   const box=node('details','','fund-holder-item');
   box.append(node('summary',fund.name+' · '+fund.code));
   const body=node('div','','fund-holder-content');
-  const named=(fund.holders_top||[]).filter(h=>h.publish_date&&h.publish_date<=state.selected);
-  const reportDates=named.map(h=>h.report_date).filter(Boolean).sort();
-  const publishDates=named.map(h=>h.publish_date).filter(Boolean).sort();
-  body.append(node('p','前十大持有人：报告期 '+(reportDates.at(-1)||'未提供')+
-     ' · 公布日 '+(publishDates.at(-1)||'未提供')+
-     ' · 数据采集 '+fund.observed_at+'；不是当日资金流。','inline-note'));
-  if(!named.length)body.append(node('p','持有人公布日缺失，无法验证本交易日是否已知。','inline-note'));
+  const available=(fund.holders_top||[]).filter(h=>h.publish_date&&h.publish_date<=state.selected&&h.report_date);
+  const reportDate=available.map(h=>h.report_date).sort().at(-1);
+  const named=available.filter(h=>h.report_date===reportDate);
+  const published=named.map(h=>h.publish_date).sort().at(-1);
+  body.append(node('p','前十大持有人：报告期 '+(reportDate||'未提供')+
+     ' · 公布日 '+(published||'未提供')+
+     ' · 采集 '+fund.observed_at+'；仅为历史持仓，不是所选日持仓。','inline-note'));
+  if(!named.length)body.append(node('p','当时尚无可确认公布日期的前十大持有人记录。','inline-note'));
   for(const h of named){
     const line=node('div','','fund-holder-row');
     line.append(node('span',h.holder),node('b',h.hold_rate_pct!=null?fmt(h.hold_rate_pct)+'%':'—'));
     if(h.explicit_public_institution_name)line.classList.add('fund-explicit');
     body.append(line);
   }
-  for(const s of (fund.holder_structure||[])){
-   if(s.institution_pct!=null)body.append(node('p','机构持有人占比 '+fmt(s.institution_pct)+'% · 报告期 '+(s.report_date||'未知')+' · 不代表实时资金流','inline-note'));
+  // Holder structure has a report date but no verified public publication date.
+  // Do not project that later-collected structure backward into a historical replay.
+  if(fund.observed_at<=state.selected)for(const r of (fund.holder_structure||[])){
+   if(r.institution_pct!=null&&r.report_date&&r.report_date<=state.selected)
+     body.append(node('p','机构持有人占比 '+fmt(r.institution_pct)+'% · 报告期 '+r.report_date+' · 非实时交易','inline-note'));
   }
   box.append(body);holder.append(box);
  }
