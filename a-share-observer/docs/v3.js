@@ -103,7 +103,8 @@ function metricValue(code,day,metric){const p=sectorValue(day,code),idx=state.da
 function heatMetricAggregate(code,metric){
  const ds=state.days,values=ds.map(d=>metricValue(code,d,metric));
  if(!values.length||values.some(v=>v==null))return null;
- if(metric==='pct')return cumulativeSector(code,ds.length-1);
+ if(metric==='pct'||metric==='cum')return cumulativeSector(code,ds.length-1);
+ if(metric==='relative')return metricValue(code,ds[ds.length-1],metric);
  const sum=values.reduce((a,b)=>a+b,0);
  return ['activity','member_up_ratio','limit_up_ratio','limit_down_ratio','member_median'].includes(metric)?sum/values.length:sum;
 }
