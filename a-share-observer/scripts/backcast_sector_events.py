@@ -10,6 +10,7 @@ weekly roster and real same-day events.
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 from collections import defaultdict
 from pathlib import Path
@@ -20,6 +21,7 @@ import v5_sector
 
 DOMAINS = ('limit_up_count','limit_up_ratio','limit_down_count','limit_down_ratio','limit_diff','hot_count')
 QUALITY_NAME = 'sector_backcast'
+FIXED_COHORT = '2026-10-28'
 
 
 def match_day(snapshot, members, *, membership_date):
@@ -69,7 +71,16 @@ def match_day(snapshot, members, *, membership_date):
 
 
 def backcast(membership=None, *, persist=True):
-    roster=membership or v5_sector._load_weekly()
+    if membership is not None:
+        roster=membership
+    else:
+        fixed_file=v5_sector.MEMBER_DIR / f'weekly-{FIXED_COHORT}.json.gz'
+        if not fixed_file.exists():
+            raise RuntimeError(f'Fixed cohort snapshot missing: {fixed_file}')
+        with gzip.open(fixed_file, 'rt', encoding='utf-8') as handle:
+            roster=json.load(handle)
+    if roster.get('observed_date') != FIXED_COHORT:
+        raise RuntimeError('Refusing to backcast with a membership cohort other than '+FIXED_COHORT)
     if not roster or not roster.get('observed_date') or not isinstance(roster.get('members'),dict):
         raise RuntimeError('Weekly membership archive unavailable; refusing historic backcast')
     observed=roster['observed_date']
