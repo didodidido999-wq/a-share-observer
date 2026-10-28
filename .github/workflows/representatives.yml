@@ -7,8 +7,8 @@ on:
       - '.github/workflows/representatives.yml'
       - 'a-share-observer/scripts/representative_roster.py'
   schedule:
-    # Beijing 16:25 on weekdays, after base daily archive collector.
-    - cron: '25 8 * * 1-5'
+    # Beijing 16:10 weekdays: stock daily K, incremental only.
+    - cron: '10 8 * * 1-5'
 permissions:
   contents: write
 concurrency:
