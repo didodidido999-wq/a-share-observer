@@ -385,6 +385,7 @@ async function renderSectorDetail(){
      pct:null,turnover:null,price:null,cum:null,activity:null,event:''};
    if(N(row.pct)!=null)item.pct=N(row.pct);
    if(N(row.turnover_100m)!=null)item.turnover=N(row.turnover_100m);
+   if(N(row.price)!=null)item.price=N(row.price);
    items.set(item.code,item);
  }
  const priced=[...items.values()].filter(x=>N(x.pct)!=null||N(x.turnover)!=null);

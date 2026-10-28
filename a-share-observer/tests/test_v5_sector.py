@@ -48,6 +48,7 @@ def test_focus_has_factual_reasons_not_hallucinated_roles():
     assert len(focus)==2
     assert all(r["membership_observed_date"]=="2026-10-27" for r in focus)
     assert "当日跌停" in next(r for r in focus if r["stock_code"]=="000002.SZ")["factual_tags"]
+    assert next(r for r in focus if r["stock_code"]=="000001.SZ")["turnover_100m"] == 0.002
     assert all("龙头" not in ",".join(r["factual_tags"]) for r in focus)
 
 
