@@ -1,0 +1,61 @@
+name: Verify and reactivate market scheduling
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/validate-cron-activation.yml'
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Read actual GitHub workflow states; enable only disabled collectors
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json,os,subprocess
+          targets={
+              'update.yml','representatives.yml','sectors.yml',
+              'global-direct.yml','funds-observer.yml',
+              'etf-state-shares.yml','recover-daily.yml'
+          }
+          repo=os.environ['GITHUB_REPOSITORY']
+          api=f'/repos/{repo}/actions/workflows'
+          def call(*args):
+              return subprocess.check_output(['gh','api',*args],text=True)
+          all_flows=json.loads(call(api,'-f','per_page=100','-X','GET')).get('workflows',[])
+          states={}
+          for w in all_flows:
+              name=w.get('path','').split('/')[-1]
+              if name not in targets:
+                  continue
+              state=w.get('state')
+              states[name]=state
+              print(f'WORKFLOW_STATE {name}: {state}',flush=True)
+              if state in ('disabled_manually','disabled_inactivity'):
+                  print(f'REACTIVATING {name}',flush=True)
+                  call('-X','PUT',f"/repos/{repo}/actions/workflows/{w['id']}/enable")
+              elif state!='active':
+                  raise RuntimeError(f'{name}: unexpected workflow state {state}')
+          missing=targets-set(states)
+          if missing: raise RuntimeError(f'Missing expected workflows: {sorted(missing)}')
+          for w in all_flows:
+              name=w.get('path','').split('/')[-1]
+              if name not in targets:continue
+              latest=json.loads(call(f"/repos/{repo}/actions/workflows/{w['id']}"))
+              print(f'RECHECKED_STATE {name}: {latest.get("state")}',flush=True)
+              if latest.get('state')!='active':
+                  raise RuntimeError(f'Schedule workflow still disabled: {name}')
+          print('SCHEDULE_ACTIVATION: all targeted workflows active',flush=True)
+          print('NOTE: active workflow state does not prove GitHub cron events were delivered.',flush=True)
+          PY
