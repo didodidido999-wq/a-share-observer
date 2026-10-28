@@ -29,6 +29,9 @@ START = "2026-06-10"
 # Small, stable set of widely-followed index ETFs. Do not call them all "state team".
 ETF_FOCUS = {
     "510300.SH": "沪深300ETF华泰柏瑞",
+    "510310.SH": "沪深300ETF易方达",
+    "510330.SH": "沪深300ETF华夏",
+    "159915.SZ": "创业板ETF易方达",
     "510050.SH": "上证50ETF华夏",
     "510500.SH": "中证500ETF南方",
     "159919.SZ": "沪深300ETF嘉实",
