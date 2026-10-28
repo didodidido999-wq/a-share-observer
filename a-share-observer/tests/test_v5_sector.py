@@ -81,3 +81,67 @@ def test_current_day_complete_sector_data_is_idempotent(monkeypatch):
         AssertionError('No member calls once fully archived')))
     assert result['status']=='complete'
     assert result['skipped'] is True
+
+
+def test_weekly_roster_reuses_fetched_members_and_daily_metrics_use_cached_asof(monkeypatch,tmp_path):
+    from datetime import datetime
+    monkeypatch.setattr(sector,'MEMBER_DIR',tmp_path)
+    roster={'code':'881101.TI','name':'农业'}
+    prices=[
+      {'thscode':'000001.SZ','price_change_ratio_pct':10,'turnover':2_000_000},
+      {'thscode':'000002.SZ','price_change_ratio_pct':-10,'turnover':1_000_000}
+    ]
+    member_calls=[]
+    def source(path, params):
+        member_calls.append((path,params))
+        assert path==sector.ENDPOINT
+        return {'item':[{'thscode':'000001.SZ','name':'甲'},
+                        {'thscode':'000002.SZ','name':'乙'}], 'total':2}
+    fake_day=datetime.now(sector.base.TZ).strftime('%Y-%m-%d')
+    observed='2026-10-25'
+    def read(path, default=None):
+        if str(path).endswith('dashboard.json'):
+            return {'sectors':[roster]}
+        if str(path).endswith('representatives.json'):
+            return {'universe':[{'code':'000001.SZ'}]}
+        return {'date':fake_day,'market':{'samples':2},
+                'sectors':[{'code':'881101.TI','name':'农业','pct':1.0,'turnover':12345}],
+                'stock_list':[{'thscode':'000001.SZ'}],
+                'limit_down_events':[{'thscode':'000002.SZ'}],
+                'limit_break_events':[], 'hot_rank_daily':[],
+                'limits':{'non_st':1},
+                'quality_manifest':{'limit_down_events':{'status':'complete'}}}
+    monkeypatch.setattr(sector.history,'read_json',read)
+    first=sector.weekly(client_get=source,observed_date=observed)
+    assert first['observed']==1
+    assert len(member_calls)==1
+    second=sector.weekly(client_get=source,observed_date=observed)
+    assert second['observed']==1
+    assert len(member_calls)==1, 'rerun must reuse weekly cached members'
+    writes=[]
+    monkeypatch.setattr(sector.history,'merge_day',lambda date,patch:writes.append((date,patch)))
+    monkeypatch.setattr(sector.history,'create_dashboard',lambda:None)
+    monkeypatch.setenv('SECTOR_ALLOW_EARLY','1')
+    result=sector.run(day=fake_day,stock_snapshot=prices,
+      client_get=lambda *_: (_ for _ in ()).throw(AssertionError('weekday must not call membership API')))
+    assert result['status']=='complete'
+    assert result['membership_observed_date']==observed
+    row=writes[0][1]['sectors'][0]
+    assert row['limit_up_count']==1
+    assert row['limit_down_count']==1
+    assert row['member_up_ratio']==50.0
+    assert row['membership_observed_date']==observed
+    assert writes[0][1]['quality_manifest']['sector_members']['source']=='weekly-member-snapshot:'+observed
+
+
+def test_current_day_cannot_use_future_weekly_roster(monkeypatch,tmp_path):
+    from datetime import datetime,timedelta
+    monkeypatch.setattr(sector,'MEMBER_DIR',tmp_path)
+    monkeypatch.setenv('SECTOR_ALLOW_EARLY','1')
+    today=datetime.now(sector.base.TZ).strftime('%Y-%m-%d')
+    future=(datetime.now(sector.base.TZ)+timedelta(days=5)).strftime('%Y-%m-%d')
+    sector._write_weekly({'881101.TI':{'000001.SZ':'甲'}},future,1,[])
+    monkeypatch.setattr(sector.history,'read_json',lambda *_:{
+      'market':{'up':1},'sectors':[{'code':'881101.TI'}]})
+    result=sector.run(day=today,stock_snapshot=[{'thscode':'000001.SZ'}])
+    assert result['status']=='not_ready'

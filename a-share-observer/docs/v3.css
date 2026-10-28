@@ -108,3 +108,18 @@ button.event-relay-head{border-left:0;cursor:pointer;color:#466677}
 @media(max-width:1300px){.rep-style-summary{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:900px){.rep-style-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.heat-inline-panel{max-width:calc(100vw - 50px)}}
 @media(max-width:550px){.sector-band-metric{min-width:90px;padding:3px 9px}.sector-band-identity{gap:5px}.rep-style-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.rep-filters label{width:calc(50% - 10px)}.rep-filters input,.rep-filters select{width:100%}.heat-inline-panel{padding:8px;max-width:calc(100vw - 35px)}}
+
+/* Sector research: compact observable liquidity leaderboard; same-day metrics */
+.sector-turnover-rank{margin:10px 0 14px;padding:12px 14px 11px;background:#f6f9fb;border:1px solid #e0e9ed;border-radius:7px}
+.sector-rank-caption{display:flex;gap:11px;align-items:baseline;margin-bottom:9px;color:var(--ink)}
+.sector-rank-caption strong{font-size:12px}.sector-rank-caption span{font-size:10px;color:#78909c}
+.sector-rank-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.sector-rank-item{min-width:0;border:1px solid #e3ebee;background:white;border-radius:5px;padding:8px;cursor:pointer;display:grid;grid-template-columns:15px minmax(0,1fr);gap:3px 6px;text-align:left;color:var(--ink);align-items:center}
+.sector-rank-item:hover,.sector-rank-item:focus-visible{border-color:#65a0b5;background:#eff8fa;outline:0}
+.sector-rank-item small{font-size:11px;color:#8b9eaa;grid-row:1 / span 2}
+.sector-rank-item span{font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sector-rank-item strong{font-size:11px;color:#326f8b;font-variant-numeric:tabular-nums;grid-column:2}
+#sector-market-status{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0;color:#536e7c;font-size:11px}
+#rep-style-view{min-width:145px}
+@media(max-width:1200px){.sector-rank-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:720px){.sector-rank-list{grid-template-columns:repeat(2,minmax(0,1fr))}.sector-rank-caption{flex-wrap:wrap}}

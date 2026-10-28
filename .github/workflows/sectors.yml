@@ -1,8 +1,23 @@
-name: Update observed sector membership and internals
+name: Weekly sector members / daily market internals
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'weekly refresh or daily close metrics'
+        type: choice
+        required: true
+        default: daily
+        options:
+          - daily
+          - weekly
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sectors.yml'
   schedule:
-    # Beijing 16:30 first snapshot, 17:00 missing-only retry on weekdays.
+    # Beijing Sunday 16:00: confirm current member roster once per week.
+    - cron: '0 8 * * 0'
+    # Beijing weekdays 16:30 and 17:00: daily prices/events, reuse the weekly roster.
     - cron: '30 8 * * 1-5'
     - cron: '0 9 * * 1-5'
 permissions:
@@ -33,7 +48,7 @@ jobs:
           SECTOR_MEMBERS_WORKERS: '2'
           SECTOR_MEMBERS_THROTTLE: '0.5'
           PYTHONUNBUFFERED: '1'
-        run: python a-share-observer/scripts/v5_sector.py
+        run: python a-share-observer/scripts/v5_sector.py --mode "${{ (github.event_name == 'push' || github.event.schedule == '0 8 * * 0') && 'weekly' || github.event.inputs.mode || 'daily' }}"
       - name: Commit derived sector archive and daily quality
         shell: bash
         run: |
@@ -58,6 +73,7 @@ jobs:
           done
           exit 1
       - name: Fail visibly if data coverage is critically low
+        if: github.event_name != 'push' && github.event.schedule != '0 8 * * 0' && github.event.inputs.mode != 'weekly'
         run: |
           python - <<'PY'
           import json

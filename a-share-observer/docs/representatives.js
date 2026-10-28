@@ -78,10 +78,23 @@ function summaries(){
   card.type='button';card.append(el('small',name),el('strong',group?pct(group.median):'—'),el('span',group?'观察 '+group.count+' 只 · 正收益 '+fmt(group.win,0)+'%':'尚无足够历史行情'));
   card.addEventListener('click',()=>{$('rep-dimension').value='economic_style';updateCategory();$('rep-category').value=name;ranking();animateScroll($('rep-ranking'));});block.append(card);}
  const windows=[5,10,20,40],all=dataset?.universe||[],date=$('rep-date').value;
- const heat=windows.map(n=>groupSummaries(all.map(r=>({...r,metrics:snapshot(r,date,n)})),'economic_style',n,'return'));
- const ser=labels.map(label=>({type:'bar',name:label,data:windows.map((n,i)=>heat[i].find(x=>x.name===label)?.median??null)}));
- if(ser.some(s=>s.data.some(v=>v!==null)))host.chart('rep-style-chart',{tooltip:{trigger:'axis'},xAxis:{type:'category',data:windows.map(n=>n+'日')},
-  yAxis:{type:'value',name:'池内中位收益 %',scale:true},legend:{type:'scroll',top:0},series:ser});
+ const styleView=$('rep-style-view').value;
+ let xLabels=[],series=[];
+ if(styleView==='line'){
+   // Genuine rolling trading-day time series: each point uses only the
+   // selected date and prior N trading bars, not future-window information.
+   const traded=[...new Set(all.flatMap(r=>(dataset?.prices?.[r.code]||[]).map(p=>p.date)))].filter(d=>d<=date).sort().slice(-10);
+   xLabels=traded.map(d=>d.slice(5));
+   const lookback=Number($('rep-window').value);
+   const histories=traded.map(d=>groupSummaries(all.map(r=>({...r,metrics:snapshot(r,d,lookback)})),'economic_style',lookback,'return'));
+   series=labels.map(label=>({type:'line',name:label,connectNulls:false,symbolSize:5,smooth:false,data:histories.map(groups=>groups.find(x=>x.name===label)?.median??null)}));
+ }else{
+   const heat=windows.map(n=>groupSummaries(all.map(r=>({...r,metrics:snapshot(r,date,n)})),'economic_style',n,'return'));
+   xLabels=windows.map(n=>n+'日');
+   series=labels.map(label=>({type:'bar',name:label,data:windows.map((n,i)=>heat[i].find(x=>x.name===label)?.median??null)}));
+ }
+ if(series.some(v=>v.data.some(n=>n!==null)))host.chart('rep-style-chart',{tooltip:{trigger:'axis'},xAxis:{type:'category',data:xLabels},
+  yAxis:{type:'value',name:styleView==='line'?'滚动'+$('rep-window').value+'日收益中位数 %':'区间收益中位数 %',scale:true},legend:{type:'scroll',top:0},series});
  else host.noChart('rep-style-chart','观察池历史数据尚未采集，暂不生成风格排名。');
  const tags=empty('rep-tag-summary');
  for(const dim of ['industry','tags']){const names=groupSummaries(data,dim,Number($('rep-window').value),'return').slice(0,15);
@@ -104,7 +117,7 @@ async function render(context){host=context;await load();
  if(context.state.page!=='history')return;
  initDate();updateCategory();redraw();
 }
-function bind(){for(const id of ['rep-date','rep-window','rep-category','rep-metric','rep-direction'])$(id)?.addEventListener('change',redraw);
+function bind(){for(const id of ['rep-date','rep-window','rep-category','rep-metric','rep-direction','rep-style-view'])$(id)?.addEventListener('change',redraw);
  $('rep-dimension')?.addEventListener('change',()=>{updateCategory();redraw();});
  $('rep-search')?.addEventListener('input',ranking);
 }
