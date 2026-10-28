@@ -39,7 +39,8 @@ def status_for_snapshot(snapshot):
         'limits': 'complete' if snapshot.get('limits') is not None and 'stock_list' in snapshot else 'missing',
         'limit_down_events': 'not_collected', 'limit_break_events': 'not_collected',
         'hot_rank_daily': 'not_collected', 'anomaly_daily': 'not_collected',
-        'sector_members': 'not_collected', 'sector_focus_stocks': 'not_collected',
+        'sector_members': 'not_collected', 'sector_internal_metrics': 'not_collected',
+        'sector_focus_stocks': 'not_collected',
         'next_day_feedback': 'not_collected',
     }
     for module, default in defaults.items():

@@ -98,7 +98,7 @@ def merge_day(day, additions):
             merged[field] = list(objects.values())
     for field in ('limit_down_events', 'limit_break_events', 'hot_rank_daily',
                   'anomaly_daily', 'sector_focus_stocks', 'event_summary',
-                  'next_day_feedback'):
+                  'next_day_feedback', 'event_sector_map'):
         if field in additions and additions[field] is not None:
             merged[field] = additions[field]
     if isinstance(additions.get('quality_manifest'), dict):
