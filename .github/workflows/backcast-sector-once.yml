@@ -1,0 +1,54 @@
+name: One-time fixed-roster historical sector backcast
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/backcast-sector-once.yml'
+permissions:
+  contents: write
+concurrency:
+  group: sector-backcast-once
+  cancel-in-progress: false
+jobs:
+  backcast:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: a-share-observer/requirements.txt
+      - run: python -m pip install -r a-share-observer/requirements.txt
+      - name: Verify historical membership attribution is labeled
+        run: python -m pytest -q a-share-observer/tests
+      - name: Backcast pre-snapshot dates using 2026-10-28 roster and saved event pools only
+        env:
+          PYTHONUNBUFFERED: '1'
+        run: python a-share-observer/scripts/backcast_sector_events.py
+      - name: Commit dated backcast with explicit cohort version
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A a-share-observer/docs/data/history a-share-observer/docs/data/dashboard.json a-share-observer/docs/data/dates.json
+          if git diff --cached --quiet; then
+            echo 'No missing backcast days; no changes needed'
+            exit 0
+          fi
+          git commit -m 'data: labeled historical board events by 2026-10-28 fixed cohort'
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            if ! git rebase origin/main; then
+              git rebase --abort || true
+              exit 1
+            fi
+            sleep "$attempt"
+          done
+          exit 1
