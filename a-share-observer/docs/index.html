@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="v3.css?v=4.6.0">
 <script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=4.6.0"></script>
 <script defer src="event-sector.js?v=4.2.0"></script><script defer src="representatives.js?v=4.4.0"></script>
+<script defer src="funds-observer.js?v=1.0.0"></script>
 </head><body>
 <div class="shell">
 <aside class="sidebar" id="sidebar">
@@ -36,7 +37,16 @@
    <article class="panel"><div class="panel-header"><div><div class="kicker">03 / LIQUIDITY & MOMENTUM</div><h2>量能与短线反馈</h2><p>成交额亿元；涨跌停 / 连板按实际取得数据展示</p></div><label class="tool-select">显示<select id="market-trend-type"><option value="turnover">成交额</option><option value="limits">涨停与连板</option><option value="breadth">上涨与下跌家数</option></select></label></div><div class="chart large" id="liquidity-chart"></div></article></div>
   <div class="split-grid"><article class="panel"><div class="panel-header"><div><div class="kicker">04 / FACTOR ROTATION</div><h2>市场风格变化</h2><p>切换日期与分类，观察组内收益和上涨广度</p></div><div class="filters"><select id="style-dimension"><option value="价格分档">价格分档</option><option value="交易制度代理">10cm / 20cm / 30cm</option></select><select id="style-metric"><option value="median_pct">涨跌幅中位数</option><option value="up_ratio">上涨比例</option><option value="limit_up">涨停数</option><option value="sample">样本数</option></select></div></div><div class="style-bars" id="style-bars"></div></article>
    <article class="panel"><div class="panel-header"><div><div class="kicker">05 / DAILY EVIDENCE</div><h2>市场变化事实</h2><p>仅从可验证的历史数据计算，不做主观情绪评分</p></div></div><div id="market-facts" class="fact-list"></div></article></div>
-  <article class="panel"><div class="panel-header"><div><div class="kicker">06 / DAILY LEDGER</div><h2>历史市场账本</h2></div><span class="meta">点击任意一日，联动回放</span></div><div class="table-wrap"><table><thead><tr><th>日期</th><th>上涨</th><th>下跌</th><th>中位数</th><th>成交额（亿）</th><th>非ST涨停</th><th>最高连板</th></tr></thead><tbody id="daily-ledger"></tbody></table></div></article>
+  <article class="panel" id="funds-observer" aria-label="资金观察">
+   <div class="panel-header"><div><div class="kicker">06 / CAPITAL OBSERVATIONS</div><h2>资金观察 · 融资杠杆与机构披露</h2><p>融资余额是实际信用资金存量；机构持有人是定期披露，不等于国家队当日买卖</p></div><label class="tool-select">资金曲线<select id="fund-chart-metric"><option value="balance">融资余额</option><option value="change">单日余额变化</option></select></label></div>
+   <div id="fund-status" class="inline-note" role="status">读取资金归档中…</div>
+   <div id="fund-summary" class="fund-summary"></div>
+   <div class="fund-views">
+     <div><div id="fund-chart" class="chart"></div><div class="table-wrap"><table><thead><tr><th>交易日</th><th>融资余额（亿）</th><th>余额日变动（亿）</th><th>融券余额（亿）</th><th>融资买入额（亿）</th></tr></thead><tbody id="fund-history-body"></tbody></table></div></div>
+     <div class="fund-disclosure"><h3>重要宽基ETF · 持有人披露</h3><p class="inline-note">仅按真实姓名及披露日期展示，不根据ETF成交额推断国家级资金交易。</p><div id="fund-holders"></div></div>
+   </div>
+  </article>
+  <article class="panel"><div class="panel-header"><div><div class="kicker">07 / DAILY LEDGER</div><h2>历史市场账本</h2></div><span class="meta">点击任意一日，联动回放</span></div><div class="table-wrap"><table><thead><tr><th>日期</th><th>上涨</th><th>下跌</th><th>中位数</th><th>成交额（亿）</th><th>非ST涨停</th><th>最高连板</th></tr></thead><tbody id="daily-ledger"></tbody></table></div></article>
  </section>
 
  <section id="events" class="page">
