@@ -20,12 +20,28 @@ try{
  await page.waitForFunction(()=>document.querySelector('#sector-turnover-rank')?.textContent?.includes('成交额'),{timeout:15000});
  check((await page.locator('#sector-turnover-rank .sector-rank-item').count())>=5,'Metric cards missing');
  const first=await page.locator('#sector-turnover-rank .sector-rank-item').first().textContent();
+ const cardNames=await page.locator('#sector-turnover-rank .sector-rank-item span').allTextContents();
+ const lines=await page.evaluate(()=>{
+   const c=window.echarts?.getInstanceByDom(document.getElementById('sector-chart'));
+   return c?.getOption()?.series?.map(s=>s.name)||[];
+ });
+ check(JSON.stringify(cardNames)===JSON.stringify(lines),
+   'Sector line series must exactly correspond to the metric-ranked cards, in order');
+ check(!(await page.locator('#sector-add').count()),'Manual board picker should be removed');
+ await page.locator('#sector-sort').selectOption('metric_asc');
+ check((await page.locator('#sector-sort option').first().textContent()).includes('成交额'),
+   'Sort options must reflect the selected measure');
+ await page.locator('#sector-sort').selectOption('metric_desc');
  check(first.includes('亿'),'Turnover cards should show RMB 100m units');
  await page.locator('#heat-metric').selectOption('pct');
  await page.waitForFunction(()=>document.querySelector('.sector-rank-caption')?.textContent?.includes('日涨跌幅'),{timeout:10000});
  check(!(await page.locator('.sector-rank-caption').textContent()).includes('成交额排行'),'Top ten failed to follow metric');
  check((await page.locator('#sector-sort option').first().textContent()).includes('日涨跌幅'),'Metric sort labels did not follow');
  await click('#sector-turnover-rank .sector-rank-item:first-child');
+ const firstCard=await page.locator('#sector-turnover-rank .sector-rank-item:first-child span').textContent();
+ check((await page.locator('.heat-label-button.is-expanded').first().textContent()).includes(firstCard),
+   'Clicking top card must expand matching sector');
+
  await page.waitForSelector('#sector-inline-detail',{timeout:15000});
  check(await visible('#sector-inline-detail'),'Clicking top-card must reveal inline board detail');
  check((await page.locator('.heat-label-button.is-expanded').count())===1,'Expanded row not highlighted');
