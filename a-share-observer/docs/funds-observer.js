@@ -20,7 +20,7 @@ function render({state,chart,noChart}){
  const exact=byDate.get(state.selected);
  const latest=rows.filter(x=>x.date<=state.selected).at(-1);
  $('fund-status').textContent=!data?'资金源尚无可用归档；未采集不等于资金不变。':
-  '融资数据截至 '+(latest?.date||'暂缺')+' · '+(exact?'所选日已披露':'所选日暂未披露，显示最近已知值')+' · 融资并不等于散户资金，通常T+1发布。';
+  '融资数据截至 '+(latest?.date||'暂缺')+' · '+(exact?'所选日已披露':'所选日尚未披露，余额仅显示最近已知值')+' · 融资并不等于散户资金，通常T+1发布。';
  const host=$('fund-summary');host.replaceChildren();
  const prev=rows.filter(x=>x.date<(latest?.date||'')).at(-1);
  const a=latest?.financing_balance_100m,b=prev?.financing_balance_100m;
@@ -69,6 +69,11 @@ function render({state,chart,noChart}){
     tr.append(node('td',v));
   table.append(tr);
  }
+
+
+}
+function renderHoldings({state}){
+ if(!data&&!error){load().then(()=>{if(state.page==='today')renderHoldings({state});});return;}
  const holder=$('fund-holders');holder.replaceChildren();
  const observed=(data?.disclosures||[]).filter(x=>x.observed_at<=state.selected);
  if(!observed.length){
@@ -96,5 +101,5 @@ function render({state,chart,noChart}){
   box.append(body);holder.append(box);
  }
 }
-window.MarketScopeFunds={render,load};
+window.MarketScopeFunds={render,renderHoldings,load};
 })();
