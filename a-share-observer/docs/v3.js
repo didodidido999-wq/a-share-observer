@@ -118,11 +118,11 @@ function renderSectors(){if(state.page==='sectors'&&state.days.some(d=>!state.de
  const daily=snapshot(state.selected),limit=daily.limits||{};
  const down=daily.limit_down_events,breaks=daily.limit_break_events;
  const nup=limit.non_st??null,ndown=Array.isArray(down)?down.length:null,nbr=Array.isArray(breaks)?breaks.length:null;
- const q=daily.quality_manifest||{},status=cleared('sector-market-status');
+ const qualityByDate=daily.quality_manifest||{},status=cleared('sector-market-status');
  status.append(text('strong','全市场事件 · '+state.selected+'：'));
  status.append(text('span','涨停 '+(nup??'—')+'只 ｜ 跌停 '+(ndown??'—')+'只 ｜ 炸板 '+(nbr??'—')+'只。'));
  status.append(text('span','板块涨跌停归属以成员快照计算；未存成员的历史日期显示—，不是零。'));
- if(q.limit_down_events?.status==='partial')status.append(text('span','（跌停池部分完整）'));
+ if(qualityByDate.limit_down_events?.status==='partial')status.append(text('span','（跌停池部分完整）'));
  let host=cleared('sector-heat'),grid=text('div','','heat-grid');grid.style.gridTemplateColumns=`160px repeat(${days.length},minmax(68px,1fr))`;grid.append(text('div','板块 / 交易日','heat-head'));for(const d of days)grid.append(text('div',dateShort(d),'heat-head'));let countKnown=0,totalCells=0;
  for(const sectorItem of filtered.slice(state.sectorPage*40,state.sectorPage*40+40)){
    const opening=state.sectorFocus===sectorItem.code;
