@@ -1,0 +1,269 @@
+{
+  "asof": "2026-10-28T14:18:36.839215+08:00",
+  "source": "hithink-finance existing GitHub Actions secret",
+  "mode": "one-time-discovery",
+  "etfs": {
+    "korea_chip_mixed": {
+      "code": "513310.SH",
+      "purpose": "中韩芯片/韩国半导体",
+      "name": "中韩半导体ETF华泰柏瑞",
+      "type_verified": true,
+      "bars": 16,
+      "first": "2026-09-30",
+      "last": "2026-10-28",
+      "status": "verified_daily"
+    },
+    "us_nasdaq_tech": {
+      "code": "159509.SZ",
+      "purpose": "美国科技/间接半导体",
+      "name": "纳指科技ETF景顺",
+      "type_verified": true,
+      "bars": 16,
+      "first": "2026-09-30",
+      "last": "2026-10-28",
+      "status": "verified_daily"
+    },
+    "us_oil_gas_equities": {
+      "code": "513350.SH",
+      "purpose": "美国石油天然气股票",
+      "name": "标普油气ETF富国",
+      "type_verified": true,
+      "bars": 16,
+      "first": "2026-09-30",
+      "last": "2026-10-28",
+      "status": "verified_daily"
+    },
+    "china_oil_gas_equities": {
+      "code": "159148.SZ",
+      "purpose": "国内油气股票",
+      "name": "石油ETF富国",
+      "type_verified": true,
+      "bars": 16,
+      "first": "2026-09-30",
+      "last": "2026-10-28",
+      "status": "verified_daily"
+    },
+    "china_oil_gas_etf": {
+      "code": "159588.SZ",
+      "purpose": "国内油气股票备选",
+      "name": "石油ETF景顺",
+      "type_verified": true,
+      "bars": 16,
+      "first": "2026-09-30",
+      "last": "2026-10-28",
+      "status": "verified_daily"
+    },
+    "china_semiconductor": {
+      "code": "512480.SH",
+      "purpose": "A股半导体对照",
+      "name": "半导体ETF国联安",
+      "type_verified": true,
+      "bars": 16,
+      "first": "2026-09-30",
+      "last": "2026-10-28",
+      "status": "verified_daily"
+    },
+    "china_chip": {
+      "code": "159995.SZ",
+      "purpose": "A股芯片对照",
+      "name": "芯片ETF华夏",
+      "type_verified": true,
+      "bars": 16,
+      "first": "2026-09-30",
+      "last": "2026-10-28",
+      "status": "verified_daily"
+    },
+    "us_nasdaq100_second": {
+      "code": "159941.SZ",
+      "purpose": "美国纳指100另一ETF",
+      "name": "纳指ETF广发",
+      "type_verified": true,
+      "bars": 16,
+      "first": "2026-09-30",
+      "last": "2026-10-28",
+      "status": "verified_daily"
+    }
+  },
+  "search": {
+    "罗素2000": {
+      "status": "ok",
+      "results": []
+    },
+    "韩国": {
+      "status": "ok",
+      "results": []
+    },
+    "中韩": {
+      "status": "ok",
+      "results": [
+        {
+          "code": "513310.SH",
+          "name": "中韩半导体ETF华泰柏瑞",
+          "type": "fund-etf"
+        },
+        {
+          "code": "885591.TI",
+          "name": "中韩自贸区",
+          "type": "a-share-index"
+        }
+      ]
+    },
+    "波动率": {
+      "status": "ok",
+      "results": []
+    },
+    "美元指数": {
+      "status": "ok",
+      "results": [
+        {
+          "code": "USDIND",
+          "name": "美元指数",
+          "type": "forex"
+        }
+      ]
+    },
+    "原油": {
+      "status": "ok",
+      "results": [
+        {
+          "code": "003563.OF",
+          "name": "原油美元",
+          "type": "fund-otc"
+        },
+        {
+          "code": "006476.OF",
+          "name": "原油C",
+          "type": "fund-otc"
+        },
+        {
+          "code": "160723.SZ",
+          "name": "嘉实原油LOF",
+          "type": "fund-lof"
+        },
+        {
+          "code": "161129.SZ",
+          "name": "原油LOF易方达",
+          "type": "fund-lof"
+        },
+        {
+          "code": "164815.SZ",
+          "name": "原油LOF",
+          "type": "fund-otc"
+        },
+        {
+          "code": "501018.SH",
+          "name": "南方原油LOF",
+          "type": "fund-lof"
+        },
+        {
+          "code": "SC00.INE",
+          "name": "原油连续",
+          "type": "futures"
+        },
+        {
+          "code": "SC2611.INE",
+          "name": "原油2611",
+          "type": "futures"
+        },
+        {
+          "code": "SC2612.INE",
+          "name": "原油2612",
+          "type": "futures"
+        },
+        {
+          "code": "SC2612C355.INE",
+          "name": "原油2612购355",
+          "type": "options"
+        },
+        {
+          "code": "SC2612C360.INE",
+          "name": "原油2612购360",
+          "type": "options"
+        },
+        {
+          "code": "SC2612C365.INE",
+          "name": "原油2612购365",
+          "type": "options"
+        },
+        {
+          "code": "SC2612C370.INE",
+          "name": "原油2612购370",
+          "type": "options"
+        },
+        {
+          "code": "SC2612C375.INE",
+          "name": "原油2612购375",
+          "type": "options"
+        },
+        {
+          "code": "SC2612C380.INE",
+          "name": "原油2612购380",
+          "type": "options"
+        },
+        {
+          "code": "SC2612C385.INE",
+          "name": "原油2612购385",
+          "type": "options"
+        },
+        {
+          "code": "SC2612C390.INE",
+          "name": "原油2612购390",
+          "type": "options"
+        },
+        {
+          "code": "SC2612C395.INE",
+          "name": "原油2612购395",
+          "type": "options"
+        },
+        {
+          "code": "SC2612C400.INE",
+          "name": "原油2612购400",
+          "type": "options"
+        },
+        {
+          "code": "SC2612C405.INE",
+          "name": "原油2612购405",
+          "type": "options"
+        }
+      ]
+    },
+    "布伦特": {
+      "status": "ok",
+      "results": []
+    },
+    "WTI": {
+      "status": "ok",
+      "results": []
+    }
+  },
+  "futures": {
+    "SC": {
+      "purpose": "国内原油期货",
+      "main_continuous_status": "ok",
+      "main_continuous_matches": [],
+      "commodity_index_status": "ok",
+      "commodity_index_matches": []
+    },
+    "CU": {
+      "purpose": "国内铜期货",
+      "main_continuous_status": "ok",
+      "main_continuous_matches": [],
+      "commodity_index_status": "ok",
+      "commodity_index_matches": []
+    },
+    "AU": {
+      "purpose": "国内黄金期货",
+      "main_continuous_status": "ok",
+      "main_continuous_matches": [],
+      "commodity_index_status": "ok",
+      "commodity_index_matches": []
+    },
+    "AG": {
+      "purpose": "国内白银期货",
+      "main_continuous_status": "ok",
+      "main_continuous_matches": [],
+      "commodity_index_status": "ok",
+      "commodity_index_matches": []
+    }
+  }
+}
