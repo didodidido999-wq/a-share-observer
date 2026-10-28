@@ -209,6 +209,9 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
         stocks.extend(pick_focus(code, members, prices, up, down, broken, hot,
                                  representatives, day))
     quality = 'complete' if observed == len(sector_codes) else 'partial'
+    coverage_ok = sum((x.get('member_count') or 0) == 0 or (x.get('member_price_sample') or 0) >= .90 * x['member_count'] for x in derived)
+    inner_quality = ('complete' if (quality == 'complete' and down_complete and up_complete
+                                      and coverage_ok == observed) else 'partial')
     captured_at = datetime.now(base.TZ).isoformat()
     patch = {
         'sectors': derived,
@@ -219,6 +222,10 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
                                'items_count': observed, 'expected_count': len(sector_codes),
                                'source': ENDPOINT, 'collected_at': captured_at,
                                'failed_count': len(errors)},
+            'sector_internal_metrics': {'trade_date': day, 'status': inner_quality,
+                                        'items_count': coverage_ok, 'expected_count': len(sector_codes),
+                                        'source': 'same-date constituents + same-date stock snapshot',
+                                        'collected_at': captured_at},
             'sector_focus_stocks': {'trade_date': day, 'status': quality if (down_complete and up_complete) else 'partial',
                                     'items_count': len(stocks), 'source': 'observed constituents + daily snapshot',
                                     'collected_at': captured_at}
