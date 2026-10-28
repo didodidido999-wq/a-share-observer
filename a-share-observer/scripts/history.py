@@ -203,8 +203,16 @@ def create_dashboard():
               'earliest_saved_date':manifest['earliest'],'configured_start':START_DATE.isoformat(),
               'industry_limit_mapping':'历史涨停归因不可由现今板块成员代替，无法确认时留空'},
             'warnings':warnings}
-    write_json(DATA/'dashboard.json',data)
-    write_json(DATA/'dates.json',manifest)
+    # Avoid one Git commit per no-op refresh. Timestamps alone do not
+    # represent a new observation.
+    old_data={k:v for k,v in old.items() if k!='generated_at'}
+    new_data={k:v for k,v in data.items() if k!='generated_at'}
+    if old_data != new_data:
+        write_json(DATA/'dashboard.json',data)
+    old_manifest=read_json(DATA/'dates.json',{})
+    if {k:v for k,v in old_manifest.items() if k!='generated_at'} != {
+            k:v for k,v in manifest.items() if k!='generated_at'}:
+        write_json(DATA/'dates.json',manifest)
     return data
 
 
