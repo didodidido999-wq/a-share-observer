@@ -14,6 +14,9 @@ on:
       - '.github/workflows/repair-events-once.yml'
       - 'a-share-observer/scripts/v5_sector.py'
       - 'a-share-observer/scripts/global_direct.py'
+      - 'a-share-observer/scripts/funds_observer.py'
+      - 'a-share-observer/tests/test_funds_observer.py'
+      - '.github/workflows/funds-observer.yml'
       - 'a-share-observer/scripts/probe_hithink_substitutes.py'
       - 'a-share-observer/tests/test_probe_hithink_substitutes.py'
       - '.github/workflows/probe-hithink-substitutes-once.yml'
@@ -56,6 +59,7 @@ jobs:
           node --check a-share-observer/docs/v3.js
           node --check a-share-observer/docs/event-sector.js
           node --check a-share-observer/docs/representatives.js
+          node --check a-share-observer/docs/funds-observer.js
       - name: EdgeOne asset build and output verification
         run: npm run build
       - name: Basic HTML integration smoke assertions
@@ -66,11 +70,11 @@ jobs:
           const app=fs.readFileSync('a-share-observer/docs/v3.js','utf8');
           const events=fs.readFileSync('a-share-observer/docs/event-sector.js','utf8');
           const history=fs.readFileSync('a-share-observer/docs/representatives.js','utf8');
-          const keys=['event-relay-mode','event-sector-filter','events-day-slider',
+          const keys=['funds-observer','fund-chart','fund-chart-metric','fund-summary','fund-holders','event-relay-mode','event-sector-filter','events-day-slider',
             'event-feedback-grid','sector-heat','rep-style-summary','rep-ranking','rep-date',
             'rep-window','rep-dimension','rep-category','rep-metric','rep-table-body'];
           for(const id of keys)if(!h.includes('id="'+id+'"'))throw Error('Missing UI control '+id);
-          for(const script of ['v3.js','event-sector.js','representatives.js'])if(!h.includes('src="'+script+'?'))throw Error('Missing script '+script);
+          for(const script of ['v3.js','event-sector.js','representatives.js','funds-observer.js'])if(!h.includes('src="'+script+'?'))throw Error('Missing script '+script);
           if(!events.includes("relayMode==='down'")||!events.includes(" has-break"))throw Error('Negative event modes missing');
           if(!app.includes("sector-inline-detail")||!app.includes("MarketScopeHistory.render"))throw Error('Page routing/sector expansion missing');
           if(!history.includes('drawdown')||!history.includes('up_ratio'))throw Error('Loss dimension missing');
