@@ -185,7 +185,8 @@ def enrich_today(day, base, read_json, archive_path, merge_day):
             else:
                 # Current-day-only API: never request a historical date or backfill from today.
                 if day != datetime.now(base.TZ).strftime('%Y-%m-%d'):
-                    quality[domain] = quality_entry('not_collected', day, source='hithink-finance')
+                    # Historical-only requests cannot recover a live-only
+                    # source; retain archived status unchanged, with no write.
                     continue
                 records = fetch_list(base.client_get, ENDPOINTS[domain], {}, day)
             patch[domain] = records
