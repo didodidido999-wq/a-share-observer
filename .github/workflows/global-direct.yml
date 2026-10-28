@@ -15,8 +15,8 @@ on:
       - '.github/workflows/global-direct.yml'
       - 'a-share-observer/scripts/global_direct.py'
   schedule:
-    # 18:20 Beijing on weekdays: ETFs closed; latest U.S. rates when available.
-    - cron: '20 10 * * 1-5'
+    # 18:23 Beijing on weekdays: ETFs closed; latest U.S. rates when available.
+    - cron: '23 10 * * 1-5'
 permissions:
   contents: write
 concurrency:
