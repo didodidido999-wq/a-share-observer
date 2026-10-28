@@ -5,6 +5,10 @@ on:
       - 'a-share-observer/docs/**'
       - 'a-share-observer/scripts/v4_representatives.py'
       - 'a-share-observer/tests/test_v4_representatives.py'
+      - 'a-share-observer/tests/test_v5_sector.py'
+      - 'a-share-observer/scripts/v5_sector.py'
+      - '.github/workflows/sectors.yml'
+      - '.github/workflows/update.yml'
       - '.github/workflows/verify-v4.yml'
   push:
     branches: [main]
