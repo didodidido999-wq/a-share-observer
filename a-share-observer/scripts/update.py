@@ -16,7 +16,8 @@ BASE = 'https://fuyao.aicubes.cn'
 TZ = ZoneInfo('Asia/Shanghai')
 HEADERS = {'User-Agent': 'a-share-observer/0.1'}
 INDEX_CODES = {'上证指数':'000001.SH','深证成指':'399001.SZ','沪深300':'000300.SH','中证500':'000905.SH',
-               '中证1000':'000852.SH','中证2000':'932000.CSI','创业板指':'399006.SZ','科创50':'000688.SH','北证50':'899050.BJ'}
+               '上证50':'000016.SH','中证A500':'000510.CSI','中证红利':'000922.CSI',
+               '中证1000':'000852.CSI','中证2000':'932000.CSI','创业板指':'399006.SZ','科创50':'000688.SH','北证50':'899050.BJ'}
 MAX_WORKERS = max(1,min(6,int(os.getenv('SECTOR_WORKERS','3'))))
 MAX_INDICES = max(0,int(os.getenv('MAX_SECTOR_INDICES','0'))) # 0=all; no silent truncation
 
