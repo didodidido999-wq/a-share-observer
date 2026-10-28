@@ -91,16 +91,60 @@ function metricValue(code,day,metric){const p=sectorValue(day,code),idx=state.da
  if(metric==='cum')return cumulativeSector(code,idx);
  if(metric==='relative'){const a=cumulativeSector(code,idx),b=cumulativeIndex($('sector-benchmark').value,idx);return a==null||b==null?null:a-b;}
  if(metric==='pct')return N(p.pct);
+ if(metric==='limit_down_count'&&p.limit_down_count==null)return N(p.limit_down_known_count);
+ if(metric==='limit_down_ratio'&&p.limit_down_ratio==null)return N(p.limit_down_known_ratio);
  if(metric==='turnover')return N(p.turnover)==null?null:p.turnover/1e8;
  if(metric==='activity'){if(idx<4||N(p.turnover)==null)return null;let rows=state.days.slice(idx-4,idx+1).map(d=>N(sectorValue(d,code).turnover));if(rows.some(x=>x==null))return null;let ma=rows.reduce((a,b)=>a+b,0)/5;return ma>0?p.turnover/ma:null;}
  const nested=p.member_metrics||p.sector_member_metrics||p.metrics||{};
  if(metric==='limit_diff'){const a=pick(p,'limit_up_count'),b=pick(p,'limit_down_count');const x=a??nested.limit_up_count,y=b??nested.limit_down_count;return x==null||y==null?null:Number(x)-Number(y);}
  if(metric==='limit_up_count'&&p.limit_up_count==null&&nested.limit_up_count==null)return null; // legacy limit_up_proxy is NOT a verified count
  return N(pick(p,metric)??pick(nested,metric));}
+
+function heatMetricAggregate(code,metric){
+ const ds=state.days,values=ds.map(d=>metricValue(code,d,metric));
+ if(!values.length||values.some(v=>v==null))return null;
+ if(metric==='pct')return cumulativeSector(code,ds.length-1);
+ const sum=values.reduce((a,b)=>a+b,0);
+ return ['activity','member_up_ratio','limit_up_ratio','limit_down_ratio','member_median'].includes(metric)?sum/values.length:sum;
+}
+function heatSortValue(code,kind,metric){
+ if(kind==='name')return null;
+ if(kind==='cum')return cumulativeSector(code,state.days.length-1);
+ if(kind==='latest')return metricValue(code,state.selected,'pct');
+ if(kind==='turnover')return metricValue(code,state.selected,'turnover');
+ if(kind==='metric_range')return heatMetricAggregate(code,metric);
+ return metricValue(code,state.selected,metric);
+}
+function heatIsLowerBound(code,day,metric){
+ if(!['limit_down_count','limit_down_ratio'].includes(metric))return false;
+ const p=sectorValue(day,code);
+ return p.limit_down_completeness==='partial'&&p[metric]==null&&
+   (metric==='limit_down_count'?p.limit_down_known_count:p.limit_down_known_ratio)!=null;
+}
+function heatValueText(v,metric,lowerBound=false){
+ if(v==null)return '—';
+ const dp=['limit_up_count','limit_down_count','hot_count','limit_diff'].includes(metric)?0:2;
+ return (lowerBound?'≥':'')+number(v,dp);
+}
+function syncHeatControls(){
+ const ds=state.days,sel=$('sector-date');
+ if(sel&&sel.options.length!==ds.length){
+   sel.replaceChildren();
+   for(const d of ds){const op=text('option',d);op.value=d;sel.append(op);}
+ }
+ if(sel)sel.value=state.selected;
+ const metric=$('heat-metric').value,sort=$('sector-sort'),label=SECTOR_META[metric]?.[0]||'所选指标';
+ if(sort?.options.length>=3){
+   sort.options[0].textContent=label+' · 高→低';
+   sort.options[1].textContent=label+' · 低→高';
+   const avg=['activity','member_up_ratio','limit_up_ratio','limit_down_ratio'].includes(metric);
+   sort.options[2].textContent=label+(avg?' · 区间日均':' · 区间合计');
+ }
+}
 function initializeSectors(kind){let all=sectorCatalog().filter(s=>s.tag===kind),selected=state.sectorSelection[kind];if(state.sectorManual[kind])return selected;let ranked=all.map(x=>({code:x.code,v:cumulativeSector(x.code,state.days.length-1)})).filter(x=>x.v!=null).sort((a,b)=>b.v-a.v);selected=ranked.slice(0,5).map(x=>x.code);state.sectorSelection[kind]=selected;return selected;}
 function updateSectorChips(){const host=cleared('sector-chips'),kind=state.sectorKind;let all=sectorCatalog();for(const code of initializeSectors(kind)){const s=all.find(x=>x.code===code);let chip=text('span',s?.name||code,'chip');let button=text('button','×');button.setAttribute('aria-label',`移除 ${s?.name||code}`);button.type='button';button.addEventListener('click',()=>{state.sectorSelection[kind]=state.sectorSelection[kind].filter(x=>x!==code);state.sectorManual[kind]=true;renderSectors();});chip.append(button);host.append(chip);}}
 function sectorAdd(code){const obj=sectorCatalog().find(x=>x.tag===state.sectorKind&&(x.code===code||x.name===code));if(!obj){notice('没有找到匹配当前行业/概念类型的板块');return;}let list=state.sectorSelection[state.sectorKind];if(list.includes(obj.code))return;if(list.length>=6){notice('主图最多同时显示6条板块曲线；请先移除一个板块。');return;}list.push(obj.code);state.sectorManual[state.sectorKind]=true;state.sectorFocus=obj.code;renderSectors();}
-function renderSectors(){if(state.page==='sectors'&&state.days.some(d=>!state.detailLoaded.has(d))&&!state.sectorDetailLoading){
+function renderSectors(){syncHeatControls();if(state.page==='sectors'&&state.days.some(d=>!state.detailLoaded.has(d))&&!state.sectorDetailLoading){
  state.sectorDetailLoading=true;
  loadRange([...state.days]).then(()=>{if(state.page==='sectors')renderSectors();}).finally(()=>{state.sectorDetailLoading=false;});
  }
