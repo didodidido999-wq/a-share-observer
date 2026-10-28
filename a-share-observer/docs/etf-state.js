@@ -63,7 +63,7 @@ function render({state,chart,noChart}){
                           typeof previous[code]?.shares==='number');
  const expanding=seen.filter(code=>dated[code].shares>previous[code].shares);
  const summary=[
-  ['公开汇金持有',selectedCodes.length+'只ETF','以已公布的前十大持有人姓名核实，并非实时账户'],
+  ['历史披露汇金持有',selectedCodes.length+'只ETF','按前十大持有人真实姓名核实，不代表当前仍持有'],
   ['当日扩份额',seen.length?expanding.length+'/'+seen.length:'—',
    seen.length?'仅对当日及前一交易日均有份额的样本统计':'所选日份额或前一交易日份额未齐'],
   ['最新份额统计日',known||'—','ETF份额来自交易所；不是资金买卖身份']
@@ -101,7 +101,7 @@ function render({state,chart,noChart}){
   tr.title='点击只观察此ETF的10日相对份额趋势';
   const cells=[
    data.watch[code]+' · '+code,
-   h?'汇金系 '+fmt(h.ratio)+'% · '+h.date:'无已核实的汇金姓名记录',
+   h?'曾披露汇金系 '+fmt(h.ratio)+'% · 报告期'+h.date+' · 公布'+h.published:'无已核实的汇金姓名记录',
    shares!=null?fmt(shares/1e8)+'亿份':'—',
    change==null?'—':signed(change)+'亿份',
    ten==null?'—':signed(ten)+'%',
