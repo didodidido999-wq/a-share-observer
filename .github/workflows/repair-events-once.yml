@@ -1,3 +1,4 @@
+# Follow-up trigger: retries remaining incomplete provider dates only.
 name: One-time selective historical event repair
 on:
   workflow_dispatch:
