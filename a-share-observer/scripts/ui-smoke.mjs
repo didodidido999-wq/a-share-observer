@@ -33,14 +33,40 @@ try{
   '10-trading-day net buy total must agree with archived daily flows');
  check((await page.locator('#fund-summary .fund-card-title').nth(2).innerText()).includes('10日净买入'),
   'Funding flow KPI must clearly distinguish cumulative net buys from balance changes');
+ // Capital evidence must have one hierarchy level: two mutually exclusive tab panels.
+ check((await page.locator('#funds-observer [role="tab"]').count())===2,'Capital has extra navigation layers');
+ check(await visible('#fund-chart'),'Financing view should be the default');
+ check(!(await visible('#funds-etf-view')),'ETF panel must initially be hidden');
+ await click('#capital-tab-etf');
+ check(await visible('#funds-etf-view'),'ETF panel did not open');
+ check(!(await visible('#funds-financing-view')),'Financing panel stayed open');
+ check((await page.locator('#capital-tab-etf').getAttribute('aria-selected'))==='true','ETF tab ARIA state mismatch');
  await page.waitForFunction(()=>{
   const el=document.querySelector('#state-etf-status');
   return el && (el.textContent.includes('尚未取得') || el.textContent.includes('最新归档'));
  },{timeout:25000});
- check(await visible('#state-etf-chart'),'ETF-share evidence chart container missing');
+ check(await visible('#state-etf-chart'),'ETF-share trend region missing');
  check((await page.locator('#state-etf-brief .state-summary-card').count())===3,
-   'ETF-share evidence summary must contain 3 clear evidence cards');
- check(await visible('#state-etf-focus'),'ETF-share evidence filter missing');
+   'ETF-summary must contain exactly three evidence cards');
+ check(await visible('#state-etf-focus'),'ETF filter missing');
+ check((await page.locator('#state-etf-table tr').count())>=5,
+   'Missing official share archive should not hide the watched ETF list');
+ await click('#state-etf-filings > summary');
+ check(await visible('#fund-holders'),'Historic holdings should remain accessible under ETF evidence');
+ await page.waitForSelector('#fund-holders .fund-holder-item',{timeout:25000});
+ check((await page.locator('#fund-holders .fund-holder-item').count())>=1,
+   'Publicly disclosed historical holdings must remain accessible for prior dates');
+ await page.locator('#state-etf-focus').selectOption('all');
+ check((await page.locator('#state-etf-focus').inputValue())==='all','ETF focus choice missing');
+ await click('#capital-tab-financing');
+ check(await visible('#fund-chart'),'Financing chart did not restore after switching back');
+ check(!(await visible('#funds-etf-view')),'ETF view should close on financing selection');
+ await page.locator('#fund-chart-metric').selectOption('balance');
+ check(await visible('#fund-chart'),'Financing metric selection broke chart');
+ await click('#capital-tab-etf');
+ check((await page.locator('#state-etf-focus').inputValue())==='all',
+   'Switching capital tabs must preserve active ETF filter');
+ await click('#capital-tab-financing');
  await click('#navigation [data-page="sectors"]');
  await page.waitForSelector('#sector-turnover-rank .sector-rank-item',{timeout:30000});
  check(await visible('#sector-heat'),'Heatmap missing');
