@@ -128,7 +128,7 @@ function heatValueText(v,metric,lowerBound=false){
 }
 function syncHeatControls(){
  const ds=state.days,sel=$('sector-date');
- if(sel&&sel.options.length!==ds.length){
+ if(sel&&(sel.options.length!==ds.length||ds.some((d,i)=>sel.options[i]?.value!==d))){
    sel.replaceChildren();
    for(const d of ds){const op=text('option',d);op.value=d;sel.append(op);}
  }
@@ -138,7 +138,7 @@ function syncHeatControls(){
    sort.options[0].textContent=label+' · 高→低';
    sort.options[1].textContent=label+' · 低→高';
    const avg=['activity','member_up_ratio','limit_up_ratio','limit_down_ratio'].includes(metric);
-   sort.options[2].textContent=label+(avg?' · 区间日均':' · 区间合计');
+   sort.options[2].textContent=metric==='pct'?'区间累计涨幅':label+(avg?' · 区间日均':' · 区间合计');
  }
 }
 function initializeSectors(kind){let all=sectorCatalog().filter(s=>s.tag===kind),selected=state.sectorSelection[kind];if(state.sectorManual[kind])return selected;let ranked=all.map(x=>({code:x.code,v:cumulativeSector(x.code,state.days.length-1)})).filter(x=>x.v!=null).sort((a,b)=>b.v-a.v);selected=ranked.slice(0,5).map(x=>x.code);state.sectorSelection[kind]=selected;return selected;}
