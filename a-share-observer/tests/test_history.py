@@ -78,6 +78,6 @@ def test_snapshot_pagination_when_provider_caps_page_size(monkeypatch):
 def test_no_dangerous_force_push_in_provided_workflow():
     root=Path(__file__).resolve().parents[2]
     flow=(root/'.github/workflows/update.yml').read_text()
-    assert "cron: '0 8 * * 1-5'" in flow
+    assert "cron: '7 8 * * 1-5'" in flow
     assert 'git push --force' not in flow
     assert 'git rebase origin/main' in flow

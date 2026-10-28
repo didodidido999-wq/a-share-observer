@@ -20,12 +20,12 @@ on:
       - 'a-share-observer/scripts/v3_events.py'
       - 'a-share-observer/scripts/v3_feedback.py'
   schedule:
-    # Beijing 16:00 (UTC 08:00), Mon-Fri; the collector verifies actual trading dates.
-    - cron: '0 8 * * 1-5'
-    # 16:45 Beijing: retry only uncollected or incomplete modules for today.
-    - cron: '45 8 * * 1-5'
-    # Saturday 16:45 Beijing: only retry incomplete recent event/T+1 archives.
-    - cron: '45 8 * * 6'
+    # Beijing 16:07 (UTC 08:07), Mon-Fri; avoid top-of-hour scheduler load.
+    - cron: '7 8 * * 1-5'
+    # 16:49 Beijing: retry only uncollected or incomplete modules for today.
+    - cron: '49 8 * * 1-5'
+    # Saturday 16:49 Beijing: only retry incomplete recent event/T+1 archives.
+    - cron: '49 8 * * 6'
 
 permissions:
   contents: write
@@ -54,7 +54,7 @@ jobs:
         env:
           HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
           PYTHONUNBUFFERED: '1'
-        run: python a-share-observer/scripts/history.py --mode "${{ github.event_name == 'push' && 'refresh' || github.event.schedule == '45 8 * * 6' && 'refresh' || github.event.inputs.mode || 'auto' }}"
+        run: python a-share-observer/scripts/history.py --mode "${{ github.event_name == 'push' && 'refresh' || github.event.schedule == '49 8 * * 6' && 'refresh' || github.event.inputs.mode || 'auto' }}"
       - name: Commit derived market data only
         shell: bash
         run: |
