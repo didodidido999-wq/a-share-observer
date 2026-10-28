@@ -30,7 +30,7 @@ function render({state,chart,noChart}){
  const lastTen=(state.archive||[]).filter(day=>day<=state.selected).slice(-10);
  const period=lastTen.map(day=>byDate.get(day));
  const hasTen=lastTen.length===10;
- const valid=x=>x!=null&&Number.isFinite(Number(x));
+ const valid=x=>typeof x==='number'&&Number.isFinite(x);
  const flowComplete=hasTen&&period.every(x=>x&&valid(x.financing_net_buy_100m));
  const balanceComplete=hasTen&&period.every(x=>x&&valid(x.financing_balance_100m));
  const tenNet=flowComplete?period.reduce((sum,x)=>sum+Number(x.financing_net_buy_100m),0):null;
