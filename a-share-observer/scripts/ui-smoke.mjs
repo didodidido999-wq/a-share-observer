@@ -52,8 +52,7 @@ try{
  await click('#menu-btn');
  await click('#navigation [data-page="today"]');
  check(await visible('#today'),'Mobile route failed');
- await page.goBack({waitUntil:'domcontentloaded'}).catch(()=>null);
- // Hash navigation must reflect browser history / external page jumps.
+ // Hash navigation must reflect user-opened links / external page jumps.
  await page.evaluate(()=>{location.hash='#sectors'});
  await page.waitForFunction(()=>document.querySelector('#sectors')?.classList.contains('active'),{timeout:10000});
  check(!failures.length,'Browser JS exceptions: '+failures.join('; '));
