@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/recover-daily.yml'
+      - 'a-share-observer/scripts/history.py'
   schedule:
     # Independent GitHub schedule backstops after the ordinary close collectors.
     # These are secondary attempts, NOT an independent external scheduler.

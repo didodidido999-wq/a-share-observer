@@ -340,16 +340,39 @@ def chunked(rows,n=30):
 
 
 def snapshot_index_rows(records,day):
+    """Isolate invalid index symbols without losing valid quotes in their batch.
+
+    Index snapshot can reject an entire comma-separated request with code=1002
+    when ONE symbol is invalid or a request is oversized. Recursively split
+    only that input-validation error. Never conceal authentication, quota,
+    transport or unexpected provider failures; missing quotes stay null.
+    """
     groups=list(chunked(records,30))
     observed={}
+    rejected=[]
     def get(group):
-        d=base.client_get('/api/a-share-index/prices/snapshot',
-                          {'thscodes':','.join(x['code'] for x in group)})
-        return d.get('item',[])
+        try:
+            d=base.client_get('/api/a-share-index/prices/snapshot',
+                              {'thscodes':','.join(x['code'] for x in group)})
+            return d.get('item',[]),[]
+        except base.ApiError as error:
+            if 'API业务代码 1002 (' not in str(error):
+                raise
+            if len(group)==1:
+                return [],[group[0]['code']]
+            mid=len(group)//2
+            left,bad_left=get(group[:mid])
+            right,bad_right=get(group[mid:])
+            return left+right,bad_left+bad_right
     with ThreadPoolExecutor(max_workers=base.MAX_WORKERS) as ex:
-        for group in ex.map(get,groups):
-            for item in group:
+        for items,bad in ex.map(get,groups):
+            rejected.extend(bad)
+            for item in items:
                 if item.get('thscode'):observed[item['thscode']]=item
+    if rejected:
+        print('WARN index snapshot rejected unsupported symbols:',
+              ','.join(sorted(set(rejected))[:25]),
+              '(total',len(set(rejected)),')')
     result=[]
     for record in records:
         x=observed.get(record['code']) or {}
