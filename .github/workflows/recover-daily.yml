@@ -1,0 +1,147 @@
+name: Recover missing A-share daily observations
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/recover-daily.yml'
+  schedule:
+    # Independent GitHub schedule backstops after the ordinary close collectors.
+    # These are secondary attempts, NOT an independent external scheduler.
+    - cron: '26 9 * * 1-5'   # 17:26 Beijing
+    - cron: '16 10 * * 1-5'  # 18:16 Beijing
+
+permissions:
+  contents: write
+concurrency:
+  group: marketscope-daily-recovery
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: a-share-observer/requirements.txt
+      - name: Install collector dependencies
+        run: python -m pip install -r a-share-observer/requirements.txt
+      - name: Run collector tests and reject fixture writes into production data
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pytest -q a-share-observer/tests
+          unexpected="$(git status --porcelain --untracked-files=all -- a-share-observer/docs/data/)"
+          if [ -n "$unexpected" ]; then
+            echo "::error::Tests modified production data instead of isolated fixtures"
+            echo "$unexpected"
+            exit 1
+          fi
+      - name: Determine real missing modules for today's closed market
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json,os
+          from datetime import datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          now=datetime.now(ZoneInfo('Asia/Shanghai'))
+          today=now.strftime('%Y-%m-%d')
+          data=Path('a-share-observer/docs/data')
+          active=now.weekday()<5 and now.hour>=16
+          dfile=data/'dates.json'
+          dates=json.loads(dfile.read_text()).get('dates',[]) if dfile.exists() else []
+          main=active and today not in dates
+          reps=json.loads((data/'representatives.json').read_text(encoding='utf-8'))
+          roster=reps.get('universe',[])
+          prices=reps.get('prices',{})
+          covered=sum(1 for row in roster if (prices.get(row.get('code')) or [{}])[-1].get('date')==today)
+          required=max(270,int(len(roster)*0.9)) if roster else 270
+          missing_reps=active and covered<required
+          snapshot_file=data/'history'/f'{today}.json'
+          snapshot=json.loads(snapshot_file.read_text(encoding='utf-8')) if snapshot_file.exists() else {}
+          quality=snapshot.get('quality_manifest') or {}
+          sector=active and not all(quality.get(k,{}).get('status')=='complete' for k in
+                                    ('sector_members','sector_internal_metrics','sector_focus_stocks'))
+          with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as fd:
+            for k,v in {'IS_MARKET_DAY':active,'NEED_MAIN':main,
+                        'NEED_REPS':missing_reps,'NEED_SECTOR':sector}.items():
+              fd.write(f'{k}={str(v).lower()}\n')
+          print(json.dumps({'beijing':now.isoformat(),'main_missing':main,
+                'representatives_today':covered,'representatives_minimum':required,
+                'sector_incomplete':sector},ensure_ascii=False))
+          PY
+      - name: Recover missing closed-market observations in sequence
+        if: env.IS_MARKET_DAY == 'true'
+        shell: bash
+        env:
+          HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
+          V4_MIN_COVERAGE: '270'
+          V4_REP_WORKERS: '2'
+          SECTOR_MEMBERS_WORKERS: '2'
+          SECTOR_MEMBERS_THROTTLE: '0.5'
+          PYTHONUNBUFFERED: '1'
+        run: |
+          failures=0
+          if [ "$NEED_MAIN" = true ]; then
+            python a-share-observer/scripts/history.py --mode auto || failures=$((failures+1))
+          fi
+          if [ "$NEED_REPS" = true ]; then
+            python a-share-observer/scripts/v4_representatives.py || failures=$((failures+1))
+          fi
+          if [ "$NEED_SECTOR" = true ]; then
+            python a-share-observer/scripts/v5_sector.py --mode daily || failures=$((failures+1))
+          fi
+          echo "RECOVERY_FAILURES=$failures" >> "$GITHUB_ENV"
+      - name: Publish verified derived observations, never tests or unrelated data
+        if: env.IS_MARKET_DAY == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A -- a-share-observer/docs/data/dashboard.json a-share-observer/docs/data/dates.json a-share-observer/docs/data/history a-share-observer/docs/data/representatives.json a-share-observer/docs/data/sector-member-index a-share-observer/docs/data/sector-members
+          if git diff --cached --quiet; then
+            echo 'No newly verified data to publish'
+            exit 0
+          fi
+          git commit -m 'data: recover missing same-day MarketScope market observations'
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            if ! git rebase origin/main; then
+              git rebase --abort || true
+              echo "::error::Concurrent data conflict; no force push"
+              exit 1
+            fi
+            sleep "$attempt"
+          done
+          exit 1
+      - name: Verify current market date and report incomplete modules
+        if: env.IS_MARKET_DAY == 'true'
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json,os
+          from datetime import datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          day=datetime.now(ZoneInfo('Asia/Shanghai')).strftime('%Y-%m-%d')
+          root=Path('a-share-observer/docs/data')
+          dates=json.loads((root/'dates.json').read_text()).get('dates',[])
+          reps=json.loads((root/'representatives.json').read_text(encoding='utf-8'))
+          prices=reps.get('prices',{})
+          roster=reps.get('universe',[])
+          coverage=sum(bool(prices.get(x.get('code'))) and prices[x['code']][-1].get('date')==day for x in roster)
+          required=max(270,int(len(roster)*0.9))
+          print(f'Recovery validation: {day}, main={day in dates}, representatives={coverage}/{len(roster)}')
+          if day not in dates or coverage<required or int(os.environ.get('RECOVERY_FAILURES',0))>0:
+            raise SystemExit('Recovery incomplete; inspect provider and collector logs. No fake same-day success.')
+          PY

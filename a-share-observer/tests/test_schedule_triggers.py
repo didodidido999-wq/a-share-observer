@@ -33,6 +33,7 @@ def test_daily_collectors_keep_beijing_order_and_weekend_modes():
         "7 8 * * 0", "34 8 * * 1-5", "9 9 * * 1-5"
     ]
     assert crons("global-direct.yml") == ["23 10 * * 1-5"]
+    assert crons("recover-daily.yml") == ["26 9 * * 1-5", "16 10 * * 1-5"]
     assert crons("etf-state-shares.yml") == ["15 1 * * 1-5"]
     assert crons("funds-observer.yml") == ["30 1 * * 1-5", "45 1 * * 1"]
 
