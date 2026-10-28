@@ -308,6 +308,158 @@ function renderSectors(){
    ' 个板块 · '+known+'/'+total+' 可核验格。热力图和折线图使用同一指标与日期窗口，展开查看对应股票。';
  renderSectorDetail();
 }
+
+async function renderSectorDetail(){
+ const host=$('sector-inline-detail'),code=state.sectorFocus;
+ if(!host||!code)return;
+ host.replaceChildren();
+ const selectedDate=state.selected,metric=$('heat-metric').value,board=sectorCatalog().find(x=>x.code===code);
+ const point=sectorValue(selectedDate,code),asof=point.membership_observed_date,archive=snapshot(selectedDate);
+ const header=text('div','','sector-band-header'),identity=text('div','','sector-band-identity');
+ identity.append(text('strong',board?.name||code),text('span',selectedDate+' · '+code));
+ identity.append(text('span',point.membership_mode==='backcast_current'?
+   '按'+asof+'成分名单历史回算，不代表当时真实成分':
+   asof?'使用'+asof+'确认的周度成分名单':'成分关系尚未采集','sector-band-source'));
+ header.append(identity);
+ const metrics=text('div','','sector-band-metrics');
+ function box(label,value){
+   const el=text('div','','sector-band-metric');
+   el.append(text('small',label),text('b',value==null?'—':value));metrics.append(el);
+ }
+ const val=metricValue(code,selectedDate,metric),up=metricValue(code,selectedDate,'limit_up_count'),
+ down=metricValue(code,selectedDate,'limit_down_count');
+ box('当前指标 · '+SECTOR_META[metric][0],val==null?null:heatValueText(val,metric,heatIsLowerBound(code,selectedDate,metric))+SECTOR_META[metric][1]);
+ box('当日板块涨跌',N(point.pct)==null?null:pct(point.pct));
+ box('板块成交额',N(point.turnover)==null?null:number(point.turnover/1e8,2)+'亿元');
+ box('成分数量',N(point.member_count)==null?null:number(point.member_count,0)+'只');
+ box('归属涨停',N(up)==null?null:number(up,0)+'只');
+ box('归属跌停',N(down)==null?null:heatValueText(down,'limit_down_count',heatIsLowerBound(code,selectedDate,'limit_down_count'))+'只');
+ header.append(metrics);host.append(header);
+ const loading=text('p','加载当日股票和成分关系…','sector-detail-empty');host.append(loading);
+ const [memberFile,rep]=await Promise.all([
+   loadMemberIndex(asof),
+   window.MarketScopeHistory?.load?.()||Promise.resolve(null)
+ ]);
+ if($('sector-inline-detail')!==host||state.sectorFocus!==code||state.selected!==selectedDate||$('heat-metric').value!==metric)return;
+ loading.remove();
+ const members=memberFile?.members?.[code];
+ if(!members){host.append(text('p','此日期缺少可验证成员名单，个股排名不做推断。','sector-detail-empty'));return;}
+ const basePrices=rep?.prices||{},u=new Map((rep?.universe||[]).map(x=>[x.code,x]));
+ const items=new Map();
+ for(const [ticker,name]of Object.entries(members)){
+   if(!u.has(ticker))continue;
+   const bars=basePrices[ticker]||[],at=bars.findIndex(x=>x.date===selectedDate);
+   if(at<0)continue;
+   const bar=bars[at],prev=at>0?bars[at-1]:null;
+   if(N(bar.close)==null)continue;
+   const change=prev?.close>0?(bar.close/prev.close-1)*100:null;
+   const back=bars.find(x=>x.date===state.days[0]),cum=back?.close>0?(bar.close/back.close-1)*100:null;
+   const slice=at>=4?bars.slice(at-4,at+1).map(x=>N(x.turnover_100m)):null;
+   const activity=slice&&!slice.some(x=>x==null)&&slice.reduce((a,b)=>a+b,0)>0?
+     slice[4]/(slice.reduce((a,b)=>a+b,0)/5):null;
+   items.set(ticker,{code:ticker,name:name||u.get(ticker).name,pct:change,
+     turnover:N(bar.turnover_100m),price:bar.close,cum,activity,event:'代表池',boards:null});
+ }
+ const matched={up:[],down:[],break:[],hot:[]};
+ for(const [type,list]of [['up',archive.stock_list||[]],['down',archive.limit_down_events||[]],
+                          ['break',archive.limit_break_events||[]],['hot',archive.hot_rank_daily||[]]]){
+   for(const row of list){
+     const ticker=row.thscode||row.stock_code;
+     if(!Object.prototype.hasOwnProperty.call(members,ticker))continue;
+     const item=items.get(ticker)||{code:ticker,name:members[ticker],pct:null,turnover:null,
+       price:null,cum:null,activity:null,boards:null,event:''};
+     if(N(row.price_change_ratio_pct)!=null)item.pct=N(row.price_change_ratio_pct);
+     if(N(row.turnover)!=null)item.turnover=N(row.turnover)/1e8;
+     if(N(row.price??row.last_price)!=null)item.price=N(row.price??row.last_price);
+     if(N(row.boards)!=null)item.boards=N(row.boards);
+     if(N(row.rank)!=null)item.rank=N(row.rank);
+     item.event={up:'涨停',down:'跌停',break:'炸板',hot:'热榜'}[type];
+     item.reason=row.reason||row.limit_up_reason||row.limit_down_reason||item.reason||'';
+     items.set(ticker,item);matched[type].push(item);
+   }
+ }
+ for(const row of archive.sector_focus_stocks||[]){
+   if(row.sector_code!==code||!Object.prototype.hasOwnProperty.call(members,row.stock_code))continue;
+   const item=items.get(row.stock_code)||{code:row.stock_code,name:row.stock_name||members[row.stock_code],
+     pct:null,turnover:null,price:null,cum:null,activity:null,event:''};
+   if(N(row.pct)!=null)item.pct=N(row.pct);
+   if(N(row.turnover_100m)!=null)item.turnover=N(row.turnover_100m);
+   items.set(item.code,item);
+ }
+ const priced=[...items.values()].filter(x=>N(x.pct)!=null||N(x.turnover)!=null);
+ const desc=k=>priced.filter(x=>N(x[k])!=null).sort((a,b)=>b[k]-a[k]).slice(0,6);
+ const asc=k=>priced.filter(x=>N(x[k])!=null).sort((a,b)=>a[k]-b[k]).slice(0,6);
+ const main=[...priced].sort((a,b)=>Number(u.has(b.code))-Number(u.has(a.code))||
+   (b.turnover??-1)-(a.turnover??-1)).slice(0,6);
+ const upList=[...matched.up].sort((a,b)=>(b.boards??0)-(a.boards??0)||(b.turnover??0)-(a.turnover??0)).slice(0,8);
+ const downList=[...matched.down].sort((a,b)=>(a.pct??0)-(b.pct??0)).slice(0,8);
+ let signal=[],title='',evidence='';
+ if(['limit_up_count','limit_up_ratio'].includes(metric)){
+   signal=upList;title='涨停接力前排';evidence='按真实连板高度排序';
+ }else if(['limit_down_count','limit_down_ratio'].includes(metric)){
+   signal=downList;title='跌停前排';evidence='按当日跌幅排序';
+ }else if(metric==='limit_diff'){
+   signal=[...upList.slice(0,4),...downList.slice(0,4)];title='涨跌停两端';evidence='涨停接力与跌停并列';
+ }else if(metric==='hot_count'){
+   signal=[...matched.hot].sort((a,b)=>(a.rank??999)-(b.rank??999)).slice(0,6);
+   title='热榜前排';evidence='按归档热榜排名';
+ }else if(metric==='turnover'){
+   signal=desc('turnover');title='成交额前排';evidence='按有日K的代表股样本排序';
+ }else if(metric==='activity'){
+   signal=desc('activity');title='成交活跃度前排';evidence='近5个交易日成交额 / 日均';
+ }else if(['cum','relative'].includes(metric)){
+   signal=desc('cum');title='区间涨幅前排';evidence='有历史日K的代表股样本';
+ }else if(['member_up_ratio','member_median'].includes(metric)){
+   signal=[...desc('pct').slice(0,4),...asc('pct').slice(0,4)];
+   title='内部涨跌两端';evidence='代表股样本中强弱股票';
+ }else{
+   signal=desc('pct');title='日涨幅前排';evidence='代表股样本中按日涨幅';
+ }
+ const layout=text('div','','sector-detail-columns');
+ function makeBlock(name,subtitle,rows){
+   const box=text('div','','sector-detail-section'),h=text('div','','sector-detail-heading');
+   h.append(text('strong',name),text('span',subtitle));box.append(h);
+   if(!rows.length){box.append(text('p','所选日期暂无可核验的个股记录。','sector-detail-empty'));return box;}
+   const tbl=text('table','','sector-detail-table'),tr=text('tr','');
+   for(const n of ['股票','涨跌幅','成交额','指标证据'])tr.append(text('th',n));
+   const head=text('thead','');head.append(tr);tbl.append(head);
+   const body=text('tbody','');
+   for(const x of rows){
+     const tr=text('tr',''),id=text('td','');
+     const link=text('button',x.name,'sector-stock-link');
+     link.type='button';
+     link.addEventListener('click',()=>showDialog(x.name+' · '+x.code,[
+       ['所属板块',board?.name||code],['成分名单日期',asof],
+       ['当日涨跌幅',N(x.pct)==null?'—':signed(x.pct,2,'%')],
+       ['成交额',N(x.turnover)==null?'—':number(x.turnover,2)+'亿元'],
+       ['收盘价',N(x.price)==null?'—':number(x.price,2)],
+       ['连板',x.boards==null?'—':x.boards+'板'],['事件',x.reason||x.event||'—']
+     ]));
+     id.append(link,text('small',x.code));
+     tr.append(id,text('td',N(x.pct)==null?'—':signed(x.pct,2,'%'),
+       N(x.pct)==null?'':x.pct>=0?'stock-positive':'stock-negative'));
+     tr.append(text('td',N(x.turnover)==null?'—':number(x.turnover,2)+'亿'));
+     const extra=x.boards!=null?x.boards+'板':metric==='activity'&&x.activity!=null?
+       number(x.activity,2)+'倍':metric==='cum'&&x.cum!=null?signed(x.cum,2,'%'):
+       x.rank!=null?'榜单第'+x.rank:x.event||'—';
+     tr.append(text('td',extra));body.append(tr);
+   }
+   tbl.append(body);box.append(tbl);return box;
+ }
+ layout.append(makeBlock('主要成分股 · 有价格样本','成员名单 × 300只代表股观察池优先 · 按成交额展示',main));
+ layout.append(makeBlock(title,evidence,signal));
+ host.append(layout);
+ const extras=text('div','','sector-detail-summary');
+ if(['limit_up_count','limit_up_ratio','limit_diff'].includes(metric)){
+   const highest=Math.max(0,...matched.up.map(x=>N(x.boards)||0));
+   extras.append(text('span','最高连板 '+(highest?highest+'板':'—')));
+   extras.append(text('span','2板及以上 '+matched.up.filter(x=>(N(x.boards)||0)>=2).length+'只'));
+ }
+ if(['limit_down_count','limit_down_ratio','limit_diff'].includes(metric))
+   extras.append(text('span','跌停 '+(N(down)==null?'—':heatValueText(down,'limit_down_count',heatIsLowerBound(code,selectedDate,'limit_down_count'))+'只')));
+ host.append(extras);
+ host.append(text('p','个股价格样本可能仅覆盖300只代表股及当日事件股票，不应理解为全体成分股涨幅/成交额排名。历史成分回算与缺失数据均按来源标记。','sector-band-note'));
+}
 function compareValue(a,b,formatter,unit){return N(a)==null||N(b)==null?'—':formatter(Number(b)-Number(a))+(unit||'');}
 function renderHistory(){const a=$('history-a').value||state.days[0],b=$('history-b').value||last(state.days),x=market(a),y=market(b),lx=limits(a),ly=limits(b);let host=cleared('history-comparison');for(const [label,key,unit] of MARKET_FIELDS){const va=key==='non_st'||key==='highest'?lx[key]:x[key],vb=key==='non_st'||key==='highest'?ly[key]:y[key];let el=text('div','','comparison-card');el.append(text('small',label+' · '+a+' → '+b));el.append(text('strong',N(va)==null||N(vb)==null?'—':signed(vb-va,key==='median'||key==='turnover_100m'?2:0,unit)));el.append(text('span',`${N(va)==null?'—':number(va)} → ${N(vb)==null?'—':number(vb)} ${unit}`));host.append(el);}
  const days=state.days;const data1=[{name:'非ST涨停',type:'line',data:days.map(d=>N(limits(d).non_st)),showSymbol:false},{name:'涨幅中位数（右轴）',type:'line',yAxisIndex:1,data:days.map(d=>N(market(d).median)),showSymbol:false}];if(data1.some(s=>s.data.some(x=>x!=null)))chart('history-sentiment',{xAxis:{type:'category',data:days.map(dateShort)},yAxis:[{type:'value',name:'只'},{type:'value',name:'%',scale:true}],series:data1},e=>{if(e.dataIndex!=null){$('history-b').value=days[e.dataIndex];renderHistory();}});else noChart('history-sentiment','历史赚钱效应数据不可用。');
