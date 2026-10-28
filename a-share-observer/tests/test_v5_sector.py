@@ -59,3 +59,25 @@ def test_gz_membership_history_is_dated_and_readable(monkeypatch,tmp_path):
         obj=json.load(stream)
     assert obj["date"]=="2026-10-27"
     assert obj["members"]["881101.TI"]["000001.SZ"]=="A"
+
+
+def test_current_day_complete_sector_data_is_idempotent(monkeypatch):
+    from datetime import datetime as RealDatetime
+    class Clock(RealDatetime):
+        @classmethod
+        def now(cls, tz=None):
+            return cls(2026,10,28,17,0,tzinfo=tz)
+    monkeypatch.setattr(sector, 'datetime', Clock)
+    snapshot={'date':'2026-10-28','market':{'samples':5600},
+              'sectors':[{'code':'886042.TI','name':'白酒'}],
+              'quality_manifest':{
+                'sector_members':{'status':'complete'},
+                'sector_internal_metrics':{'status':'complete'},
+                'sector_focus_stocks':{'status':'complete'}}}
+    monkeypatch.setattr(sector.history,'read_json',lambda *_args:snapshot)
+    monkeypatch.setattr(sector.history,'get_stock_snapshot',lambda: (_ for _ in ()).throw(
+        AssertionError('Current-day complete sector snapshot must not be queried')))
+    result=sector.run('2026-10-28',client_get=lambda *_: (_ for _ in ()).throw(
+        AssertionError('No member calls once fully archived')))
+    assert result['status']=='complete'
+    assert result['skipped'] is True

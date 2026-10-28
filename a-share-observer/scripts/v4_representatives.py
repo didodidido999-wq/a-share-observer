@@ -134,28 +134,41 @@ def main():
         try: previous=json.loads(DEST.read_text(encoding="utf-8"))
         except (OSError,ValueError): pass
     now=datetime.now(api.TZ)
-    # Fetch a 180-day history only for new additions. Existing symbols need
-    # just a short overlap to correct revisions without repeating months of K.
+    # Never use an intraday bar as a final daily close.
+    if now.hour < 16:
+        print("Representative stock collector: before 16:00 Beijing; no closed-day update.")
+        return
     end=api.since_ms((now+timedelta(days=1)).date())
     selected=universe()
     cap=int(os.getenv("V4_REP_LIMIT","0") or 0)
     if cap>0:selected=selected[:cap]
     collected=dict(previous.get("prices") or {})
     status={}
+    today=now.date()
+    def needs_update(row):
+        old=collected.get(row["code"]) or []
+        return not old or old[-1].get("date","") < today.isoformat()
+    pending=[row for row in selected if needs_update(row)]
+    if not pending:
+        print(f"Representative stock collector: {len(selected)} already have {today.isoformat()} bar; no API call.")
+        return
     def work(row):
         code=row["code"]
         old=collected.get(code) or []
+        # Initial registration gets history; daily run fetches ONLY missing
+        # dates since last persisted close. Never re-fetch a completed date.
         start=(now-timedelta(days=180)).date()
         if old:
             try:
                 last_date=datetime.strptime(old[-1]["date"],"%Y-%m-%d").date()
-                start=max(start,last_date-timedelta(days=12))
+                start=max(start,last_date+timedelta(days=1))
             except (KeyError,ValueError,TypeError):
                 pass
         try:return code,_bars(code,api.since_ms(start),end),None
         except Exception as exc:return code,None,type(exc).__name__
     with ThreadPoolExecutor(max_workers=max(1,min(3,int(os.getenv("V4_REP_WORKERS","2"))))) as pool:
-        results=list(pool.map(work,selected))
+        results=list(pool.map(work,pending))
+    print(f"Representative stock collector: {len(pending)} missing/stale of {len(selected)}; skipped {len(selected)-len(pending)} completed symbols.")
     newest=None
     for code,bars,error in results:
         if bars:

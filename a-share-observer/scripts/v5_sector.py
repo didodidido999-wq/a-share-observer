@@ -130,6 +130,13 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
     if not snap.get('market') or not snap.get('sectors'):
         print(f'{day}: no completed base market archive; sector collection deferred')
         return {'status': 'not_ready'}
+    # Same-day idempotence: a fully archived result is not requested twice.
+    # A partial result can still be retried at 17:00, using locally cached members.
+    q = snap.get('quality_manifest') or {}
+    if all(q.get(name, {}).get('status') == 'complete' for name in (
+            'sector_members', 'sector_internal_metrics', 'sector_focus_stocks')):
+        print(f'{day}: sector members, internals and focus already complete; no API calls.')
+        return {'status': 'complete', 'total': 0, 'observed': 0, 'skipped': True}
     # Never overwrite historical facts. Re-running today can repair missing sectors.
     archive_file = MEMBER_DIR / (day + '.json.gz')
     previous = {}

@@ -2,9 +2,9 @@ name: Update observed sector membership and internals
 on:
   workflow_dispatch:
   schedule:
-    # 17:10 and 18:10 Beijing on weekdays.
-    - cron: '10 9 * * 1-5'
-    - cron: '10 10 * * 1-5'
+    # Beijing 16:30 first snapshot, 17:00 missing-only retry on weekdays.
+    - cron: '30 8 * * 1-5'
+    - cron: '0 9 * * 1-5'
 permissions:
   contents: write
 concurrency:
@@ -29,7 +29,7 @@ jobs:
         run: python -m pytest -q a-share-observer/tests
       - name: Capture current membership and factual metrics
         env:
-          HITHINK_FINANCE_API_KEY: \${{ secrets.HITHINK_FINANCE_API_KEY }}
+          HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
           SECTOR_MEMBERS_WORKERS: '2'
           SECTOR_MEMBERS_THROTTLE: '0.5'
           PYTHONUNBUFFERED: '1'

@@ -69,3 +69,49 @@ def test_existing_universe_core_entries_retained():
     for code in ("002594.SZ", "300750.SZ", "600519.SH", "000333.SZ",
                  "600036.SH", "601899.SH", "688981.SH"):
         assert code in by_code
+
+
+def test_daily_completed_universe_does_not_call_prices_api(monkeypatch, tmp_path):
+    import json
+    from datetime import datetime as RealDatetime
+    class Clock(RealDatetime):
+        @classmethod
+        def now(cls, tz=None):
+            return cls(2026, 10, 28, 16, 10, tzinfo=tz)
+    monkeypatch.setattr(rep, 'datetime', Clock)
+    monkeypatch.setattr(rep, 'DEST', tmp_path/'representatives.json')
+    monkeypatch.setattr(rep, 'DATA', tmp_path)
+    complete={r['code']:[{'date':'2026-10-28','close':100}] for r in rep.universe()}
+    rep.DEST.write_text(json.dumps({'prices':complete}), encoding='utf-8')
+    monkeypatch.setattr(api, 'client_get', lambda *_args, **_kwargs: (_ for _ in ()).throw(
+        AssertionError('No provider requests allowed for completed daily data')))
+    rep.main()
+    assert json.loads(rep.DEST.read_text())['prices'] == complete
+
+
+def test_daily_incremental_stock_query_begins_after_last_saved_bar(monkeypatch, tmp_path):
+    import json
+    from datetime import datetime as RealDatetime, date
+    class Clock(RealDatetime):
+        @classmethod
+        def now(cls, tz=None):
+            return cls(2026, 10, 28, 16, 10, tzinfo=tz)
+    monkeypatch.setattr(rep, 'datetime', Clock)
+    monkeypatch.setattr(rep, 'DEST', tmp_path/'representatives.json')
+    monkeypatch.setattr(rep, 'DATA', tmp_path)
+    monkeypatch.setenv('V4_REP_LIMIT', '1')
+    monkeypatch.setattr(rep, 'universe', lambda: [{
+        'code':'002594.SZ','name':'比亚迪','industry':'汽车整车',
+        'economic_style':'景气成长','tags':['新能源汽车'], 'editorial':True}])
+    rep.DEST.write_text(json.dumps({'prices':{
+        '002594.SZ':[{'date':'2026-10-27','close':99}]}}), encoding='utf-8')
+    calls=[]
+    def source(path, params):
+        calls.append(params)
+        return {'item':[{'date_ms':api.since_ms(date(2026,10,28)),
+                         'close_price':100,'turnover':50000000}]}
+    monkeypatch.setattr(api, 'client_get', source)
+    rep.main()
+    assert len(calls)==1
+    assert calls[0]['start']==api.since_ms(date(2026,10,28))
+    assert json.loads(rep.DEST.read_text())['prices']['002594.SZ'][-1]['date']=='2026-10-28'
