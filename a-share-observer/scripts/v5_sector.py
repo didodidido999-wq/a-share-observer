@@ -134,6 +134,16 @@ def _write_weekly(members, observed_date, expected, errors):
     weekly.write_bytes(compressed)
     current=MEMBER_DIR / 'current.json.gz'
     current.write_bytes(compressed)
+    # Publish the same dated members as a lightweight lazy-loaded browser index.
+    # This is a factual snapshot, not a fabricated historical constituent map.
+    index_dir=DATA / 'sector-member-index'
+    index_dir.mkdir(parents=True,exist_ok=True)
+    index_path=index_dir / (observed_date+'.json')
+    index_body=json.dumps({'observed_date':observed_date,
+                          'status':obj['status'],'members':members},
+                          ensure_ascii=False,separators=(',',':'))
+    if not index_path.exists() or index_path.read_text(encoding='utf-8')!=index_body:
+        index_path.write_text(index_body,encoding='utf-8')
     return weekly
 
 
