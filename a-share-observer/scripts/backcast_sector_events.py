@@ -46,12 +46,16 @@ def match_day(snapshot, members, *, membership_date):
         lu=len(stocks&up) if up_ok else None
         ld=len(stocks&down) if down_ok else None
         h=len(stocks&hot) if hot_ok else None
+        ld_known=len(stocks&down) if down_rows is not None else None
         result.append({
             'code':code,
             'membership_mode':'backcast_current',
             'membership_observed_date':membership_date,
             'limit_up_count':lu,
             'limit_down_count':ld,
+            'limit_down_known_count':ld_known if not down_ok else None,
+            'limit_down_known_ratio':round(100*ld_known/count,2) if not down_ok and ld_known is not None and count else None,
+            'limit_down_completeness':'complete' if down_ok else 'partial' if down_rows is not None else 'missing',
             'limit_up_ratio':round(100*lu/count,2) if lu is not None and count else None,
             'limit_down_ratio':round(100*ld/count,2) if ld is not None and count else None,
             'limit_diff':lu-ld if lu is not None and ld is not None else None,
