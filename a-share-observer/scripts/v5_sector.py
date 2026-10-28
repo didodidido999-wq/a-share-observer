@@ -219,7 +219,7 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
                                'items_count': observed, 'expected_count': len(sector_codes),
                                'source': ENDPOINT, 'collected_at': captured_at,
                                'failed_count': len(errors)},
-            'sector_focus_stocks': {'trade_date': day, 'status': quality,
+            'sector_focus_stocks': {'trade_date': day, 'status': quality if (down_complete and up_complete) else 'partial',
                                     'items_count': len(stocks), 'source': 'observed constituents + daily snapshot',
                                     'collected_at': captured_at}
         }
@@ -243,8 +243,8 @@ def main():
     # follow-up run, never mislabeled as complete.
     if result.get('status') == 'not_ready':
         raise SystemExit(2)
-    if result.get('observed', 0) < result.get('total', 1) * .9:
-        raise SystemExit(3)
+    # CI evaluates coverage after committing partial but valid history, so
+    # outages never discard successfully collected point-in-time observations.
 
 
 if __name__ == '__main__':
