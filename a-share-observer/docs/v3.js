@@ -151,14 +151,49 @@ function renderSectors(){syncHeatControls();if(state.page==='sectors'&&state.day
  const kind=state.sectorKind=$('sector-kind').value,metric=state.sectorMetric=$('sector-metric').value,sel=initializeSectors(kind),days=state.days;let all=sectorCatalog().filter(s=>s.tag===kind);const suggestions=cleared('sector-suggestions');all.forEach(s=>{const o=text('option','');o.value=s.name;o.label=s.code;suggestions.append(o);});updateSectorChips();let view=$('sector-view').value,unit=SECTOR_META[metric][1];$('sector-chart-help').textContent=`${SECTOR_META[metric][0]}（${unit}） · 首日按实际数据计算，不人为归零；保持人工选择的板块`;
  if(view==='lines'){let series=sel.map(code=>{const s=all.find(x=>x.code===code);return {name:s?.name||code,type:'line',connectNulls:false,showSymbol:false,emphasis:{focus:'series'},lineStyle:{width:2.4},data:days.map(d=>{const v=metricValue(code,d,metric);return v==null?null:Number(v.toFixed(3));})};}).filter(x=>x.data.some(v=>v!=null));if(series.length)chart('sector-chart',{xAxis:{type:'category',data:days.map(dateShort)},yAxis:{type:'value',scale:!['limit_up_count','limit_down_count','limit_up_ratio','limit_down_ratio','hot_count'].includes(metric),name:unit},series},e=>{if(e.dataIndex!=null)setDay(days[e.dataIndex]);});else noChart('sector-chart','所选指标暂无可核验的板块历史数据。可切换为涨幅或成交额。');
  }else{const benchmark=$('sector-benchmark').value;let scatter=all.map(x=>{const m=days.length,half=Math.floor(m/2);if(half<2||m<half*2)return null;const first=days.slice(m-half*2,m-half),second=days.slice(m-half);const a=compound(first.map(d=>sectorValue(d,x.code).pct)),b=compound(second.map(d=>sectorValue(d,x.code).pct));const ai=compound(first.map(d=>indexValue(d,benchmark).pct)),bi=compound(second.map(d=>indexValue(d,benchmark).pct));const full=cumulativeSector(x.code,m-1),fullBench=cumulativeIndex(benchmark,m-1);if([a,b,ai,bi,full,fullBench].some(v=>v==null))return null;return {name:x.name,code:x.code,value:[Number((full-fullBench).toFixed(2)),Number(((b-bi)-(a-ai)).toFixed(2))]};}).filter(Boolean);if(scatter.length)chart('sector-chart',{tooltip:{trigger:'item',formatter:p=>`${p.data.name}<br>区间超额：${signed(p.value[0])}百分点<br>近期改善：${signed(p.value[1])}百分点`},xAxis:{type:'value',name:'区间超额（百分点）',nameLocation:'middle',nameGap:28,splitLine:{lineStyle:{type:'dashed'}}},yAxis:{type:'value',name:'近期改善（百分点）',splitLine:{lineStyle:{type:'dashed'}}},dataZoom:[{type:'inside'}],series:[{type:'scatter',symbolSize:9,data:scatter,itemStyle:{opacity:.6},markLine:{silent:true,symbol:'none',data:[{xAxis:0},{yAxis:0}],label:{show:false},lineStyle:{color:'#829da9',type:'dashed'}}}]},e=>{if(e.data?.code)sectorAdd(e.data.code);});else noChart('sector-chart','象限需要至少4个完整交易日，以及板块与基准两段可验证的涨幅。');}
- const q=$('heat-search').value.toLowerCase().trim(),sort=$('sector-sort').value,heatMetric=$('heat-metric').value;let filtered=all.filter(s=>s.name.toLowerCase().includes(q)||s.code.toLowerCase().includes(q));filtered.sort((a,b)=>{if(sort==='name')return a.name.localeCompare(b.name,'zh');let va=sort==='cum'?cumulativeSector(a.code,days.length-1):sort==='turnover'?N(sectorValue(state.selected,a.code).turnover):N(sectorValue(state.selected,a.code).pct),vb=sort==='cum'?cumulativeSector(b.code,days.length-1):sort==='turnover'?N(sectorValue(state.selected,b.code).turnover):N(sectorValue(state.selected,b.code).pct);if(va==null&&vb==null)return a.name.localeCompare(b.name,'zh');return vb==null?-1:va==null?1:vb-va;});const pages=Math.max(1,Math.ceil(filtered.length/40));state.sectorPage=Math.max(0,Math.min(state.sectorPage,pages-1));$('heat-page').textContent=`${state.sectorPage+1}/${pages} · ${filtered.length} 板块`;$('heat-prev').disabled=state.sectorPage===0;$('heat-next').disabled=state.sectorPage>=pages-1;
- const top=all.map(x=>({name:x.name,code:x.code,turnover:N(sectorValue(state.selected,x.code).turnover)})).filter(x=>x.turnover!==null).sort((a,b)=>b.turnover-a.turnover).slice(0,10);
- const tHost=cleared('sector-turnover-rank');
- const tTitle=text('div','','sector-rank-caption');tTitle.append(text('strong','成交额排行 · 前10'),text('span',state.selected+' · '+(kind==='industry'?'行业':'概念')+' · 亿元'));tHost.append(tTitle);
- const bar=text('div','','sector-rank-list');
- for(let i=0;i<top.length;i++){let o=top[i],btn=text('button','','sector-rank-item');btn.type='button';btn.title=o.name+' · '+number(o.turnover/1e8,2)+'亿元 · 点击定位板块';btn.append(text('small',String(i+1)),text('span',o.name),text('strong',number(o.turnover/1e8,2)+'亿'));
- btn.addEventListener('click',()=>{state.sectorFocus=o.code;$('heat-search').value='';$('sector-sort').value='turnover';state.sectorPage=0;renderSectors();window.requestAnimationFrame(()=>$('sector-inline-detail')?.scrollIntoView({behavior:'smooth',block:'center'}));});bar.append(btn);}
- if(top.length)tHost.append(bar);else tHost.append(text('p','所选日期板块成交额暂无可核验数据。','inline-note'));
+
+ const q=$('heat-search').value.toLowerCase().trim(),sort=$('sector-sort').value,heatMetric=$('heat-metric').value;
+ let filtered=all.filter(x=>x.name.toLowerCase().includes(q)||x.code.toLowerCase().includes(q));
+ const ascending=sort==='metric_asc'||sort==='name';
+ filtered.sort((a,b)=>{
+   if(sort==='name')return a.name.localeCompare(b.name,'zh');
+   const va=heatSortValue(a.code,sort,heatMetric),vb=heatSortValue(b.code,sort,heatMetric);
+   if(va==null&&vb==null)return a.name.localeCompare(b.name,'zh');
+   if(va==null)return 1;if(vb==null)return -1;
+   return (ascending?va-vb:vb-va)||a.name.localeCompare(b.name,'zh');
+ });
+ const pages=Math.max(1,Math.ceil(filtered.length/40));
+ state.sectorPage=Math.max(0,Math.min(state.sectorPage,pages-1));
+ $('heat-page').textContent=(state.sectorPage+1)+'/'+pages+' · '+filtered.length+' 板块';
+ $('heat-prev').disabled=state.sectorPage===0;$('heat-next').disabled=state.sectorPage>=pages-1;
+ const top=all.map(x=>({...x,value:metricValue(x.code,state.selected,heatMetric)}))
+   .filter(x=>x.value!=null).sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'zh')).slice(0,10);
+ const tHost=cleared('sector-turnover-rank'),metricLabel=SECTOR_META[heatMetric]?.[0]||heatMetric;
+ const heading=text('div','','sector-rank-caption');
+ heading.append(text('strong',metricLabel+' · 前10板块'),
+   text('span',state.selected+' · '+(kind==='industry'?'行业':'概念')+' · '+SECTOR_META[heatMetric][1]));
+ tHost.append(heading);
+ const cards=text('div','','sector-rank-list');
+ for(let i=0;i<top.length;i++){
+   const item=top[i],lower=heatIsLowerBound(item.code,state.selected,heatMetric);
+   const card=text('button','','sector-rank-item'+(state.sectorFocus===item.code?' is-selected':''));
+   card.type='button';
+   card.setAttribute('aria-label','排名'+(i+1)+'，'+item.name+'，'+heatValueText(item.value,heatMetric,lower)+'，点击定位板块');
+   card.title=item.name+'｜'+state.selected+'｜'+metricLabel+': '+heatValueText(item.value,heatMetric,lower)+(lower?'（已收录下限）':'');
+   card.append(text('small',String(i+1)),text('span',item.name),
+     text('strong',heatValueText(item.value,heatMetric,lower)+(SECTOR_META[heatMetric][1]==='亿元'?'亿':SECTOR_META[heatMetric][1])));
+   card.addEventListener('click',()=>{
+     state.sectorFocus=item.code;
+     $('heat-search').value='';
+     $('sector-sort').value='metric_desc';
+     state.sectorPage=0;
+     renderSectors();
+     window.requestAnimationFrame(()=>$('sector-inline-detail')?.scrollIntoView({behavior:'smooth',block:'center'}));
+   });
+   cards.append(card);
+ }
+ if(top.length)tHost.append(cards);
+ else tHost.append(text('p','所选日该指标缺少可计算的板块数据，请切换日期或指标。','inline-note'));
  const daily=snapshot(state.selected),limit=daily.limits||{};
  const down=daily.limit_down_events,breaks=daily.limit_break_events;
  const nup=limit.non_st??null,ndown=Array.isArray(down)?down.length:null,nbr=Array.isArray(breaks)?breaks.length:null;
