@@ -480,13 +480,19 @@ function bind(){document.querySelectorAll('#navigation [data-page]').forEach(el=
  $('style-dimension').addEventListener('change',renderPage);$('style-metric').addEventListener('change',renderPage);
  $('event-date').addEventListener('change',e=>{setDay(e.target.value);});$('event-type').addEventListener('change',renderEvents);$('event-search').addEventListener('input',renderEvents);
  $('sector-kind').addEventListener('change',e=>{state.sectorKind=e.target.value;state.sectorPage=0;state.sectorFocus=null;renderSectors();});
- $('sector-metric').addEventListener('change',renderSectors);$('sector-view').addEventListener('change',renderSectors);$('sector-benchmark').addEventListener('change',renderSectors);
- $('sector-add').addEventListener('click',()=>{sectorAdd($('sector-search').value.trim());$('sector-search').value='';});
- $('sector-search').addEventListener('keydown',e=>{if(e.key==='Enter'){$('sector-add').click();}});
- $('sector-reset').addEventListener('click',()=>{state.sectorManual[state.sectorKind]=false;state.sectorSelection[state.sectorKind]=[];renderSectors();});
- $('heat-metric').addEventListener('change',()=>{state.sectorPage=0;$('sector-sort').value='metric_desc';renderSectors();});
- $('sector-date').addEventListener('change',ev=>{if(state.days.includes(ev.target.value)){setDay(ev.target.value);$('sector-turnover-rank')?.scrollIntoView({behavior:'smooth',block:'nearest'});}});$('sector-sort').addEventListener('change',()=>{state.sectorPage=0;renderSectors();});$('heat-search').addEventListener('input',()=>{state.sectorPage=0;renderSectors();});
- $('heat-prev').addEventListener('click',()=>{state.sectorPage--;renderSectors();});$('heat-next').addEventListener('click',()=>{state.sectorPage++;renderSectors();});
+ $('heat-metric').addEventListener('change',()=>{state.sectorPage=0;state.sectorFocus=null;$('sector-sort').value='metric_desc';renderSectors();});
+ $('sector-benchmark').addEventListener('change',renderSectors);
+ $('sector-sort').addEventListener('change',()=>{state.sectorPage=0;renderSectors();});
+ $('sector-date').addEventListener('change',e=>{if(state.days.includes(e.target.value)){setDay(e.target.value);}});
+ $('heat-search').addEventListener('input',()=>{state.sectorPage=0;renderSectors();});
+ $('sector-clear').addEventListener('click',()=>{
+   $('sector-kind').value='industry';$('heat-metric').value='pct';
+   $('sector-sort').value='metric_desc';$('heat-search').value='';
+   state.sectorFocus=null;state.sectorPage=0;
+   setDay(last(state.days));$('sector-research-panel')?.scrollIntoView({behavior:'smooth',block:'start'});
+ });
+ $('heat-prev').addEventListener('click',()=>{state.sectorPage--;renderSectors();$('sector-heat-anchor')?.scrollIntoView({behavior:'smooth',block:'start'});});
+ $('heat-next').addEventListener('click',()=>{state.sectorPage++;renderSectors();$('sector-heat-anchor')?.scrollIntoView({behavior:'smooth',block:'start'});});
  /* Historical representative-stock controls bind in representatives.js. */
  $('close-dialog').addEventListener('click',()=>$('detail-dialog').hidden=true);$('detail-dialog').addEventListener('click',e=>{if(e.target===$('detail-dialog'))$('detail-dialog').hidden=true;});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('detail-dialog').hidden=true;stop();}});
