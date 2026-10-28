@@ -39,7 +39,16 @@ ETF_CANDIDATES = (
     ("hstech_etf", "513130.SH", "A股上市恒生科技 ETF代理"),
     ("gold_etf", "518880.SH", "A股上市黄金 ETF代理"),
     ("hsi_etf", "159920.SZ", "A股上市恒生指数 ETF代理"),
-)
+) 
+ETF_NAME_RULES = {
+    "nasdaq100_etf": ("纳斯达克", "纳指"),
+    "sp500_etf": ("标普", "S&P"),
+    "nikkei225_etf": ("日经",),
+    "dax_etf": ("德国", "DAX"),
+    "hstech_etf": ("恒生科技",),
+    "gold_etf": ("黄金",),
+    "hsi_etf": ("恒生",),
+}
 
 
 def _local(tag):
@@ -166,8 +175,9 @@ def etfs(caller=None, today=None):
         try:
             if not display:
                 display = _verified_etf(code, caller)
-            if not display:
-                failed.append(f"{code}:not_verified_as_etf")
+            if not display or not any(word.casefold() in display.casefold()
+                                       for word in ETF_NAME_RULES[asset_id]):
+                failed.append(f"{code}:fund_name_or_type_unverified")
                 continue
             verified += 1
             last = (prior.get("rows") or [{}])[-1].get("date")
