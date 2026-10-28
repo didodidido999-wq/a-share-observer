@@ -28,6 +28,7 @@ on:
       - 'a-share-observer/scripts/history.py'
       - 'a-share-observer/tests/test_history.py'
       - '.github/workflows/recover-daily.yml'
+      - '.github/workflows/validate-cron-activation.yml'
       - 'a-share-observer/scripts/update.py'
       - '.github/workflows/sectors.yml'
       - '.github/workflows/update.yml'
