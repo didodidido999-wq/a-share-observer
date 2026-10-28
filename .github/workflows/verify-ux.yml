@@ -1,0 +1,46 @@
+name: Browser UX smoke and static site integration
+on:
+  pull_request:
+    paths:
+      - 'a-share-observer/docs/index.html'
+      - 'a-share-observer/docs/v3.js'
+      - 'a-share-observer/docs/v3.css'
+      - 'a-share-observer/scripts/ui-smoke.mjs'
+      - '.github/workflows/verify-ux.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'a-share-observer/docs/index.html'
+      - 'a-share-observer/docs/v3.js'
+      - '.github/workflows/verify-ux.yml'
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build static site
+        run: npm run build
+      - name: Install headless Chromium and Playwright
+        run: |
+          npm install --no-save --no-audit --no-fund playwright
+          npx playwright install --with-deps chromium
+      - name: Browser-smoke the four pages, sliders, cards, metric ranking and mobile
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory a-share-observer/docs >/tmp/marketscope-http.log 2>&1 &
+          sleep 3
+          node a-share-observer/scripts/ui-smoke.mjs
+      - name: Save screenshots on failed UX audit
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: marketscope-ux-debug
+          path: |
+            /tmp/marketscope-failed.png
+            /tmp/marketscope-http.log
+          if-no-files-found: ignore
