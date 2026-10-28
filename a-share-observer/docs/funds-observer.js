@@ -25,13 +25,26 @@ function render({state,chart,noChart}){
  const prev=rows.filter(x=>x.date<(latest?.date||'')).at(-1);
  const a=latest?.financing_balance_100m,b=prev?.financing_balance_100m;
  const delta=a!=null&&b!=null?a-b:null;
- const sample=rows.filter(x=>x.date<=state.selected).slice(-10);
- const ten=sample.length===10?sample[9].financing_balance_100m-sample[0].financing_balance_100m:null;
- card(host,'融资余额',a!=null?fmt(a)+'亿':'—',latest?'归档日期 '+latest.date:'暂缺');
- card(host,'较前一记录变化',delta!=null?signed(delta)+'亿':'—',prev?'余额差额，并非融资净买入额':'前一记录不足');
- card(host,'最近10次记录变化',ten!=null?signed(ten)+'亿':'—',ten!=null?sample[0].date+' 至 '+sample[9].date:'样本未满10日');
- card(host,'融资净买入额',exact?.financing_net_buy_100m!=null?signed(exact.financing_net_buy_100m)+'亿':'—',
-      exact?.financing_net_buy_100m!=null?'当日融资买入额－融资偿还额':'仅在买入和偿还均可得时计算');
+ // Use the market's archived trading calendar, not merely the last ten available financing quotes.
+ // A missing margin disclosure must not silently shrink the window or count as zero.
+ const lastTen=(state.archive||[]).filter(day=>day<=state.selected).slice(-10);
+ const period=lastTen.map(day=>byDate.get(day));
+ const hasTen=lastTen.length===10;
+ const valid=x=>x!=null&&Number.isFinite(Number(x));
+ const flowComplete=hasTen&&period.every(x=>x&&valid(x.financing_net_buy_100m));
+ const balanceComplete=hasTen&&period.every(x=>x&&valid(x.financing_balance_100m));
+ const tenNet=flowComplete?period.reduce((sum,x)=>sum+Number(x.financing_net_buy_100m),0):null;
+ const tenNegative=flowComplete?period.filter(x=>Number(x.financing_net_buy_100m)<0).length:null;
+ const tenBalance=balanceComplete?Number(period[9].financing_balance_100m)-Number(period[0].financing_balance_100m):null;
+ const periodLabel=hasTen?lastTen[0]+' 至 '+lastTen[9]:'不足10个交易日';
+ card(host,'融资余额',a!=null?fmt(a)+'亿':'—',
+      latest?'归档 '+latest.date+(delta!=null?' · 较前记录 '+signed(delta)+'亿':''):'暂缺');
+ card(host,'当日融资净买入',exact?.financing_net_buy_100m!=null?signed(exact.financing_net_buy_100m)+'亿':'—',
+      exact?.financing_net_buy_100m!=null?'融资买入额－偿还额；不是余额日变动':'所选日尚无完整买入及偿还数据');
+ card(host,'近10日净买入累计',tenNet!=null?signed(tenNet)+'亿':'—',
+      tenNet!=null?periodLabel+' · 其中'+tenNegative+'日为负':'近10个交易日融资数据不完整');
+ card(host,'10日区间首末余额差',tenBalance!=null?signed(tenBalance)+'亿':'—',
+      tenBalance!=null?periodLabel+' · 首末两日余额之差':'近10个交易日余额数据不完整');
  const days=state.days||[],metric=$('fund-chart-metric').value;
  const values=days.map((day,i)=>{
   const r=byDate.get(day);if(!r)return null;
