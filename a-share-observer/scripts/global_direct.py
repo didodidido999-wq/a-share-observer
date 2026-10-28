@@ -39,6 +39,12 @@ ETF_CANDIDATES = (
     ("hstech_etf", "513130.SH", "A股上市恒生科技 ETF代理"),
     ("gold_etf", "518880.SH", "A股上市黄金 ETF代理"),
     ("hsi_etf", "159920.SZ", "A股上市恒生指数 ETF代理"),
+    # These four candidates were verified by real /fund/market/historical
+    # calls (2026-09-30 ... 2026-10-28) using the existing API key.
+    ("korea_chip_mixed", "513310.SH", "中韩半导体ETF代理（不是韩国KOSPI）"),
+    ("us_nasdaq_tech", "159509.SZ", "纳指科技ETF代理（不是SOX）"),
+    ("us_oil_gas_equities", "513350.SH", "美国油气股票ETF代理（不是WTI/Brent）"),
+    ("china_oil_gas_equities", "159148.SZ", "国内石油天然气股票ETF代理"),
 ) 
 ETF_NAME_RULES = {
     "nasdaq100_etf": ("纳斯达克", "纳指"),
@@ -48,6 +54,10 @@ ETF_NAME_RULES = {
     "hstech_etf": ("恒生科技",),
     "gold_etf": ("黄金",),
     "hsi_etf": ("恒生",),
+    "korea_chip_mixed": ("中韩半导体", "中韩芯片"),
+    "us_nasdaq_tech": ("纳指科技", "纳斯达克科技"),
+    "us_oil_gas_equities": ("标普油气", "石油天然气", "油气"),
+    "china_oil_gas_equities": ("石油", "油气"),
 }
 
 
@@ -213,9 +223,59 @@ def etfs(caller=None, today=None):
     return {"updated": updated, "verified": verified, "failed": failed}
 
 
+def crude_sc(caller=None, today=None):
+    """Verify identity then load domestic SC crude continuous daily bars.
+
+    SC00.INE was returned by a real meta search on 2026-10-28. Its daily
+    endpoint is still capability-gated: if unavailable, retain no fake data.
+    """
+    caller = caller or hithink.client_get
+    today = today or datetime.now(SHANGHAI).date()
+    code = "SC00.INE"
+    try:
+        identity = caller("/api/meta/tickers/search", {"q": code, "limit": 10})
+        exact = [x for x in identity.get("item", [])
+                 if x.get("thscode") == code and x.get("asset_type") == "futures"
+                 and "原油" in (x.get("name") or "")]
+        if len(exact) != 1:
+            return {"status": "identity_unverified"}
+        old_file = OUT / "sc_crude_continuous.json"
+        prior = json.loads(old_file.read_text("utf-8")) if old_file.exists() else {}
+        prior_rows = prior.get("rows") or []
+        start_day = max(START, date.fromisoformat(prior_rows[-1]["date"]) - timedelta(days=3)) if prior_rows else START
+        prices = caller("/api/futures/prices/daily", {
+            "thscode": code,
+            "time_period": "day_1",
+            "start": _date_ms(start_day),
+            "end": _date_ms(today + timedelta(days=1)) - 1,
+        })
+        rows = []
+        for item in prices.get("item", []):
+            time_ms = item.get("timestamp")
+            value = hithink.num(item.get("close_price"))
+            if time_ms is None or value is None or value <= 0:
+                continue
+            day = hithink.trading_date(time_ms)
+            if START.isoformat() <= day <= today.isoformat():
+                rows.append({"date": day, "value": value,
+                             "turnover": hithink.num(item.get("turnover"))})
+        if not rows:
+            return {"status": "no_current_bars", "code": code}
+        changed = write_series(
+            "sc_crude_continuous", "国内SC原油连续（非WTI/Brent）",
+            "domestic_futures_continuous", "CNY/barrel",
+            "hithink-finance", rows, symbol=code,
+            extra={"provider_roll_method": "unknown",
+                   "do_not_use_roll_jumps_as_returns": True})
+        return {"status": "verified_daily", "code": code,
+                "observed_rows": len(rows), "file_changed": changed}
+    except (ValueError, requests.RequestException, hithink.ApiError) as exc:
+        return {"status": "unavailable", "reason": type(exc).__name__}
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=["treasury", "etf", "all"], default="all")
+    parser.add_argument("--mode", choices=["treasury", "etf", "futures", "all"], default="all")
     args = parser.parse_args()
     done = {}
     if args.mode in ("treasury", "all"):
@@ -225,6 +285,11 @@ def main():
             done["etf"] = "skipped: missing existing HITHINK_FINANCE_API_KEY"
         else:
             done["etf"] = etfs()
+    if args.mode in ("futures", "all"):
+        if not os.getenv("HITHINK_FINANCE_API_KEY"):
+            done["sc_crude"] = "skipped: missing existing HITHINK_FINANCE_API_KEY"
+        else:
+            done["sc_crude"] = crude_sc()
     print(json.dumps(done, ensure_ascii=False))
 
 
