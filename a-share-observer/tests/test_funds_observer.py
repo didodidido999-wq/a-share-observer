@@ -14,15 +14,18 @@ def epoch_ms(day):
 def test_margin_requires_true_evidence_and_keeps_missing_values_null():
     response = {"success": True, "result": {"data": [
         {"DIM_DATE": "2026-10-26 00:00:00", "RZYE": 2500000000000,
-         "RQYE": 25000000000, "RZRQYE": 2525000000000},
+         "RQYE": 25000000000, "RZRQYE": 2525000000000,
+         "RZMRE": 135000000000, "RZCHE": 126000000000},
         {"DIM_DATE": "2026-10-27 00:00:00", "RZYE": 2510000000000,
-         "RQYE": 25000000000, "RZRQYE": 2535000000000},
+         "RQYE": 25000000000, "RZRQYE": 2535000000000,
+         "RZMRE": 119000000000, "RZCHE": 122000000000},
         {"DIM_DATE": "2026-10-28", "RZYE": "no quote"},
     ]}}
     rows = f.parse_margin_rows(response)
     assert [x["date"] for x in rows] == ["2026-10-26", "2026-10-27"]
     assert rows[-1]["financing_balance_100m"] == 25100
-    assert rows[-1]["financing_buy_100m"] is None
+    assert rows[-1]["financing_net_buy_100m"] == -30
+    assert rows[0]["financing_net_buy_100m"] == 90
     assert rows[-1]["short_balance_100m"] == 250
 
 
@@ -81,3 +84,22 @@ def test_margin_history_within_reasonable_balance_units():
     assert f.numeric(None) is None
     assert f.numeric("not-data") is None
     assert f.numeric(-10) is None
+
+
+def test_disclosure_history_keeps_prior_filed_snapshot_without_daily_duplicate():
+    base = {"schema_version": 1, "financing": {"rows": []},
+            "disclosures": [{"code": "510300.SH", "name": "沪深300ETF",
+              "observed_at": "2026-10-28", "holders_top": [
+                 {"holder": "中央汇金", "report_date": "2025-12-31", "hold_rate_pct": 20.0}],
+              "holder_structure": [], "is_daily_flow": False,
+              "identity_is_inferred": False}]}
+    latest = dict(base["disclosures"][0], observed_at="2026-11-05")
+    same = f.build(base, [], [latest], "2026-11-05")
+    assert same["disclosures"][0]["observed_at"] == "2026-10-28"
+    assert len(same["disclosure_history"]) == 1
+    changed = dict(latest, holders_top=[{"holder": "中央汇金",
+                  "report_date": "2026-09-30", "hold_rate_pct": 22.0}])
+    updated = f.build(same, [], [changed], "2026-11-05")
+    assert len(updated["disclosure_history"]) == 2
+    assert updated["disclosures"][0]["holders_top"][0]["hold_rate_pct"] == 22.0
+    assert updated["disclosure_history"][0]["holders_top"][0]["hold_rate_pct"] == 20.0
