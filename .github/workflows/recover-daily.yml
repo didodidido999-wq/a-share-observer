@@ -16,7 +16,8 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: marketscope-daily-recovery
+  group: marketscope-data-writer
+  queue: max
   cancel-in-progress: false
 
 jobs:
@@ -26,6 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
+          ref: main
           persist-credentials: true
       - uses: actions/setup-python@v6
         with:

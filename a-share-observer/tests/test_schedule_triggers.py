@@ -47,3 +47,12 @@ def test_daily_collectors_keep_beijing_order_and_weekend_modes():
     assert "github.event.schedule == '45 1 * * 1'" in (
         WORKFLOWS / "funds-observer.yml"
     ).read_text(encoding="utf-8")
+
+
+def test_shared_market_writers_are_serialized_without_cancellation():
+    for name in ('update.yml','sectors.yml','recover-daily.yml','representatives.yml'):
+        content=(WORKFLOWS/name).read_text(encoding='utf-8')
+        assert 'group: marketscope-data-writer' in content
+        assert 'cancel-in-progress: false' in content
+        assert 'queue: max' in content
+        assert 'ref: main' in content
