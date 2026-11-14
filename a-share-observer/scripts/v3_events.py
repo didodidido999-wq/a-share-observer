@@ -9,6 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 import os
 from typing import Callable
+from provider_dates import validate_response_dates
 
 ENDPOINTS = {
     'limit_down_events': '/api/a-share/special-data/limit-down-pool',
@@ -108,6 +109,7 @@ def fetch_paged(client_get: Callable, path: str, params: dict, day: str, issues=
     received = 0
     for page in range(1, MAX_PAGES+1):
         payload = client_get(path, {**params, 'page': page, 'size': PAGE_SIZE})
+        validate_response_dates(payload, day)
         batch = _items(payload)
         received += len(batch)
         paging = payload.get('pagination') or {}
@@ -147,6 +149,7 @@ def fetch_paged(client_get: Callable, path: str, params: dict, day: str, issues=
 
 def fetch_list(client_get, path, params, day):
     payload = client_get(path, params)
+    validate_response_dates(payload, day)
     items = _items(payload)
     total = (payload.get('pagination') or {}).get('total', payload.get('total'))
     if not items and total is None and not (

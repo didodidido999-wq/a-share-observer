@@ -10,6 +10,8 @@ import targeted_backfill as target
 @pytest.fixture
 def setup(monkeypatch, tmp_path):
     h = target.history
+    monkeypatch.setattr(h.v3_events, 'enrich_if_enabled', lambda *args: None)
+    monkeypatch.setattr(h.v3_feedback, 'enrich_feedback', lambda *args: None)
     dates = ['2026-11-02','2026-11-03','2026-11-04','2026-11-05','2026-11-06',
              '2026-11-09','2026-11-10','2026-11-11','2026-11-12','2026-11-13']
     now = datetime(2026, 11, 14, 1, tzinfo=h.base.TZ)
@@ -114,3 +116,27 @@ def test_historical_stock_rows_refuses_partial_universe(setup):
     h, now, calls = setup
     with pytest.raises(h.base.ApiError):
         target.historical_stock_rows('2026-11-12', now=now)
+
+
+def test_dated_events_enriched_after_archive_exists(setup,monkeypatch):
+    h,now,calls=setup
+    visited=[]
+    def enrich(day,*args):
+        assert h.archive_path(day).exists()
+        visited.append(day)
+    monkeypatch.setattr(h.v3_events,'enrich_if_enabled',enrich)
+    target.backfill_days(['2026-11-12','2026-11-13'],now=now)
+    assert visited==['2026-11-12','2026-11-13']
+
+
+def test_feedback_reuses_dated_frame_after_events(setup,monkeypatch):
+    h,now,calls=setup
+    visited=[]
+    def feedback(day,previous,read,archive,merge,loader,tz):
+        data=loader('10d',None,None)
+        assert day in data.date.values and previous in data.date.values
+        visited.append((previous,day))
+    monkeypatch.setattr(h.v3_feedback,'enrich_feedback',feedback)
+    target.backfill_days(['2026-11-12','2026-11-13'],now=now)
+    assert visited==[('2026-11-11','2026-11-12'),('2026-11-12','2026-11-13')]
+    assert len(calls)==1

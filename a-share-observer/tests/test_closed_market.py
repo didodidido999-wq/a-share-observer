@@ -58,6 +58,7 @@ def test_delayed_auto_uses_historical_sources_never_snapshot(monkeypatch,tmp_pat
     monkeypatch.setattr(history,'HISTORY',tmp_path)
     monkeypatch.setattr(history,'all_trading_days',lambda:['2026-11-11','2026-11-12','2026-11-13'])
     monkeypatch.setattr(history,'create_dashboard',lambda:None)
+    monkeypatch.setattr(history.v3_events,'enrich_if_enabled',lambda *args:None)
     monkeypatch.setattr(history,'get_stock_snapshot',lambda:pytest.fail('No live snapshot for past date'))
     calls=[]
     monkeypatch.setattr(targeted_backfill,'backfill_days',lambda days:calls.extend(days))
@@ -73,6 +74,7 @@ def test_delayed_auto_completed_target_does_not_download_dump(monkeypatch,tmp_pa
     monkeypatch.setattr(history,'HISTORY',tmp_path)
     monkeypatch.setattr(history,'all_trading_days',lambda:['2026-11-13'])
     monkeypatch.setattr(history,'create_dashboard',lambda:None)
+    monkeypatch.setattr(history.v3_events,'enrich_if_enabled',lambda *args:None)
     (tmp_path/'2026-11-13.json').write_text(json.dumps({'market':{'samples':5000},'limits':{},'sectors':[{'close':1}]*400}))
     monkeypatch.setattr(targeted_backfill,'backfill_days',lambda days:pytest.fail('Completed archive must be reused'))
     history.today()

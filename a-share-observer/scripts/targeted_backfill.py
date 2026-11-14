@@ -126,6 +126,18 @@ def backfill_days(days, *, now=None):
                         'limit_pool_from_dated_endpoint': pool is not None})
     for day, additions in prepared.items():
         history.merge_day(day, additions)
+    # These endpoints are explicitly date-addressable. The event collector
+    # refuses historical requests to its current-only anomaly source.
+    for day in requested:
+        history.v3_events.enrich_if_enabled(day, history.base, history.read_json,
+                                            history.archive_path, history.merge_day)
+    calendar=history.all_trading_days()
+    for day in requested:
+        preceding=[d for d in calendar if d<day]
+        if preceding:
+            history.v3_feedback.enrich_feedback(day, preceding[-1], history.read_json,
+                history.archive_path, history.merge_day,
+                lambda kind, start, end: frame, history.base.TZ)
     history.create_dashboard()
     return reports
 

@@ -408,6 +408,8 @@ def today():
                 sum(x.get('close') is not None for x in existing.get('sectors',[]))>=400):
             from targeted_backfill import backfill_days
             backfill_days([day])
+        else:
+            v3_events.enrich_if_enabled(day, base, read_json, archive_path, merge_day)
         create_dashboard()
         return
     existing=read_json(archive_path(day),{})

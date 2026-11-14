@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
 import requests
 import pandas as pd
+from provider_dates import validate_response_dates
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'docs/data/dashboard.json'
@@ -156,6 +157,7 @@ def get_limit_pool(dt):
     for page in range(1,100):
         d=client_get('/api/a-share/special-data/limit-up-pool',
                      {'date_ms':date_ms,'page':page,'size':100,'sort_field':'continue_day_cnt','sort_dir':'desc'})
+        validate_response_dates(d, dt)
         chunk=d.get('item') or []
         for x in chunk:
             code=x.get('thscode')
