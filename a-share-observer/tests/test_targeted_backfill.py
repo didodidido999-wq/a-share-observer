@@ -140,3 +140,28 @@ def test_feedback_reuses_dated_frame_after_events(setup,monkeypatch):
     target.backfill_days(['2026-11-12','2026-11-13'],now=now)
     assert visited==[('2026-11-11','2026-11-12'),('2026-11-12','2026-11-13')]
     assert len(calls)==1
+
+
+def test_preexisting_unsupported_index_does_not_block_valid_market(setup,monkeypatch):
+    h,now,calls=setup
+    h.merge_day('2026-11-11',{'indices':[{'code':'I','close':10},{'code':'UNSUPPORTED','close':None}]})
+    monkeypatch.setattr(h.base,'INDEX_CODES',{'index':'I','unsupported':'UNSUPPORTED'})
+    monkeypatch.setattr(h,'historic_bars',lambda records,days:[
+        (r,[{'date':d,'close':10,'pct':1,'turnover':1000} for d in days],None)
+        for r in records if r['code']!='UNSUPPORTED'])
+    reports=target.backfill_days(['2026-11-12'],now=now)
+    assert reports[0]['expected_supported_indices']==1
+    assert reports[0]['unavailable_index_codes']==['UNSUPPORTED']
+    assert 'UNSUPPORTED' in ' '.join(h.read_json(h.archive_path('2026-11-12'))['notes'])
+
+
+def test_core_index_missing_still_blocks_write_with_baseline(setup,monkeypatch):
+    h,now,calls=setup
+    h.merge_day('2026-11-11',{'indices':[{'code':'I','close':10}]})
+    monkeypatch.setattr(h.base,'INDEX_CODES',{'index':'I','Shanghai':'000001.SH'})
+    monkeypatch.setattr(h,'historic_bars',lambda records,days:[
+        (r,[{'date':d,'close':10,'pct':1,'turnover':1000} for d in days],None)
+        for r in records if r['code']!='000001.SH'])
+    with pytest.raises(h.base.ApiError,match='指数'):
+        target.backfill_days(['2026-11-12'],now=now)
+    assert not h.archive_path('2026-11-12').exists()

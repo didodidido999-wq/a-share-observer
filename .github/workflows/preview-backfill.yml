@@ -53,7 +53,8 @@ jobs:
               report['base'] = targeted_backfill.backfill_days(report['dates'])
           except Exception as error:
               # Never persist raw HTTP errors, signed URLs, or secret echoes.
-              errors.append({'module': 'base', 'error_type': type(error).__name__})
+              errors.append({'module': 'base', 'error_type': type(error).__name__,
+                             'detail': str(error)[:400] if isinstance(error, targeted_backfill.history.base.ApiError) and '://' not in str(error) else 'see safe coverage diagnostics'})
           try:
               v4_representatives.main()
           except Exception as error:

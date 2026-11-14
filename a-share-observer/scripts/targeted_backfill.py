@@ -61,8 +61,15 @@ def backfill_days(days, *, now=None):
     requested, predecessor = _validate_targets(days, now)
     frame = history.fetch_parquet('10d', date.fromisoformat(predecessor),
                                   date.fromisoformat(requested[-1]))
+    print('Historical market frame:', {'dates': sorted(frame.date.unique().tolist()), 'rows': len(frame)}, flush=True)
     sector_catalog = history.catalog()
     index_catalog = [{'name': n, 'code': c} for n, c in history.base.INDEX_CODES.items()]
+    prior_days=[d for d in history.saved_dates() if d<=predecessor]
+    baselines=[history.read_json(history.archive_path(d),{}) for d in prior_days[-5:]]
+    known_indices={r['code'] for baseline in baselines for r in baseline.get('indices',[]) if r.get('close') is not None}
+    configured_indices={r['code'] for r in index_catalog}
+    expected_indices=(known_indices & configured_indices) or configured_indices
+    core_indices={'000001.SH','399001.SZ'} & configured_indices
     bars = {}
     for field, records in (('sectors', sector_catalog), ('indices', index_catalog)):
         per_day = {day: [] for day in requested}
@@ -88,13 +95,18 @@ def backfill_days(days, *, now=None):
                 sliced.return_pct.notna().sum() < 3500):
             raise history.base.ApiError(f'{day}: 历史全市场日线或前收盘价覆盖不足，未写入')
         sector_rows = bars['sectors'][day]
+        print('Historical coverage:', {'date': day, 'market': len(sliced), 'sectors': len(sector_rows), 'expected_sectors': len(sector_catalog), 'indices': len(bars['indices'][day]), 'expected_indices': len(index_catalog)}, flush=True)
         if len(sector_rows) < len(sector_catalog) * .9:
             raise history.base.ApiError(f'{day}: 历史板块日线覆盖不足，未写入')
-        if len(bars['indices'][day]) < len(index_catalog) * .9:
+        observed_indices={row['code'] for row in bars['indices'][day]}
+        if not core_indices.issubset(observed_indices) or len(observed_indices & expected_indices) < len(expected_indices) * .9:
             raise history.base.ApiError(f'{day}: 历史指数日线覆盖不足，未写入')
+        missing_indices=sorted(configured_indices-observed_indices)
         previous = history.read_json(history.archive_path(day), {})
         notes = ['定向历史回补：市场使用10日历史日线，指数/板块使用历史K线；未用当前快照倒填',
-                 '历史事件和板块成员衍生指标仅保留已归档值；不可可靠还原的字段保持缺失']
+                 '历史事件仅按日期接口补录；板块成员衍生指标须使用历史名单及日线另行计算，不可可靠还原的字段保持缺失']
+        if missing_indices:
+            notes.append('历史指数源缺失：'+','.join(missing_indices)+'；保留缺失，未当作已恢复')
         pool = previous.get('stock_list') if previous.get('limits') is not None else None
         if pool is None:
             try:
@@ -123,6 +135,8 @@ def backfill_days(days, *, now=None):
                         'return_samples': market['return_samples'],
                         'sector_closes': len(sector_rows), 'sector_catalog': len(sector_catalog),
                         'index_closes': len(bars['indices'][day]),
+                        'expected_supported_indices': len(expected_indices),
+                        'unavailable_index_codes': missing_indices,
                         'limit_pool_from_dated_endpoint': pool is not None})
     for day, additions in prepared.items():
         history.merge_day(day, additions)
