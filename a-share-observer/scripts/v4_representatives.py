@@ -8,7 +8,8 @@ from __future__ import annotations
 import json
 import os
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+from closed_market import resolve_target
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -134,17 +135,16 @@ def main():
         try: previous=json.loads(DEST.read_text(encoding="utf-8"))
         except (OSError,ValueError): pass
     now=datetime.now(api.TZ)
-    # Never use an intraday bar as a final daily close.
-    if now.hour < 16:
-        print("Representative stock collector: before 16:00 Beijing; no closed-day update.")
-        return
-    end=api.since_ms((now+timedelta(days=1)).date())
+    target=resolve_target(now)
+    # End exclusively at the next midnight after the target session, never at
+    # the current runtime date (which could include an intraday bar).
+    end=api.since_ms(date.fromisoformat(target)+timedelta(days=1))-1
     selected=universe()
     cap=int(os.getenv("V4_REP_LIMIT","0") or 0)
     if cap>0:selected=selected[:cap]
     collected=dict(previous.get("prices") or {})
     status={}
-    today=now.date()
+    today=date.fromisoformat(target)
     def needs_update(row):
         old=collected.get(row["code"]) or []
         return not old or old[-1].get("date","") < today.isoformat()
@@ -169,8 +169,9 @@ def main():
     with ThreadPoolExecutor(max_workers=max(1,min(3,int(os.getenv("V4_REP_WORKERS","2"))))) as pool:
         results=list(pool.map(work,pending))
     print(f"Representative stock collector: {len(pending)} missing/stale of {len(selected)}; skipped {len(selected)-len(pending)} completed symbols.")
-    newest=None
+    newest=max((r["date"] for rows in collected.values() for r in rows if r.get("date", "")<=target), default=None)
     for code,bars,error in results:
+        bars=[r for r in (bars or []) if r.get("date", "") <= target]
         if bars:
             old={r["date"]:r for r in collected.get(code, [])}
             old.update({r["date"]:r for r in bars})
@@ -184,7 +185,7 @@ def main():
         raise RuntimeError("No representative history available; refusing to erase published file")
     # Reject obviously incomplete first-time augmentation. Existing stable
     # public archive is not replaced with a mostly empty 300-stock shell.
-    available=sum(bool(collected.get(x["code"])) for x in selected)
+    available=sum(any(r.get("date")==target for r in collected.get(x["code"], [])) for x in selected)
     minimum=int(os.getenv("V4_MIN_COVERAGE","0") or 0)
     if minimum and available<minimum:
         raise RuntimeError(f"Insufficient representative prices: {available}/{len(selected)}; minimum={minimum}")
