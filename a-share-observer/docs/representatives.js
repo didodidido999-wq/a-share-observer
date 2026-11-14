@@ -79,11 +79,13 @@ function summaries(){
   card.addEventListener('click',()=>{$('rep-dimension').value='economic_style';updateCategory();$('rep-category').value=name;ranking();animateScroll($('rep-ranking'));});block.append(card);}
  const windows=[5,10,20,40],all=dataset?.universe||[],date=$('rep-date').value;
  const styleView=$('rep-style-view').value;
- let xLabels=[],series=[];
+ let xLabels=[],series=[],staleLineMessage='';
  if(styleView==='line'){
    // Genuine rolling trading-day time series: each point uses only the
    // selected date and prior N trading bars, not future-window information.
-   const traded=[...new Set(all.flatMap(r=>(dataset?.prices?.[r.code]||[]).map(p=>p.date)))].filter(d=>d<=date).sort().slice(-10);
+   const traded=[...new Set(all.flatMap(r=>(dataset?.prices?.[r.code]||[]).filter(p=>num(p.close)>0).map(p=>p.date)))].filter(d=>d<=date).sort().slice(-10);
+   const latest=traded.at(-1);
+   if(latest!==date)staleLineMessage=latest?`所选 ${date} 尚无代表股行情；已有数据截至 ${latest}。不以旧日曲线代替所选日期。`:`所选 ${date} 及此前尚无代表股行情。`;
    xLabels=traded.map(d=>d.slice(5));
    const lookback=Number($('rep-window').value);
    const histories=traded.map(d=>groupSummaries(all.map(r=>({...r,metrics:snapshot(r,d,lookback)})),'economic_style',lookback,'return'));
@@ -93,7 +95,8 @@ function summaries(){
    xLabels=windows.map(n=>n+'日');
    series=labels.map(label=>({type:'bar',name:label,data:windows.map((n,i)=>heat[i].find(x=>x.name===label)?.median??null)}));
  }
- if(series.some(v=>v.data.some(n=>n!==null)))host.chart('rep-style-chart',{tooltip:{trigger:'axis'},xAxis:{type:'category',data:xLabels},
+ if(staleLineMessage)host.noChart('rep-style-chart',staleLineMessage);
+ else if(series.some(v=>v.data.some(n=>n!==null)))host.chart('rep-style-chart',{tooltip:{trigger:'axis'},xAxis:{type:'category',data:xLabels},
   yAxis:{type:'value',name:styleView==='line'?'滚动'+$('rep-window').value+'日收益中位数 %':'区间收益中位数 %',scale:true},legend:{type:'scroll',top:0},series});
  else host.noChart('rep-style-chart','观察池历史数据尚未采集，暂不生成风格排名。');
  const tags=empty('rep-tag-summary');
@@ -103,7 +106,9 @@ function summaries(){
 }
 function redraw(){if(!dataset)return;const day=$('rep-date').value;
  const source=dataset.quality||{},available=rows().filter(x=>x.metrics).length;
- $('rep-status').textContent='价格数据源：'+(dataset.source||'未注明')+' · '+day+' 可计算 '+available+'/'+(dataset.universe?.length||0)+' 只 · 仅用截止日以前的K线；没有足够样本的股票不纳入排名。股票标签为人工固定分类，不是实时官方认定。';
+ const latest=[...new Set(Object.values(dataset.prices||{}).flatMap(bars=>bars.filter(p=>num(p.close)>0).map(p=>p.date)))].filter(d=>d<=day).sort().at(-1);
+ const freshness=latest===day?'':latest?` · 所选日无行情，已有数据截至 ${latest}`:' · 所选日及此前无行情';
+ $('rep-status').textContent='价格数据源：'+(dataset.source||'未注明')+' · '+day+' 可计算 '+available+'/'+(dataset.universe?.length||0)+' 只'+freshness+' · 仅用截止日以前的K线；没有足够样本的股票不纳入排名。股票标签为人工固定分类，不是实时官方认定。';
  summaries();ranking();
 }
 function initDate(){const select=$('rep-date'),list=host.state.archive||host.state.days,old=select.value;

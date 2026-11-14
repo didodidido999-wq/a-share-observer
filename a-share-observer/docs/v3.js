@@ -127,6 +127,17 @@ function heatValueText(v,metric,lowerBound=false){
  const dp=['limit_up_count','limit_down_count','hot_count','limit_diff'].includes(metric)?0:2;
  return (lowerBound?'≥':'')+number(v,dp);
 }
+function heatTooltipText(params,days,metric,codeByName){
+ const rows=Array.isArray(params)?params:[params];
+ const day=days[rows[0]?.dataIndex];
+ const lines=[day||'日期未知'];
+ for(const row of rows){
+   const code=codeByName.get(row.seriesName),value=N(row.value);
+   const lowerBound=code&&day&&heatIsLowerBound(code,day,metric);
+   lines.push(`${row.seriesName}: ${heatValueText(value,metric,lowerBound)}${value==null?'':SECTOR_META[metric][1]}${lowerBound?'（已知下限，数据部分完整）':''}`);
+ }
+ return lines.join('\n');
+}
 function syncHeatControls(){
  const ds=state.days,sel=$('sector-date');
  if(sel&&(sel.options.length!==ds.length||ds.some((d,i)=>sel.options[i]?.value!==d))){
@@ -239,7 +250,7 @@ function renderSectors(){
    const byName=new Map(top.map(x=>[x.name,x.code]));
    chart('sector-chart',{
      legend:{top:3,type:'scroll',right:0},
-     tooltip:{trigger:'axis'},
+     tooltip:{trigger:'axis',renderMode:'richText',formatter:params=>heatTooltipText(params,days,metric,byName)},
      xAxis:{type:'category',data:days.map(dateShort)},
      yAxis:{type:'value',name:unit,scale:!['limit_up_count','limit_down_count','hot_count','limit_up_ratio','limit_down_ratio','member_up_ratio'].includes(metric)},
      series

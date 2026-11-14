@@ -69,6 +69,8 @@ jobs:
           node --check a-share-observer/docs/funds-observer.js
           node --check a-share-observer/docs/etf-state.js
           node --check a-share-observer/docs/capital-workspace.js
+      - name: Verify frontend date and partial-data integrity
+        run: node --test a-share-observer/tests/frontend-integrity.test.mjs
       - name: EdgeOne asset build and output verification
         run: npm run build
       - name: Basic HTML integration smoke assertions
