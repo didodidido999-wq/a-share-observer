@@ -79,6 +79,7 @@ def test_daily_completed_universe_does_not_call_prices_api(monkeypatch, tmp_path
         def now(cls, tz=None):
             return cls(2026, 10, 28, 16, 10, tzinfo=tz)
     monkeypatch.setattr(rep, 'datetime', Clock)
+    monkeypatch.setattr(rep, 'resolve_target', lambda now: '2026-10-28')
     monkeypatch.setattr(rep, 'DEST', tmp_path/'representatives.json')
     monkeypatch.setattr(rep, 'DATA', tmp_path)
     complete={r['code']:[{'date':'2026-10-28','close':100}] for r in rep.universe()}
@@ -97,6 +98,7 @@ def test_daily_incremental_stock_query_begins_after_last_saved_bar(monkeypatch, 
         def now(cls, tz=None):
             return cls(2026, 10, 28, 16, 10, tzinfo=tz)
     monkeypatch.setattr(rep, 'datetime', Clock)
+    monkeypatch.setattr(rep, 'resolve_target', lambda now: '2026-10-28')
     monkeypatch.setattr(rep, 'DEST', tmp_path/'representatives.json')
     monkeypatch.setattr(rep, 'DATA', tmp_path)
     monkeypatch.setenv('V4_REP_LIMIT', '1')

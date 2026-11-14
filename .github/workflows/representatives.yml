@@ -30,6 +30,18 @@ jobs:
       - run: python -m pip install -r a-share-observer/requirements.txt
       - name: Verify implementation
         run: python -m pytest -q a-share-observer/tests
+      - name: Pin latest closed exchange session
+        env:
+          HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
+        run: |
+          PYTHONPATH=a-share-observer/scripts python - <<'PY'
+          import os
+          from closed_market import resolve_target
+          day=resolve_target()
+          with open(os.environ['GITHUB_ENV'],'a') as fd:
+              fd.write(f'TARGET_TRADE_DATE={day}\n')
+          print('Target closed session:',day)
+          PY
       - name: Collect representative daily K
         env:
           HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}

@@ -42,6 +42,18 @@ jobs:
         run: python -m pip install -r a-share-observer/requirements.txt
       - name: Check data transformation
         run: python -m pytest -q a-share-observer/tests
+      - name: Pin latest closed exchange session
+        env:
+          HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
+        run: |
+          PYTHONPATH=a-share-observer/scripts python - <<'PY'
+          import os
+          from closed_market import resolve_target
+          day=resolve_target()
+          with open(os.environ['GITHUB_ENV'],'a') as fd:
+              fd.write(f'TARGET_TRADE_DATE={day}\n')
+          print('Target closed session:',day)
+          PY
       - name: Capture current membership and factual metrics
         env:
           HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
@@ -74,18 +86,6 @@ jobs:
           exit 1
       - name: Fail visibly if data coverage is critically low
         if: github.event_name != 'push' && github.event.schedule != '7 8 * * 0' && github.event.inputs.mode != 'weekly'
-        run: |
-          python - <<'PY'
-          import json
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-          from pathlib import Path
-          day=datetime.now(ZoneInfo('Asia/Shanghai')).date().isoformat()
-          obj=json.loads(Path(f'a-share-observer/docs/data/history/{day}.json').read_text())
-          state=obj.get('quality_manifest',{}).get('sector_members',{})
-          actual=state.get('items_count') or 0
-          expected=state.get('expected_count') or 0
-          print('Observed sector coverage:',actual,'/',expected,'status:',state.get('status'))
-          if not expected or actual/expected < .90:
-              raise SystemExit('Sector membership completeness below 90%; inspect provider/API quota')
-          PY
+        env:
+          HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
+        run: python a-share-observer/scripts/recovery_status.py --mode verify --module sector

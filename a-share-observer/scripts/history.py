@@ -27,6 +27,7 @@ import requests
 import update as base
 import v3_events
 import v3_feedback
+from closed_market import latest_closed_day
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'docs' / 'data'
@@ -387,14 +388,28 @@ def snapshot_index_rows(records,day):
 
 def today():
     now=datetime.now(base.TZ)
-    if now.time()<dtime(15,30):
-        print('北京时间15:30前不执行收盘快照；不发布盘中数据')
-        return
-    day=now.strftime('%Y-%m-%d')
     days=all_trading_days()
-    if day not in days:
-        print(f'{day}不是交易日；跳过')
-        create_dashboard();return
+    latest=latest_closed_day(days, now)
+    day=os.getenv('TARGET_TRADE_DATE') or latest
+    if day not in days or day>latest:
+        raise ValueError('Target date is not a closed trading session')
+    # Recover recent holes too; refreshing an existing latest day cannot repair
+    # a missing preceding date. Bound recovery to the recent ten sessions.
+    recent=[d for d in days if d<=day][-9:]
+    missing=[d for d in recent if d<day and not read_json(archive_path(d),{}).get('market')]
+    if missing:
+        from targeted_backfill import backfill_days
+        backfill_days(missing)
+    # Delayed schedules and holidays must recover the last closed session with
+    # dated historical sources, never relabel today's live snapshots.
+    if day != now.date().isoformat():
+        existing=read_json(archive_path(day),{})
+        if not (existing.get('market') and existing.get('limits') is not None and
+                sum(x.get('close') is not None for x in existing.get('sectors',[]))>=400):
+            from targeted_backfill import backfill_days
+            backfill_days([day])
+        create_dashboard()
+        return
     existing=read_json(archive_path(day),{})
     if existing.get('market') and sum(x.get('close') is not None for x in existing.get('sectors',[]))>=400 and existing.get('limits') is not None:
         v3_events.enrich_if_enabled(day, base, read_json, archive_path, merge_day)

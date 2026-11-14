@@ -45,42 +45,11 @@ jobs:
             echo "$unexpected"
             exit 1
           fi
-      - name: Determine real missing modules for today's closed market
-        shell: bash
-        run: |
-          python - <<'PY'
-          import json,os
-          from datetime import datetime
-          from pathlib import Path
-          from zoneinfo import ZoneInfo
-          now=datetime.now(ZoneInfo('Asia/Shanghai'))
-          today=now.strftime('%Y-%m-%d')
-          data=Path('a-share-observer/docs/data')
-          active=now.weekday()<5 and now.hour>=16
-          dfile=data/'dates.json'
-          dates=json.loads(dfile.read_text()).get('dates',[]) if dfile.exists() else []
-          main=active and today not in dates
-          reps=json.loads((data/'representatives.json').read_text(encoding='utf-8'))
-          roster=reps.get('universe',[])
-          prices=reps.get('prices',{})
-          covered=sum(1 for row in roster if (prices.get(row.get('code')) or [{}])[-1].get('date')==today)
-          required=max(270,int(len(roster)*0.9)) if roster else 270
-          missing_reps=active and covered<required
-          snapshot_file=data/'history'/f'{today}.json'
-          snapshot=json.loads(snapshot_file.read_text(encoding='utf-8')) if snapshot_file.exists() else {}
-          quality=snapshot.get('quality_manifest') or {}
-          sector=active and not all(quality.get(k,{}).get('status')=='complete' for k in
-                                    ('sector_members','sector_internal_metrics','sector_focus_stocks'))
-          with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as fd:
-            for k,v in {'IS_MARKET_DAY':active,'NEED_MAIN':main,
-                        'NEED_REPS':missing_reps,'NEED_SECTOR':sector}.items():
-              fd.write(f'{k}={str(v).lower()}\n')
-          print(json.dumps({'beijing':now.isoformat(),'main_missing':main,
-                'representatives_today':covered,'representatives_minimum':required,
-                'sector_incomplete':sector},ensure_ascii=False))
-          PY
+      - name: Determine missing modules for the latest closed exchange session
+        env:
+          HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
+        run: python a-share-observer/scripts/recovery_status.py --mode plan
       - name: Recover missing closed-market observations in sequence
-        if: env.IS_MARKET_DAY == 'true'
         shell: bash
         env:
           HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
@@ -102,7 +71,6 @@ jobs:
           fi
           echo "RECOVERY_FAILURES=$failures" >> "$GITHUB_ENV"
       - name: Publish verified derived observations, never tests or unrelated data
-        if: env.IS_MARKET_DAY == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -113,7 +81,7 @@ jobs:
             echo 'No newly verified data to publish'
             exit 0
           fi
-          git commit -m 'data: recover missing same-day MarketScope market observations'
+          git commit -m 'data: recover missing closed-session MarketScope market observations'
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then exit 0; fi
             git fetch origin main
@@ -125,24 +93,7 @@ jobs:
             sleep "$attempt"
           done
           exit 1
-      - name: Verify current market date and report incomplete modules
-        if: env.IS_MARKET_DAY == 'true'
-        shell: bash
-        run: |
-          python - <<'PY'
-          import json,os
-          from datetime import datetime
-          from pathlib import Path
-          from zoneinfo import ZoneInfo
-          day=datetime.now(ZoneInfo('Asia/Shanghai')).strftime('%Y-%m-%d')
-          root=Path('a-share-observer/docs/data')
-          dates=json.loads((root/'dates.json').read_text()).get('dates',[])
-          reps=json.loads((root/'representatives.json').read_text(encoding='utf-8'))
-          prices=reps.get('prices',{})
-          roster=reps.get('universe',[])
-          coverage=sum(bool(prices.get(x.get('code'))) and prices[x['code']][-1].get('date')==day for x in roster)
-          required=max(270,int(len(roster)*0.9))
-          print(f'Recovery validation: {day}, main={day in dates}, representatives={coverage}/{len(roster)}')
-          if day not in dates or coverage<required or int(os.environ.get('RECOVERY_FAILURES',0))>0:
-            raise SystemExit('Recovery incomplete; inspect provider and collector logs. No fake same-day success.')
-          PY
+      - name: Verify target session and report incomplete modules
+        env:
+          HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
+        run: python a-share-observer/scripts/recovery_status.py --mode verify

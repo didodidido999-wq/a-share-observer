@@ -21,6 +21,7 @@ from statistics import median
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import update as base
 import history
+from closed_market import resolve_target
 
 DATA = history.DATA
 MEMBER_DIR = DATA / 'sector-members'
@@ -150,15 +151,20 @@ def _write_weekly(members, observed_date, expected, errors):
     return weekly
 
 
-def _load_weekly():
+def _load_weekly(day=None):
+    candidates=list(MEMBER_DIR.glob('weekly-????-??-??.json.gz'))
     pointer=MEMBER_DIR / 'current.json.gz'
-    if not pointer.exists():
-        return None
-    with gzip.open(pointer, 'rt', encoding='utf-8') as f:
-        obj=json.load(f)
-    if not isinstance(obj.get('members'), dict) or not obj.get('observed_date'):
-        raise ValueError('Weekly constituent cache missing provenance')
-    return obj
+    if pointer.exists():
+        candidates.append(pointer)
+    eligible=[]
+    for path in candidates:
+        with gzip.open(path, 'rt', encoding='utf-8') as f:
+            obj=json.load(f)
+        if not isinstance(obj.get('members'), dict) or not obj.get('observed_date'):
+            raise ValueError('Weekly constituent cache missing provenance')
+        if day is None or obj['observed_date'] <= day:
+            eligible.append(obj)
+    return max(eligible, key=lambda obj: obj['observed_date']) if eligible else None
 
 
 def weekly(client_get=None, workers=None, observed_date=None):
@@ -200,10 +206,13 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
     """Day-close enrichment reusing latest prior weekly roster; no membership API."""
     now=datetime.now(base.TZ)
     today=now.strftime('%Y-%m-%d')
-    day=day or today
-    if day!=today:
-        raise ValueError('Daily enrichment cannot backdate current market snapshot')
-    if now.hour<16 and os.getenv('SECTOR_ALLOW_EARLY')!='1':
+    day=day or resolve_target(now)
+    if day > today:
+        raise ValueError('Cannot collect a future trading day')
+    historical = day < today
+    if historical and stock_snapshot is not None:
+        raise ValueError('Historical input must come from verified dated history, not an injected snapshot')
+    if not historical and now.hour<16 and os.getenv('SECTOR_ALLOW_EARLY')!='1':
         print('Before Beijing 16:00: do not publish unclosed market observations')
         return {'status':'not_ready'}
     snap=history.read_json(history.archive_path(day), {})
@@ -214,14 +223,18 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
     if all(quality.get(k,{}).get('status')=='complete' for k in
            ('sector_members','sector_internal_metrics','sector_focus_stocks')):
         return {'status':'complete','skipped':True,'total':0,'observed':0}
-    weekly_data=_load_weekly()
+    weekly_data=_load_weekly(day)
     if not weekly_data or weekly_data['observed_date']>day:
         print(f'{day}: no eligible weekly member snapshot; not using future constituents')
         return {'status':'not_ready'}
     catalog={x['code']:x for x in snap['sectors'] if x.get('code')}
     member_lists=weekly_data['members']
     member_date=weekly_data['observed_date']
-    if stock_snapshot is None:
+    if historical:
+        from targeted_backfill import historical_stock_rows
+        stock_snapshot=historical_stock_rows(day, now=now)
+        asof=day
+    elif stock_snapshot is None:
         stock_snapshot, asof=history.get_stock_snapshot()
     else:
         asof=day

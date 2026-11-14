@@ -187,3 +187,22 @@ def test_current_day_cannot_use_future_weekly_roster(monkeypatch,tmp_path):
       'market':{'up':1},'sectors':[{'code':'881101.TI'}]})
     result=sector.run(day=today,stock_snapshot=[{'thscode':'000001.SZ'}])
     assert result['status']=='not_ready'
+
+def test_historical_roster_selects_last_not_future(monkeypatch,tmp_path):
+    monkeypatch.setattr(sector,'MEMBER_DIR',tmp_path)
+    monkeypatch.setattr(sector,'DATA',tmp_path)
+    sector._write_weekly({'A':{'1':'old'}},'2026-11-08',1,[])
+    sector._write_weekly({'A':{'2':'future'}},'2026-11-15',1,[])
+    assert sector._load_weekly('2026-11-13')['members']=={'A':{'1':'old'}}
+    assert sector._load_weekly('2026-11-07') is None
+
+
+def test_past_day_rejects_injected_snapshot(monkeypatch):
+    from datetime import datetime as RealDatetime
+    class Clock(RealDatetime):
+        @classmethod
+        def now(cls,tz=None): return cls(2026,11,14,1,8,tzinfo=tz)
+    monkeypatch.setattr(sector,'datetime',Clock)
+    import pytest
+    with pytest.raises(ValueError,match='Historical input'):
+        sector.run(day='2026-11-13',stock_snapshot=[{'thscode':'A'}])
