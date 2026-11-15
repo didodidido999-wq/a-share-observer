@@ -14,7 +14,7 @@ function stockPath(url){return /^data\/risk-stocks\/\d{6}\.(SH|SZ|BJ)\.json$/.te
 function observationsBefore(rows,day){return (rows||[]).filter(r=>r.date<=day).sort((a,b)=>a.date.localeCompare(b.date));}
 function comparison(rows,day){const history=observationsBefore(rows,day);return {current:atDate(history,day),previous:history.filter(r=>r.date<day).at(-1)||null,latest:history.at(-1)||null};}
 function macroDates(series,days,day){const start=(days||[])[0];return [...new Set((series||[]).flatMap(s=>(s.rows||[]).map(r=>r.date)))].filter(d=>d<=day&&(!start||d>=start)).sort();}
-function sourceState(s){return `${s.status==='stale'?(s.error?'本次更新失败，保留旧数据':'观测已过期，不能代表当前'):s.status==='unavailable'?'来源不可用':s.error?'本次采集异常':'已取得来源记录'} · 最近成功采集 ${s.fetched_at||'未记录'} · 本次尝试 ${s.last_attempt_at||'未记录'}${s.error?' · 错误：'+s.error:''}`;}
+function sourceState(s){return `${s.status==='stale'?(s.error?'本次更新失败，保留旧数据':'观测已过期，不能代表当前'):s.status==='unavailable'?'来源不可用':s.status==='missing'?'该股未取得记录':s.error?'本次采集异常':'已取得来源记录'} · 最近成功采集 ${s.fetched_at||'未记录'} · 本次尝试 ${s.last_attempt_at||'未记录'}${s.error?' · 错误：'+s.error:''}`;}
 function eventFacts(e){return [finite(e.shares_10k)?`已披露变动 ${fmt(e.shares_10k)} 万股`:null,e.event_start||e.event_date?`实际期间 ${e.event_start||'起始未注明'} 至 ${e.event_date||'结束未注明'}`:null].filter(Boolean).join(' · ');}
 const utils={sourceState,eventFacts,observationsBefore,comparison,macroDates,search,atDate,latestAt,chartHistory,basisPoints,statusLabel,safeURL,stockPath};
 if(typeof window==='undefined'){globalThis.MarketScopeRiskUtils=utils;return;}
