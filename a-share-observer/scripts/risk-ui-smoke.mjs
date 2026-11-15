@@ -64,18 +64,26 @@ try{
  // Explicit failed index and retry. Reload discards controller caches.
  indexFailure=true;
  await page.goto(new URL('#risk',base).href,{waitUntil:'domcontentloaded'});
+ // A hash-only goto is same-document navigation, so it does not clear module caches.
+ const failedIndexResponse=page.waitForResponse(r=>r.url().endsWith('/data/risk-observer.json')&&r.status()===503);
+ await page.reload({waitUntil:'domcontentloaded'});
+ await failedIndexResponse;
  await page.waitForFunction(()=>document.querySelector('#risk-search-status')?.textContent.includes('读取失败'));
  check(await page.locator('#risk-retry').isVisible(),'Index failure offers no retry');
  indexFailure=false;
  await page.locator('#risk-retry').click();
  await page.waitForFunction(()=>document.querySelector('#risk-search-status')?.textContent.includes('可查询'));
+ await page.locator('#risk-date').selectOption(late);
  stockFailure=true;
+ const failedStockResponse=page.waitForResponse(r=>r.url().endsWith('/data/risk-stocks/002149.SZ.json')&&r.status()===503);
  await search('002149');
+ await failedStockResponse;
  await page.waitForFunction(()=>document.querySelector('#risk-detail')?.textContent.includes('个股归档读取失败'));
  check((await body()).includes('不能判定风险'),'Failed stock fetch is presented as safe');
  stockFailure=false;
  await page.getByRole('button',{name:'重新加载该股',exact:true}).click();
- await page.waitForFunction(()=>document.querySelector('#risk-detail')?.textContent.includes('西部材料 · 002149.SZ'));
+ await page.waitForFunction(()=>document.querySelector('#risk-detail')?.textContent.includes('1.23亿元'));
+ check((await body()).includes('西部材料 · 002149.SZ'),'Stock retry selected wrong record');
  await page.setViewportSize({width:390,height:844});
  await page.locator('#risk-query').fill('西部材料');
  await page.locator('#risk-query').press('Enter');
