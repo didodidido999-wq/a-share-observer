@@ -11,3 +11,5 @@ test('direct spot group never mixes futures or ETF prices',()=>{assert.deepEqual
 
 test('all commodity spot series conservatively exclude same-date observations',()=>{assert.equal(u.rowsBefore({kind:'commodity_spot',market_timezone:null,rows:[{date:'2026-11-13',value:1}]},'2026-11-13').length,0);});
 test('status sidecar is separate and errors retain the archived price display',()=>{const code=fs.readFileSync(new URL('../docs/global-context.js',import.meta.url),'utf8');assert.match(code,/data\/global\/commodities-status.json/);assert.match(code,/本次状态索引读取失败/);assert.match(code,/留存旧归档/);});
+
+test('metadata warnings explain unknown publication without invalidating price',()=>{const note=u.acquisitionNote({source_release_date:null,acquisition_route:'eia_xls',acquisition_warnings:{release_html:'HTTP 403'}},{status:'observed',warnings:{release_html:'HTTP 403'}});assert.match(note,/EIA官方XLS/);assert.match(note,/发布日未确认/);assert.match(note,/发布页面信息未取得/);assert.doesNotMatch(note,/无可用价格/);});

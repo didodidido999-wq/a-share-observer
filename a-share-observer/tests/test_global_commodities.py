@@ -4,6 +4,10 @@ from datetime import date
 import pytest
 spec=importlib.util.spec_from_file_location('global_commodities',Path(__file__).parents[1]/'scripts/global_commodities.py');g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 TODAY=date(2026,11,15)
+@pytest.fixture(autouse=True)
+def no_real_xls(monkeypatch):
+ def fail(url):raise TimeoutError('mock XLS unavailable')
+ monkeypatch.setattr(g,'download_binary',fail)
 def csv(symbol='DCOILWTICO',value='89.62'):return f'observation_date,{symbol}\n2026-11-10,.\n2026-11-11,{value}\n'
 def getter(url):
  if 'fredgraph.csv' in url:return csv('DCOILBRENTEU' if 'DCOILBRENTEU' in url else 'DCOILWTICO')
@@ -43,3 +47,40 @@ def test_regressed_source_preserves_file(tmp_path):
  def older(url):return csv().replace('2026-11-11','2026-11-09') if 'fredgraph' in url else getter(url)
  with pytest.raises(ValueError,match='regressed'):g.collect_asset('wti_spot',tmp_path,older,TODAY)
  assert (tmp_path/'wti_spot.json').read_bytes()==before
+
+def test_xls_primary_does_not_require_fred_or_release_page(tmp_path,monkeypatch):
+ monkeypatch.setattr(g,'parse_xls',lambda payload,asset,today:[{'date':'2026-11-11','value':89.62}])
+ def no_pages(url):raise TimeoutError('page unreachable')
+ o=g.collect_asset('wti_spot',tmp_path,no_pages,TODAY,get_binary=lambda u:b'xls')
+ assert o['acquisition_route']=='eia_xls' and o['source_release_date'] is None
+ assert 'release_html' in o['acquisition_warnings'] and 'fred_csv' not in o['acquisition_warnings']
+
+def test_fallback_route_reports_stage(tmp_path):
+ o=g.collect_asset('wti_spot',tmp_path,getter,TODAY)
+ assert o['acquisition_route']=='fred_csv' and 'eia_xls' in o['acquisition_warnings']
+
+def test_xls_identity_and_dates(monkeypatch):
+ import xlrd
+ class Sheet:
+  nrows=4
+  rows=[['Back','title'],['Sourcekey','RWTC'],['Date','Cushing, OK WTI Spot Price FOB (Dollars per Barrel)'],[46337,89.62]]
+  def cell_value(self,i,j):return self.rows[i][j]
+  def cell_type(self,i,j):return xlrd.XL_CELL_DATE
+ class Book:
+  datemode=0
+  def sheet_by_name(self,name):assert name=='Data 1';return Sheet()
+ monkeypatch.setattr(xlrd,'open_workbook',lambda **k:Book())
+ assert g.parse_xls(b'fixture','wti_spot',TODAY)==[{'date':'2026-11-11','value':89.62}]
+ with pytest.raises(ValueError,match='identity'):g.parse_xls(b'fixture','brent_spot',TODAY)
+
+def test_release_regression_preserves_file(tmp_path):
+ g.collect_asset('wti_spot',tmp_path,getter,TODAY);p=tmp_path/'wti_spot.json';before=p.read_bytes()
+ def older_release(url):return getter(url) if 'fredgraph' in url else 'Release Date: 11/11/2026'
+ with pytest.raises(ValueError,match='release date regressed'):g.collect_asset('wti_spot',tmp_path,older_release,TODAY)
+ assert p.read_bytes()==before
+
+def test_missing_release_metadata_warns_without_dropping_prices(tmp_path,monkeypatch):
+ monkeypatch.setattr(g,'parse_xls',lambda *a:[{'date':'2026-11-11','value':89.62}])
+ o=g.collect_asset('wti_spot',tmp_path,lambda u:'<html>No release date supplied</html>',TODAY,get_binary=lambda u:b'xls')
+ assert o['source_release_date'] is None and 'release_html' in o['acquisition_warnings']
+ assert o['rows']==[{'date':'2026-11-11','value':89.62}]
