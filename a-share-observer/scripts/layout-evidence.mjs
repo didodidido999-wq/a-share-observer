@@ -6,7 +6,9 @@ const base=process.env.MARKET_URL||'http://127.0.0.1:8765/';
 try {
  await page.goto(new URL('#today',base).href,{waitUntil:'networkidle'});
  await page.locator('#market-overview').waitFor({state:'visible'});
+ await page.locator('.market-replay-tools > summary').click();
  if(await page.locator('#timeline-day').innerText()!==await page.locator('#selected-day').innerText())throw Error('Initial timeline date differs from selected date');
+ await page.locator('.market-replay-tools > summary').click();
  await page.locator('#navigation [data-page="macro"]').click();
  await page.locator('#global-context').scrollIntoViewIfNeeded();
  await page.locator('#global-context').waitFor({state:'visible'});
