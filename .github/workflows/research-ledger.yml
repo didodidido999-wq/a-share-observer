@@ -1,6 +1,12 @@
 name: Freeze and evaluate prospective market research
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/research-ledger.yml"
+      - "a-share-observer/scripts/research_ledger.py"
+      - "a-share-observer/scripts/research_publication.py"
   schedule:
     # 20:40 Beijing, weekdays. EOD research, never a same-day 14:45 snapshot.
     - cron: '40 12 * * 1-5'

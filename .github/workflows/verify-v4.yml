@@ -2,6 +2,7 @@ name: Verify MarketScope V4 interfaces
 on:
   pull_request:
     paths:
+      - '.github/workflows/research-ledger.yml'
       - 'a-share-observer/docs/**'
       - 'a-share-observer/scripts/research_ledger.py'
       - 'a-share-observer/scripts/policy_context.py'
@@ -47,6 +48,7 @@ on:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/research-ledger.yml'
       - 'a-share-observer/docs/data/reviewed-evidence.json'
       - 'a-share-observer/docs/data/reviewed-index.json'
       - 'a-share-observer/docs/index.html'

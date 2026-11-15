@@ -2,6 +2,7 @@ name: Browser UX smoke and static site integration
 on:
   pull_request:
     paths:
+      - '.github/workflows/research-ledger.yml'
       - 'a-share-observer/docs/**'
       - 'a-share-observer/scripts/*ui-smoke.mjs'
       - 'a-share-observer/scripts/layout-evidence.mjs'
@@ -21,6 +22,7 @@ on:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/research-ledger.yml'
       - 'a-share-observer/docs/**'
       - 'a-share-observer/scripts/*ui-smoke.mjs'
       - 'a-share-observer/scripts/layout-evidence.mjs'
