@@ -1,8 +1,13 @@
 <!doctype html>
 <html lang="zh-CN"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#12273a"><meta name="description" content="MarketScope V3 — A股历史市场环境、异动、板块与风格交互研究终端">
-<title>MarketScope V3｜A股市场研究</title>
+<meta name="theme-color" content="#172b38"><meta name="description" content="看好网，做好人，得好报。可核查的A股市场证据、研究判断与历史复盘。">
+<title>看好网｜A股证据与研究</title>
+
+<link rel="stylesheet" href="research-analysis.css?v=1">
+<link rel="stylesheet" href="policy-context.css?v=1">
+<script defer src="research-analysis.js?v=1"></script>
+<script defer src="policy-context.js?v=1"></script>
 <link rel="stylesheet" href="v3.css?v=4.8.0">
 <link rel="stylesheet" href="risk-workspace.css?v=2.1.0">
 <link rel="stylesheet" href="market-overview.css?v=1.0.0">
@@ -14,29 +19,38 @@
 <script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=5.0.0-risk"></script>
 <script defer src="event-sector.js?v=4.2.0"></script><script defer src="representatives.js?v=4.4.1-recovery"></script>
 <script defer src="funds-observer.js?v=1.3.0"></script><script defer src="etf-state.js?v=1.1.0"></script><script defer src="capital-workspace.js?v=1.0.0"></script>
+<link rel="stylesheet" href="research-hub.css?v=2">
 </head><body>
 <div class="shell">
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><span class="logo-mark">⌁</span><div><strong>MarketScope</strong><small>A-SHARE RESEARCH / V3</small></div></div>
+  <div class="logo"><span class="logo-mark" aria-hidden="true">观</span><div><strong>看好网</strong><small>证据 · 判断 · 复盘</small></div></div>
   <div class="sidebar-label">研究工作区</div>
   <nav id="navigation" aria-label="主导航">
-    <button class="active" type="button" data-page="today"><span>◫</span>今日市场</button>
-    <button type="button" data-page="events"><span>◇</span>异动与线索</button>
-    <button type="button" data-page="sectors"><span>▦</span>板块研究</button>
-    <button type="button" data-page="risk"><span>◎</span>个股风险过滤</button>
-    <button type="button" data-page="history"><span>◷</span>历史研究</button>
+    <div class="nav-group">决策</div>
+    <button type="button" data-page="research">研究判断</button>
+    <div class="nav-group">市场证据</div>
+    <button type="button" data-page="today">A股市场</button>
+    <button type="button" data-page="capital">资金与机构</button>
+    <button type="button" data-page="macro">外围与宏观</button>
+    <button type="button" data-page="policy">政策与事件</button>
+    <div class="nav-group">研究工具</div>
+    <button type="button" data-page="sectors">板块研究</button>
+    <button type="button" data-page="risk">个股风险</button>
+    <button type="button" data-page="events">异动线索</button>
+    <button type="button" data-page="history">历史研究</button>
   </nav>
   <div class="sidebar-foot">仅呈现可复核的交易日事实。<br>历史回放不代表盘中行情。<br>不构成交易建议。</div>
 </aside>
 <div class="workspace">
-<header class="topbar"><button class="mobile-menu" id="menu-btn" type="button" aria-label="打开菜单">☰</button><span>MARKETSCOPE <em>/</em> <b id="crumb">今日市场</b></span><span class="top-status" id="status">读取归档中…</span></header>
+<header class="topbar"><button class="mobile-menu" id="menu-btn" type="button" aria-label="打开菜单">☰</button><span class="breadcrumb-label">研究工作台 <em>/</em> <b id="crumb">研究判断</b></span><span class="top-status" id="status">读取归档中…</span></header>
 <main>
- <div class="heading"><div><div class="eyebrow">CHINA A-SHARES <span> · HISTORICAL INTELLIGENCE</span></div><h1 id="page-title">今日市场</h1><p id="page-desc">按交易日回放指数、市场广度、成交额和赚钱效应的变化。</p></div><div class="date-badge"><small>当前选中交易日</small><strong id="selected-day">—</strong><span id="archive-days">—</span></div></div>
+ <header class="brand-statement" aria-label="品牌主张"><div><p class="brand-caption">看好网 · 独立研究工作台</p><p class="brand-slogan">看好网，做好人，得好报</p></div><p class="brand-principle">以事实为据<br>让判断经得起复盘</p></header>
+ <div class="heading"><div><div class="eyebrow">市场研究 / 可核查的证据</div><h1 id="page-title">研究判断</h1><p id="page-desc">按交易日回放指数、市场广度、成交额和赚钱效应的变化。</p></div><div class="date-badge"><small>当前选中交易日</small><strong id="selected-day">—</strong><span id="archive-days">—</span></div></div>
  <div id="notice" class="notice" role="status" aria-live="polite">正在加载已归档的真实数据…</div>
  <section class="range-bar" aria-label="全站交易日区间"><label>观察窗口 <select id="range-preset"><option value="10">最近10日</option><option value="5">最近5日</option><option value="20">最近20日</option><option value="custom">自选区间</option><option value="all">全部历史</option></select></label><label>起始 <input type="date" id="range-start" aria-label="开始日期"></label><label>截止 <input type="date" id="range-end" aria-label="截止日期"></label><button type="button" id="apply-range" class="btn solid">应用区间</button><span id="range-info">—</span></section>
 
  <section id="today" class="page active">
- <nav class="market-section-nav" aria-label="大盘内容导航"><button type="button" data-market-jump="market-overview">盘后总览</button><button type="button" data-market-jump="market-index-section">指数与风格</button><button type="button" data-market-jump="macro-risk-panel">利率与资金</button><button type="button" data-market-jump="global-context">外围市场</button></nav>
+ <nav class="market-section-nav" aria-label="大盘内容导航"><button type="button" data-market-jump="market-overview">盘后总览</button><button type="button" data-market-jump="market-index-section">指数与风格</button><button type="button" data-route="capital">资金与机构 →</button><button type="button" data-route="macro">外围与宏观 →</button></nav>
 
   <div class="playback panel"><div class="panel-header"><div><div class="kicker">01 / SESSION REPLAY</div><h2>市场变化回放 <span class="soft">日线 / 非盘中</span></h2></div><div class="play-actions"><button type="button" id="prev-day" aria-label="上一交易日">◀</button><button type="button" id="play-day" aria-label="播放市场回放">▶ 播放</button><button type="button" id="next-day" aria-label="下一交易日">▶</button><button type="button" id="latest-day">回到最新</button><label>速度<select id="play-speed"><option value="1500">慢</option><option value="900" selected>标准</option><option value="480">快</option></select></label></div></div>
    <input id="day-slider" class="day-slider" type="range" min="0" max="0" step="1" value="0" aria-label="交易日滑块"><div class="range-caption"><span id="first-day">—</span><b id="timeline-day">—</b><span id="last-day">—</span></div>
@@ -49,8 +63,16 @@
    <article class="panel"><div class="panel-header"><div><div class="kicker">03 / LIQUIDITY & MOMENTUM</div><h2>量能与短线反馈</h2><p>成交额亿元；涨跌停 / 连板按实际取得数据展示</p></div><label class="tool-select">显示<select id="market-trend-type"><option value="turnover">成交额</option><option value="limits">涨停与连板</option><option value="breadth">上涨与下跌家数</option></select></label></div><div class="chart large" id="liquidity-chart"></div></article></div>
   <div class="split-grid"><article class="panel"><div class="panel-header"><div><div class="kicker">04 / FACTOR ROTATION</div><h2>市场风格变化</h2><p>切换日期与分类，观察组内收益和上涨广度</p></div><div class="filters"><select id="style-dimension"><option value="价格分档">价格分档</option><option value="交易制度代理">10cm / 20cm / 30cm</option></select><select id="style-metric"><option value="median_pct">涨跌幅中位数</option><option value="up_ratio">上涨比例</option><option value="limit_up">涨停数</option><option value="sample">样本数</option></select></div></div><div class="style-bars" id="style-bars"></div></article>
    <article class="panel"><div class="panel-header"><div><div class="kicker">05 / DAILY EVIDENCE</div><h2>市场变化事实</h2><p>仅从可验证的历史数据计算，不做主观情绪评分</p></div></div><div id="market-facts" class="fact-list"></div></article></div>
- <article class="panel" id="macro-risk-panel"><div class="panel-header"><div><div class="kicker">CROSS-MARKET CONTEXT</div><h2>利率与资金环境</h2><p>辅助理解大盘环境，不把单一市场变化当作股票买卖信号。</p></div></div><div id="macro-risk-status" role="status" class="risk-note">正在读取跨市场归档…</div><button type="button" id="macro-risk-retry" hidden>重新加载利率数据</button><div id="macro-risk-cards" class="risk-grid"></div><div class="risk-controls"><label>观察指标 <select id="macro-risk-select" aria-label="跨市场指标"></select></label></div><div id="macro-risk-chart" class="chart"></div><p class="risk-note">收益率以 % 展示，利率变化以基点 bp 展示，1 bp = 0.01 个百分点。按实际日期显示；没有归档不等于没有变化。</p><details><summary>这些市场如何辅助分析？</summary><p class="risk-note">货币市场反映短期资金价格；国债收益率提供利率与预期线索；融资资金在下方“资金观察”独立展示。它们不构成买卖指令。分离债、权证和 OTC 没有可直接通用于 A 股的统一风险指标，本页不生成虚构分数。</p></details></article>
-  <article class="panel capital-panel" id="funds-observer" aria-label="资金观察">
+
+
+
+
+  <article class="panel"><div class="panel-header"><div><div class="kicker">07 / DAILY LEDGER</div><h2>历史市场账本</h2></div><span class="meta">点击任意一日，联动回放</span></div><div class="table-wrap"><table><thead><tr><th>日期</th><th>上涨</th><th>下跌</th><th>中位数</th><th>成交额（亿）</th><th>非ST涨停</th><th>最高连板</th></tr></thead><tbody id="daily-ledger"></tbody></table></div></article>
+ </section>
+
+ <section id="research" class="page"><div id="research-content" aria-live="polite"></div></section>
+ <section id="policy" class="page"><div id="policy-content" aria-live="polite"></div></section>
+ <section id="capital" class="page">  <article class="panel capital-panel" id="funds-observer" aria-label="资金观察">
    <div class="panel-header capital-header">
     <div><div class="kicker">06 / CAPITAL OBSERVATIONS</div><h2>资金观察</h2>
      <p>区分融资杠杆与宽基ETF申赎线索。全部数据按实际披露日期呈现，不推定国家队当日买卖。</p>
@@ -100,12 +122,8 @@
      <p>ETF份额来自沪深交易所，反映基金整体申赎；汇金等机构持仓来自定期报告。两类证据的披露时间和统计口径不同。单独或组合出现，都不足以证明国家队当日买卖。未核实净值前不估算金额。</p>
     </details>
    </section>
-  </article>
-  <article class="panel" id="domestic-reviewed"></article>
-  <article class="panel global-context" id="global-context"><div class="panel-header"><div><div class="kicker">GLOBAL CONTEXT / ARCHIVED EVIDENCE</div><h2>外围市场观察</h2><p>优先查看可核验原始价格，ETF代理单列；现货、期货与股票资产不混用。</p></div></div><div class="global-controls"><label>观察用途 <select id="global-group" aria-label="外围市场分组"></select></label><label id="global-view-control" hidden>比较方式 <select id="global-view-mode" aria-label="外围数据表达方式"><option value="raw">原值 · 同单位价格</option><option value="normalized">共同基准 = 100</option></select></label><button type="button" id="global-retry" hidden>重试失败资产</button></div><p id="global-context-note" class="risk-note"></p><div id="global-assets" class="global-assets" aria-label="外围资产选择"></div><p id="global-status" class="risk-note" role="status"></p><div id="global-context-chart" class="chart"></div><div id="global-reviewed"></div><div class="table-wrap"><table><thead><tr><th>资产 / 代码</th><th>最近观测值</th><th>实际观测日 / 时区</th><th>已计算变化 / 对照日</th><th>来源</th></tr></thead><tbody id="global-values"></tbody></table></div><details><summary>数据缺口与代理边界</summary><p class="risk-note">本页已接入EIA WTI/Brent现货及美债；不提供WTI/Brent期货。海外原指数、美元指数、VIX及国际黄金原始历史序列仍有来源或再分发许可缺口，未导入。可直接查看<a href="https://www.spglobal.com/spdji/en/indices/equity/sp-500/" target="_blank" rel="noopener noreferrer">标普指数官方</a>、<a href="https://indexes.nasdaq.com/" target="_blank" rel="noopener noreferrer">Nasdaq指数官方</a>及<a href="https://www.lbma.org.uk/prices-and-data/precious-metal-prices" target="_blank" rel="noopener noreferrer">LBMA贵金属价格</a>。境内ETF价格受汇率、折溢价及跟踪误差影响；油气股票不是原油。美国公布时刻未核验，统一排除中国所选日同日数据。这里是已有归档观察，不是任何人士的推荐清单。公开讨论参考包括<a href="https://sina.cn/news/detail/5363792663806725.html" target="_blank" rel="noopener noreferrer">恒生科技</a>及<a href="https://3g.sina.com.cn/news/detail/5354269863840891.html" target="_blank" rel="noopener noreferrer">费城半导体、日韩市场</a>；不代表完整常提清单。SOX原指数尚未接入，纳指科技ETF不能替代SOX。</p></details></article>
-  <article class="panel"><div class="panel-header"><div><div class="kicker">07 / DAILY LEDGER</div><h2>历史市场账本</h2></div><span class="meta">点击任意一日，联动回放</span></div><div class="table-wrap"><table><thead><tr><th>日期</th><th>上涨</th><th>下跌</th><th>中位数</th><th>成交额（亿）</th><th>非ST涨停</th><th>最高连板</th></tr></thead><tbody id="daily-ledger"></tbody></table></div></article>
- </section>
-
+  </article>  <article class="panel" id="domestic-reviewed"></article></section>
+ <section id="macro" class="page"> <article class="panel" id="macro-risk-panel"><div class="panel-header"><div><div class="kicker">CROSS-MARKET CONTEXT</div><h2>利率与资金环境</h2><p>辅助理解大盘环境，不把单一市场变化当作股票买卖信号。</p></div></div><div id="macro-risk-status" role="status" class="risk-note">正在读取跨市场归档…</div><button type="button" id="macro-risk-retry" hidden>重新加载利率数据</button><div id="macro-risk-cards" class="risk-grid"></div><div class="risk-controls"><label>观察指标 <select id="macro-risk-select" aria-label="跨市场指标"></select></label></div><div id="macro-risk-chart" class="chart"></div><p class="risk-note">收益率以 % 展示，利率变化以基点 bp 展示，1 bp = 0.01 个百分点。按实际日期显示；没有归档不等于没有变化。</p><details><summary>这些市场如何辅助分析？</summary><p class="risk-note">货币市场反映短期资金价格；国债收益率提供利率与预期线索；融资资金在“资金与机构”独立展示。它们不构成买卖指令。分离债、权证和 OTC 没有可直接通用于 A 股的统一风险指标，本页不生成虚构分数。</p></details></article>  <article class="panel global-context" id="global-context"><div class="panel-header"><div><div class="kicker">GLOBAL CONTEXT / ARCHIVED EVIDENCE</div><h2>外围市场观察</h2><p>优先查看可核验原始价格，ETF代理单列；现货、期货与股票资产不混用。</p></div></div><div class="global-controls"><label>观察用途 <select id="global-group" aria-label="外围市场分组"></select></label><label id="global-view-control" hidden>比较方式 <select id="global-view-mode" aria-label="外围数据表达方式"><option value="raw">原值 · 同单位价格</option><option value="normalized">共同基准 = 100</option></select></label><button type="button" id="global-retry" hidden>重试失败资产</button></div><p id="global-context-note" class="risk-note"></p><div id="global-assets" class="global-assets" aria-label="外围资产选择"></div><p id="global-status" class="risk-note" role="status"></p><div id="global-context-chart" class="chart"></div><div id="global-reviewed"></div><div class="table-wrap"><table><thead><tr><th>资产 / 代码</th><th>最近观测值</th><th>实际观测日 / 时区</th><th>已计算变化 / 对照日</th><th>来源</th></tr></thead><tbody id="global-values"></tbody></table></div><details><summary>数据缺口与代理边界</summary><p class="risk-note">本页已接入EIA WTI/Brent现货及美债；不提供WTI/Brent期货。海外原指数、美元指数、VIX及国际黄金原始历史序列仍有来源或再分发许可缺口，未导入。可直接查看<a href="https://www.spglobal.com/spdji/en/indices/equity/sp-500/" target="_blank" rel="noopener noreferrer">标普指数官方</a>、<a href="https://indexes.nasdaq.com/" target="_blank" rel="noopener noreferrer">Nasdaq指数官方</a>及<a href="https://www.lbma.org.uk/prices-and-data/precious-metal-prices" target="_blank" rel="noopener noreferrer">LBMA贵金属价格</a>。境内ETF价格受汇率、折溢价及跟踪误差影响；油气股票不是原油。美国公布时刻未核验，统一排除中国所选日同日数据。这里是已有归档观察，不是任何人士的推荐清单。公开讨论参考包括<a href="https://sina.cn/news/detail/5363792663806725.html" target="_blank" rel="noopener noreferrer">恒生科技</a>及<a href="https://3g.sina.com.cn/news/detail/5354269863840891.html" target="_blank" rel="noopener noreferrer">费城半导体、日韩市场</a>；不代表完整常提清单。SOX原指数尚未接入，纳指科技ETF不能替代SOX。</p></details></article></section>
  <section id="events" class="page">
   <div class="section-head"><div><div class="kicker">EVENT-DRIVEN RESEARCH</div><h2>异动与线索</h2><p>次日正负反馈 · 板块线索 · 个股接力轨迹，全部随所选交易日更新。</p></div><label>定位日期 <select id="event-date" aria-label="事件研究日期"></select></label></div>
   <div class="event-timeline" id="events-timeline" aria-label="异动与线索交易日回放">
@@ -178,7 +196,7 @@
  </article>
  
 </section>
- <footer>MarketScope V3 <span>数据源：hithink-finance / 历史归档；仅供研究，不构成投资建议。</span><span>所有日期为北京时间交易日</span></footer>
+ <footer>看好网 · 研究工作台 <span>数据源：hithink-finance / 历史归档；仅供研究，不构成投资建议。</span><span>所有日期为北京时间交易日</span></footer>
 </main></div></div>
 <div class="modal-backdrop" id="detail-dialog" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><button id="close-dialog" type="button" aria-label="关闭详情" class="modal-close">✕</button><h2 id="dialog-title">事件详情</h2><div id="dialog-body"></div></div></div>
 </body></html>

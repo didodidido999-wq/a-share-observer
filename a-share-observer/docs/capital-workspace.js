@@ -4,7 +4,7 @@ const tabs=['financing','etf'];
 const $=id=>document.getElementById(id);
 let active='financing',context=null,bound=false;
 function draw(){
- if(!context || context.state.page!=='today')return;
+ if(!context || context.state.page!=='capital')return;
  if(active==='financing'){
   window.MarketScopeFunds?.render(context);
  }else{

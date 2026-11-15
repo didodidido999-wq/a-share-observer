@@ -2,7 +2,11 @@ name: Verify MarketScope V4 interfaces
 on:
   pull_request:
     paths:
+      - '.github/workflows/research-ledger.yml'
       - 'a-share-observer/docs/**'
+      - 'a-share-observer/scripts/research_ledger.py'
+      - 'a-share-observer/scripts/policy_context.py'
+      - 'a-share-observer/tests/**'
       - 'a-share-observer/scripts/v4_representatives.py'
       - 'a-share-observer/tests/test_v4_representatives.py'
       - 'a-share-observer/tests/test_v5_sector.py'
@@ -44,6 +48,7 @@ on:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/research-ledger.yml'
       - 'a-share-observer/docs/data/reviewed-evidence.json'
       - 'a-share-observer/docs/data/reviewed-index.json'
       - 'a-share-observer/docs/index.html'
@@ -82,6 +87,8 @@ jobs:
         run: |
           set -euo pipefail
           python a-share-observer/scripts/reviewed_evidence.py --check-history --base-ref "$BASE_SHA"
+          python a-share-observer/scripts/policy_context.py --git-base "$BASE_SHA"
+          python a-share-observer/scripts/research_ledger.py --check --git-base "$BASE_SHA"
           python - <<'PYCODE'
           import sys,json
           sys.path.insert(0,'a-share-observer/scripts')
@@ -95,6 +102,8 @@ jobs:
         run: python -m pytest -q a-share-observer/tests
       - name: JavaScript parsing (all page controllers)
         run: |
+          node --check a-share-observer/docs/research-analysis.js
+          node --check a-share-observer/docs/policy-context.js
           node --check a-share-observer/docs/v3.js
           node --check a-share-observer/docs/event-sector.js
           node --check a-share-observer/docs/representatives.js
@@ -120,7 +129,7 @@ jobs:
           for(const id of keys)if(!h.includes('id="'+id+'"'))throw Error('Missing UI control '+id);
           for(const script of ['v3.js','event-sector.js','representatives.js','funds-observer.js','etf-state.js','capital-workspace.js'])if(!h.includes('src="'+script+'?'))throw Error('Missing script '+script);
           if(!events.includes("relayMode==='down'")||!events.includes(" has-break"))throw Error('Negative event modes missing');
-          if(!app.includes('MarketScopeCapital.render'))throw Error('Capital workspaces not wired to global date replay');
+          if(!app.includes('MarketScopeCapital?.render'))throw Error('Capital workspaces not wired to global date replay');
           if(!app.includes("sector-inline-detail")||!app.includes("MarketScopeHistory.render"))throw Error('Page routing/sector expansion missing');
           if(!history.includes('drawdown')||!history.includes('up_ratio'))throw Error('Loss dimension missing');
           console.log('V4 DOM controls and interactions integrated.');

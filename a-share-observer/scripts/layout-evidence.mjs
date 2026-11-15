@@ -1,15 +1,16 @@
 // Release evidence with repository data, never fixture substitutions.
 import {chromium} from 'playwright';
-const browser=await chromium.launch({headless:true});
+const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
 const page=await browser.newPage({viewport:{width:1440,height:1000}});
 const base=process.env.MARKET_URL||'http://127.0.0.1:8765/';
 try {
- await page.goto(base,{waitUntil:'networkidle'});
+ await page.goto(new URL('#today',base).href,{waitUntil:'networkidle'});
  await page.locator('#market-overview').waitFor({state:'visible'});
  if(await page.locator('#timeline-day').innerText()!==await page.locator('#selected-day').innerText())throw Error('Initial timeline date differs from selected date');
- await page.getByRole('button',{name:'外围市场',exact:true}).click();
- await page.waitForFunction(()=>Math.abs(document.getElementById('global-context').getBoundingClientRect().top-80)<5);
- if(new URL(page.url()).hash!=='#today')throw Error('Section jump changed page route');
+ await page.locator('#navigation [data-page="macro"]').click();
+ await page.locator('#global-context').scrollIntoViewIfNeeded();
+ await page.locator('#global-context').waitFor({state:'visible'});
+ if(!new URL(page.url()).hash.startsWith('#macro'))throw Error('Macro route not selected');
  await page.locator('#global-group').selectOption('crude_spot');
  await page.waitForFunction(()=>document.querySelector('#global-values')?.textContent.includes('WTI'));
  const spotText=await page.locator('#global-values').innerText();
@@ -20,8 +21,11 @@ try {
  await page.waitForTimeout(1200); // Wait for mode-switch animation, not source availability.
  await page.locator('#global-context').screenshot({path:'/tmp/marketscope-crude-normalized.png'});
  await page.locator('#global-view-mode').selectOption('raw');
- await page.goto(base,{waitUntil:'networkidle'});
- await page.screenshot({path:'/tmp/marketscope-market-redesign.png',fullPage:true});
+ await page.goto(new URL('#today',base).href,{waitUntil:'networkidle'});
+ await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+ await page.waitForTimeout(350);
+ await page.screenshot({path:'/tmp/marketscope-market-redesign.png',fullPage:true,animations:'disabled'});
+ await page.locator('#navigation [data-page="capital"]').click();
  // Current disclosure ledger uses actual archived official evidence, independent of historical day.
  await page.locator('#domestic-reviewed > details > summary').click();
  await page.locator('#domestic-reviewed select').selectOption('petrochina_controlling_shareholder_increase');

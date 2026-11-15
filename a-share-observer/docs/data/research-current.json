@@ -1,0 +1,510 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-15T09:29:00.201038+00:00",
+  "current": {
+    "schema_version": 1,
+    "model_version": "breadth-trend-v1",
+    "issued_at": "2026-11-15T09:24:14.478514+00:00",
+    "issued_at_meaning": "generation_time_not_verified_publication",
+    "data_date": "2026-11-13",
+    "kind": "prospective_end_of_day",
+    "benchmark": "000300.SH",
+    "benchmark_name": "沪深300",
+    "reference_close": 4016.29,
+    "primary_horizon": 5,
+    "judgment": "down",
+    "label": "偏弱",
+    "analysis": "截至2026-11-13，沪深300近5个归档交易间隔变化-0.94%，上涨股票占比13.7%。两项同时偏弱，规则辅助结论为偏弱，重点观察宽度修复，而非断言持续下跌。",
+    "probabilities": null,
+    "thresholds_pct": {
+      "1": 0.5,
+      "5": 1.0,
+      "20": 2.0
+    },
+    "targets": [
+      {
+        "horizon": 1,
+        "judgment": "abstain",
+        "role": "辅助观察，不单独预测"
+      },
+      {
+        "horizon": 5,
+        "judgment": "down",
+        "role": "主判断"
+      },
+      {
+        "horizon": 20,
+        "judgment": "abstain",
+        "role": "辅助观察，不单独预测"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "benchmark:2026-11-13",
+        "title": "沪深300价格与近5个归档交易间隔",
+        "date": "2026-11-13",
+        "values": {
+          "close": 4016.29,
+          "pct": -0.683,
+          "change_5_sessions_pct": -0.9370344426137378,
+          "start_date": "2026-11-06",
+          "input_points": [
+            [
+              "2026-11-06",
+              4054.28
+            ],
+            [
+              "2026-11-09",
+              4056.11
+            ],
+            [
+              "2026-11-10",
+              4059.11
+            ],
+            [
+              "2026-11-11",
+              4075.71
+            ],
+            [
+              "2026-11-12",
+              4043.93
+            ],
+            [
+              "2026-11-13",
+              4016.29
+            ]
+          ]
+        },
+        "inference": "价格动量提供趋势证据，不代表趋势必然延续；归档间隔不冒充已经核验的交易日历。",
+        "source": "站内真实日终归档；上游同花顺财经",
+        "available_at": "2026-11-14T17:28:01.603907+08:00",
+        "observed_at": "2026-11-15T09:24:14.478514+00:00",
+        "archive_sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+        "archive_url": "data/history/2026-11-13.json",
+        "route": {
+          "page": "today",
+          "date": "2026-11-13",
+          "anchor": "market-index-section"
+        }
+      },
+      {
+        "id": "breadth:2026-11-13",
+        "title": "全市场上涨覆盖与中位数",
+        "date": "2026-11-13",
+        "values": {
+          "up": 763,
+          "down": 4750,
+          "flat": 58,
+          "up_ratio": 0.136959253275893,
+          "median_pct": -2.0,
+          "turnover_100m": 16670.74
+        },
+        "inference": "宽度反映涨跌是否由少数权重股驱动；弱宽度支持风险警示，也可能接近短期超跌反弹。",
+        "source": "站内真实日终归档；上游同花顺财经",
+        "available_at": "2026-11-14T17:28:01.603907+08:00",
+        "observed_at": "2026-11-15T09:24:14.478514+00:00",
+        "archive_sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+        "archive_url": "data/history/2026-11-13.json",
+        "route": {
+          "page": "today",
+          "date": "2026-11-13",
+          "anchor": "kpi-grid"
+        }
+      },
+      {
+        "id": "style:2026-11-13",
+        "title": "权重与成长分化",
+        "date": "2026-11-13",
+        "values": {
+          "indices": [
+            {
+              "name": "中证500",
+              "code": "000905.SH",
+              "close": 6465.49,
+              "pct": -2.1
+            },
+            {
+              "name": "上证50",
+              "code": "000016.SH",
+              "close": 2775.02,
+              "pct": 0.106
+            },
+            {
+              "name": "创业板指",
+              "code": "399006.SZ",
+              "close": 2426.085,
+              "pct": -3.321
+            }
+          ]
+        },
+        "inference": "风格分化是反证检查：权重抗跌不代表多数股票止跌，成长回升也不等于广谱复苏。",
+        "source": "站内真实日终归档；上游同花顺财经",
+        "available_at": "2026-11-14T17:28:01.603907+08:00",
+        "observed_at": "2026-11-15T09:24:14.478514+00:00",
+        "archive_sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+        "archive_url": "data/history/2026-11-13.json",
+        "route": {
+          "page": "today",
+          "date": "2026-11-13",
+          "anchor": "market-index-section"
+        }
+      }
+    ],
+    "counter_evidence": [
+      "单日极弱宽度可能伴随超跌反弹，不能线性外推。",
+      "重大新政策和海外冲击尚未纳入量化规则，可能改变当前方向。"
+    ],
+    "invalidation": [
+      "上涨覆盖重新超过55%且5个归档间隔动量转正，重新评估偏弱判断。",
+      "上涨覆盖低于45%且动量转负，重新评估偏强判断。",
+      "数据源修订、关键输入缺失或超过4个自然日未更新时停止沿用该判断。"
+    ],
+    "limitations": [
+      "规则辅助研究，未校准概率，未证明预测能力。",
+      "这是盘后数据研究，不是当日14:45可得数据；不回填历史预测。",
+      "宏观、政策、机构持仓和外围代理仅作背景，不冒充本规则的已量化输入。",
+      "指数变化以发出时已知收盘值作研究参照，包含之后开盘跳空；不是可成交策略收益。",
+      "到期评价须核验交易日历，缺失或迟到行情不作零处理。"
+    ],
+    "baseline": {
+      "always_up": "up",
+      "momentum_sign": "down"
+    },
+    "input_hash": "890553a1f9319601af9b0440367662a43848fd8aaa0631597c0e13940ec1f36a",
+    "id": "research-20261115T092414Z-6121917f1a"
+  },
+  "forecasts": [
+    {
+      "schema_version": 1,
+      "model_version": "breadth-trend-v1",
+      "issued_at": "2026-11-15T09:24:14.478514+00:00",
+      "issued_at_meaning": "generation_time_not_verified_publication",
+      "data_date": "2026-11-13",
+      "kind": "prospective_end_of_day",
+      "benchmark": "000300.SH",
+      "benchmark_name": "沪深300",
+      "reference_close": 4016.29,
+      "primary_horizon": 5,
+      "judgment": "down",
+      "label": "偏弱",
+      "analysis": "截至2026-11-13，沪深300近5个归档交易间隔变化-0.94%，上涨股票占比13.7%。两项同时偏弱，规则辅助结论为偏弱，重点观察宽度修复，而非断言持续下跌。",
+      "probabilities": null,
+      "thresholds_pct": {
+        "1": 0.5,
+        "5": 1.0,
+        "20": 2.0
+      },
+      "targets": [
+        {
+          "horizon": 1,
+          "judgment": "abstain",
+          "role": "辅助观察，不单独预测"
+        },
+        {
+          "horizon": 5,
+          "judgment": "down",
+          "role": "主判断"
+        },
+        {
+          "horizon": 20,
+          "judgment": "abstain",
+          "role": "辅助观察，不单独预测"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "benchmark:2026-11-13",
+          "title": "沪深300价格与近5个归档交易间隔",
+          "date": "2026-11-13",
+          "values": {
+            "close": 4016.29,
+            "pct": -0.683,
+            "change_5_sessions_pct": -0.9370344426137378,
+            "start_date": "2026-11-06",
+            "input_points": [
+              [
+                "2026-11-06",
+                4054.28
+              ],
+              [
+                "2026-11-09",
+                4056.11
+              ],
+              [
+                "2026-11-10",
+                4059.11
+              ],
+              [
+                "2026-11-11",
+                4075.71
+              ],
+              [
+                "2026-11-12",
+                4043.93
+              ],
+              [
+                "2026-11-13",
+                4016.29
+              ]
+            ]
+          },
+          "inference": "价格动量提供趋势证据，不代表趋势必然延续；归档间隔不冒充已经核验的交易日历。",
+          "source": "站内真实日终归档；上游同花顺财经",
+          "available_at": "2026-11-14T17:28:01.603907+08:00",
+          "observed_at": "2026-11-15T09:24:14.478514+00:00",
+          "archive_sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+          "archive_url": "data/history/2026-11-13.json",
+          "route": {
+            "page": "today",
+            "date": "2026-11-13",
+            "anchor": "market-index-section"
+          }
+        },
+        {
+          "id": "breadth:2026-11-13",
+          "title": "全市场上涨覆盖与中位数",
+          "date": "2026-11-13",
+          "values": {
+            "up": 763,
+            "down": 4750,
+            "flat": 58,
+            "up_ratio": 0.136959253275893,
+            "median_pct": -2.0,
+            "turnover_100m": 16670.74
+          },
+          "inference": "宽度反映涨跌是否由少数权重股驱动；弱宽度支持风险警示，也可能接近短期超跌反弹。",
+          "source": "站内真实日终归档；上游同花顺财经",
+          "available_at": "2026-11-14T17:28:01.603907+08:00",
+          "observed_at": "2026-11-15T09:24:14.478514+00:00",
+          "archive_sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+          "archive_url": "data/history/2026-11-13.json",
+          "route": {
+            "page": "today",
+            "date": "2026-11-13",
+            "anchor": "kpi-grid"
+          }
+        },
+        {
+          "id": "style:2026-11-13",
+          "title": "权重与成长分化",
+          "date": "2026-11-13",
+          "values": {
+            "indices": [
+              {
+                "name": "中证500",
+                "code": "000905.SH",
+                "close": 6465.49,
+                "pct": -2.1
+              },
+              {
+                "name": "上证50",
+                "code": "000016.SH",
+                "close": 2775.02,
+                "pct": 0.106
+              },
+              {
+                "name": "创业板指",
+                "code": "399006.SZ",
+                "close": 2426.085,
+                "pct": -3.321
+              }
+            ]
+          },
+          "inference": "风格分化是反证检查：权重抗跌不代表多数股票止跌，成长回升也不等于广谱复苏。",
+          "source": "站内真实日终归档；上游同花顺财经",
+          "available_at": "2026-11-14T17:28:01.603907+08:00",
+          "observed_at": "2026-11-15T09:24:14.478514+00:00",
+          "archive_sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+          "archive_url": "data/history/2026-11-13.json",
+          "route": {
+            "page": "today",
+            "date": "2026-11-13",
+            "anchor": "market-index-section"
+          }
+        }
+      ],
+      "counter_evidence": [
+        "单日极弱宽度可能伴随超跌反弹，不能线性外推。",
+        "重大新政策和海外冲击尚未纳入量化规则，可能改变当前方向。"
+      ],
+      "invalidation": [
+        "上涨覆盖重新超过55%且5个归档间隔动量转正，重新评估偏弱判断。",
+        "上涨覆盖低于45%且动量转负，重新评估偏强判断。",
+        "数据源修订、关键输入缺失或超过4个自然日未更新时停止沿用该判断。"
+      ],
+      "limitations": [
+        "规则辅助研究，未校准概率，未证明预测能力。",
+        "这是盘后数据研究，不是当日14:45可得数据；不回填历史预测。",
+        "宏观、政策、机构持仓和外围代理仅作背景，不冒充本规则的已量化输入。",
+        "指数变化以发出时已知收盘值作研究参照，包含之后开盘跳空；不是可成交策略收益。",
+        "到期评价须核验交易日历，缺失或迟到行情不作零处理。"
+      ],
+      "baseline": {
+        "always_up": "up",
+        "momentum_sign": "down"
+      },
+      "input_hash": "890553a1f9319601af9b0440367662a43848fd8aaa0631597c0e13940ec1f36a",
+      "id": "research-20261115T092414Z-6121917f1a"
+    }
+  ],
+  "evaluations": [],
+  "target_statuses": [
+    {
+      "forecast_id": "research-20261115T092414Z-6121917f1a",
+      "horizon": 1,
+      "judgment": "abstain",
+      "due_date": null,
+      "status": "not_activated"
+    },
+    {
+      "forecast_id": "research-20261115T092414Z-6121917f1a",
+      "horizon": 5,
+      "judgment": "down",
+      "due_date": null,
+      "status": "not_activated"
+    },
+    {
+      "forecast_id": "research-20261115T092414Z-6121917f1a",
+      "horizon": 20,
+      "judgment": "abstain",
+      "due_date": null,
+      "status": "not_activated"
+    }
+  ],
+  "reviews": [],
+  "background": {
+    "observed_at": "2026-11-15T09:29:00.201038+00:00",
+    "items": [
+      {
+        "title": "三季度经济：增长与需求分项",
+        "fact": "前三季度实际GDP同比增长4.6%；三季度同比4.5%、环比1.2%。初步核算，后续可能修订。",
+        "analysis": "增长总量与消费、投资并不等速。研究时需区分出口及生产支撑和内需约束，不能由GDP单项推导指数上涨。",
+        "limitations": "不是实时经济状态；累计值不与单月同比直接相减。环比数据会修订。",
+        "source_url": "https://www.stats.gov.cn/sj/zxfb/202610/t20261019_1965618.html",
+        "evidence_id": "nbs-2026q3-gdp-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "nbs-2026q3-gdp-v1"
+        },
+        "data_date": "2026Q3 / 2026年1—9月",
+        "available_at": "2026-11-15T09:13:41Z"
+      },
+      {
+        "title": "10月物价：消费与生产价格分化",
+        "fact": "CPI同比0.7%、环比0.0%；核心CPI同比0.8%。PPI同比5.7%、环比上涨0.7%。",
+        "analysis": "上游涨价可能同时利好资源端收入并挤压下游利润，需要结合行业议价能力、销量和库存检验，不能将PPI上涨一概视为股市利好。",
+        "limitations": "原文成文日为11月9日，未列具体公开时刻；保守按次日00:00计。2026价格指数基期调整为2025年；当前仅单期，不伪造长期趋势。",
+        "source_url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202611/t20261109_1965796.html",
+        "evidence_id": "nbs-202610-prices-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "nbs-202610-prices-v1"
+        },
+        "data_date": "2026-10",
+        "available_at": "2026-11-15T09:13:41Z"
+      },
+      {
+        "title": "统计局解读：能源价格传导",
+        "fact": "统计局分析认为，能源相关行业价格受到输入性和季节性因素影响。",
+        "analysis": "后续观察油价、工业利润和终端需求是否同向；解释是官方统计解读，不等于新出台刺激政策。",
+        "limitations": "未纳入人民日报社论或新华社评论；不能把统计解读冒充社论或正式政策文件。",
+        "source_url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202611/t20261109_1965796.html",
+        "evidence_id": "nbs-202610-prices-comment-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "nbs-202610-prices-comment-v1"
+        },
+        "data_date": "2026-10",
+        "available_at": "2026-11-15T09:13:41Z"
+      },
+      {
+        "title": "成品油调价：生效日期与传导范围",
+        "fact": "国家发展改革委公布，汽油、柴油标准品价格每吨分别下调645元、625元。",
+        "analysis": "下调可能缓解交通运输及部分用油行业成本，但对炼化、开采企业影响不同；应核对产品结构和库存，不把调价当作所有石油股同向信号。",
+        "limitations": "正式调价信息，不是央行或财政总量政策。原页只列11月12日，公开边界保守取次日00:00；生效时刻由原文24时明确。",
+        "source_url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261112_1408795.html",
+        "evidence_id": "ndrc-20261112-fuel-price-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "ndrc-20261112-fuel-price-v1"
+        },
+        "data_date": "自2026-11-12日24时起",
+        "available_at": "2026-11-15T09:16:36Z"
+      },
+      {
+        "title": "中国国债2年收益率",
+        "fact": "1.2319%",
+        "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
+        "limitations": "短历史、公布时刻未核验；仅当前背景，不纳入方向规则或历史14:45回放。",
+        "source_url": "https://data.eastmoney.com/cjsj/zmgzsyl.html",
+        "data_date": "2026-11-13",
+        "route": {
+          "page": "macro",
+          "anchor": "risk-macro-section"
+        }
+      },
+      {
+        "title": "中国国债10年收益率",
+        "fact": "1.6123%",
+        "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
+        "limitations": "短历史、公布时刻未核验；仅当前背景，不纳入方向规则或历史14:45回放。",
+        "source_url": "https://data.eastmoney.com/cjsj/zmgzsyl.html",
+        "data_date": "2026-11-13",
+        "route": {
+          "page": "macro",
+          "anchor": "risk-macro-section"
+        }
+      },
+      {
+        "title": "Shibor隔夜",
+        "fact": "1.297%",
+        "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
+        "limitations": "短历史、公布时刻未核验；仅当前背景，不纳入方向规则或历史14:45回放。",
+        "source_url": "https://data.eastmoney.com/shibor/shibor.aspx",
+        "data_date": "2026-11-13",
+        "route": {
+          "page": "macro",
+          "anchor": "risk-macro-section"
+        }
+      },
+      {
+        "title": "Shibor1周",
+        "fact": "1.381%",
+        "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
+        "limitations": "短历史、公布时刻未核验；仅当前背景，不纳入方向规则或历史14:45回放。",
+        "source_url": "https://data.eastmoney.com/shibor/shibor.aspx",
+        "data_date": "2026-11-13",
+        "route": {
+          "page": "macro",
+          "anchor": "risk-macro-section"
+        }
+      },
+      {
+        "title": "融资交易背景",
+        "fact": "融资余额 22738.309 亿元；净买入 6.935 亿元",
+        "analysis": "杠杆资金的边际变化需结合成交规模与价格确认，单日净买入不代表持续增量资金。",
+        "limitations": "融资不是全部散户或主力资金；ETF份额变化也不能确认汇金买卖。未纳入方向规则。",
+        "data_date": "2026-11-12",
+        "source_url": "https://data.eastmoney.com/rzrq/total.html",
+        "route": {
+          "page": "capital",
+          "anchor": "funds-observer"
+        }
+      },
+      {
+        "title": "外围与重要商品",
+        "fact": "原始利率/原油现货与境内ETF代理必须分开观察。",
+        "analysis": "能源涨价可能支撑上游利润并挤压下游；海外利率变化经估值与汇率传导，但不能把代理ETF涨跌当作原指数精确表现。",
+        "limitations": "本版尚未量化跨市场传导和汇率/溢价影响，不能称全因子融合；油价是滞后现货而非实时期货。",
+        "route": {
+          "page": "macro",
+          "anchor": "global-context"
+        }
+      }
+    ],
+    "note": "以下是独立更新的当前背景研究，不是历史冻结预测当时已使用的输入，也不改变方向规则。"
+  },
+  "activations": {},
+  "calendar_status": "verified_file_present",
+  "review_policy": "每日记录与核对；每周复盘错误；每月候选版本影子检验。保留原预测，禁止事后调参美化成绩。尚未证明准确率提升。"
+}

@@ -6,7 +6,7 @@ const calendar=await fetch(new URL('data/dates.json',base)).then(r=>r.json());
 const days=calendar.dates.slice(-3);
 if(days.length<3)throw Error('Risk smoke requires three archived trading days');
 const [early,middle,late]=days;
-const browser=await chromium.launch({headless:true});
+const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
 const page=await browser.newPage({viewport:{width:1440,height:960}});
 const failures=[],requests=[];
 page.on('pageerror',e=>failures.push(e.message));
@@ -26,7 +26,8 @@ async function openRisk(){await page.locator('#navigation [data-page="risk"]').c
 async function search(q){await page.locator('#risk-query').fill(q);await page.locator('#risk-search-form').evaluate(f=>f.requestSubmit());}
 try{
  await page.goto(base,{waitUntil:'domcontentloaded'});
- await page.waitForFunction(()=>document.querySelector('#status')?.textContent.includes('最近有效'));
+ await page.waitForFunction(()=>document.querySelector('#status')?.textContent.includes('行情归档截至'));
+ await page.locator('#navigation [data-page="macro"]').click();
  await page.waitForSelector('#macro-risk-cards .risk-card');
  check(!requests.some(u=>u.includes('risk-observer.json')||u.includes('risk-stocks/')),'Homepage eagerly fetched the stock archive');
  await openRisk();
@@ -68,7 +69,8 @@ try{
  await search('不存在的测试证券');
  check((await page.locator('#risk-search-status').innerText()).includes('找到 0 个匹配'),'No-match feedback absent');
  check(!(await body()).includes('002149.SZ'),'No-match query leaves stale detail');
- await page.locator('#navigation [data-page="today"]').click();
+ await page.locator('#navigation [data-page="macro"]').click();
+ await page.waitForFunction(()=>document.querySelector('.page.active')?.id==='macro');
  await page.waitForFunction(()=>window.echarts?.getInstanceByDom(document.getElementById('macro-risk-chart'))?.getOption()?.xAxis?.[0]?.data?.length>0);
  const chart=await page.evaluate(()=>window.echarts.getInstanceByDom(document.getElementById('macro-risk-chart')).getOption());
  check(chart.xAxis[0].data.every(d=>d<=middle),'Macro replay exposes future dates');

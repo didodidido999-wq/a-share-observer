@@ -15,7 +15,7 @@ function render({state,chart,noChart}){
  if(!$('funds-observer'))return;
  if(!wired){wired=true;$('fund-chart-metric').addEventListener('change',()=>render({state,chart,noChart}));}
  if(!data&&!error){$('fund-status').textContent='正在读取真实资金归档…';
-  load().then(()=>{if(state.page==='today')render({state,chart,noChart});});return;}
+  load().then(()=>{if(state.page==='capital')render({state,chart,noChart});});return;}
  const rows=data?.financing?.rows||[],byDate=new Map(rows.map(x=>[x.date,x]));
  const exact=byDate.get(state.selected);
  const latest=rows.filter(x=>x.date<=state.selected).at(-1);
@@ -73,7 +73,7 @@ function render({state,chart,noChart}){
 
 }
 function renderHoldings({state}){
- if(!data&&!error){load().then(()=>{if(state.page==='today')renderHoldings({state});});return;}
+ if(!data&&!error){load().then(()=>{if(state.page==='capital')renderHoldings({state});});return;}
  const holder=$('fund-holders');holder.replaceChildren();
  // Public dated top-holder filings may predate our collection; never imply today's holdings.
  const observed=(data?.disclosures||[]).filter(x=>
