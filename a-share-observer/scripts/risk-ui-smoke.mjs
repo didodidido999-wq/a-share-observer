@@ -70,6 +70,7 @@ try{
  check((await page.locator('#risk-search-status').innerText()).includes('找到 0 个匹配'),'No-match feedback absent');
  check(!(await body()).includes('002149.SZ'),'No-match query leaves stale detail');
  await page.locator('#navigation [data-page="macro"]').click();
+ await page.waitForFunction(()=>document.querySelector('.page.active')?.id==='macro');
  await page.waitForFunction(()=>window.echarts?.getInstanceByDom(document.getElementById('macro-risk-chart'))?.getOption()?.xAxis?.[0]?.data?.length>0);
  const chart=await page.evaluate(()=>window.echarts.getInstanceByDom(document.getElementById('macro-risk-chart')).getOption());
  check(chart.xAxis[0].data.every(d=>d<=middle),'Macro replay exposes future dates');
