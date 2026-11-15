@@ -1,0 +1,1 @@
+{"schema_version":1,"attempted_at":"2026-11-15T08:56:05.466874+00:00","assets":{"wti_spot":{"status":"observed","last_observation_date":"2026-11-11","source_release_date":"2026-11-12","rows":108,"error":null},"brent_spot":{"status":"observed","last_observation_date":"2026-11-11","source_release_date":"2026-11-12","rows":110,"error":null}},"status":"observed"}
