@@ -33,10 +33,13 @@ jobs:
         env:
           HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
         run: python a-share-observer/scripts/risk_data.py
+      - name: Compile persistent public evidence without changing its source
+        run: python a-share-observer/scripts/reviewed_evidence.py --apply
       - uses: actions/upload-artifact@v4
         with:
           name: risk-observations
           path: |
+            a-share-observer/docs/data/reviewed-index.json
             a-share-observer/docs/data/risk-observer.json
             a-share-observer/docs/data/risk-macro.json
             a-share-observer/docs/data/risk-stocks/
@@ -48,7 +51,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add a-share-observer/docs/data/risk-observer.json a-share-observer/docs/data/risk-macro.json a-share-observer/docs/data/risk-stocks/
+          git add a-share-observer/docs/data/reviewed-index.json a-share-observer/docs/data/risk-observer.json a-share-observer/docs/data/risk-macro.json a-share-observer/docs/data/risk-stocks/
           git diff --cached --quiet && exit 0
           git commit -m 'data: refresh market environment and stock risk facts'
           for attempt in 1 2 3; do

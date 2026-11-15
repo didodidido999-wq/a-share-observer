@@ -247,12 +247,17 @@ def main():
     extras,failures=optional_reports(event_start)
     enrich(result,extras['bonds'],extras['pledges'],extras['changes'],event_start,failures,prior)
     if not result['as_of'] or not all(s['rows'] for s in result['macro']):raise ValueError('Required observations absent; keeping previous file')
+    from reviewed_evidence import compile_index
+    evidence_path=OUT.parent/'reviewed-evidence.json'
+    evidence=compile_index(json.loads(evidence_path.read_text())) if evidence_path.exists() else {'by_code':{}}
+    for stock in result['stocks']:
+        if evidence['by_code'].get(stock['code']):stock['reviewed_evidence']=evidence['by_code'][stock['code']]
     OUT.parent.mkdir(parents=True,exist_ok=True)
     details=OUT.parent/'risk-stocks';details.mkdir(exist_ok=True)
     for stock in result['stocks']:
         if not re.fullmatch(r'\d{6}\.(SH|SZ|BJ)',stock['code']):raise ValueError('Invalid code path')
         file=details/(stock['code']+'.json');atomic_json(file,stock)
-        stock.pop('observations',None);stock.pop('events',None);stock.pop('supplemental',None);stock['observations_url']='data/risk-stocks/'+stock['code']+'.json'
+        stock.pop('observations',None);stock.pop('events',None);stock.pop('supplemental',None);stock.pop('reviewed_evidence',None);stock['observations_url']='data/risk-stocks/'+stock['code']+'.json'
     atomic_json(OUT,result)
     atomic_json(OUT.parent/'risk-macro.json',{'updated_at':result['updated_at'],'macro':result['macro'],'limits':result['limits']})
     print(json.dumps({'stocks':len(result['stocks']),'as_of':result['as_of'],'macro_series':len(result['macro']),'complete_universe':result['universe']['complete']}))

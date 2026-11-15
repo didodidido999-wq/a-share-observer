@@ -12,6 +12,20 @@ try {
  if(new URL(page.url()).hash!=='#today')throw Error('Section jump changed page route');
  await page.goto(base,{waitUntil:'networkidle'});
  await page.screenshot({path:'/tmp/marketscope-market-redesign.png',fullPage:true});
+ // Current disclosure ledger uses actual archived official evidence, independent of historical day.
+ await page.locator('#domestic-reviewed > details > summary').click();
+ await page.locator('#domestic-reviewed select').selectOption('petrochina_controlling_shareholder_increase');
+ // Re-rendering preserves the selected category but intentionally resets disclosure open state.
+ await page.locator('#domestic-reviewed > details').evaluate(e=>e.open=true);
+ await page.waitForFunction(()=>document.querySelector('#domestic-reviewed')?.textContent.includes('合计人民币')||document.querySelector('#domestic-reviewed')?.textContent.includes('集团及其全资子公司'));
+ if(!await page.locator('#domestic-reviewed').innerText().then(t=>t.includes('当前核验台账')))throw Error('New official disclosures incorrectly hidden by historical selection');
+ if(!await page.locator('#domestic-reviewed').innerText().then(t=>t.includes('2801325814.29')))throw Error('Official combined disclosed amount absent from current ledger');
+ await page.locator('#domestic-reviewed').screenshot({path:'/tmp/marketscope-disclosures.png'});
+ await page.locator('#domestic-reviewed select').selectOption('social_security_quarterly_holdings');
+ await page.locator('#domestic-reviewed > details').evaluate(e=>e.open=true);
+ await page.waitForFunction(()=>document.querySelector('#domestic-reviewed')?.textContent.includes('全国社保基金六零四组合'));
+ if(!await page.locator('#domestic-reviewed').innerText().then(t=>t.includes('不是披露日')))throw Error('Report-period vs publication-date distinction absent');
+ await page.locator('#domestic-reviewed').screenshot({path:'/tmp/marketscope-disclosures-social-security.png'});
  await page.locator('#navigation [data-page="risk"]').click();
  await page.locator('#risk-query').fill('000001');
  await page.locator('#risk-query').press('Enter');

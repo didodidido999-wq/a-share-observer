@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-15T08:33:39.371997+00:00",
+  "by_code": {},
+  "by_asset": {
+    "petrochina_controlling_shareholder_increase": [
+      {
+        "revision": 1,
+        "supersedes": null,
+        "kind": "metric",
+        "published_at": null,
+        "observed_at": "2026-11-15T08:33:39.334991+00:00",
+        "status": "verified",
+        "asset_id": "petrochina_controlling_shareholder_increase",
+        "data_date": "2026-04-07",
+        "report_period_end": "2026-04-07",
+        "document_date": "2026-04-07",
+        "source_url": "https://www.petrochina.com.cn/petrochina/gsgg/202604/9ff9c975ad8744e5a15e403ce724a8e1/files/089bd7b91edd4d8e86a9205b9588cc2d.pdf",
+        "source_title": "中国石油关于控股股东增持公司股份结果的公告（临2026-009）",
+        "note": "601857.SH；实施期间2025-04-08至2026-04-07，公告说明已实施完毕。PDF签署2026-04-07，网站归档披露日期2026-04-08；精确公开时刻未核验，不用于历史可知判断。",
+        "id": "petrochina-20260407-a-shares-v1",
+        "metric_id": "cnpc_a_share_increase",
+        "value": 201000074,
+        "unit": "股",
+        "entity": "中国石油天然气集团有限公司",
+        "action_scope": "已执行增持中国石油A股，仅控股股东直接增持",
+        "available_at": "2026-11-15T08:33:39.334991+00:00"
+      },
+      {
+        "revision": 1,
+        "supersedes": null,
+        "kind": "metric",
+        "published_at": null,
+        "observed_at": "2026-11-15T08:33:39.334991+00:00",
+        "status": "verified",
+        "asset_id": "petrochina_controlling_shareholder_increase",
+        "data_date": "2026-04-07",
+        "report_period_end": "2026-04-07",
+        "document_date": "2026-04-07",
+        "source_url": "https://www.petrochina.com.cn/petrochina/gsgg/202604/9ff9c975ad8744e5a15e403ce724a8e1/files/089bd7b91edd4d8e86a9205b9588cc2d.pdf",
+        "source_title": "中国石油关于控股股东增持公司股份结果的公告（临2026-009）",
+        "note": "601857.SH；实施期间2025-04-08至2026-04-07，公告说明已实施完毕。PDF签署2026-04-07，网站归档披露日期2026-04-08；精确公开时刻未核验，不用于历史可知判断。",
+        "id": "petrochina-20260407-h-shares-v1",
+        "metric_id": "cnpc_h_share_increase",
+        "value": 107954000,
+        "unit": "股",
+        "entity": "Fairy King Investments Ltd.（中国石油集团全资子公司）",
+        "action_scope": "已执行增持中国石油H股，不与A股混同",
+        "available_at": "2026-11-15T08:33:39.334991+00:00"
+      },
+      {
+        "revision": 1,
+        "supersedes": null,
+        "kind": "metric",
+        "published_at": null,
+        "observed_at": "2026-11-15T08:33:39.334991+00:00",
+        "status": "verified",
+        "asset_id": "petrochina_controlling_shareholder_increase",
+        "data_date": "2026-04-07",
+        "report_period_end": "2026-04-07",
+        "document_date": "2026-04-07",
+        "source_url": "https://www.petrochina.com.cn/petrochina/gsgg/202604/9ff9c975ad8744e5a15e403ce724a8e1/files/089bd7b91edd4d8e86a9205b9588cc2d.pdf",
+        "source_title": "中国石油关于控股股东增持公司股份结果的公告（临2026-009）",
+        "note": "601857.SH；实施期间2025-04-08至2026-04-07，公告说明已实施完毕。PDF签署2026-04-07，网站归档披露日期2026-04-08；精确公开时刻未核验，不用于历史可知判断。",
+        "id": "petrochina-20260407-total-amount-v1",
+        "metric_id": "cnpc_total_increase_amount",
+        "value": 2801325814.29,
+        "unit": "元",
+        "entity": "中国石油集团及其全资子公司",
+        "action_scope": "A股与H股合计已执行增持金额，人民币，不含税费",
+        "available_at": "2026-11-15T08:33:39.334991+00:00"
+      }
+    ],
+    "social_security_quarterly_holdings": [
+      {
+        "revision": 1,
+        "supersedes": null,
+        "kind": "metric",
+        "published_at": null,
+        "observed_at": "2026-11-15T08:33:39.334991+00:00",
+        "status": "verified",
+        "id": "social-security-604-suotong-2026q3-v1",
+        "asset_id": "social_security_quarterly_holdings",
+        "metric_id": "ss604_suotong_period_end_shares",
+        "value": 7405800,
+        "unit": "股",
+        "data_date": "2026-09-30",
+        "report_period_end": "2026-09-30",
+        "document_date": "2026-10-26",
+        "entity": "全国社保基金六零四组合",
+        "action_scope": "索通发展603612.SH第三季度末持仓，不是期间买入量或社保整体仓位",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2026-10-28/1225630687.PDF",
+        "source_title": "索通发展股份有限公司2026年第三季度报告",
+        "note": "报告期末前十大股东表列全国社保基金六零四组合7,405,800股，比例1.49%。PDF末尾落款2026-10-26，巨潮文件披露路径日期2026-10-28；精确公开时刻未核验。单只股票期末持仓不能推出本季买入或社保整体资金方向。",
+        "available_at": "2026-11-15T08:33:39.334991+00:00"
+      }
+    ]
+  },
+  "catalog": [
+    {
+      "metric_id": "convertible_terms",
+      "label": "可转债条款与赎回公告补证",
+      "status": "pending",
+      "note": "仅补充官方公开公告已核验事实，不推断强赎概率。"
+    },
+    {
+      "metric_id": "share_unlock",
+      "label": "限售解禁公告",
+      "status": "pending",
+      "note": "区分披露日期和计划解禁日期，未来安排写入note。"
+    },
+    {
+      "metric_id": "credit_event",
+      "label": "公司信用事件",
+      "status": "pending",
+      "note": "优先发行人、交易所公开公告；查无结果不等于无风险。"
+    },
+    {
+      "metric_id": "otc_exposure",
+      "label": "OTC风险公开披露",
+      "status": "pending",
+      "note": "未公开或无法核验时保持unknown，不生成风险通过结论。"
+    },
+    {
+      "metric_id": "listed_company_securities_investment",
+      "label": "上市公司证券投资披露",
+      "status": "pending",
+      "note": "仅依据报告原文，区分账面期末值、交易流量和公允价值变动。",
+      "asset_id": "listed_company_securities_investment"
+    },
+    {
+      "metric_id": "petrochina_controlling_shareholder_increase",
+      "label": "中国石油控股股东增持",
+      "status": "pending",
+      "note": "区分具体主体、A/H股、已执行增持和未来计划，原文分别披露。",
+      "asset_id": "petrochina_controlling_shareholder_increase"
+    },
+    {
+      "metric_id": "huijin_disclosed_holdings",
+      "label": "中央汇金实名持仓",
+      "status": "pending",
+      "note": "仅确认原文实名主体和报告期，不把汇金关联账户或指数资金推断成汇金持仓。",
+      "asset_id": "huijin_disclosed_holdings"
+    },
+    {
+      "metric_id": "social_security_quarterly_holdings",
+      "label": "社保基金季度持仓",
+      "status": "pending",
+      "note": "必须记录实名组合、期末日和披露日；单只股票不代表社保整体动向。",
+      "asset_id": "social_security_quarterly_holdings"
+    }
+  ]
+}

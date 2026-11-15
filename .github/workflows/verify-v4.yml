@@ -32,6 +32,8 @@ on:
       - 'a-share-observer/scripts/update.py'
       - '.github/workflows/sectors.yml'
       - '.github/workflows/update.yml'
+      - 'a-share-observer/scripts/reviewed_evidence.py'
+      - 'a-share-observer/tests/test_reviewed_evidence.py'
       - 'a-share-observer/scripts/risk_data.py'
       - 'a-share-observer/tests/test_risk_data.py'
       - '.github/workflows/risk-observer.yml'
@@ -39,10 +41,14 @@ on:
   push:
     branches: [main]
     paths:
+      - 'a-share-observer/docs/data/reviewed-evidence.json'
+      - 'a-share-observer/docs/data/reviewed-index.json'
       - 'a-share-observer/docs/index.html'
       - 'a-share-observer/docs/v3.js'
       - 'a-share-observer/docs/event-sector.js'
       - 'a-share-observer/docs/representatives.js'
+      - 'a-share-observer/scripts/reviewed_evidence.py'
+      - 'a-share-observer/tests/test_reviewed_evidence.py'
       - 'a-share-observer/scripts/risk_data.py'
       - 'a-share-observer/tests/test_risk_data.py'
       - '.github/workflows/risk-observer.yml'
@@ -55,6 +61,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -65,6 +73,21 @@ jobs:
           cache-dependency-path: a-share-observer/requirements.txt
       - name: Install test dependencies
         run: python -m pip install -r a-share-observer/requirements.txt
+      - name: Validate append-only public evidence against trusted base
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          set -euo pipefail
+          python a-share-observer/scripts/reviewed_evidence.py --check-history --base-ref "$BASE_SHA"
+          python - <<'PYCODE'
+          import sys,json
+          sys.path.insert(0,'a-share-observer/scripts')
+          from reviewed_evidence import SOURCE,compile_index
+          expected=compile_index(json.loads(SOURCE.read_text()))
+          actual=json.loads(SOURCE.with_name('reviewed-index.json').read_text())
+          expected.pop('generated_at',None);actual.pop('generated_at',None)
+          assert actual==expected,'Run reviewed_evidence.py --apply and commit reviewed-index.json'
+          PYCODE
       - name: Python unit tests including V4 collector
         run: python -m pytest -q a-share-observer/tests
       - name: JavaScript parsing (all page controllers)
