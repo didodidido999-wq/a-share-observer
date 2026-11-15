@@ -5,6 +5,7 @@ on:
       - '.github/workflows/research-ledger.yml'
       - 'a-share-observer/docs/**'
       - 'a-share-observer/scripts/research_ledger.py'
+      - 'a-share-observer/scripts/research_scenarios.py'
       - 'a-share-observer/scripts/policy_context.py'
       - 'a-share-observer/tests/**'
       - 'a-share-observer/scripts/v4_representatives.py'

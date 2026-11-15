@@ -37,9 +37,17 @@ test('old exact-date route replaces recent days with a trailing consecutive arch
  assert.equal(state.compareBase,archive[3]);assert.equal(state.selected,archive[12]);assert.ok(state.days.every(d=>d<=state.selected));
 });
 test('restrained site identity preserves the exact user slogan and shared design tokens',()=>{
- assert.ok(html.includes('<p class="brand-slogan">看好网，做好人，得好报</p>'));
+ assert.ok(html.includes('看好网，做好人，得好报</p>'));
+ const research=html.slice(html.indexOf('<section id="research"'),html.indexOf('<section id="policy"'));assert.ok(research.includes('class="brand-slogan"'));assert.ok(!html.includes('class="brand-statement"'));
  assert.ok(html.includes('aria-label="品牌主张"'));
  assert.equal((html.match(/class="brand-slogan"/g)||[]).length,1);
- const css=read('research-hub.css');for(const token of ['--nav:#172b38','--paper:#f5f3ed','--accent:#997442','--text-muted:#69736f'])assert.ok(css.includes(token));
+ const css=read('research-hub.css');for(const token of ['--nav:#172b38','--paper:#f4f6f8','--accent:#286387','--text-muted:#65717c'])assert.ok(css.includes(token));
  assert.ok(css.includes('@media(max-width:360px)'));assert.ok(css.includes('prefers-reduced-motion'));
+});
+
+test('market data and charts precede optional replay, with date stepping always available',()=>{
+ assert.ok(html.indexOf('id="market-key-strip"')<html.indexOf('id="index-chart"'));
+ assert.ok(html.indexOf('id="index-chart"')<html.indexOf('class="market-replay-tools"'));
+ assert.ok(html.indexOf('id="prev-day"')<html.indexOf('id="index-chart"'));
+ assert.ok(html.includes('历史回放与双日期比较'));
 });

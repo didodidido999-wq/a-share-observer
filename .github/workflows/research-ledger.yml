@@ -7,6 +7,7 @@ on:
       - ".github/workflows/research-ledger.yml"
       - "a-share-observer/scripts/research_ledger.py"
       - "a-share-observer/scripts/research_publication.py"
+      - "a-share-observer/scripts/research_scenarios.py"
   schedule:
     # 20:40 Beijing, weekdays. EOD research, never a same-day 14:45 snapshot.
     - cron: '40 12 * * 1-5'
@@ -33,16 +34,18 @@ jobs:
         run: |
           python a-share-observer/scripts/research_ledger.py --check
           python -m pytest -q a-share-observer/tests/test_research_ledger.py a-share-observer/tests/test_research_calendar.py a-share-observer/tests/test_research_publication.py
+          python -m pytest -q a-share-observer/tests/test_research_scenarios.py
       - name: Generate current snapshot and settle mature outcomes
         run: |
           python a-share-observer/scripts/research_ledger.py
+          python a-share-observer/scripts/research_scenarios.py
           python a-share-observer/scripts/research_ledger.py --check --git-base HEAD
       - name: Publish new research files
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add a-share-observer/docs/data/research-ledger.json a-share-observer/docs/data/research-current.json
+          git add a-share-observer/docs/data/research-ledger.json a-share-observer/docs/data/research-current.json a-share-observer/docs/data/research-scenarios.json
           if ! git diff --cached --quiet; then
             git commit -m 'research: freeze daily evidence and settle mature outcomes'
             git pull --rebase origin main
@@ -67,3 +70,4 @@ jobs:
             a-share-observer/docs/data/research-current.json
             a-share-observer/docs/data/research-ledger.json
             a-share-observer/docs/data/research-calendar.json
+            a-share-observer/docs/data/research-scenarios.json
