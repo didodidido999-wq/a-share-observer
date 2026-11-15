@@ -22,3 +22,5 @@ test('per-source stale status distinguishes failed refresh from aged snapshot',(
 test('event facts preserve quantity zero, actual period and missing endpoints',()=>{assert.match(u.eventFacts({shares_10k:0,event_start:'2026-10-01',event_date:'2026-10-10'}),/0.00 万股.*2026-10-01 至 2026-10-10/);assert.equal(u.eventFacts({}), '');assert.match(u.eventFacts({event_date:'2026-10-10'}),/起始未注明/);});
 
 test('missing per-stock source is not a successfully obtained record',()=>{const text=u.sourceState({status:'missing'});assert.match(text,/该股未取得记录/);assert.doesNotMatch(text,/已取得来源记录/);});
+
+test('redemption scheduled date is not completed transaction period',()=>{const text=u.eventFacts({type:'convertible_redemption',event_date:'2027-01-01'});assert.match(text,/公告所列赎回安排日 2027-01-01/);assert.doesNotMatch(text,/实际期间/);});
