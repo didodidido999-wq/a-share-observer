@@ -17,9 +17,9 @@ const fixtureStock={code:'002149.SZ',name:'西部材料',unsupported:['convertib
 const index={universe:{date:late,complete:false},stocks:[fixtureStock,{code:'600000.SH',name:'浦发银行',observations:[],unsupported:['credit_events']}]};
 const stock={...fixtureStock,supplemental:{convertibles:{status:'stale',error:'fixture provider failed',fetched_at:early,last_attempt_at:late,observed_at:early,bonds:[]}},events:[{date:early,title:'已披露测试事项',type:'shareholder_change',detail:'合成测试事件',shares_10k:12.5,event_start:early,event_date:middle},{date:'2099-01-01',title:'未来事件不应可见',type:'shareholder_change'}],events_coverage:{start:early,end:late,status:'partial',note:'合成覆盖范围'},observations:[{date:early,checks:[{id:'financing_balance',label:'融资余额',status:'observed',value:1,unit:'亿元'}]},{date:late,checks:[{id:'financing_balance',label:'融资余额',status:'observed',value:1.23,unit:'亿元',detail:'合成测试值，仅用于浏览器回归。',source:'本地测试夹具',source_url:'https://example.com/fixture'}]}]};
 const macro={macro:[{id:'fixture_rate',label:'合成测试利率',unit:'%',source:'本地测试夹具',source_url:'https://example.com/fixture',rows:[{date:early,value:2},{date:middle,value:null},{date:late,value:99}]}]};
-let indexFailure=false,stockFailure=false;
+let indexFailure=false,stockFailure=false,indexDelay=0;
 const fulfill=(route,obj)=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(obj)});
-await page.route('**/data/risk-observer.json',r=>indexFailure?r.fulfill({status:503,body:'fixture unavailable'}):fulfill(r,index));
+await page.route('**/data/risk-observer.json',async r=>{if(indexDelay)await new Promise(done=>setTimeout(done,indexDelay));return indexFailure?r.fulfill({status:503,body:'fixture unavailable'}):fulfill(r,index);});
 await page.route('**/data/risk-macro.json',r=>fulfill(r,macro));
 await page.route('**/data/risk-stocks/002149.SZ.json',r=>stockFailure?r.fulfill({status:503,body:'fixture unavailable'}):fulfill(r,stock));
 async function openRisk(){await page.locator('#navigation [data-page="risk"]').click();await page.waitForFunction(()=>document.querySelector('#risk-search-status')?.textContent.includes('可查询'));}
@@ -105,6 +105,12 @@ try{
  const fits=await page.locator('#risk').evaluate(el=>el.scrollWidth<=el.clientWidth+1);
  check(fits,'Risk page overflows mobile width');
  await page.screenshot({path:'/tmp/marketscope-risk-mobile.png',fullPage:true});
+ indexDelay=1500;
+ await page.reload({waitUntil:'domcontentloaded'});
+ await page.locator('#risk-date option').first().waitFor({state:'attached'});
+ await page.locator('#risk-query').fill('002149');
+ await page.locator('#risk-query').press('Enter');
+ await page.getByRole('heading',{name:'西部材料 · 002149.SZ',exact:true}).waitFor();
  check(!failures.length,'Browser exceptions: '+failures.join('; '));
  console.log('Risk browser smoke passed: code/name, lazy loads, unknown/error/retry, filters, historical gaps, no future chart values, mobile keyboard. All risk values are synthetic fixtures.');
 }catch(e){console.error(e);await page.screenshot({path:'/tmp/marketscope-risk-failed.png',fullPage:true}).catch(()=>{});process.exitCode=1;}finally{await browser.close();}
