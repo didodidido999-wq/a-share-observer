@@ -22,3 +22,5 @@ python -m pytest tests/test_global_commodities.py
 定时任务：`global-benchmarks.yml` 每天北京时间09:40尝试更新，源可能多日不发布。采集全失败仍提交独立失败状态并保留旧价格，最后将任务标记失败供监控发现；部分失败逐资产标记，不显示伪实时价格。
 
 稳定性修复：GitHub首次FRED访问超时后，已改为官方XLS优先，新增xlrd解析。只有实际GitHub工作流成功才可称该路径在CI可用；本地成功不代表每日自动运行已稳定。
+
+2026-11-15 GitHub运行器复测：官方XLS主路径两项均成功，状态observed且warnings为空，最新源观测仍为11/11。未来定时运行仍以每次状态为准，不承诺上游永不失败。
