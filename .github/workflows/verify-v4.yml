@@ -32,6 +32,9 @@ on:
       - 'a-share-observer/scripts/update.py'
       - '.github/workflows/sectors.yml'
       - '.github/workflows/update.yml'
+      - 'a-share-observer/scripts/risk_data.py'
+      - 'a-share-observer/tests/test_risk_data.py'
+      - '.github/workflows/risk-observer.yml'
       - '.github/workflows/verify-v4.yml'
   push:
     branches: [main]
@@ -40,6 +43,9 @@ on:
       - 'a-share-observer/docs/v3.js'
       - 'a-share-observer/docs/event-sector.js'
       - 'a-share-observer/docs/representatives.js'
+      - 'a-share-observer/scripts/risk_data.py'
+      - 'a-share-observer/tests/test_risk_data.py'
+      - '.github/workflows/risk-observer.yml'
       - '.github/workflows/verify-v4.yml'
 permissions:
   contents: read
@@ -69,8 +75,9 @@ jobs:
           node --check a-share-observer/docs/funds-observer.js
           node --check a-share-observer/docs/etf-state.js
           node --check a-share-observer/docs/capital-workspace.js
+          node --check a-share-observer/docs/risk-workspace.js
       - name: Verify frontend date and partial-data integrity
-        run: node --test a-share-observer/tests/frontend-integrity.test.mjs
+        run: node --test a-share-observer/tests/*.test.mjs
       - name: EdgeOne asset build and output verification
         run: npm run build
       - name: Basic HTML integration smoke assertions
