@@ -2,13 +2,13 @@ name: Collect market environment and stock risk facts
 on:
   workflow_dispatch:
   push:
-    branches: [main, 'feature/market-risk-workspace']
+    branches: [main, 'feature/risk-research-redesign']
     paths:
       - '.github/workflows/risk-observer.yml'
       - 'a-share-observer/scripts/risk_data.py'
   schedule:
-    # Beijing 19:20. Use published dates, never assume today's disclosures.
-    - cron: '20 11 * * 1-5'
+    # Beijing 19:20 daily. Weekend disclosures are checked too; dates remain source-specific.
+    - cron: '20 11 * * *'
 permissions:
   contents: write
 concurrency:
@@ -41,7 +41,7 @@ jobs:
             a-share-observer/docs/data/risk-macro.json
             a-share-observer/docs/data/risk-stocks/
       - name: Commit verified observations to the running branch
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/market-risk-workspace'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/risk-research-redesign'
         env:
           TARGET_BRANCH: ${{ github.ref_name }}
         run: |
