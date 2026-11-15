@@ -111,3 +111,13 @@ def test_empty_provider_response_only_known_code(monkeypatch):
  import io,json
  monkeypatch.setattr(r,'urlopen',lambda *a,**k:io.BytesIO(json.dumps({'success':False,'code':9201,'message':'返回数据为空','result':None}).encode()))
  assert r.fetch_report('RPTA_WEB_RZRQ_GGMX','DATE')==[]
+
+def test_old_pledge_date_is_stale_not_current():
+ o=r.build([{'code':'600000.SH','name':'浦发'}],[],[])
+ r.enrich(o,[],[{'SECUCODE':'600000.SH','TRADE_DATE':'2020-01-01','PLEDGE_RATIO':5}],[],'2026-08-01')
+ assert o['stocks'][0]['supplemental']['pledge']['status']=='stale'
+
+def test_expired_bond_without_delisting_not_current():
+ o=r.build([{'code':'600000.SH','name':'浦发'}],[],[])
+ r.enrich(o,[{'CONVERT_STOCK_CODE':'600000','SECURITY_CODE':'110001','PUBLIC_START_DATE':'2020-01-01','EXPIRE_DATE':'2025-01-01'}],[],[],'2026-08-01')
+ assert o['stocks'][0]['supplemental']['convertibles']['bonds']==[]

@@ -153,7 +153,8 @@ def enrich(result, bonds, pledges, changes, window_start, failures=None, prior=N
     for row in pledges:
         code=row.get('SECUCODE');d=day(row.get('TRADE_DATE'));v=number(row.get('PLEDGE_RATIO'))
         if code in stocks and d and v is not None and 0<=v<=100:
-            stocks[code]['supplemental']['pledge'].update(status='observed',as_of=d,ratio=v)
+            age=(date.fromisoformat(today)-date.fromisoformat(d)).days
+            stocks[code]['supplemental']['pledge'].update(status='stale' if age>14 else 'observed',as_of=d,ratio=v,age_days=age,note='来源逐股最新可得记录，日期可能较旧；超过14自然日标旧值，不表示当前质押水平。')
     for row in bonds:
         code=short.get(row.get('CONVERT_STOCK_CODE'));issued=day(row.get('PUBLIC_START_DATE'));delisted=day(row.get('DELIST_DATE'))
         if code not in stocks or not issued:continue
@@ -161,7 +162,8 @@ def enrich(result, bonds, pledges, changes, window_start, failures=None, prior=N
         if not re.fullmatch(r'\d{6}',bondcode):continue
         notice=day(row.get('NOTICE_DATE_SH')); redemption=scheduled_day(row.get('EXECUTE_START_DATESH'))
         # Keep only currently listed/issued bonds in the current snapshot. Historical redemption events remain separately dated.
-        if not delisted:
+        maturity=scheduled_day(row.get('EXPIRE_DATE'))
+        if not delisted and (not maturity or maturity>=today):
             stocks[code]['supplemental']['convertibles']['bonds'].append({'code':bondcode,'name':row.get('SECURITY_NAME_ABBR'),'listed_on':scheduled_day(row.get('LISTING_DATE')),'matures_on':scheduled_day(row.get('EXPIRE_DATE')),'conversion_start':scheduled_day(row.get('TRANSFER_START_DATE')),'conversion_end':scheduled_day(row.get('TRANSFER_END_DATE')),'redemption_notice_date':notice,'redemption_date':redemption,'source_url':CB_URL,'note':'当前条款快照；原始转股价格不是当前转股价，不展示未经核验的价格或强赎触发概率。'})
         if notice and notice>=window_start:
             stocks[code]['events'].append({'date':notice,'type':'convertible_redemption','title':str(row.get('SECURITY_NAME_ABBR') or bondcode)+'赎回公告','source':'东方财富可转债资料','source_url':CB_URL,'detail':'赎回安排以发行人公告为准；不表示正股必然下跌。','event_date':redemption})
