@@ -1,0 +1,88 @@
+/* Browser interaction regression with explicitly synthetic, locally intercepted risk fixtures.
+ * Existing site/archive is served normally. These fixture values never enter published data. */
+import { chromium } from 'playwright';
+const base=process.env.MARKET_URL||'http://127.0.0.1:8765/';
+const calendar=await fetch(new URL('data/dates.json',base)).then(r=>r.json());
+const days=calendar.dates.slice(-3);
+if(days.length<3)throw Error('Risk smoke requires three archived trading days');
+const [early,middle,late]=days;
+const browser=await chromium.launch({headless:true});
+const page=await browser.newPage({viewport:{width:1440,height:960}});
+const failures=[],requests=[];
+page.on('pageerror',e=>failures.push(e.message));
+page.on('request',r=>{if(r.url().includes('risk-'))requests.push(r.url());});
+const check=(v,m)=>{if(!v)throw Error(m);};
+const body=()=>page.locator('#risk-detail').innerText();
+const fixtureStock={code:'002149.SZ',name:'西部材料',unsupported:['convertible','credit_events','otc','warrants'],observations_url:'data/risk-stocks/002149.SZ.json'};
+const index={universe:{date:late,complete:false},stocks:[fixtureStock,{code:'600000.SH',name:'浦发银行',observations:[],unsupported:['credit_events']}]};
+const stock={...fixtureStock,observations:[{date:late,checks:[{id:'financing_balance',label:'融资余额',status:'observed',value:1.23,unit:'亿元',detail:'合成测试值，仅用于浏览器回归。',source:'本地测试夹具',source_url:'https://example.com/fixture'}]}]};
+const macro={macro:[{id:'fixture_rate',label:'合成测试利率',unit:'%',source:'本地测试夹具',source_url:'https://example.com/fixture',rows:[{date:early,value:2},{date:late,value:99}]}]};
+let indexFailure=false,stockFailure=false;
+const fulfill=(route,obj)=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(obj)});
+await page.route('**/data/risk-observer.json',r=>indexFailure?r.fulfill({status:503,body:'fixture unavailable'}):fulfill(r,index));
+await page.route('**/data/risk-macro.json',r=>fulfill(r,macro));
+await page.route('**/data/risk-stocks/002149.SZ.json',r=>stockFailure?r.fulfill({status:503,body:'fixture unavailable'}):fulfill(r,stock));
+async function openRisk(){await page.locator('#navigation [data-page="risk"]').click();await page.waitForFunction(()=>document.querySelector('#risk-search-status')?.textContent.includes('可查询'));}
+async function search(q){await page.locator('#risk-query').fill(q);await page.locator('#risk-search-form').evaluate(f=>f.requestSubmit());}
+try{
+ await page.goto(base,{waitUntil:'domcontentloaded'});
+ await page.waitForFunction(()=>document.querySelector('#status')?.textContent.includes('最近有效'));
+ await page.waitForSelector('#macro-risk-cards .risk-card');
+ check(!requests.some(u=>u.includes('risk-observer.json')||u.includes('risk-stocks/')),'Homepage eagerly fetched the stock archive');
+ await openRisk();
+ check(!requests.some(u=>u.includes('risk-stocks/')),'Opening risk page fetched stock details before a selection');
+ await page.locator('#risk-date').selectOption(late);
+ await search('002149');
+ await page.waitForFunction(()=>document.querySelector('#risk-detail')?.textContent.includes('1.23亿元'));
+ check((await body()).includes('西部材料 · 002149.SZ'),'Code query selected wrong stock');
+ check((await body()).includes('已观测（非风险结论）'),'Observation presented as safety signal');
+ for(const label of ['可转债关联与条款','公司信用事件','OTC 场外风险','权证相关风险'])check((await body()).includes(label),'Missing unconnected check '+label);
+ await page.locator('#risk-check-filter').selectOption('missing');
+ check(!(await body()).includes('1.23亿元'),'Missing-data filter includes numeric observed card');
+ check((await body()).includes('尚未接入可靠数据'),'Missing-data caveat absent');
+ await page.locator('#risk-check-filter').selectOption('triggered');
+ check((await body()).includes('不能视作风险已排除'),'Empty triggered list looks like an all-clear');
+ await page.locator('#risk-check-filter').selectOption('all');
+ await page.locator('#risk-date').selectOption(middle);
+ check((await page.locator('#selected-day').innerText()).trim()===middle,'Risk date did not synchronize global date');
+ check((await body()).includes(`没有 ${middle}`),'Missing date was not explicitly shown');
+ check(!(await body()).includes('1.23亿元'),'Future stock value leaked into historical query');
+ check((await body()).includes('不能据此判定不属于标的'),'No financing row falsely implies ineligible or zero');
+ await page.locator('#risk-clear').click();
+ await search('西部材料');
+ check((await body()).includes('002149.SZ'),'Chinese name query failed');
+ await search('不存在的测试证券');
+ check((await page.locator('#risk-search-status').innerText()).includes('找到 0 个匹配'),'No-match feedback absent');
+ check(!(await body()).includes('002149.SZ'),'No-match query leaves stale detail');
+ await page.locator('#navigation [data-page="today"]').click();
+ await page.waitForFunction(()=>window.echarts?.getInstanceByDom(document.getElementById('macro-risk-chart'))?.getOption()?.xAxis?.[0]?.data?.length>0);
+ const chart=await page.evaluate(()=>window.echarts.getInstanceByDom(document.getElementById('macro-risk-chart')).getOption());
+ check(chart.xAxis[0].data.every(d=>d<=middle),'Macro replay exposes future dates');
+ check(!chart.series[0].data.includes(99),'Macro replay exposes future values');
+ check(chart.series[0].data.at(-1)===null,'Macro replay filled an observation gap');
+ check(!(await page.locator('#macro-risk-cards').innerText()).includes('99.000'),'Macro cards expose future values');
+ // Explicit failed index and retry. Reload discards controller caches.
+ indexFailure=true;
+ await page.goto(new URL('#risk',base).href,{waitUntil:'domcontentloaded'});
+ await page.waitForFunction(()=>document.querySelector('#risk-search-status')?.textContent.includes('读取失败'));
+ check(await page.locator('#risk-retry').isVisible(),'Index failure offers no retry');
+ indexFailure=false;
+ await page.locator('#risk-retry').click();
+ await page.waitForFunction(()=>document.querySelector('#risk-search-status')?.textContent.includes('可查询'));
+ stockFailure=true;
+ await search('002149');
+ await page.waitForFunction(()=>document.querySelector('#risk-detail')?.textContent.includes('个股归档读取失败'));
+ check((await body()).includes('不能判定风险'),'Failed stock fetch is presented as safe');
+ stockFailure=false;
+ await page.getByRole('button',{name:'重新加载该股',exact:true}).click();
+ await page.waitForFunction(()=>document.querySelector('#risk-detail')?.textContent.includes('西部材料 · 002149.SZ'));
+ await page.setViewportSize({width:390,height:844});
+ await page.locator('#risk-query').fill('西部材料');
+ await page.locator('#risk-query').press('Enter');
+ check((await body()).includes('002149.SZ'),'Mobile keyboard search failed');
+ const fits=await page.locator('#risk').evaluate(el=>el.scrollWidth<=el.clientWidth+1);
+ check(fits,'Risk page overflows mobile width');
+ await page.screenshot({path:'/tmp/marketscope-risk-mobile.png',fullPage:true});
+ check(!failures.length,'Browser exceptions: '+failures.join('; '));
+ console.log('Risk browser smoke passed: code/name, lazy loads, unknown/error/retry, filters, historical gaps, no future chart values, mobile keyboard. All risk values are synthetic fixtures.');
+}catch(e){console.error(e);await page.screenshot({path:'/tmp/marketscope-risk-failed.png',fullPage:true}).catch(()=>{});process.exitCode=1;}finally{await browser.close();}
