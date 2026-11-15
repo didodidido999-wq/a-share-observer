@@ -65,6 +65,8 @@ jobs:
         with:
           name: marketscope-ux-debug
           path: |
+            /tmp/marketscope-crude-spot.png
+            /tmp/marketscope-crude-normalized.png
             /tmp/marketscope-disclosures.png
             /tmp/marketscope-disclosures-social-security.png
             /tmp/marketscope-market-redesign.png

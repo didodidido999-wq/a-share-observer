@@ -10,6 +10,16 @@ try {
  await page.getByRole('button',{name:'外围市场',exact:true}).click();
  await page.waitForFunction(()=>Math.abs(document.getElementById('global-context').getBoundingClientRect().top-80)<5);
  if(new URL(page.url()).hash!=='#today')throw Error('Section jump changed page route');
+ await page.locator('#global-group').selectOption('crude_spot');
+ await page.waitForFunction(()=>document.querySelector('#global-values')?.textContent.includes('WTI'));
+ const spotText=await page.locator('#global-values').innerText();
+ if(!spotText.includes('美元/桶')||!spotText.includes('EIA')||spotText.includes('美国财政部'))throw Error('Official spot identity or unit not shown');
+ await page.waitForTimeout(1200); // ECharts initial animation must settle before visual evidence.
+ await page.locator('#global-context').screenshot({path:'/tmp/marketscope-crude-spot.png'});
+ await page.locator('#global-view-mode').selectOption('normalized');
+ await page.waitForTimeout(1200); // Wait for mode-switch animation, not source availability.
+ await page.locator('#global-context').screenshot({path:'/tmp/marketscope-crude-normalized.png'});
+ await page.locator('#global-view-mode').selectOption('raw');
  await page.goto(base,{waitUntil:'networkidle'});
  await page.screenshot({path:'/tmp/marketscope-market-redesign.png',fullPage:true});
  // Current disclosure ledger uses actual archived official evidence, independent of historical day.
