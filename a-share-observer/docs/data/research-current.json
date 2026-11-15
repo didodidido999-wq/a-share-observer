@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-15T09:39:42.218648+00:00",
+  "generated_at": "2026-11-15T16:41:52.808091+00:00",
   "current": {
     "schema_version": 1,
     "model_version": "breadth-trend-v1",
@@ -373,7 +373,7 @@
   ],
   "reviews": [],
   "background": {
-    "observed_at": "2026-11-15T09:39:42.218648+00:00",
+    "observed_at": "2026-11-15T16:41:52.808091+00:00",
     "items": [
       {
         "title": "三季度经济：增长与需求分项",
@@ -430,6 +430,48 @@
         },
         "data_date": "自2026-11-12日24时起",
         "available_at": "2026-11-15T09:16:36Z"
+      },
+      {
+        "title": "10月金融统计：社融存量与货币增速",
+        "fact": "初步统计：10月末社融存量469.16万亿元，同比增长7.2%；M2同比7.1%，M1同比4.4%。前十个月社融增量28.61万亿元，比上年同期少2.29万亿元。",
+        "analysis": "货币与融资数据可作为需求和流动性背景；存量增速与融资结构应分别观察，不能据此直接推出股票指数方向。",
+        "limitations": "当期数据为初步数；累计增量不是10月单月值。M1自2025年起采用修订口径。本条于11月15日实际留存，不能倒填11月13日的历史判断。",
+        "source_url": "https://www.pbc.gov.cn/goutongjiaoliu/113456/113469/2026111315073060062/index.html",
+        "evidence_id": "pbc-202610-financial-statistics-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "pbc-202610-financial-statistics-v1"
+        },
+        "data_date": "2026-10末 / 2026年1—10月",
+        "available_at": "2026-11-15T13:50:38+00:00"
+      },
+      {
+        "title": "11月上旬生产资料：多数品种旬环比回落",
+        "fact": "监测的50种重要生产资料中，16种价格上涨、32种下降、2种持平；螺纹钢3152.4元/吨、旬环比下降0.5%，电解铜109779.3元/吨、下降0.4%。",
+        "analysis": "旬价可辅助观察原材料成本方向与行业分化，但不能单独判定企业利润改善或指数走势。",
+        "limitations": "流通领域市场价格包含流通费用、利润和税费，不等于出厂价格或PPI；旬环比不是月度同比。页面真实发布时间为11月14日09:30，不能从URL推断为11月13日。",
+        "source_url": "https://www.stats.gov.cn/sj/zxfb/202611/t20261113_1965820.html",
+        "evidence_id": "nbs-202611-early-materials-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "nbs-202611-early-materials-v1"
+        },
+        "data_date": "2026年11月上旬 / 对比10月下旬",
+        "available_at": "2026-11-15T13:50:38+00:00"
+      },
+      {
+        "title": "11月16日买断式逆回购：已公告计划，结果待核验",
+        "fact": "央行公告拟于11月16日开展2000亿元买断式逆回购，期限6个月（180天），采用固定数量、利率招标、多重价位中标方式；公告到期日为2027年5月15日，遇节假日顺延。",
+        "analysis": "这是流动性操作安排，后续需核对实际操作与到期规模，不能把总操作额直接视为净投放或对股市的确定利好。",
+        "limitations": "本条只记录已公布计划，不含中标利率或实际结果。官方未给出日内操作时刻，因此不构造精确scheduled_at事件；不把11月16日计划当作已完成操作。",
+        "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/5492845/2026111316452296143/index.html",
+        "evidence_id": "pbc-20261116-outright-repo-plan-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "pbc-20261116-outright-repo-plan-v1"
+        },
+        "data_date": "拟于2026-11-16操作",
+        "available_at": "2026-11-15T13:50:38+00:00"
       },
       {
         "title": "中国国债2年收益率",
