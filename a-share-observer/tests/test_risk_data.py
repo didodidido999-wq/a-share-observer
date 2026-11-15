@@ -121,3 +121,14 @@ def test_expired_bond_without_delisting_not_current():
  o=r.build([{'code':'600000.SH','name':'浦发'}],[],[])
  r.enrich(o,[{'CONVERT_STOCK_CODE':'600000','SECURITY_CODE':'110001','PUBLIC_START_DATE':'2020-01-01','EXPIRE_DATE':'2025-01-01'}],[],[],'2026-08-01')
  assert o['stocks'][0]['supplemental']['convertibles']['bonds']==[]
+
+def test_empty_subsequent_page_rejects_incomplete_report(monkeypatch):
+ import io,json,pytest
+ responses=iter([
+  {'success':True,'result':{'pages':2,'count':2,'data':[sample()]}},
+  {'success':False,'code':9201,'message':'返回数据为空','result':None}
+ ])
+ monkeypatch.setattr(r,'urlopen',lambda *a,**k:io.BytesIO(json.dumps(next(responses)).encode()))
+ monkeypatch.setattr(r.time,'sleep',lambda *a:None)
+ with pytest.raises(ValueError,match='Incomplete report'):
+  r.fetch_report('RPTA_WEB_RZRQ_GGMX','DATE',pagesize=1,max_pages=2)

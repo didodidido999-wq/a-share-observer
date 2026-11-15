@@ -151,3 +151,9 @@ def test_sc_future_daily_is_not_wti_and_preserves_real_session(tmp_path, monkeyp
     assert "WTI" in record["name"]
     assert record["rows"] == [{"date": "2026-10-27", "value": 445.7, "turnover": 100000000.0}]
     assert g.crude_sc(caller=caller, today=day)["file_changed"] is False
+
+
+def test_treasury_spread_uses_us_market_timezone(tmp_path, monkeypatch):
+    monkeypatch.setattr(g, "OUT", tmp_path)
+    g.write_series("ust_10y2y", "spread", "treasury_spread", "bp", "treasury", [{"date":"2026-06-10", "value":25}])
+    assert json.loads((tmp_path / "ust_10y2y.json").read_text())["market_timezone"] == "America/New_York"

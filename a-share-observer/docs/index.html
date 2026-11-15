@@ -4,9 +4,13 @@
 <meta name="theme-color" content="#12273a"><meta name="description" content="MarketScope V3 — A股历史市场环境、异动、板块与风格交互研究终端">
 <title>MarketScope V3｜A股市场研究</title>
 <link rel="stylesheet" href="v3.css?v=4.8.0">
-<link rel="stylesheet" href="risk-workspace.css?v=1.0.0">
-<script defer src="risk-workspace.js?v=1.0.0"></script>
-<script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=4.9.0-risk"></script>
+<link rel="stylesheet" href="risk-workspace.css?v=2.0.0">
+<link rel="stylesheet" href="market-overview.css?v=1.0.0">
+<link rel="stylesheet" href="global-context.css?v=1.0.0">
+<script defer src="global-context.js?v=1.0.0"></script>
+<script defer src="market-overview.js?v=1.0.0"></script>
+<script defer src="risk-workspace.js?v=2.0.0"></script>
+<script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=5.0.0-risk"></script>
 <script defer src="event-sector.js?v=4.2.0"></script><script defer src="representatives.js?v=4.4.1-recovery"></script>
 <script defer src="funds-observer.js?v=1.3.0"></script><script defer src="etf-state.js?v=1.1.0"></script><script defer src="capital-workspace.js?v=1.0.0"></script>
 </head><body>
@@ -31,16 +35,19 @@
  <section class="range-bar" aria-label="全站交易日区间"><label>观察窗口 <select id="range-preset"><option value="10">最近10日</option><option value="5">最近5日</option><option value="20">最近20日</option><option value="custom">自选区间</option><option value="all">全部历史</option></select></label><label>起始 <input type="date" id="range-start" aria-label="开始日期"></label><label>截止 <input type="date" id="range-end" aria-label="截止日期"></label><button type="button" id="apply-range" class="btn solid">应用区间</button><span id="range-info">—</span></section>
 
  <section id="today" class="page active">
- <article class="panel" id="macro-risk-panel"><div class="panel-header"><div><div class="kicker">CROSS-MARKET CONTEXT</div><h2>利率与资金环境</h2><p>辅助理解大盘环境，不把单一市场变化当作股票买卖信号。</p></div></div><div id="macro-risk-status" role="status" class="risk-note">正在读取跨市场归档…</div><button type="button" id="macro-risk-retry" hidden>重新加载利率数据</button><div id="macro-risk-cards" class="risk-grid"></div><div class="risk-controls"><label>观察指标 <select id="macro-risk-select" aria-label="跨市场指标"></select></label></div><div id="macro-risk-chart" class="chart"></div><p class="risk-note">收益率以 % 展示，利率变化以基点 bp 展示，1 bp = 0.01 个百分点。按实际日期显示；没有归档不等于没有变化。</p><details><summary>这些市场如何辅助分析？</summary><p class="risk-note">货币市场反映短期资金价格；国债收益率提供利率与预期线索；融资资金在下方“资金观察”独立展示。它们不构成买卖指令。分离债、权证和 OTC 没有可直接通用于 A 股的统一风险指标，本页不生成虚构分数。</p></details></article>
+
   <div class="playback panel"><div class="panel-header"><div><div class="kicker">01 / SESSION REPLAY</div><h2>市场变化回放 <span class="soft">日线 / 非盘中</span></h2></div><div class="play-actions"><button type="button" id="prev-day" aria-label="上一交易日">◀</button><button type="button" id="play-day" aria-label="播放市场回放">▶ 播放</button><button type="button" id="next-day" aria-label="下一交易日">▶</button><button type="button" id="latest-day">回到最新</button><label>速度<select id="play-speed"><option value="1500">慢</option><option value="900" selected>标准</option><option value="480">快</option></select></label></div></div>
    <input id="day-slider" class="day-slider" type="range" min="0" max="0" step="1" value="0" aria-label="交易日滑块"><div class="range-caption"><span id="first-day">—</span><b id="timeline-day">—</b><span id="last-day">—</span></div>
    <div class="compare-toolbar"><label><input id="compare-enable" type="checkbox"> 启用双日期差值</label><label>对照基准 <select id="compare-base" disabled aria-label="对照交易日"></select></label><span id="compare-caption">点击图表日期或拖动时间轴观察变化</span></div>
   </div>
-  <div class="kpi-grid" id="kpi-grid"></div>
+  <div id="market-overview"></div>
+  <details class="market-raw-metrics"><summary>查看全部基础指标与双日期差值</summary><div class="kpi-grid" id="kpi-grid"></div></details>
+  <h2 class="market-detail-label">深入观察 · 指数、成交与风格的区间变化</h2>
   <div class="plot-grid"><article class="panel"><div class="panel-header"><div><div class="kicker">02 / INDEX & BREADTH</div><h2>指数表现 × 上涨覆盖率</h2><p>指数首个交易日标准化为100；上涨覆盖率使用右轴</p></div><label class="tool-select">基准指数<select id="index-select"></select></label></div><div class="chart large" id="index-chart"></div></article>
    <article class="panel"><div class="panel-header"><div><div class="kicker">03 / LIQUIDITY & MOMENTUM</div><h2>量能与短线反馈</h2><p>成交额亿元；涨跌停 / 连板按实际取得数据展示</p></div><label class="tool-select">显示<select id="market-trend-type"><option value="turnover">成交额</option><option value="limits">涨停与连板</option><option value="breadth">上涨与下跌家数</option></select></label></div><div class="chart large" id="liquidity-chart"></div></article></div>
   <div class="split-grid"><article class="panel"><div class="panel-header"><div><div class="kicker">04 / FACTOR ROTATION</div><h2>市场风格变化</h2><p>切换日期与分类，观察组内收益和上涨广度</p></div><div class="filters"><select id="style-dimension"><option value="价格分档">价格分档</option><option value="交易制度代理">10cm / 20cm / 30cm</option></select><select id="style-metric"><option value="median_pct">涨跌幅中位数</option><option value="up_ratio">上涨比例</option><option value="limit_up">涨停数</option><option value="sample">样本数</option></select></div></div><div class="style-bars" id="style-bars"></div></article>
    <article class="panel"><div class="panel-header"><div><div class="kicker">05 / DAILY EVIDENCE</div><h2>市场变化事实</h2><p>仅从可验证的历史数据计算，不做主观情绪评分</p></div></div><div id="market-facts" class="fact-list"></div></article></div>
+ <article class="panel" id="macro-risk-panel"><div class="panel-header"><div><div class="kicker">CROSS-MARKET CONTEXT</div><h2>利率与资金环境</h2><p>辅助理解大盘环境，不把单一市场变化当作股票买卖信号。</p></div></div><div id="macro-risk-status" role="status" class="risk-note">正在读取跨市场归档…</div><button type="button" id="macro-risk-retry" hidden>重新加载利率数据</button><div id="macro-risk-cards" class="risk-grid"></div><div class="risk-controls"><label>观察指标 <select id="macro-risk-select" aria-label="跨市场指标"></select></label></div><div id="macro-risk-chart" class="chart"></div><p class="risk-note">收益率以 % 展示，利率变化以基点 bp 展示，1 bp = 0.01 个百分点。按实际日期显示；没有归档不等于没有变化。</p><details><summary>这些市场如何辅助分析？</summary><p class="risk-note">货币市场反映短期资金价格；国债收益率提供利率与预期线索；融资资金在下方“资金观察”独立展示。它们不构成买卖指令。分离债、权证和 OTC 没有可直接通用于 A 股的统一风险指标，本页不生成虚构分数。</p></details></article>
   <article class="panel capital-panel" id="funds-observer" aria-label="资金观察">
    <div class="panel-header capital-header">
     <div><div class="kicker">06 / CAPITAL OBSERVATIONS</div><h2>资金观察</h2>
@@ -92,6 +99,7 @@
     </details>
    </section>
   </article>
+  <article class="panel global-context" id="global-context"><div class="panel-header"><div><div class="kicker">GLOBAL CONTEXT / ARCHIVED EVIDENCE</div><h2>外围市场观察</h2><p>按美元利率、境外风险偏好与商品相关资产区分用途，不把代理当原指数。</p></div></div><div class="global-controls"><label>观察用途 <select id="global-group" aria-label="外围市场分组"></select></label><button type="button" id="global-retry" hidden>重试失败资产</button></div><p id="global-context-note" class="risk-note"></p><div id="global-assets" class="global-assets" aria-label="外围资产选择"></div><p id="global-status" class="risk-note" role="status"></p><div id="global-context-chart" class="chart"></div><div class="table-wrap"><table><thead><tr><th>资产 / 代码</th><th>最近观测值</th><th>实际观测日</th><th>利率变化 / 对照日</th><th>来源</th></tr></thead><tbody id="global-values"></tbody></table></div><details><summary>数据缺口与代理边界</summary><p class="risk-note">尚未接入完整的海外原指数、美元指数、VIX及WTI/Brent等原始序列。境内ETF价格受汇率、折溢价及跟踪误差影响；油气股票不是原油。美国公布时刻未核验，统一排除中国所选日同日数据。这里是已有归档观察，不是任何人士的推荐清单。公开讨论参考包括<a href="https://sina.cn/news/detail/5363792663806725.html" target="_blank" rel="noopener noreferrer">恒生科技</a>及<a href="https://3g.sina.com.cn/news/detail/5354269863840891.html" target="_blank" rel="noopener noreferrer">费城半导体、日韩市场</a>；不代表完整常提清单。SOX原指数尚未接入，纳指科技ETF不能替代SOX。</p></details></article>
   <article class="panel"><div class="panel-header"><div><div class="kicker">07 / DAILY LEDGER</div><h2>历史市场账本</h2></div><span class="meta">点击任意一日，联动回放</span></div><div class="table-wrap"><table><thead><tr><th>日期</th><th>上涨</th><th>下跌</th><th>中位数</th><th>成交额（亿）</th><th>非ST涨停</th><th>最高连板</th></tr></thead><tbody id="daily-ledger"></tbody></table></div></article>
  </section>
 
@@ -148,12 +156,12 @@
 
  
 <section id="risk" class="page">
- <article class="panel"><div class="panel-header"><div><div class="kicker">STOCK RISK CHECK / FACTS FIRST</div><h2>查询一只股票，核对已知风险</h2><p>按股票代码或名称搜索。只显示有来源的事实；未触发不代表安全，数据缺失不当作零。</p></div></div>
- <form id="risk-search-form" class="risk-controls" role="search"><label for="risk-query">股票名称 / 代码<input id="risk-query" type="search" autocomplete="off" placeholder="例如：西部材料 / 002149" aria-describedby="risk-search-status"></label><label>核查日期<select id="risk-date" aria-label="个股核查日期"></select></label><label>显示项目<select id="risk-check-filter" aria-label="风险项目筛选"><option value="all">全部核查项</option><option value="triggered">仅已触发</option><option value="missing">仅数据缺失</option></select></label><button type="submit" class="btn solid">查询</button><button type="button" id="risk-clear">清除</button><button type="button" id="risk-retry" hidden>重新加载</button></form>
+ <article class="panel risk-query-panel"><div class="panel-header"><div><div class="kicker">STOCK RISK CHECK / FACTS FIRST</div><h2>个股核查</h2><p>盘后归档 · 非实时行情，不能视为当日 14:45 已知信息。</p></div></div>
+ <form id="risk-search-form" class="risk-controls" role="search"><label for="risk-query">股票名称 / 代码<input id="risk-query" type="search" autocomplete="off" placeholder="例如：西部材料 / 002149" aria-describedby="risk-search-status"></label><label>核查日期<select id="risk-date" aria-label="个股核查日期"></select></label><label>指标表筛选<select id="risk-check-filter" aria-label="风险项目筛选"><option value="all">全部核查项</option><option value="triggered">仅已触发</option><option value="missing">仅数据缺失</option></select></label><button type="submit" class="btn solid">查询</button><button type="button" id="risk-clear">清除</button><button type="button" id="risk-range-toggle" aria-expanded="false">更多日期</button><button type="button" id="risk-retry" hidden>重新加载</button></form>
  <p id="risk-search-status" class="risk-note" role="status" aria-live="polite">正在读取可查询股票目录…</p><div id="risk-search-results" class="risk-search-results" aria-label="匹配股票"></div>
  </article>
  <div id="risk-detail" aria-live="polite"></div>
- <article class="panel"><h3>使用边界</h3><p class="risk-note">这是数据核查工具，不是完整尽调、评级或买卖建议。融资增加不等于主力流入，融券变化也不能直接解释为看空。可转债溢价须使用同日股债价格及当日有效转股价；资料不足时不计算。公告、质押、诉讼等未接入事项仍需另行核实。</p></article>
+ <details class="panel risk-method"><summary>口径与使用边界</summary><p class="risk-note">这是数据核查工具，不是完整尽调、评级或买卖建议。融资增加不等于主力流入，融券变化也不能直接解释为看空。可转债溢价须使用同日股债价格及当日有效转股价；资料不足时不计算。未覆盖的公告、质押、诉讼等事项仍需另行核实。</p></details>
 </section>
 <section id="history" class="page">
  <div class="section-head"><div><div class="kicker">REPRESENTATIVE STOCK RESEARCH</div><h2>代表性股票与风格研究</h2><p>固定高辨识度股票观察池 · 区间排名 · 经济风格与题材分组；涨跌两侧同步研究。</p></div><div class="filters"><label>截止交易日 <select id="rep-date"></select></label><label>排名窗口 <select id="rep-window"><option value="5">最近5个交易日</option><option value="10" selected>最近10个交易日</option><option value="20">最近20个交易日</option><option value="40">最近40个交易日</option><option value="60">最近60个交易日</option></select></label></div></div>

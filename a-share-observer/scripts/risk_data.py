@@ -42,7 +42,9 @@ def fetch_report(report,sort,filters='',pagesize=500,max_pages=30,first_page_onl
         req=Request(EM+'?'+urlencode(params),headers={'User-Agent':'a-share-observer/1.0'})
         with urlopen(req,timeout=45) as response: obj=json.load(response)
         result=obj.get('result') or {}
-        if obj.get('success') is False and obj.get('code')==9201 and obj.get('message')=='返回数据为空': return []
+        if obj.get('success') is False and obj.get('code')==9201 and obj.get('message')=='返回数据为空':
+            if page==1 and not rows:return []
+            raise ValueError('Incomplete report: empty subsequent page')
         if obj.get('success') is not True or not isinstance(result.get('data'),list):raise ValueError('Report unavailable: '+report)
         expected=int(result.get('pages',1))
         if expected>max_pages and not first_page_only:raise ValueError('Report pagination exceeds bounded limit: '+report)

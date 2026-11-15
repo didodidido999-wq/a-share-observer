@@ -109,7 +109,7 @@ def write_series(series_id, name, kind, unit, source, rows, symbol=None, extra=N
         "schema_version": 1,
         "asset_id": series_id, "name": name, "kind": kind, "unit": unit,
         "source": source, "symbol": symbol,
-        "market_timezone": "America/New_York" if kind == "treasury_yield" else "Asia/Shanghai",
+        "market_timezone": "America/New_York" if kind in ("treasury_yield", "treasury_spread") else "Asia/Shanghai",
         "point_in_time_publication": "unverified",
         "rows": [previous[k] for k in sorted(previous)],
     }

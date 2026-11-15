@@ -5,6 +5,9 @@ on:
       - 'a-share-observer/docs/index.html'
       - 'a-share-observer/docs/v3.js'
       - 'a-share-observer/docs/risk-workspace.js'
+      - 'a-share-observer/docs/global-context.js'
+      - 'a-share-observer/docs/global-context.css'
+      - 'a-share-observer/scripts/global-ui-smoke.mjs'
       - 'a-share-observer/docs/risk-workspace.css'
       - 'a-share-observer/scripts/risk-ui-smoke.mjs'
       - 'a-share-observer/docs/v3.css'
@@ -16,6 +19,9 @@ on:
       - 'a-share-observer/docs/index.html'
       - 'a-share-observer/docs/v3.js'
       - 'a-share-observer/docs/risk-workspace.js'
+      - 'a-share-observer/docs/global-context.js'
+      - 'a-share-observer/docs/global-context.css'
+      - 'a-share-observer/scripts/global-ui-smoke.mjs'
       - 'a-share-observer/docs/risk-workspace.css'
       - 'a-share-observer/scripts/risk-ui-smoke.mjs'
       - '.github/workflows/verify-ux.yml'
@@ -43,14 +49,24 @@ jobs:
           node a-share-observer/scripts/ui-smoke.mjs
       - name: Risk browser interactions with explicit synthetic fixtures
         run: node a-share-observer/scripts/risk-ui-smoke.mjs
-      - name: Save screenshots on failed UX audit
-        if: failure()
+      - name: Global context browser date and proxy safeguards
+        run: node a-share-observer/scripts/global-ui-smoke.mjs
+      - name: Capture real-data layout evidence
+        run: node a-share-observer/scripts/layout-evidence.mjs
+      - name: Save browser audit evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: marketscope-ux-debug
           path: |
+            /tmp/marketscope-market-redesign.png
+            /tmp/marketscope-risk-redesign.png
+            /tmp/marketscope-risk-redesign-mobile.png
+            /tmp/marketscope-desktop.png
+            /tmp/marketscope-mobile.png
             /tmp/marketscope-failed.png
             /tmp/marketscope-risk-failed.png
+            /tmp/marketscope-global-failed.png
             /tmp/marketscope-risk-mobile.png
             /tmp/marketscope-http.log
           if-no-files-found: ignore
