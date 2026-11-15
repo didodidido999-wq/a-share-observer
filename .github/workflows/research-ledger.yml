@@ -28,7 +28,9 @@ jobs:
           python a-share-observer/scripts/research_ledger.py --check
           python -m pytest -q a-share-observer/tests/test_research_ledger.py a-share-observer/tests/test_research_calendar.py a-share-observer/tests/test_research_publication.py
       - name: Generate current snapshot and settle mature outcomes
-        run: python a-share-observer/scripts/research_ledger.py
+        run: |
+          python a-share-observer/scripts/research_ledger.py
+          python a-share-observer/scripts/research_ledger.py --check --git-base HEAD
       - name: Publish new research files
         run: |
           set -euo pipefail

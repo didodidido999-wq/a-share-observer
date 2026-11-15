@@ -10,7 +10,7 @@ const visible=async sel=>await page.locator(sel).isVisible();
 const click=async sel=>await page.locator(sel).click({timeout:25000});
 try{
  await page.goto(new URL('#today',base).href,{waitUntil:'domcontentloaded',timeout:25000});
- await page.waitForFunction(()=>document.querySelector('#status')?.textContent?.includes('最近有效'),{timeout:25000});
+ await page.waitForFunction(()=>document.querySelector('#status')?.textContent?.includes('行情归档截至'),{timeout:25000});
  check(await visible('#today'),'Home should render');
  check(await page.locator('#day-slider').count()===1,'Global timeline missing');
  await click('#navigation [data-page="capital"]');
@@ -119,6 +119,7 @@ try{
  check((await page.locator('#rep-style-view').inputValue())==='line','Style line chart missing');
  await page.screenshot({path:'/tmp/marketscope-desktop.png',fullPage:false});
  await page.setViewportSize({width:390,height:844});
+ await page.waitForFunction(()=>document.getElementById('sidebar').getBoundingClientRect().right<=1);
  await page.screenshot({path:'/tmp/marketscope-mobile.png',fullPage:false});
  await click('#menu-btn');
  await click('#navigation [data-page="today"]');

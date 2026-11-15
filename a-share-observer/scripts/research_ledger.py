@@ -182,7 +182,101 @@ def background(data, now):
     result.append({'title':'外围与重要商品','fact':'原始利率/原油现货与境内ETF代理必须分开观察。','analysis':'能源涨价可能支撑上游利润并挤压下游；海外利率变化经估值与汇率传导，但不能把代理ETF涨跌当作原指数精确表现。','limitations':'本版尚未量化跨市场传导和汇率/溢价影响，不能称全因子融合；油价是滞后现货而非实时期货。','route':{'page':'macro','anchor':'global-context'}})
     return {'observed_at':now.isoformat(), 'items':result, 'note':'以下是独立更新的当前背景研究，不是历史冻结预测当时已使用的输入，也不改变方向规则。'}
 
-def daily(data, now, activate=False, activate_id=None):
+def target_statuses(forecasts, activations, calendar, rows, evaluations, now):
+    output=[]
+    done={(e['forecast_id'],e['horizon']):e for e in evaluations}
+    by_day={r['date']:r for r in rows}
+    for f in forecasts:
+        for target in f['targets']:
+            entry={'forecast_id':f['id'],'horizon':target['horizon'],'judgment':target['judgment'],'due_date':None}
+            result=done.get((f['id'],target['horizon']))
+            if result:
+                entry.update(status=result['status'],due_date=result['due_date'])
+            elif f['id'] not in activations:
+                entry['status']='not_activated'
+            elif not calendar or not calendar.get('source_url') or not calendar.get('verified_at') or stamp(calendar['verified_at'])>now:
+                entry['status']='calendar_missing'
+            else:
+                issued=stamp(activations[f['id']]).astimezone(CN).date().isoformat()
+                future=[d for d in calendar.get('sessions',[]) if d>issued]
+                h=target['horizon']
+                if not calendar.get('coverage_start') or calendar['coverage_start']>issued or len(future)<h or future[h-1]>calendar.get('coverage_end',''):
+                    entry['status']='calendar_missing'
+                else:
+                    due=future[h-1];entry['due_date']=due
+                    if stamp(due+'T15:00:00+08:00')>=now:
+                        entry['status']='pending'
+                    elif not finite(index(by_day.get(due,{})).get('close')) or index(by_day.get(due,{})).get('close',0)<=0:
+                        entry['status']='price_missing'
+                    else:
+                        entry['status']='abstained' if target['judgment']=='abstain' else 'unscorable'
+            output.append(entry)
+    return output
+
+
+def append_review(ledger, review, now):
+    """Append an authored review; never fit a model or amend prior forecasts."""
+    if not isinstance(review, dict):
+        raise ValueError('review must be an object')
+    required = {'review_id','created_at','period','type','cited_forecast_ids','findings',
+                'data_errors','model_errors','event_errors','proposed_changes','shadow_plan'}
+    if required - review.keys():
+        raise ValueError('missing review fields: ' + ', '.join(sorted(required-review.keys())))
+    for key in ('review_id','created_at','period','shadow_plan'):
+        if not isinstance(review[key], str) or not review[key].strip():
+            raise ValueError(key + ' must be a nonempty string')
+    if review['type'] not in ('weekly','monthly'):
+        raise ValueError('review type must be weekly or monthly')
+    created = stamp(review['created_at'])
+    if created > now:
+        raise ValueError('review created_at cannot be in the future')
+    for key in ('cited_forecast_ids','findings','data_errors','model_errors','event_errors','proposed_changes'):
+        if not isinstance(review[key], list) or any(not isinstance(x,str) or not x.strip() for x in review[key]):
+            raise ValueError(key + ' must be a list of nonempty strings')
+    if not review['findings'] or not review['cited_forecast_ids']:
+        raise ValueError('review needs findings and cited forecasts')
+    if len(set(review['cited_forecast_ids'])) != len(review['cited_forecast_ids']):
+        raise ValueError('duplicate cited forecast IDs')
+    forecasts={e['payload']['id']:e['payload'] for e in ledger['events'] if e['kind']=='forecast'}
+    if any(i not in forecasts for i in review['cited_forecast_ids']):
+        raise ValueError('unknown cited forecast ID')
+    if any(stamp(forecasts[i]['issued_at']) > created for i in review['cited_forecast_ids']):
+        raise ValueError('review predates a cited forecast')
+    if review.get('formal_rules_unchanged', True) is not True:
+        raise ValueError('reviews cannot change formal model rules')
+    payload=dict(review, formal_rules_unchanged=True)
+    old=next((e['payload'] for e in ledger['events'] if e['kind']=='review' and e['payload']['review_id']==review['review_id']),None)
+    if old is not None:
+        if old != payload:
+            raise ValueError('review ID already exists with different content; use a new ID')
+        return False
+    append_event(ledger,'review',payload)
+    return True
+
+
+def validate_activation_date(forecast, calendar, now):
+    """Require the latest session that should have closed, not latest collected bar."""
+    if not calendar or not calendar.get('source_url') or not calendar.get('verified_at'):
+        raise ValueError('activation requires a verified exchange calendar')
+    if stamp(calendar['verified_at']) > now:
+        raise ValueError('calendar verification is in the future')
+    today=now.astimezone(CN).date().isoformat()
+    start,end=calendar.get('coverage_start'),calendar.get('coverage_end')
+    if not start or not end or not start <= today <= end:
+        raise ValueError('activation date is outside verified calendar coverage')
+    sessions=calendar.get('sessions',[])
+    if not sessions or sessions != sorted(set(sessions)):
+        raise ValueError('invalid calendar sessions')
+    if today in sessions and now < stamp(today+'T15:00:00+08:00'):
+        raise ValueError('EOD-only activation is forbidden before market close on a trading day')
+    completed=[day for day in sessions if start <= day <= end and stamp(day+'T15:00:00+08:00') <= now]
+    if not completed:
+        raise ValueError('calendar does not cover a completed reference session')
+    if forecast['data_date'] != completed[-1]:
+        raise ValueError('stale forecast: latest completed exchange session is '+completed[-1]+', but forecast data_date is '+forecast['data_date'])
+
+
+def daily(data, now, activate=False, activate_id=None, review=None):
     path = data / 'research-ledger.json'
     ledger = read(path, {'schema_version':1, 'events':[]})
     validate(ledger)
@@ -194,6 +288,7 @@ def daily(data, now, activate=False, activate_id=None):
     if not existing:
         append_event(ledger, 'forecast', current)
         forecasts.append(current)
+    calendar = read(data / 'research-calendar.json')
     activations = {e['payload']['forecast_id']:e['payload']['activated_at'] for e in ledger['events'] if e['kind']=='activation'}
     if activate and not activate_id:
         raise ValueError('activation requires explicit --activate-id verified on live site')
@@ -201,6 +296,7 @@ def daily(data, now, activate=False, activate_id=None):
         raise ValueError('unknown activation ID')
     if activate and activate_id not in activations:
         selected=next(f for f in forecasts if f['id']==activate_id)
+        validate_activation_date(selected, calendar, now)
         if selected['data_date'] != rows[-1]['date']:
             raise ValueError('stale forecast: publish a newly generated record before activation')
         # This operation is only run AFTER the exact forecast is verified public.
@@ -212,9 +308,13 @@ def daily(data, now, activate=False, activate_id=None):
         for result in evaluate(dict(forecast, activated_at=activations.get(forecast['id'])), rows, calendar, now):
             if (result['forecast_id'], result['horizon']) not in done:
                 append_event(ledger, 'evaluation', result)
+    if review is not None:
+        append_review(ledger, review, now)
     validate(ledger)
     summary = {'schema_version':1, 'generated_at':now.isoformat(), 'current':forecasts[-1],
                'forecasts':forecasts, 'evaluations':[e['payload'] for e in ledger['events'] if e['kind']=='evaluation'],
+               'target_statuses':target_statuses(forecasts,activations,calendar,rows,[e['payload'] for e in ledger['events'] if e['kind']=='evaluation'],now),
+               'reviews':[e['payload'] for e in ledger['events'] if e['kind']=='review'],
                'background':background(data, now), 'activations':activations, 'calendar_status':'verified_file_present' if calendar else 'missing',
                'review_policy': '每日记录与核对；每周复盘错误；每月候选版本影子检验。保留原预测，禁止事后调参美化成绩。尚未证明准确率提升。'}
     for output, value in ((path, ledger), (data/'research-current.json', summary)):
@@ -227,6 +327,7 @@ def daily(data, now, activate=False, activate_id=None):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--data-dir', type=Path, default=Path(__file__).resolve().parents[1]/'docs'/'data')
+    p.add_argument('--append-review', type=Path, help='append a validated authored weekly/monthly review JSON without changing model rules')
     p.add_argument('--git-base', help='verify all committed ledger events remain an exact prefix')
     p.add_argument('--activate-id', help='exact already-public forecast ID to activate')
     p.add_argument('--activate', action='store_true', help='only after verifying this exact forecast is publicly deployed; activates forward evaluation now')
@@ -247,7 +348,7 @@ def main():
         validate(read(args.data_dir/'research-ledger.json'))
         print('research ledger integrity OK')
     else:
-        result=daily(args.data_dir, datetime.now(timezone.utc), activate=args.activate or bool(args.activate_id), activate_id=args.activate_id)
+        result=daily(args.data_dir, datetime.now(timezone.utc), activate=args.activate or bool(args.activate_id), activate_id=args.activate_id, review=json.loads(args.append_review.read_text()) if args.append_review else None)
         print(json.dumps({'current':result['current']['id'], 'forecasts':len(result['forecasts']), 'evaluations':len(result['evaluations']), 'calendar':result['calendar_status']}))
 
 if __name__=='__main__':

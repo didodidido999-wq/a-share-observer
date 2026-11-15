@@ -9,7 +9,7 @@ page.on('pageerror',e=>errors.push(e.message));
 const check=(v,m)=>{if(!v)throw Error(m);};
 const active=route=>page.waitForFunction(r=>document.querySelector('.page.active')?.id===r,route);
 const navigate=args=>page.evaluate(x=>window.MarketScopeNavigate(x),args);
-const settled=()=>page.waitForFunction(()=>typeof window.MarketScopeNavigate==='function'&&document.querySelector('#status')?.textContent.includes('最近有效'));
+const settled=()=>page.waitForFunction(()=>typeof window.MarketScopeNavigate==='function'&&document.querySelector('#status')?.textContent.includes('行情归档截至'));
 const routes=['research','today','capital','macro','policy','sectors','risk','events','history'];
 try{
  await page.goto(base,{waitUntil:'domcontentloaded'});await settled();await active('research');

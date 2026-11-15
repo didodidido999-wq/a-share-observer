@@ -1,5 +1,6 @@
 (function(root){
 'use strict';
+const statuses={not_activated:'未上线激活',calendar_missing:'待核验交易日历',pending:'尚未到期',price_missing:'已到期，缺失行情',unscorable:'已到期，暂不可评分',abstained:'主动不判断，不计命中',evaluated:'已评价'};
 const names={up:'偏强',down:'偏弱',flat:'震荡',abstain:'暂不判断'};
 const utils={
  visibleForecasts:(rows,at)=>rows.filter(r=>Date.parse(r.issued_at)<=at),
@@ -33,9 +34,15 @@ const m=utils.metrics(data.evaluations);review.append(node('p',`5日成熟记录
 review.append(node('p',m.n<30?'前瞻样本不足，不发布可靠胜率或“已提高准确率”结论。':'当前命中数不是独立样本胜率；重叠期限和市场阶段会影响解读。','research-notice'));
 review.append(node('p',data.calendar_status==='missing'?'交易日历尚待核验：不凭归档文件数量推算到期日，也不把缺失行情当成零。':'评价依赖经核验日历；缺失到期价格继续等待，不移动目标日期。','research-muted'));
 for(const h of [1,5,20]){const rows=data.evaluations.filter(r=>r.horizon===h&&r.status==='evaluated');const line=rows.length?`可评分${rows.length}条；本判断命中${rows.filter(r=>r.correct).length}；始终偏强基准命中${rows.filter(r=>r.baselines.always_up).length}；动量符号基准命中${rows.filter(r=>r.baselines.momentum_sign).length}`:'尚无可评分记录';review.append(node('p',`${h}交易日：${line}`));}
-review.append(node('p',data.review_policy));host.append(review);
+review.append(node('p',data.review_policy));
+const reviews=data.reviews||[];
+if(!reviews.length)review.append(node('p','首期周/月复盘尚未形成；这里将展示实际复盘记录，不补写历史成绩。','research-muted'));
+for(const item of [...reviews].reverse()){const detail=node('details',undefined,'research-record');detail.append(node('summary',`${item.type==='monthly'?'月度':'周度'}复盘 · ${item.period} · ${when(item.created_at)}`));
+for(const [key,label] of [['findings','主要发现'],['data_errors','数据错误'],['model_errors','模型错误'],['event_errors','事件遗漏'],['proposed_changes','候选改进']]){detail.append(node('h4',label));const rows=item[key]||[];if(!rows.length)detail.append(node('p','本次未记录，不代表已证明不存在。','research-muted'));else{const list=node('ul');rows.forEach(line=>list.append(node('li',line)));detail.append(list);}}
+detail.append(node('h4','影子检验计划'),node('p',item.shadow_plan),node('p','正式规则未自动改变；候选改进须经过独立验证。','research-notice'),node('p','引用预测：'+item.cited_forecast_ids.join('、'),'research-muted'));review.append(detail);}
+host.append(review);
 const history=section('05 / 冻结判断档案','生成时间、上线激活时间、证据与版本分别保留。点击每条查看原文，不对过去补写预测。');
-for(const row of [...data.forecasts].reverse()){const d=node('details',undefined,'research-record');d.append(node('summary',`${when(row.issued_at)} · ${names[row.judgment]} · 数据 ${row.data_date} · ${row.model_version}`),node('p',row.analysis),node('p',data.activations&&data.activations[row.id]?`上线激活 ${when(data.activations[row.id])}`:'尚未上线激活，不计前瞻成绩'));const evaluations=data.evaluations.filter(e=>e.forecast_id===row.id);for(const target of row.targets){const ev=evaluations.find(e=>e.horizon===target.horizon);d.append(node('p',`${target.horizon}日 ${names[target.judgment]}：${ev?`${ev.due_date} 指数变化 ${fmt(ev.return_pct)}% · ${ev.correct===null?'观察、不计命中':ev.correct?'命中':'未命中'}`:'待到期/待核验数据'}`));}d.append(node('pre',JSON.stringify(row,null,2)));history.append(d);}const download=node('a','下载完整冻结账本（JSON）');download.href='data/research-ledger.json';download.target='_blank';download.rel='noopener';history.append(download);host.append(history);
+for(const row of [...data.forecasts].reverse()){const d=node('details',undefined,'research-record');d.append(node('summary',`${when(row.issued_at)} · ${names[row.judgment]} · 数据 ${row.data_date} · ${row.model_version}`),node('p',row.analysis),node('p',data.activations&&data.activations[row.id]?`上线激活 ${when(data.activations[row.id])}`:'尚未上线激活，不计前瞻成绩'));const evaluations=data.evaluations.filter(e=>e.forecast_id===row.id);for(const target of row.targets){const ev=evaluations.find(e=>e.horizon===target.horizon);const status=(data.target_statuses||[]).find(x=>x.forecast_id===row.id&&x.horizon===target.horizon);d.append(node('p',`${target.horizon}日 ${names[target.judgment]}：${ev?`${ev.due_date} 指数变化 ${fmt(ev.return_pct)}% · ${ev.correct===null?'观察、不计命中':ev.correct?'命中':'未命中'}`:status?`${statuses[status.status]||status.status}${status.due_date?'（目标日 '+status.due_date+'）':''}`:'待核验状态'}`));}d.append(node('pre',JSON.stringify(row,null,2)));history.append(d);}const download=node('a','下载完整冻结账本（JSON）');download.href='data/research-ledger.json';download.target='_blank';download.rel='noopener';history.append(download);host.append(history);
 }catch(e){if(id===serial){host.replaceChildren(node('p',e.message,'research-notice'));const retry=node('button','重新载入');retry.type='button';retry.addEventListener('click',()=>render(options));host.append(retry);}}
 }
 root.MarketScopeResearch={render};

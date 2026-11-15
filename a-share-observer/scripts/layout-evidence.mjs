@@ -22,7 +22,9 @@ try {
  await page.locator('#global-context').screenshot({path:'/tmp/marketscope-crude-normalized.png'});
  await page.locator('#global-view-mode').selectOption('raw');
  await page.goto(new URL('#today',base).href,{waitUntil:'networkidle'});
- await page.screenshot({path:'/tmp/marketscope-market-redesign.png',fullPage:true});
+ await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+ await page.waitForTimeout(350);
+ await page.screenshot({path:'/tmp/marketscope-market-redesign.png',fullPage:true,animations:'disabled'});
  await page.locator('#navigation [data-page="capital"]').click();
  // Current disclosure ledger uses actual archived official evidence, independent of historical day.
  await page.locator('#domestic-reviewed > details > summary').click();

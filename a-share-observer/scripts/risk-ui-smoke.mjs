@@ -26,7 +26,7 @@ async function openRisk(){await page.locator('#navigation [data-page="risk"]').c
 async function search(q){await page.locator('#risk-query').fill(q);await page.locator('#risk-search-form').evaluate(f=>f.requestSubmit());}
 try{
  await page.goto(base,{waitUntil:'domcontentloaded'});
- await page.waitForFunction(()=>document.querySelector('#status')?.textContent.includes('最近有效'));
+ await page.waitForFunction(()=>document.querySelector('#status')?.textContent.includes('行情归档截至'));
  await page.locator('#navigation [data-page="macro"]').click();
  await page.waitForSelector('#macro-risk-cards .risk-card');
  check(!requests.some(u=>u.includes('risk-observer.json')||u.includes('risk-stocks/')),'Homepage eagerly fetched the stock archive');

@@ -51,3 +51,19 @@ python scripts/research_ledger.py --check --git-base <已有账本的受信任co
 python -m pytest -q tests/test_research_ledger.py
 node --test tests/research-analysis.test.mjs
 ```
+
+## 已配置的自动执行链
+
+`.github/workflows/research-ledger.yml` 在北京时间每个工作日20:40运行（计划时间，GitHub调度可能延迟），可手动触发。依次验证、生成及结算、推送、从正式网站外部读取 `research-current.json` 并核对完整 current 哈希，最多检查约10分钟；只有一致才按明确 forecast ID 追加上线激活事件，再发布。网络失败或部署未完成时作业失败、保留未激活状态，并上传审计文件。初次启用需手动跑通一次，不把已配置视为已成功执行。
+
+官方政策及日程仍是独立核验补录流程，不能由该规则工作流的成功冒称已完成政策更新。交易日历只覆盖2026年11月13日至12月31日，须在到期前核对2027官方安排；没有覆盖就停止到期评分。
+
+## 追加周/月复盘
+
+```
+python scripts/research_ledger.py --append-review /path/to/review.json
+```
+
+JSON必需字段：`review_id`、`created_at`（含时区且不晚于现在）、`period`（非空期间字符串）、`type`（weekly/monthly）、`cited_forecast_ids`（已有预测ID非空列表）、`findings`（非空字符串列表）、`data_errors`、`model_errors`、`event_errors`、`proposed_changes`（均为字符串列表，允许空）、`shadow_plan`（非空字符串）。可提供`formal_rules_unchanged:true`，省略时自动固定为true；false拒绝。记录引用时点不能早于预测生成。
+
+相同review_id且完全相同内容重复执行无新增；不同内容拒绝，修正须新ID。追加kind=review事件，不更改既有预测，不自动改权重或版本。页面显示实际复盘文字与候选影子计划；没有真实复盘时显示尚未形成，不构造历史。`research-current.json`另派生`target_statuses`区分未激活、待核验日历、未到期、到期行情缺失、不可评分、主动不判断、已评价。
