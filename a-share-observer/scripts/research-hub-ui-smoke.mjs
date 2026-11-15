@@ -54,6 +54,7 @@ try{
     check(await inViewport('.research-signal-value')>=(label==='desktop'?3:1),'Actual research evidence values missing from first screen '+label);
    }
    if(route==='today'){
+    if(label==='mobile')check(await page.locator('.range-bar input[type=date]').evaluateAll(nodes=>nodes.every(n=>n.getBoundingClientRect().width>=120)),'Mobile date inputs too narrow to read');
     check(await inViewport('.market-key strong')===4,'Four actual market values not visible '+label);
     check(await page.locator('.market-key strong').evaluateAll(nodes=>nodes.every(n=>/\d/.test(n.textContent)&&!n.textContent.includes('—'))),'Market key values are placeholders');
     if(label==='desktop')check(await page.locator('#index-chart').evaluate(e=>e.getBoundingClientRect().top<innerHeight-180),'Index chart below first-screen working area');
