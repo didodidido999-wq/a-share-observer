@@ -18,6 +18,7 @@ try {
  await page.locator('#risk-trend-chart').waitFor({state:'visible'});
  await page.screenshot({path:'/tmp/marketscope-risk-redesign.png',fullPage:true});
  await page.setViewportSize({width:390,height:844});
- await page.screenshot({path:'/tmp/marketscope-risk-redesign-mobile.png',fullPage:true});
+ await page.waitForFunction(()=>document.getElementById('sidebar').getBoundingClientRect().right<=1);
+ await page.screenshot({path:'/tmp/marketscope-risk-redesign-mobile.png',fullPage:true,animations:'disabled'});
  console.log('Saved real-archive release layout evidence (not synthetic tests).');
 } finally {await browser.close();}
