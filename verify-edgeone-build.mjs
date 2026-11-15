@@ -5,6 +5,14 @@ import { join } from 'node:path';
 const root = join('a-share-observer','docs');
 const required = [
   'index.html',
+  'research-hub.css',
+  'research-analysis.js',
+  'research-analysis.css',
+  'policy-context.js',
+  'policy-context.css',
+  join('data','research-current.json'),
+  join('data','research-ledger.json'),
+  join('data','policy-context.json'),
   'v3.css',
   'v3.js',
   'event-sector.js',

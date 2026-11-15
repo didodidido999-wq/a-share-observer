@@ -2,6 +2,9 @@ name: Browser UX smoke and static site integration
 on:
   pull_request:
     paths:
+      - 'a-share-observer/docs/**'
+      - 'a-share-observer/scripts/*ui-smoke.mjs'
+      - 'a-share-observer/scripts/layout-evidence.mjs'
       - 'a-share-observer/docs/index.html'
       - 'a-share-observer/docs/v3.js'
       - 'a-share-observer/docs/risk-workspace.js'
@@ -18,6 +21,9 @@ on:
   push:
     branches: [main]
     paths:
+      - 'a-share-observer/docs/**'
+      - 'a-share-observer/scripts/*ui-smoke.mjs'
+      - 'a-share-observer/scripts/layout-evidence.mjs'
       - 'a-share-observer/docs/index.html'
       - 'a-share-observer/docs/v3.js'
       - 'a-share-observer/docs/risk-workspace.js'
@@ -57,6 +63,10 @@ jobs:
         run: node a-share-observer/scripts/global-ui-smoke.mjs
       - name: Public evidence revision and asynchronous browser safeguards
         run: node a-share-observer/scripts/reviewed-ui-smoke.mjs
+      - name: Research and policy browser interactions
+        run: |
+          node a-share-observer/scripts/research-hub-ui-smoke.mjs
+          node a-share-observer/scripts/policy-ui-smoke.mjs
       - name: Capture real-data layout evidence
         run: node a-share-observer/scripts/layout-evidence.mjs
       - name: Save browser audit evidence
@@ -79,4 +89,6 @@ jobs:
             /tmp/marketscope-global-failed.png
             /tmp/marketscope-risk-mobile.png
             /tmp/marketscope-http.log
+            /tmp/marketscope-research*.png
+            /tmp/marketscope-policy*.png
           if-no-files-found: ignore

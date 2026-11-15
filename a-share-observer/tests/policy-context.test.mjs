@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
+const sandbox={};vm.runInNewContext(fs.readFileSync(new URL('../docs/policy-context.js',import.meta.url),'utf8'),sandbox);const u=sandbox.PolicyContextUtils;
+const r={id:'a',published_at:'2026-11-09T09:30:00+08:00',available_at:'2026-11-15T17:13:41+08:00'};
+test('later recorded facts cannot enter historic 14:45 knowledge',()=>{assert.equal(u.eligible(r,u.cutoff('2026-11-13')),false);assert.equal(u.eligible(r,u.cutoff('2026-11-16')),true);});
+test('unknown public timestamp is excluded',()=>assert.equal(u.eligible({...r,published_at:null},Date.now()),false));
+test('timezone conversion handles exact boundary',()=>assert.equal(u.cutoff('2026-11-13'),Date.parse('2026-11-13T06:45:00Z')));
+test('future revision cannot replace original retrospectively',()=>{const records=[{...r,available_at:r.published_at},{...r,id:'b',supersedes:'a'}];assert.equal(u.visible(records,u.cutoff('2026-11-13'))[0].id,'a');assert.equal(u.visible(records,u.cutoff('2026-11-16'))[0].id,'b');});
+test('event horizon excludes elapsed and unknown events',()=>{const at=u.cutoff('2026-11-15');assert.equal(u.bucket({scheduled_at:'2026-11-16T10:00:00+08:00'},at,7),true);assert.equal(u.bucket({scheduled_at:'2026-11-14T10:00:00+08:00'},at,7),false);assert.equal(u.bucket({scheduled_at:null},at,30),false);});
+test('date precision uses conservative boundary without forging publication',()=>{const x={published_at:null,published_date:'2026-11-12',published_precision:'date',availability_boundary:'2026-11-13T00:00:00+08:00',available_at:'2026-11-13T00:00:00+08:00'};assert.equal(u.eligible(x,u.cutoff('2026-11-12')),false);assert.equal(u.eligible(x,u.cutoff('2026-11-13')),true);});
+test('48 hour age warns and unknown age is stale',()=>{assert.equal(u.stale('2026-11-15T00:00:00Z',Date.parse('2026-11-18T00:00:00Z')),true);assert.equal(u.stale(null,Date.now()),true);});

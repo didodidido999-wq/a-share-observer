@@ -54,7 +54,7 @@ function render({state,chart,noChart}){
  if(!$('state-etf-table'))return;
  if(data===null){
   $('state-etf-status').textContent='正在加载交易所ETF份额与机构持有人披露…';
-  load().then(()=>{if(state.page==='today'&&!$('funds-etf-view')?.hidden)render({state,chart,noChart});});return;
+  load().then(()=>{if(state.page==='capital'&&!$('funds-etf-view')?.hidden)render({state,chart,noChart});});return;
  }
  const asof=state.selected;
  const dates=(state.archive||[]).filter(x=>x<=asof);

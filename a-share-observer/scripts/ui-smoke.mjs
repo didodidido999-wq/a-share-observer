@@ -1,7 +1,7 @@
 /* Browser-level smoke audit of navigation, controls, and visible feedback. */
 import { chromium } from 'playwright';
 const base=process.env.MARKET_URL||'http://127.0.0.1:8765/';
-const browser=await chromium.launch({headless:true});
+const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
 const page=await browser.newPage({viewport:{width:1440,height:960}});
 const failures=[];
 page.on('pageerror',err=>failures.push(err.message));
@@ -9,10 +9,11 @@ function check(value,message){if(!value)throw new Error(message);}
 const visible=async sel=>await page.locator(sel).isVisible();
 const click=async sel=>await page.locator(sel).click({timeout:25000});
 try{
- await page.goto(base,{waitUntil:'domcontentloaded',timeout:25000});
+ await page.goto(new URL('#today',base).href,{waitUntil:'domcontentloaded',timeout:25000});
  await page.waitForFunction(()=>document.querySelector('#status')?.textContent?.includes('最近有效'),{timeout:25000});
  check(await visible('#today'),'Home should render');
  check(await page.locator('#day-slider').count()===1,'Global timeline missing');
+ await click('#navigation [data-page="capital"]');
  // Funding KPI arithmetic is tied to the archive trading calendar, never to a sparse quote list.
  await page.waitForSelector('#fund-summary .fund-card-value',{timeout:25000});
  check((await page.locator('#fund-summary .fund-card-value').count())===4,'Funding KPI cards missing');
