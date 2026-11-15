@@ -1,0 +1,1171 @@
+{
+  "schema_version": 1,
+  "version": "cross-index-policy-research-v1.1",
+  "kind": "scenario_research_not_scored_forecast",
+  "generated_at": "2026-11-15T16:29:30.588882+00:00",
+  "data_date": "2026-11-13",
+  "headline": "权重相对抗跌，市场多数股票仍承压",
+  "scenario": "defensive_divergence",
+  "policy_conclusion": "需求与成本证据提示行业分化；已生效成品油调价提供局部成本缓和反证。 社融须区分存量增长与累计增量变化，尚不支持直接推断股市增量资金。 旬价为成本分化提供新反证，仍需区分供给和需求原因。 逆回购计划列为后续验证条件，未当作已实施净投放。",
+  "strongest_counter_evidence": "上证50当日+0.106%，相对沪深300抗跌；但这不等于多数股票止跌。 已实施的成品油调价可能缓和部分下游成本，限制单边悲观解释。",
+  "coverage": "结构判断使用国内指数/市场宽度；政策和统计证据改变情景解释与反证，不转换为未经验证的数值权重。",
+  "role_boundary": "当前综合研究，不替代已激活v1预测，不自动进入其命中统计；本版本没有已验证的上涨概率。",
+  "signals": [
+    {
+      "label": "沪深300当日",
+      "value": -0.683,
+      "unit": "%",
+      "route": {
+        "page": "today",
+        "date": "2026-11-13",
+        "anchor": "market-index-section"
+      }
+    },
+    {
+      "label": "上涨股票占比",
+      "value": 13.6959253275893,
+      "unit": "%",
+      "route": {
+        "page": "today",
+        "date": "2026-11-13",
+        "anchor": "kpi-grid"
+      }
+    },
+    {
+      "label": "上证50当日",
+      "value": 0.106,
+      "unit": "%",
+      "route": {
+        "page": "today",
+        "date": "2026-11-13",
+        "anchor": "market-index-section"
+      }
+    }
+  ],
+  "index_matrix": [
+    {
+      "code": "000300.SH",
+      "name": "沪深300",
+      "group": "large",
+      "group_label": "权重与大盘",
+      "close": 4016.29,
+      "daily_pct": -0.683,
+      "changes": {
+        "1": {
+          "pct": -0.6834935322817093,
+          "start_date": "2026-11-12",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "5": {
+          "pct": -0.9370344426137378,
+          "start_date": "2026-11-06",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "20": {
+          "pct": -3.700178151397515,
+          "start_date": "2026-10-16",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        }
+      },
+      "route": {
+        "page": "today",
+        "date": "2026-11-13",
+        "anchor": "market-index-section"
+      },
+      "source_snapshot": {
+        "path": "data/history/2026-11-13.json",
+        "sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+        "available_at": "2026-11-14T17:28:01.603907+08:00"
+      }
+    },
+    {
+      "code": "000016.SH",
+      "name": "上证50",
+      "group": "large",
+      "group_label": "权重与大盘",
+      "close": 2775.02,
+      "daily_pct": 0.106,
+      "changes": {
+        "1": {
+          "pct": 0.10641866908123188,
+          "start_date": "2026-11-12",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "5": {
+          "pct": -0.4444986564588582,
+          "start_date": "2026-11-06",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "20": {
+          "pct": null,
+          "start_date": "2026-10-16",
+          "end_date": "2026-11-13",
+          "status": "missing"
+        }
+      },
+      "route": {
+        "page": "today",
+        "date": "2026-11-13",
+        "anchor": "market-index-section"
+      },
+      "source_snapshot": {
+        "path": "data/history/2026-11-13.json",
+        "sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+        "available_at": "2026-11-14T17:28:01.603907+08:00"
+      }
+    },
+    {
+      "code": "000001.SH",
+      "name": "上证指数",
+      "group": "large",
+      "group_label": "权重与大盘",
+      "close": 3634.35,
+      "daily_pct": -0.588,
+      "changes": {
+        "1": {
+          "pct": -0.5875546729470438,
+          "start_date": "2026-11-12",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "5": {
+          "pct": -0.40639266903796933,
+          "start_date": "2026-11-06",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "20": {
+          "pct": -2.2046239788175326,
+          "start_date": "2026-10-16",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        }
+      },
+      "route": {
+        "page": "today",
+        "date": "2026-11-13",
+        "anchor": "market-index-section"
+      },
+      "source_snapshot": {
+        "path": "data/history/2026-11-13.json",
+        "sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+        "available_at": "2026-11-14T17:28:01.603907+08:00"
+      }
+    },
+    {
+      "code": "000905.SH",
+      "name": "中证500",
+      "group": "mid",
+      "group_label": "中盘与扩散",
+      "close": 6465.49,
+      "daily_pct": -2.1,
+      "changes": {
+        "1": {
+          "pct": -2.0995888948615593,
+          "start_date": "2026-11-12",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "5": {
+          "pct": -1.9986812886992555,
+          "start_date": "2026-11-06",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "20": {
+          "pct": -4.536709608357025,
+          "start_date": "2026-10-16",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        }
+      },
+      "route": {
+        "page": "today",
+        "date": "2026-11-13",
+        "anchor": "market-index-section"
+      },
+      "source_snapshot": {
+        "path": "data/history/2026-11-13.json",
+        "sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+        "available_at": "2026-11-14T17:28:01.603907+08:00"
+      }
+    },
+    {
+      "code": "000510.CSI",
+      "name": "中证A500",
+      "group": "broad",
+      "group_label": "全市场补充（非中盘专属）",
+      "close": 4842.51,
+      "daily_pct": -1.172,
+      "changes": {
+        "1": {
+          "pct": -1.1716517820699046,
+          "start_date": "2026-11-12",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "5": {
+          "pct": null,
+          "start_date": "2026-11-06",
+          "end_date": "2026-11-13",
+          "status": "missing"
+        },
+        "20": {
+          "pct": null,
+          "start_date": "2026-10-16",
+          "end_date": "2026-11-13",
+          "status": "missing"
+        }
+      },
+      "route": {
+        "page": "today",
+        "date": "2026-11-13",
+        "anchor": "market-index-section"
+      },
+      "source_snapshot": {
+        "path": "data/history/2026-11-13.json",
+        "sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+        "available_at": "2026-11-14T17:28:01.603907+08:00"
+      }
+    },
+    {
+      "code": "399006.SZ",
+      "name": "创业板指",
+      "group": "growth",
+      "group_label": "成长与弹性",
+      "close": 2426.085,
+      "daily_pct": -3.321,
+      "changes": {
+        "1": {
+          "pct": -3.321233635221399,
+          "start_date": "2026-11-12",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "5": {
+          "pct": -1.5879641348157114,
+          "start_date": "2026-11-06",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "20": {
+          "pct": -12.491018560199452,
+          "start_date": "2026-10-16",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        }
+      },
+      "route": {
+        "page": "today",
+        "date": "2026-11-13",
+        "anchor": "market-index-section"
+      },
+      "source_snapshot": {
+        "path": "data/history/2026-11-13.json",
+        "sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+        "available_at": "2026-11-14T17:28:01.603907+08:00"
+      }
+    },
+    {
+      "code": "000688.SH",
+      "name": "科创50",
+      "group": "growth",
+      "group_label": "成长与弹性",
+      "close": 1279.66,
+      "daily_pct": -2.304,
+      "changes": {
+        "1": {
+          "pct": -2.3040982104684415,
+          "start_date": "2026-11-12",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "5": {
+          "pct": 2.1113948292371454,
+          "start_date": "2026-11-06",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "20": {
+          "pct": -5.813859345674011,
+          "start_date": "2026-10-16",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        }
+      },
+      "route": {
+        "page": "today",
+        "date": "2026-11-13",
+        "anchor": "market-index-section"
+      },
+      "source_snapshot": {
+        "path": "data/history/2026-11-13.json",
+        "sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+        "available_at": "2026-11-14T17:28:01.603907+08:00"
+      }
+    },
+    {
+      "code": "399001.SZ",
+      "name": "深证成指",
+      "group": "growth",
+      "group_label": "成长与弹性",
+      "close": 10968.787,
+      "daily_pct": -2.047,
+      "changes": {
+        "1": {
+          "pct": -2.046700225112108,
+          "start_date": "2026-11-12",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "5": {
+          "pct": -1.8521614664855024,
+          "start_date": "2026-11-06",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "20": {
+          "pct": -7.063544978211745,
+          "start_date": "2026-10-16",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        }
+      },
+      "route": {
+        "page": "today",
+        "date": "2026-11-13",
+        "anchor": "market-index-section"
+      },
+      "source_snapshot": {
+        "path": "data/history/2026-11-13.json",
+        "sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+        "available_at": "2026-11-14T17:28:01.603907+08:00"
+      }
+    },
+    {
+      "code": "899050.BJ",
+      "name": "北证50",
+      "group": "other",
+      "group_label": "独立市场观察",
+      "close": 876.331,
+      "daily_pct": -3.495,
+      "changes": {
+        "1": {
+          "pct": -3.495427675338514,
+          "start_date": "2026-11-12",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "5": {
+          "pct": -1.3673915000900427,
+          "start_date": "2026-11-06",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        },
+        "20": {
+          "pct": -7.754146074453017,
+          "start_date": "2026-10-16",
+          "end_date": "2026-11-13",
+          "status": "observed_archive_intervals"
+        }
+      },
+      "route": {
+        "page": "today",
+        "date": "2026-11-13",
+        "anchor": "market-index-section"
+      },
+      "source_snapshot": {
+        "path": "data/history/2026-11-13.json",
+        "sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83",
+        "available_at": "2026-11-14T17:28:01.603907+08:00"
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "large",
+      "label": "权重与大盘",
+      "state": "weakening",
+      "available": 3,
+      "expected": 3,
+      "interpretation": "组内5个归档间隔均下跌；观察是否有政策或宽度反证。"
+    },
+    {
+      "id": "mid",
+      "label": "中盘与扩散",
+      "state": "weakening",
+      "available": 1,
+      "expected": 1,
+      "interpretation": "组内5个归档间隔均下跌；观察是否有政策或宽度反证。"
+    },
+    {
+      "id": "broad",
+      "label": "全市场补充（非中盘专属）",
+      "state": "missing",
+      "available": 0,
+      "expected": 1,
+      "interpretation": "成员窗口不完整，不以剩余少数代表全组。"
+    },
+    {
+      "id": "growth",
+      "label": "成长与弹性",
+      "state": "mixed",
+      "available": 3,
+      "expected": 3,
+      "interpretation": "组内分化，不能用单一指数代表整体。"
+    },
+    {
+      "id": "other",
+      "label": "独立市场观察",
+      "state": "weakening",
+      "available": 1,
+      "expected": 1,
+      "interpretation": "组内5个归档间隔均下跌；观察是否有政策或宽度反证。"
+    }
+  ],
+  "policy_channels": [
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 27.6,
+      "evidence_id": "nbs-2026q3-gdp-v1",
+      "title": "三季度经济：增长与需求分项",
+      "kind": "statistic",
+      "fact": "前三季度实际GDP同比增长4.6%；三季度同比4.5%、环比1.2%。初步核算，后续可能修订。",
+      "metrics": [
+        {
+          "name": "三季度GDP同比",
+          "value": 4.5,
+          "unit": "%",
+          "basis": "不变价格"
+        },
+        {
+          "name": "前三季度消费品零售同比",
+          "value": 1.1,
+          "unit": "%",
+          "basis": "名义累计"
+        },
+        {
+          "name": "前三季度固定资产投资同比",
+          "value": -7.2,
+          "unit": "%",
+          "basis": "累计、不含农户"
+        }
+      ],
+      "role": "需求约束",
+      "mechanism": "投资累计同比为负，与GDP增长并存，说明需求分项不均衡。",
+      "scenario_effect": "削弱“所有行业盈利同步改善”的解释，当前更适合区分结构而非推断全面牛市。",
+      "counter_evidence": "GDP仍增长，不能将投资负值等同于经济全面衰退。",
+      "watch": "后续投资、零售、工业利润的实际新发布值是否共同改善。",
+      "source_url": "https://www.stats.gov.cn/sj/zxfb/202610/t20261019_1965618.html",
+      "available_at": "2026-11-15T09:13:41Z",
+      "published_at": "2026-10-19T10:00:00+08:00",
+      "publication_precision": "datetime",
+      "period": "2026Q3 / 2026年1—9月",
+      "route": {
+        "page": "policy",
+        "anchor": "nbs-2026q3-gdp-v1"
+      },
+      "evidence_snapshot": {
+        "id": "nbs-2026q3-gdp-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "三季度经济：增长与需求分项",
+        "kind": "statistic",
+        "source_url": "https://www.stats.gov.cn/sj/zxfb/202610/t20261019_1965618.html",
+        "source_name": "国家统计局",
+        "published_at": "2026-10-19T10:00:00+08:00",
+        "observed_at": "2026-11-15T09:13:41Z",
+        "available_at": "2026-11-15T09:13:41Z",
+        "period": "2026Q3 / 2026年1—9月",
+        "summary": "前三季度实际GDP同比增长4.6%；三季度同比4.5%、环比1.2%。初步核算，后续可能修订。",
+        "metrics": [
+          {
+            "name": "三季度GDP同比",
+            "value": 4.5,
+            "unit": "%",
+            "basis": "不变价格"
+          },
+          {
+            "name": "前三季度消费品零售同比",
+            "value": 1.1,
+            "unit": "%",
+            "basis": "名义累计"
+          },
+          {
+            "name": "前三季度固定资产投资同比",
+            "value": -7.2,
+            "unit": "%",
+            "basis": "累计、不含农户"
+          }
+        ],
+        "interpretation": "增长总量与消费、投资并不等速。研究时需区分出口及生产支撑和内需约束，不能由GDP单项推导指数上涨。",
+        "limitations": "不是实时经济状态；累计值不与单月同比直接相减。环比数据会修订。",
+        "published_precision": "datetime",
+        "published_date": "2026-10-19"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 6.0,
+      "evidence_id": "nbs-202610-prices-v1",
+      "title": "10月物价：消费与生产价格分化",
+      "kind": "statistic",
+      "fact": "CPI同比0.7%、环比0.0%；核心CPI同比0.8%。PPI同比5.7%、环比上涨0.7%。",
+      "metrics": [
+        {
+          "name": "CPI同比",
+          "value": 0.7,
+          "unit": "%",
+          "basis": "上年同月"
+        },
+        {
+          "name": "核心CPI同比",
+          "value": 0.8,
+          "unit": "%",
+          "basis": "扣除食品能源"
+        },
+        {
+          "name": "PPI同比",
+          "value": 5.7,
+          "unit": "%",
+          "basis": "上年同月"
+        },
+        {
+          "name": "PPI环比",
+          "value": 0.7,
+          "unit": "%",
+          "basis": "上月"
+        }
+      ],
+      "role": "成本分化",
+      "mechanism": "PPI与CPI同比相差5.0个百分点；这不是直接利润率，但提示产业链价格传导不均。",
+      "scenario_effect": "资源端收入与下游成本可能分化，降低“指数反弹等于多数行业盈利修复”的确信。",
+      "counter_evidence": "PPI与CPI商品篮子不同，不能用两者差值直接计算上市公司毛利。",
+      "watch": "上游价格、下游提价能力和实际利润能否验证成本传导。",
+      "source_url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202611/t20261109_1965796.html",
+      "available_at": "2026-11-15T09:13:41Z",
+      "published_at": null,
+      "publication_precision": "date",
+      "period": "2026-10",
+      "route": {
+        "page": "policy",
+        "anchor": "nbs-202610-prices-v1"
+      },
+      "evidence_snapshot": {
+        "id": "nbs-202610-prices-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "10月物价：消费与生产价格分化",
+        "kind": "statistic",
+        "source_url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202611/t20261109_1965796.html",
+        "source_name": "国家统计局",
+        "published_at": null,
+        "observed_at": "2026-11-15T09:13:41Z",
+        "available_at": "2026-11-15T09:13:41Z",
+        "period": "2026-10",
+        "summary": "CPI同比0.7%、环比0.0%；核心CPI同比0.8%。PPI同比5.7%、环比上涨0.7%。",
+        "metrics": [
+          {
+            "name": "CPI同比",
+            "value": 0.7,
+            "unit": "%",
+            "basis": "上年同月"
+          },
+          {
+            "name": "核心CPI同比",
+            "value": 0.8,
+            "unit": "%",
+            "basis": "扣除食品能源"
+          },
+          {
+            "name": "PPI同比",
+            "value": 5.7,
+            "unit": "%",
+            "basis": "上年同月"
+          },
+          {
+            "name": "PPI环比",
+            "value": 0.7,
+            "unit": "%",
+            "basis": "上月"
+          }
+        ],
+        "interpretation": "上游涨价可能同时利好资源端收入并挤压下游利润，需要结合行业议价能力、销量和库存检验，不能将PPI上涨一概视为股市利好。",
+        "limitations": "原文成文日为11月9日，未列具体公开时刻；保守按次日00:00计。2026价格指数基期调整为2025年；当前仅单期，不伪造长期趋势。",
+        "published_precision": "date",
+        "published_date": "2026-11-09",
+        "availability_boundary": "2026-11-10T00:00:00+08:00"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 6.0,
+      "evidence_id": "nbs-202610-prices-comment-v1",
+      "title": "统计局解读：能源价格传导",
+      "kind": "official_commentary",
+      "fact": "统计局分析认为，能源相关行业价格受到输入性和季节性因素影响。",
+      "metrics": [],
+      "role": "解释性证据",
+      "mechanism": "官方统计解读帮助识别价格来源，不新增独立政策工具。",
+      "scenario_effect": "解释成本分化，不作为另一份独立利好重复计数。",
+      "counter_evidence": "与原统计引用同源，不增加独立证据数量。",
+      "watch": "等待实际措施与后续统计验证。",
+      "source_url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202611/t20261109_1965796.html",
+      "available_at": "2026-11-15T09:13:41Z",
+      "published_at": null,
+      "publication_precision": "date",
+      "period": "2026-10",
+      "route": {
+        "page": "policy",
+        "anchor": "nbs-202610-prices-comment-v1"
+      },
+      "evidence_snapshot": {
+        "id": "nbs-202610-prices-comment-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "统计局解读：能源价格传导",
+        "kind": "official_commentary",
+        "source_url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202611/t20261109_1965796.html",
+        "source_name": "国家统计局",
+        "published_at": null,
+        "observed_at": "2026-11-15T09:13:41Z",
+        "available_at": "2026-11-15T09:13:41Z",
+        "period": "2026-10",
+        "summary": "统计局分析认为，能源相关行业价格受到输入性和季节性因素影响。",
+        "metrics": [],
+        "interpretation": "后续观察油价、工业利润和终端需求是否同向；解释是官方统计解读，不等于新出台刺激政策。",
+        "limitations": "未纳入人民日报社论或新华社评论；不能把统计解读冒充社论或正式政策文件。",
+        "published_precision": "date",
+        "published_date": "2026-11-09",
+        "availability_boundary": "2026-11-10T00:00:00+08:00"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 3.0,
+      "evidence_id": "ndrc-20261112-fuel-price-v1",
+      "title": "成品油调价：生效日期与传导范围",
+      "kind": "policy",
+      "fact": "国家发展改革委公布，汽油、柴油标准品价格每吨分别下调645元、625元。",
+      "metrics": [
+        {
+          "name": "汽油调价",
+          "value": -645,
+          "unit": "元/吨",
+          "basis": "标准品"
+        },
+        {
+          "name": "柴油调价",
+          "value": -625,
+          "unit": "元/吨",
+          "basis": "标准品"
+        }
+      ],
+      "role": "已实施成本政策",
+      "mechanism": "成品油价格下调可能缓和运输等燃料使用环节成本。",
+      "scenario_effect": "对成本承压情景形成局部缓和反证，但不能抵消全部需求风险，也不是全面宽松转向。",
+      "counter_evidence": "零售油价调价不等于所有企业采购成本同步同幅变化。",
+      "watch": "生效后的成本兑现、运价和消费量；不以政策标题代替盈利验证。",
+      "source_url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261112_1408795.html",
+      "available_at": "2026-11-15T09:16:36Z",
+      "published_at": null,
+      "publication_precision": "date",
+      "period": "自2026-11-12日24时起",
+      "route": {
+        "page": "policy",
+        "anchor": "ndrc-20261112-fuel-price-v1"
+      },
+      "evidence_snapshot": {
+        "id": "ndrc-20261112-fuel-price-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "成品油调价：生效日期与传导范围",
+        "kind": "policy",
+        "source_url": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261112_1408795.html",
+        "source_name": "国家发展改革委价格司",
+        "published_at": null,
+        "effective_at": "2026-11-13T00:00:00+08:00",
+        "observed_at": "2026-11-15T09:16:36Z",
+        "available_at": "2026-11-15T09:16:36Z",
+        "period": "自2026-11-12日24时起",
+        "summary": "国家发展改革委公布，汽油、柴油标准品价格每吨分别下调645元、625元。",
+        "metrics": [
+          {
+            "name": "汽油调价",
+            "value": -645,
+            "unit": "元/吨",
+            "basis": "标准品"
+          },
+          {
+            "name": "柴油调价",
+            "value": -625,
+            "unit": "元/吨",
+            "basis": "标准品"
+          }
+        ],
+        "interpretation": "下调可能缓解交通运输及部分用油行业成本，但对炼化、开采企业影响不同；应核对产品结构和库存，不把调价当作所有石油股同向信号。",
+        "limitations": "正式调价信息，不是央行或财政总量政策。原页只列11月12日，公开边界保守取次日00:00；生效时刻由原文24时明确。",
+        "published_precision": "date",
+        "published_date": "2026-11-12",
+        "availability_boundary": "2026-11-13T00:00:00+08:00"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 2.3,
+      "evidence_id": "pbc-202610-financial-statistics-v1",
+      "title": "10月金融统计：社融存量与货币增速",
+      "kind": "statistic",
+      "fact": "初步统计：10月末社融存量469.16万亿元，同比增长7.2%；M2同比7.1%，M1同比4.4%。前十个月社融增量28.61万亿元，比上年同期少2.29万亿元。",
+      "metrics": [
+        {
+          "name": "社会融资规模存量",
+          "value": 469.16,
+          "unit": "万亿元",
+          "basis": "2026年10月末"
+        },
+        {
+          "name": "社融存量同比",
+          "value": 7.2,
+          "unit": "%",
+          "basis": "上年同月末"
+        },
+        {
+          "name": "M2同比",
+          "value": 7.1,
+          "unit": "%",
+          "basis": "上年同月末"
+        },
+        {
+          "name": "M1同比",
+          "value": 4.4,
+          "unit": "%",
+          "basis": "修订口径、上年同月末"
+        },
+        {
+          "name": "前十个月社融增量",
+          "value": 28.61,
+          "unit": "万亿元",
+          "basis": "2026年1—10月累计"
+        },
+        {
+          "name": "累计社融增量同比变化",
+          "value": -2.29,
+          "unit": "万亿元",
+          "basis": "比上年同期少增"
+        }
+      ],
+      "role": "融资背景",
+      "mechanism": "社融存量同比7.2%、M2同比7.1%、M1同比4.4%；存量增速与累计少增/多增分别观察，不能等同股市净流入。",
+      "scenario_effect": "累计社融较上年同期少增，降低“融资全面加速”的确信；但存量仍增长，不能据此判定信用全面收缩。",
+      "counter_evidence": "累计同比变化不是当月流量，M1采用修订口径；融资需求、财政融资和供给均可能影响读数。",
+      "watch": "后续社融结构、企业中长期贷款、M1同口径变化和实际经营数据是否共同确认需求改善。",
+      "source_url": "https://www.pbc.gov.cn/goutongjiaoliu/113456/113469/2026111315073060062/index.html",
+      "available_at": "2026-11-15T13:50:38+00:00",
+      "published_at": "2026-11-13T17:00:00+08:00",
+      "publication_precision": "datetime",
+      "period": "2026-10末 / 2026年1—10月",
+      "route": {
+        "page": "policy",
+        "anchor": "pbc-202610-financial-statistics-v1"
+      },
+      "evidence_snapshot": {
+        "id": "pbc-202610-financial-statistics-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "10月金融统计：社融存量与货币增速",
+        "kind": "statistic",
+        "source_url": "https://www.pbc.gov.cn/goutongjiaoliu/113456/113469/2026111315073060062/index.html",
+        "source_name": "中国人民银行",
+        "published_at": "2026-11-13T17:00:00+08:00",
+        "published_precision": "datetime",
+        "published_date": "2026-11-13",
+        "observed_at": "2026-11-15T13:50:38+00:00",
+        "available_at": "2026-11-15T13:50:38+00:00",
+        "period": "2026-10末 / 2026年1—10月",
+        "summary": "初步统计：10月末社融存量469.16万亿元，同比增长7.2%；M2同比7.1%，M1同比4.4%。前十个月社融增量28.61万亿元，比上年同期少2.29万亿元。",
+        "metrics": [
+          {
+            "name": "社会融资规模存量",
+            "value": 469.16,
+            "unit": "万亿元",
+            "basis": "2026年10月末"
+          },
+          {
+            "name": "社融存量同比",
+            "value": 7.2,
+            "unit": "%",
+            "basis": "上年同月末"
+          },
+          {
+            "name": "M2同比",
+            "value": 7.1,
+            "unit": "%",
+            "basis": "上年同月末"
+          },
+          {
+            "name": "M1同比",
+            "value": 4.4,
+            "unit": "%",
+            "basis": "修订口径、上年同月末"
+          },
+          {
+            "name": "前十个月社融增量",
+            "value": 28.61,
+            "unit": "万亿元",
+            "basis": "2026年1—10月累计"
+          },
+          {
+            "name": "累计社融增量同比变化",
+            "value": -2.29,
+            "unit": "万亿元",
+            "basis": "比上年同期少增"
+          }
+        ],
+        "interpretation": "货币与融资数据可作为需求和流动性背景；存量增速与融资结构应分别观察，不能据此直接推出股票指数方向。",
+        "limitations": "当期数据为初步数；累计增量不是10月单月值。M1自2025年起采用修订口径。本条于11月15日实际留存，不能倒填11月13日的历史判断。"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 1.6,
+      "evidence_id": "nbs-202611-early-materials-v1",
+      "title": "11月上旬生产资料：多数品种旬环比回落",
+      "kind": "statistic",
+      "fact": "监测的50种重要生产资料中，16种价格上涨、32种下降、2种持平；螺纹钢3152.4元/吨、旬环比下降0.5%，电解铜109779.3元/吨、下降0.4%。",
+      "metrics": [
+        {
+          "name": "价格上涨品种",
+          "value": 16,
+          "unit": "种",
+          "basis": "50种产品、相较10月下旬"
+        },
+        {
+          "name": "价格下降品种",
+          "value": 32,
+          "unit": "种",
+          "basis": "50种产品、相较10月下旬"
+        },
+        {
+          "name": "价格持平品种",
+          "value": 2,
+          "unit": "种",
+          "basis": "50种产品、相较10月下旬"
+        },
+        {
+          "name": "螺纹钢价格",
+          "value": 3152.4,
+          "unit": "元/吨",
+          "basis": "Φ20mm HRB400E、11月上旬"
+        },
+        {
+          "name": "螺纹钢旬环比",
+          "value": -0.5,
+          "unit": "%",
+          "basis": "相较10月下旬"
+        },
+        {
+          "name": "电解铜价格",
+          "value": 109779.3,
+          "unit": "元/吨",
+          "basis": "1#、11月上旬"
+        },
+        {
+          "name": "电解铜旬环比",
+          "value": -0.4,
+          "unit": "%",
+          "basis": "相较10月下旬"
+        }
+      ],
+      "role": "原材料成本线索",
+      "mechanism": "本旬监测50种生产资料，下降32种；旬环比只反映本窗口，不与PPI月度同比直接拼接。",
+      "scenario_effect": "多数品种回落是原料成本压力缓和的反证，但也可能反映需求偏弱；因此保留行业分化判断，不升级为全面盈利修复。",
+      "counter_evidence": "流通价格包含费用、利润和税费，不等于出厂价或上市公司采购价；价格下降也可能同时压低上游收入。",
+      "watch": "结合销量、库存、企业采购成本和后续旬价，区分供给改善与需求减弱。",
+      "source_url": "https://www.stats.gov.cn/sj/zxfb/202611/t20261113_1965820.html",
+      "available_at": "2026-11-15T13:50:38+00:00",
+      "published_at": "2026-11-14T09:30:00+08:00",
+      "publication_precision": "datetime",
+      "period": "2026年11月上旬 / 对比10月下旬",
+      "route": {
+        "page": "policy",
+        "anchor": "nbs-202611-early-materials-v1"
+      },
+      "evidence_snapshot": {
+        "id": "nbs-202611-early-materials-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "11月上旬生产资料：多数品种旬环比回落",
+        "kind": "statistic",
+        "source_url": "https://www.stats.gov.cn/sj/zxfb/202611/t20261113_1965820.html",
+        "source_name": "国家统计局（中国统计信息服务中心、卓创资讯）",
+        "published_at": "2026-11-14T09:30:00+08:00",
+        "published_precision": "datetime",
+        "published_date": "2026-11-14",
+        "observed_at": "2026-11-15T13:50:38+00:00",
+        "available_at": "2026-11-15T13:50:38+00:00",
+        "period": "2026年11月上旬 / 对比10月下旬",
+        "summary": "监测的50种重要生产资料中，16种价格上涨、32种下降、2种持平；螺纹钢3152.4元/吨、旬环比下降0.5%，电解铜109779.3元/吨、下降0.4%。",
+        "metrics": [
+          {
+            "name": "价格上涨品种",
+            "value": 16,
+            "unit": "种",
+            "basis": "50种产品、相较10月下旬"
+          },
+          {
+            "name": "价格下降品种",
+            "value": 32,
+            "unit": "种",
+            "basis": "50种产品、相较10月下旬"
+          },
+          {
+            "name": "价格持平品种",
+            "value": 2,
+            "unit": "种",
+            "basis": "50种产品、相较10月下旬"
+          },
+          {
+            "name": "螺纹钢价格",
+            "value": 3152.4,
+            "unit": "元/吨",
+            "basis": "Φ20mm HRB400E、11月上旬"
+          },
+          {
+            "name": "螺纹钢旬环比",
+            "value": -0.5,
+            "unit": "%",
+            "basis": "相较10月下旬"
+          },
+          {
+            "name": "电解铜价格",
+            "value": 109779.3,
+            "unit": "元/吨",
+            "basis": "1#、11月上旬"
+          },
+          {
+            "name": "电解铜旬环比",
+            "value": -0.4,
+            "unit": "%",
+            "basis": "相较10月下旬"
+          }
+        ],
+        "interpretation": "旬价可辅助观察原材料成本方向与行业分化，但不能单独判定企业利润改善或指数走势。",
+        "limitations": "流通领域市场价格包含流通费用、利润和税费，不等于出厂价格或PPI；旬环比不是月度同比。页面真实发布时间为11月14日09:30，不能从URL推断为11月13日。"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 2.3,
+      "evidence_id": "pbc-20261116-outright-repo-plan-v1",
+      "title": "11月16日买断式逆回购：已公告计划，结果待核验",
+      "kind": "policy",
+      "fact": "央行公告拟于11月16日开展2000亿元买断式逆回购，期限6个月（180天），采用固定数量、利率招标、多重价位中标方式；公告到期日为2027年5月15日，遇节假日顺延。",
+      "metrics": [
+        {
+          "name": "计划操作规模",
+          "value": 2000,
+          "unit": "亿元",
+          "basis": "公告计划，非已核验成交结果"
+        },
+        {
+          "name": "期限",
+          "value": 180,
+          "unit": "天",
+          "basis": "公告同时表述为6个月"
+        }
+      ],
+      "role": "流动性计划（未核验结果）",
+      "mechanism": "公告计划规模2000亿元、期限180天；这只是拟操作安排，不是实际结果或净投放。",
+      "scenario_effect": "新增流动性安排是需跟踪的潜在缓和条件，不把计划计为已落地支持；只有实际结果和同期到期规模核验后才能讨论净影响。",
+      "counter_evidence": "日历到达操作日不证明操作已完成；若仅续作到期资金，也不能把总额视为新增市场流动性。",
+      "watch": "核对央行实际操作公告、成交及同期到期规模、资金利率；无结果就保持待核验，不自动转为已实施。",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/5492845/2026111316452296143/index.html",
+      "available_at": "2026-11-15T13:50:38+00:00",
+      "published_at": "2026-11-13T17:00:00+08:00",
+      "publication_precision": "datetime",
+      "period": "拟于2026-11-16操作",
+      "route": {
+        "page": "policy",
+        "anchor": "pbc-20261116-outright-repo-plan-v1"
+      },
+      "evidence_snapshot": {
+        "id": "pbc-20261116-outright-repo-plan-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "11月16日买断式逆回购：已公告计划，结果待核验",
+        "kind": "policy",
+        "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/5492845/2026111316452296143/index.html",
+        "source_name": "中国人民银行公开市场业务操作室",
+        "published_at": "2026-11-13T17:00:00+08:00",
+        "published_precision": "datetime",
+        "published_date": "2026-11-13",
+        "observed_at": "2026-11-15T13:50:38+00:00",
+        "available_at": "2026-11-15T13:50:38+00:00",
+        "period": "拟于2026-11-16操作",
+        "summary": "央行公告拟于11月16日开展2000亿元买断式逆回购，期限6个月（180天），采用固定数量、利率招标、多重价位中标方式；公告到期日为2027年5月15日，遇节假日顺延。",
+        "metrics": [
+          {
+            "name": "计划操作规模",
+            "value": 2000,
+            "unit": "亿元",
+            "basis": "公告计划，非已核验成交结果"
+          },
+          {
+            "name": "期限",
+            "value": 180,
+            "unit": "天",
+            "basis": "公告同时表述为6个月"
+          }
+        ],
+        "interpretation": "这是流动性操作安排，后续需核对实际操作与到期规模，不能把总操作额直接视为净投放或对股市的确定利好。",
+        "limitations": "本条只记录已公布计划，不含中标利率或实际结果。官方未给出日内操作时刻，因此不构造精确scheduled_at事件；不把11月16日计划当作已完成操作。"
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "title": "修复得到确认",
+      "conditions": "权重、中盘、成长的同窗走势由分化转为共同改善，且上涨覆盖连续获得确认；政策需有实际执行及需求/利润验证。",
+      "effect": "重新评估当前承压/分化解释，不能只凭权重拉升升级为广谱改善。"
+    },
+    {
+      "title": "维持结构分化",
+      "conditions": "权重相对抗跌但中盘/成长及市场宽度未修复；政策仅局部缓和成本，需求证据未同步改善。",
+      "effect": "保留结构性而非全面修复解释，继续区分受益和成本承压行业。"
+    },
+    {
+      "title": "压力进一步扩散",
+      "conditions": "权重也转弱、宽度未修复，同时执行/需求/利润新证据不支持修复。",
+      "effect": "提高风险情景关注；若新政策已兑现或宽度反转，则推翻该解释。"
+    }
+  ],
+  "missing": [
+    "中证1000/2000及红利完整序列不足，不用代理替代。",
+    "政策样本有限，尚未覆盖完整重大政策/人民日报社论/新华社评论。",
+    "当前为盘后研究，无当日14:45真实快照；不倒填历史。",
+    "1/5/20表示实际归档观察间隔；历史交易日历未全部核验，不能排除归档缺口。",
+    "政策超过45个自然日未重新核实则降级为背景；这是资料复核期限，不是政策效力期限或验证过的预测参数。",
+    "未纳入外盘ETF代理为原指数信号；境外时差/汇率/溢价及商品成本传导尚未量化。"
+  ],
+  "source_manifest": [
+    {
+      "date": "2026-10-16",
+      "available_at": "2026-10-28T10:26:20.721017+08:00",
+      "sha256": "2b9c63eabe610adbfdee56ba1073b904cde61c58aa61be3bd8c0e636ca8233da"
+    },
+    {
+      "date": "2026-10-19",
+      "available_at": "2026-10-28T10:26:20.761577+08:00",
+      "sha256": "70ea66d58720d94875e99f487d93d667f386ea291075202a59ab4573a5af7dfc"
+    },
+    {
+      "date": "2026-10-20",
+      "available_at": "2026-10-28T10:26:20.801829+08:00",
+      "sha256": "9f6d5930d55164d0ad4ded9720189f11ae1db92ae6e97451b93cf93a2a1662d9"
+    },
+    {
+      "date": "2026-10-21",
+      "available_at": "2026-10-28T10:26:20.840832+08:00",
+      "sha256": "2257426eecc31a8b5600c48160404ddda0353faab7e8672d4913f1bdf3ff1517"
+    },
+    {
+      "date": "2026-10-22",
+      "available_at": "2026-10-28T10:26:20.881303+08:00",
+      "sha256": "a3767b28eb9c702297ee9956e5f6e180bdd888d6dacbd5e4b48a7b704e4ab405"
+    },
+    {
+      "date": "2026-10-23",
+      "available_at": "2026-10-28T10:26:20.921868+08:00",
+      "sha256": "8f63359e8dd75cbd99f8acf15476b932ed1ce8d3d234ae6bc713e9e08e184a85"
+    },
+    {
+      "date": "2026-10-26",
+      "available_at": "2026-11-07T17:27:46.528339+08:00",
+      "sha256": "970fa293518326f1d1d3cb1995dde7ef13745e116ed24ceb38f8c5507e8a6c02"
+    },
+    {
+      "date": "2026-10-27",
+      "available_at": "2026-11-07T17:27:52.395014+08:00",
+      "sha256": "dc57984710b9be55f1f05fb4f4f0cce3d4b45417afd509e32cd4a770fdd748b7"
+    },
+    {
+      "date": "2026-10-28",
+      "available_at": "2026-11-07T17:27:52.577599+08:00",
+      "sha256": "bed38bae9a8d8742004f861d36cf83d3ef9424ddb92b5f2493bdec9e9e395ba4"
+    },
+    {
+      "date": "2026-10-29",
+      "available_at": "2026-10-29T17:18:07.645562+08:00",
+      "sha256": "223d528da82b90d9eef7c083cf0adf232519e50ba3f462c41bd8c4ff1633d65d"
+    },
+    {
+      "date": "2026-10-30",
+      "available_at": "2026-10-30T17:17:58.336350+08:00",
+      "sha256": "0b64142bcd970de0e9585cff4f99c8b095eabf513a8d2a67912a023063f8dd42"
+    },
+    {
+      "date": "2026-11-02",
+      "available_at": "2026-11-02T19:05:03.410332+08:00",
+      "sha256": "152a34f48439e3b578184fafe10fa1cd67953d44cce601291881e297f3ddd650"
+    },
+    {
+      "date": "2026-11-03",
+      "available_at": "2026-11-14T17:28:01.140700+08:00",
+      "sha256": "837ba8fd8e0ed695bfb856671ddacb2468bbb18af4385b1c2f3d1a58f31c8809"
+    },
+    {
+      "date": "2026-11-04",
+      "available_at": "2026-11-04T18:27:31.791132+08:00",
+      "sha256": "efc2c42df8317562f0879d82b998303439d0f4d8b01543c3f50630c4f1f30e82"
+    },
+    {
+      "date": "2026-11-05",
+      "available_at": "2026-11-05T19:09:51.457667+08:00",
+      "sha256": "83a82b1ef39f0c913134b047d486e44cfaff15ce1b9cbf98772170d2f929953b"
+    },
+    {
+      "date": "2026-11-06",
+      "available_at": "2026-11-06T19:07:39.689167+08:00",
+      "sha256": "d735199b71f7c11b1fe8491bc692d42b87501bbe1da0bef49c2b1ff53f3753f6"
+    },
+    {
+      "date": "2026-11-09",
+      "available_at": "2026-11-09T19:02:30.819650+08:00",
+      "sha256": "6ac997bc4db6bada2ae0e9ab66ee93326023f912c32a8e7e847552feb580e02e"
+    },
+    {
+      "date": "2026-11-10",
+      "available_at": "2026-11-10T18:57:14.771352+08:00",
+      "sha256": "6739a77afa1fd5acfd81b48cd4092b255f1dc52e938f9befb985fd5d82075b01"
+    },
+    {
+      "date": "2026-11-11",
+      "available_at": "2026-11-11T19:04:46.236333+08:00",
+      "sha256": "e6cdc6c340f9b55639764619c58bd07c29a4b70d72887f597e32607b0ab8b552"
+    },
+    {
+      "date": "2026-11-12",
+      "available_at": "2026-11-14T14:57:41.623483+08:00",
+      "sha256": "abf33a58ac2cb58b2c45197f4e7365bc2851c7b8431e7ea68cbed30765576f5e"
+    },
+    {
+      "date": "2026-11-13",
+      "available_at": "2026-11-14T17:28:01.603907+08:00",
+      "sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83"
+    }
+  ],
+  "input_digest": "572f5d1444046571f4cfe157d944935df5f8ce9c25464962671551fe5bb6b0be"
+}

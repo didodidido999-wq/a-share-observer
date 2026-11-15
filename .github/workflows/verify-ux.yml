@@ -91,6 +91,8 @@ jobs:
             /tmp/marketscope-global-failed.png
             /tmp/marketscope-risk-mobile.png
             /tmp/marketscope-http.log
+            /tmp/marketscope-today*.png
+            /tmp/marketscope-risk*.png
             /tmp/marketscope-research*.png
             /tmp/marketscope-policy*.png
           if-no-files-found: ignore
