@@ -29,9 +29,10 @@ try {
  await page.screenshot({path:'/tmp/marketscope-market-redesign.png',fullPage:true,animations:'disabled'});
  await page.locator('#navigation [data-page="capital"]').click();
  // Current disclosure ledger uses actual archived official evidence, independent of historical day.
- await page.locator('#domestic-reviewed > details > summary').click();
+ if(!await page.locator('#domestic-reviewed > details').evaluate(e=>e.open))
+  await page.locator('#domestic-reviewed > details > summary').click();
  await page.locator('#domestic-reviewed select').selectOption('petrochina_controlling_shareholder_increase');
- // Re-rendering preserves the selected category but intentionally resets disclosure open state.
+ // Category changes keep the query visible; ensure open before capturing its evidence.
  await page.locator('#domestic-reviewed > details').evaluate(e=>e.open=true);
  await page.waitForFunction(()=>document.querySelector('#domestic-reviewed')?.textContent.includes('合计人民币')||document.querySelector('#domestic-reviewed')?.textContent.includes('集团及其全资子公司'));
  if(!await page.locator('#domestic-reviewed').innerText().then(t=>t.includes('当前核验台账')))throw Error('New official disclosures incorrectly hidden by historical selection');
