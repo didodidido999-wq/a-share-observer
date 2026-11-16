@@ -2,7 +2,7 @@
   "schema_version": 1,
   "version": "cross-index-policy-research-v1.1",
   "kind": "scenario_research_not_scored_forecast",
-  "generated_at": "2026-11-16T14:55:25.791893+00:00",
+  "generated_at": "2026-11-16T15:27:01.432521+00:00",
   "data_date": "2026-11-16",
   "headline": "权重相对抗跌，市场多数股票仍承压",
   "scenario": "defensive_divergence",
@@ -77,8 +77,8 @@
       },
       "source_snapshot": {
         "path": "data/history/2026-11-16.json",
-        "sha256": "7265a5fbca6cc162985941b5021a8a35dcd4477096d619b74d632ddbb32a6dcd",
-        "available_at": "2026-11-16T22:53:20.343617+08:00"
+        "sha256": "0e6b327152e52c66ca678df21b865141a27ad4a86c75c4cca1585fa77ec26ffe",
+        "available_at": "2026-11-16T23:10:28.023184+08:00"
       }
     },
     {
@@ -115,8 +115,8 @@
       },
       "source_snapshot": {
         "path": "data/history/2026-11-16.json",
-        "sha256": "7265a5fbca6cc162985941b5021a8a35dcd4477096d619b74d632ddbb32a6dcd",
-        "available_at": "2026-11-16T22:53:20.343617+08:00"
+        "sha256": "0e6b327152e52c66ca678df21b865141a27ad4a86c75c4cca1585fa77ec26ffe",
+        "available_at": "2026-11-16T23:10:28.023184+08:00"
       }
     },
     {
@@ -153,8 +153,8 @@
       },
       "source_snapshot": {
         "path": "data/history/2026-11-16.json",
-        "sha256": "7265a5fbca6cc162985941b5021a8a35dcd4477096d619b74d632ddbb32a6dcd",
-        "available_at": "2026-11-16T22:53:20.343617+08:00"
+        "sha256": "0e6b327152e52c66ca678df21b865141a27ad4a86c75c4cca1585fa77ec26ffe",
+        "available_at": "2026-11-16T23:10:28.023184+08:00"
       }
     },
     {
@@ -191,8 +191,8 @@
       },
       "source_snapshot": {
         "path": "data/history/2026-11-16.json",
-        "sha256": "7265a5fbca6cc162985941b5021a8a35dcd4477096d619b74d632ddbb32a6dcd",
-        "available_at": "2026-11-16T22:53:20.343617+08:00"
+        "sha256": "0e6b327152e52c66ca678df21b865141a27ad4a86c75c4cca1585fa77ec26ffe",
+        "available_at": "2026-11-16T23:10:28.023184+08:00"
       }
     },
     {
@@ -229,8 +229,8 @@
       },
       "source_snapshot": {
         "path": "data/history/2026-11-16.json",
-        "sha256": "7265a5fbca6cc162985941b5021a8a35dcd4477096d619b74d632ddbb32a6dcd",
-        "available_at": "2026-11-16T22:53:20.343617+08:00"
+        "sha256": "0e6b327152e52c66ca678df21b865141a27ad4a86c75c4cca1585fa77ec26ffe",
+        "available_at": "2026-11-16T23:10:28.023184+08:00"
       }
     },
     {
@@ -267,8 +267,8 @@
       },
       "source_snapshot": {
         "path": "data/history/2026-11-16.json",
-        "sha256": "7265a5fbca6cc162985941b5021a8a35dcd4477096d619b74d632ddbb32a6dcd",
-        "available_at": "2026-11-16T22:53:20.343617+08:00"
+        "sha256": "0e6b327152e52c66ca678df21b865141a27ad4a86c75c4cca1585fa77ec26ffe",
+        "available_at": "2026-11-16T23:10:28.023184+08:00"
       }
     },
     {
@@ -305,8 +305,8 @@
       },
       "source_snapshot": {
         "path": "data/history/2026-11-16.json",
-        "sha256": "7265a5fbca6cc162985941b5021a8a35dcd4477096d619b74d632ddbb32a6dcd",
-        "available_at": "2026-11-16T22:53:20.343617+08:00"
+        "sha256": "0e6b327152e52c66ca678df21b865141a27ad4a86c75c4cca1585fa77ec26ffe",
+        "available_at": "2026-11-16T23:10:28.023184+08:00"
       }
     },
     {
@@ -343,8 +343,8 @@
       },
       "source_snapshot": {
         "path": "data/history/2026-11-16.json",
-        "sha256": "7265a5fbca6cc162985941b5021a8a35dcd4477096d619b74d632ddbb32a6dcd",
-        "available_at": "2026-11-16T22:53:20.343617+08:00"
+        "sha256": "0e6b327152e52c66ca678df21b865141a27ad4a86c75c4cca1585fa77ec26ffe",
+        "available_at": "2026-11-16T23:10:28.023184+08:00"
       }
     },
     {
@@ -381,8 +381,8 @@
       },
       "source_snapshot": {
         "path": "data/history/2026-11-16.json",
-        "sha256": "7265a5fbca6cc162985941b5021a8a35dcd4477096d619b74d632ddbb32a6dcd",
-        "available_at": "2026-11-16T22:53:20.343617+08:00"
+        "sha256": "0e6b327152e52c66ca678df21b865141a27ad4a86c75c4cca1585fa77ec26ffe",
+        "available_at": "2026-11-16T23:10:28.023184+08:00"
       }
     }
   ],
@@ -432,7 +432,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 28.5,
+      "age_days": 28.6,
       "evidence_id": "nbs-2026q3-gdp-v1",
       "title": "三季度经济：增长与需求分项",
       "kind": "statistic",
@@ -722,7 +722,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.2,
+      "age_days": 3.3,
       "evidence_id": "pbc-202610-financial-statistics-v1",
       "title": "10月金融统计：社融存量与货币增速",
       "kind": "statistic",
@@ -968,7 +968,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.2,
+      "age_days": 3.3,
       "evidence_id": "pbc-20261116-outright-repo-plan-v1",
       "title": "11月16日买断式逆回购：已公告计划，结果待核验",
       "kind": "policy",
@@ -1032,6 +1032,123 @@
         ],
         "interpretation": "这是流动性操作安排，后续需核对实际操作与到期规模，不能把总操作额直接视为净投放或对股市的确定利好。",
         "limitations": "本条只记录已公布计划，不含中标利率或实际结果。官方未给出日内操作时刻，因此不构造精确scheduled_at事件；不把11月16日计划当作已完成操作。"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 0.6,
+      "evidence_id": "nbs-202610-economy-v1",
+      "title": "10月经济数据：工业增长，消费偏弱、投资下降",
+      "kind": "statistic",
+      "fact": "10月规上工业增加值同比增长4.8%，高技术制造业增长17.6%；社零同比增长0.4%。1—10月固定资产投资同比下降8.1%，房地产开发投资下降21.6%。10月城镇调查失业率5.1%。",
+      "metrics": [
+        {
+          "name": "工业增加值同比",
+          "value": 4.8,
+          "unit": "%",
+          "basis": "10月单月，可比价"
+        },
+        {
+          "name": "高技术制造业增加值同比",
+          "value": 17.6,
+          "unit": "%",
+          "basis": "10月单月，可比价"
+        },
+        {
+          "name": "社会消费品零售总额同比",
+          "value": 0.4,
+          "unit": "%",
+          "basis": "10月单月，名义"
+        },
+        {
+          "name": "固定资产投资同比",
+          "value": -8.1,
+          "unit": "%",
+          "basis": "1—10月累计，可比口径"
+        },
+        {
+          "name": "房地产开发投资同比",
+          "value": -21.6,
+          "unit": "%",
+          "basis": "1—10月累计"
+        },
+        {
+          "name": "城镇调查失业率",
+          "value": 5.1,
+          "unit": "%",
+          "basis": "10月单月"
+        }
+      ],
+      "role": "待研究证据",
+      "mechanism": "尚无经人工核验的具体传导规则。",
+      "scenario_effect": "只列为待研究，不自动改变方向。",
+      "counter_evidence": "未研究不等于中性或没有影响。",
+      "watch": "核实政策工具、覆盖对象、生效与执行。",
+      "source_url": "https://www.stats.gov.cn/sj/zxfb/202611/t20261116_1965844.html",
+      "available_at": "2026-11-16T15:20:57+00:00",
+      "published_at": "2026-11-16T10:00:00+08:00",
+      "publication_precision": "datetime",
+      "period": "2026年10月及1—10月累计",
+      "route": {
+        "page": "policy",
+        "anchor": "nbs-202610-economy-v1"
+      },
+      "evidence_snapshot": {
+        "id": "nbs-202610-economy-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "10月经济数据：工业增长，消费偏弱、投资下降",
+        "kind": "statistic",
+        "source_url": "https://www.stats.gov.cn/sj/zxfb/202611/t20261116_1965844.html",
+        "source_name": "国家统计局",
+        "published_at": "2026-11-16T10:00:00+08:00",
+        "published_precision": "datetime",
+        "published_date": "2026-11-16",
+        "observed_at": "2026-11-16T15:20:57+00:00",
+        "available_at": "2026-11-16T15:20:57+00:00",
+        "period": "2026年10月及1—10月累计",
+        "summary": "10月规上工业增加值同比增长4.8%，高技术制造业增长17.6%；社零同比增长0.4%。1—10月固定资产投资同比下降8.1%，房地产开发投资下降21.6%。10月城镇调查失业率5.1%。",
+        "metrics": [
+          {
+            "name": "工业增加值同比",
+            "value": 4.8,
+            "unit": "%",
+            "basis": "10月单月，可比价"
+          },
+          {
+            "name": "高技术制造业增加值同比",
+            "value": 17.6,
+            "unit": "%",
+            "basis": "10月单月，可比价"
+          },
+          {
+            "name": "社会消费品零售总额同比",
+            "value": 0.4,
+            "unit": "%",
+            "basis": "10月单月，名义"
+          },
+          {
+            "name": "固定资产投资同比",
+            "value": -8.1,
+            "unit": "%",
+            "basis": "1—10月累计，可比口径"
+          },
+          {
+            "name": "房地产开发投资同比",
+            "value": -21.6,
+            "unit": "%",
+            "basis": "1—10月累计"
+          },
+          {
+            "name": "城镇调查失业率",
+            "value": 5.1,
+            "unit": "%",
+            "basis": "10月单月"
+          }
+        ],
+        "interpretation": "工业与高技术制造业提供结构性支撑，消费和投资约束仍在；供需分化不支持把单项生产增长解读为全面需求复苏或确定的市场方向。",
+        "limitations": "单月同比与累计同比不可直接混比。投资同比采用官方可比口径；没有可靠一致预期，不标注超预期或不及预期。本次晚间才观测入库，不倒填为当日盘中策略已知证据，也不改写已冻结预测。"
       }
     }
   ],
@@ -1158,14 +1275,14 @@
     },
     {
       "date": "2026-11-13",
-      "available_at": "2026-11-14T17:28:01.603907+08:00",
-      "sha256": "fde7d71fd172a5b9db983509a85770e4ef2c811d5fb90e7938195584f9af1e83"
+      "available_at": "2026-11-16T23:09:35.743814+08:00",
+      "sha256": "e2a293a82def10c9c9b980a79b4090e045ee139cd8794b57a59f0e5273b6cf1f"
     },
     {
       "date": "2026-11-16",
-      "available_at": "2026-11-16T22:53:20.343617+08:00",
-      "sha256": "7265a5fbca6cc162985941b5021a8a35dcd4477096d619b74d632ddbb32a6dcd"
+      "available_at": "2026-11-16T23:10:28.023184+08:00",
+      "sha256": "0e6b327152e52c66ca678df21b865141a27ad4a86c75c4cca1585fa77ec26ffe"
     }
   ],
-  "input_digest": "b27dc7b76c03326bc29aa2764ee4a3ba0cf1a396d5991d299547b58b64c4e223"
+  "input_digest": "a2ae045f16e2d9ff7cff75f73327e6afde57aac934ac06de62116991608d3d56"
 }
