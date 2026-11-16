@@ -4,6 +4,8 @@ from datetime import datetime, time
 from zoneinfo import ZoneInfo
 
 TZ = ZoneInfo('Asia/Shanghai')
+# User's post-close collection target; readiness still depends on source dates.
+COLLECTION_READY_TIME = time(15, 30)
 
 
 def latest_closed_day(days, now=None):
@@ -13,7 +15,7 @@ def latest_closed_day(days, now=None):
     now = now.astimezone(TZ)
     today = now.date().isoformat()
     eligible = sorted({d for d in days if d < today or
-                       (d == today and now.time() >= time(16))})
+                       (d == today and now.time() >= COLLECTION_READY_TIME)})
     if not eligible:
         raise ValueError('Exchange calendar has no closed trading session')
     return eligible[-1]

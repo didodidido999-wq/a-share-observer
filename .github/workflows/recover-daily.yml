@@ -2,6 +2,11 @@ name: Recover missing A-share daily observations
 
 on:
   workflow_dispatch:
+  # Completion-based backstop complements cron; never triggered by a fork/PR run.
+  workflow_run:
+    workflows: ["Update A-share dashboard"]
+    types: [completed]
+    branches: [main]
   push:
     branches: [main]
     paths:
@@ -10,8 +15,8 @@ on:
   schedule:
     # Independent GitHub schedule backstops after the ordinary close collectors.
     # These are secondary attempts, NOT an independent external scheduler.
-    - cron: '26 9 * * 1-5'   # 17:26 Beijing
-    - cron: '16 10 * * 1-5'  # 18:16 Beijing
+    - cron: '45 7 * * 1-5'   # 15:45 Beijing
+    - cron: '15 8 * * 1-5'   # 16:15 Beijing
 
 permissions:
   contents: write

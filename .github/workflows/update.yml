@@ -20,10 +20,10 @@ on:
       - 'a-share-observer/scripts/v3_events.py'
       - 'a-share-observer/scripts/v3_feedback.py'
   schedule:
-    # Beijing 16:07 (UTC 08:07), Mon-Fri; avoid top-of-hour scheduler load.
-    - cron: '7 8 * * 1-5'
-    # 16:49 Beijing: retry only uncollected or incomplete modules for today.
-    - cron: '49 8 * * 1-5'
+    # Beijing 15:30 (UTC 07:30): begin the post-close update. GitHub may delay cron.
+    - cron: '30 7 * * 1-5'
+    # 15:50 Beijing: retry source-not-ready or incomplete observations, never relabel stale data.
+    - cron: '50 7 * * 1-5'
     # Saturday 16:49 Beijing: only retry incomplete recent event/T+1 archives.
     - cron: '49 8 * * 6'
 

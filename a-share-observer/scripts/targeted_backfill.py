@@ -10,6 +10,7 @@ import argparse
 import json
 from datetime import date, datetime, time
 import history
+from closed_market import COLLECTION_READY_TIME
 
 
 def _fill_missing(old, new):
@@ -41,7 +42,7 @@ def _validate_targets(days, now=None):
             raise ValueError('dates must use YYYY-MM-DD')
     calendar = history.all_trading_days()
     closed = [d for d in calendar if d < now.date().isoformat() or
-              (d == now.date().isoformat() and now.time() >= time(16))]
+              (d == now.date().isoformat() and now.time() >= COLLECTION_READY_TIME)]
     # Leave one session for prior closes; a ten-session file cannot safely
     # establish returns for its oldest session.
     eligible = closed[-10:][1:]

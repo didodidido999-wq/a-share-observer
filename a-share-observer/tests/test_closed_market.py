@@ -15,7 +15,9 @@ DAYS=['2026-11-11','2026-11-12','2026-11-13','2026-11-16']
 @pytest.mark.parametrize('clock,expected',[
     ('2026-11-13T16:00:00','2026-11-13'),
     ('2026-11-14T01:08:00','2026-11-13'),
-    ('2026-11-16T15:59:59','2026-11-13'),
+    ('2026-11-16T15:29:59','2026-11-13'),
+    ('2026-11-16T15:30:00','2026-11-16'),
+    ('2026-11-16T15:59:59','2026-11-16'),
     ('2026-11-16T16:00:00','2026-11-16'),
     ('2026-11-12T01:00:00','2026-11-11'),
 ])
@@ -86,3 +88,16 @@ def test_recovery_detects_hole_before_complete_target(tmp_path):
     result=status('2026-11-13',tmp_path,['2026-11-12','2026-11-13'])
     assert result['main_complete']
     assert result['recent_missing_dates']==['2026-11-12']
+
+
+def test_1530_rejects_stale_source_instead_of_relabeling(monkeypatch,tmp_path):
+    class Clock(datetime):
+        @classmethod
+        def now(cls,tz=None): return cls(2026,11,16,15,30,tzinfo=tz)
+    monkeypatch.setattr(history,'datetime',Clock)
+    monkeypatch.setattr(history,'HISTORY',tmp_path)
+    monkeypatch.setattr(history,'all_trading_days',lambda:['2026-11-16'])
+    monkeypatch.setattr(history,'get_stock_snapshot',lambda:([], '2026-11-13'))
+    monkeypatch.setattr(history,'merge_day',lambda *args:pytest.fail('Stale source must not publish'))
+    with pytest.raises(history.base.ApiError,match='尚未更新'):
+        history.today()

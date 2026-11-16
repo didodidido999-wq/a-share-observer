@@ -27,7 +27,7 @@ import requests
 import update as base
 import v3_events
 import v3_feedback
-from closed_market import latest_closed_day
+from closed_market import latest_closed_day, COLLECTION_READY_TIME
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'docs' / 'data'
@@ -465,7 +465,7 @@ def backfill():
     days=all_trading_days()
     if not days:raise base.ApiError('交易日历无有效历史日期')
     now=datetime.now(base.TZ)
-    if now.time()<dtime(16,0) and days[-1]==now.strftime('%Y-%m-%d'):
+    if now.time()<COLLECTION_READY_TIME and days[-1]==now.strftime('%Y-%m-%d'):
         days=days[:-1]
     if not days:raise base.ApiError('暂无已收盘日期')
     migrate_old_stocks()

@@ -26,14 +26,14 @@ def test_no_scheduled_workflow_starts_on_the_hour():
 
 def test_daily_collectors_keep_beijing_order_and_weekend_modes():
     assert crons("update.yml") == [
-        "7 8 * * 1-5", "49 8 * * 1-5", "49 8 * * 6"
+        "30 7 * * 1-5", "50 7 * * 1-5", "49 8 * * 6"
     ]
-    assert crons("representatives.yml") == ["18 8 * * 1-5"]
+    assert crons("representatives.yml") == ["35 7 * * 1-5"]
     assert crons("sectors.yml") == [
-        "7 8 * * 0", "34 8 * * 1-5", "9 9 * * 1-5"
+        "7 8 * * 0", "40 7 * * 1-5", "5 8 * * 1-5"
     ]
     assert crons("global-direct.yml") == ["23 10 * * 1-5"]
-    assert crons("recover-daily.yml") == ["26 9 * * 1-5", "16 10 * * 1-5"]
+    assert crons("recover-daily.yml") == ["45 7 * * 1-5", "15 8 * * 1-5"]
     assert crons("etf-state-shares.yml") == ["15 1 * * 1-5"]
     assert crons("funds-observer.yml") == ["30 1 * * 1-5", "45 1 * * 1"]
 
@@ -56,3 +56,22 @@ def test_shared_market_writers_are_serialized_without_cancellation():
         assert 'cancel-in-progress: false' in content
         assert 'queue: max' in content
         assert 'ref: main' in content
+
+
+def test_recovery_completion_backstop_and_push_does_not_refresh_weekly_roster():
+    recovery=(WORKFLOWS/'recover-daily.yml').read_text()
+    assert 'workflow_run:' in recovery
+    assert 'workflows: ["Update A-share dashboard"]' in recovery
+    assert 'types: [completed]' in recovery
+    assert 'branches: [main]' in recovery
+    assert 'conclusion ==' not in recovery  # Recover even when main collection failed.
+    assert 'workflows: ["Recover missing A-share daily observations"]' not in recovery
+    sectors=(WORKFLOWS/'sectors.yml').read_text()
+    assert "github.event_name == 'push' ||" not in sectors
+    assert "github.event.inputs.mode || 'daily'" in sectors
+
+
+def test_post_close_still_verifies_before_publishing():
+    updates=(WORKFLOWS/'update.yml').read_text()
+    assert updates.index('Verify latest closed market archive before publishing') < updates.index('Commit derived market data only')
+    assert 'recovery_status.py --mode verify --module main' in updates

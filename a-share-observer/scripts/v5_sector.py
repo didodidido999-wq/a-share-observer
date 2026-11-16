@@ -21,7 +21,7 @@ from statistics import median
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import update as base
 import history
-from closed_market import resolve_target
+from closed_market import resolve_target, COLLECTION_READY_TIME
 
 DATA = history.DATA
 MEMBER_DIR = DATA / 'sector-members'
@@ -212,8 +212,8 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
     historical = day < today
     if historical and stock_snapshot is not None:
         raise ValueError('Historical input must come from verified dated history, not an injected snapshot')
-    if not historical and now.hour<16 and os.getenv('SECTOR_ALLOW_EARLY')!='1':
-        print('Before Beijing 16:00: do not publish unclosed market observations')
+    if not historical and now.time()<COLLECTION_READY_TIME and os.getenv('SECTOR_ALLOW_EARLY')!='1':
+        print('Before Beijing 15:30: post-close collection is not ready')
         return {'status':'not_ready'}
     snap=history.read_json(history.archive_path(day), {})
     if not snap.get('market') or not snap.get('sectors'):

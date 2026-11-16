@@ -165,3 +165,12 @@ def test_core_index_missing_still_blocks_write_with_baseline(setup,monkeypatch):
     with pytest.raises(h.base.ApiError,match='指数'):
         target.backfill_days(['2026-11-12'],now=now)
     assert not h.archive_path('2026-11-12').exists()
+
+
+def test_target_window_opens_at_1530_but_not_before(setup):
+    h, now, calls = setup
+    with pytest.raises(h.base.ApiError):
+        target._validate_targets(['2026-11-13'],datetime(2026,11,13,15,29,59,tzinfo=h.base.TZ))
+    requested, previous=target._validate_targets(['2026-11-13'],datetime(2026,11,13,15,30,tzinfo=h.base.TZ))
+    assert requested==['2026-11-13'] and previous=='2026-11-12'
+    assert calls==[]
