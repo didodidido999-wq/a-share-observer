@@ -69,6 +69,28 @@ def parse_macro(treasury,shibor):
         result.append(series(rows,'IR_RATE',label,key,'https://data.eastmoney.com/shibor/shibor.aspx','REPORT_DATE'))
     return result
 
+def merge_macro_history(prior, incoming):
+    """Append dated observations; reject revisions until explicitly reviewed.
+
+    Keep provenance/backfill metadata and never mutate input records. This is
+    shared by normal refreshes so a later run cannot silently undo the backfill.
+    """
+    old = {item['id']: item for item in prior}
+    result = []
+    for item in incoming:
+        previous = old.pop(item['id'], None)
+        if previous and previous.get('unit') != item.get('unit'):
+            raise ValueError('Macro unit conflict: ' + item['id'])
+        rows = {row['date']: row for row in (previous or {}).get('rows', [])}
+        for row in item['rows']:
+            if row['date'] in rows and rows[row['date']]['value'] != row['value']:
+                raise ValueError('Macro historical conflict: ' + item['id'] + ' ' + row['date'])
+            if row['date'] not in rows:
+                rows[row['date']] = row
+        result.append({**(previous or {}), **item, 'rows': [rows[d] for d in sorted(rows)]})
+    return result + list(old.values())
+
+
 def check(ident,label,value,unit,detail,status='observed'):
     return {'id':ident,'label':label,'status':status if value is not None else 'missing','value':value,'unit':unit,'detail':detail,'source':'东方财富转载交易所融资融券数据','source_url':MARGIN_URL}
 
@@ -208,9 +230,10 @@ def fetch_margin_window(latest,initial=True):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--partial-universe',action='store_true');args=p.parse_args()
-    start=(datetime.now(TZ).date()-timedelta(days=45)).isoformat()
-    treasury=fetch_report('RPTA_WEB_TREASURYYIELD','SOLAR_DATE',f"(SOLAR_DATE>='{start}')",500,3)
-    shibor=fetch_report('RPT_IMP_INTRESTRATEN','REPORT_DATE',f"(MARKET_CODE=\"001\")(CURRENCY_CODE=\"CNY\")(REPORT_DATE>='{start}')",500,3)
+    # Keep the established archive horizon, not a rolling 45-day initial snapshot.
+    start='2026-06-10'
+    treasury=fetch_report('RPTA_WEB_TREASURYYIELD','SOLAR_DATE',f"(SOLAR_DATE>='{start}')",500,6)
+    shibor=fetch_report('RPT_IMP_INTRESTRATEN','REPORT_DATE',f"(MARKET_CODE=\"001\")(CURRENCY_CODE=\"CNY\")(REPORT_DATE>='{start}')",500,6)
     latest=day(fetch_report('RPTA_WEB_RZRQ_GGMX','DATE','',1,1,True)[0].get('DATE'))
     if not latest:raise ValueError('Invalid newest margin date')
     previous_index=json.loads(OUT.read_text()) if OUT.exists() else {}
@@ -231,10 +254,7 @@ def main():
             detail=json.loads(path.read_text())
             for key in ['observations','supplemental','events']:stock[key]=detail.get(key,[] if key!='supplemental' else {})
     macro=parse_macro(treasury,shibor)
-    old_macro={m['id']:m for m in prior.get('macro',[])}
-    for m in macro:
-        rows={x['date']:x for x in old_macro.get(m['id'],{}).get('rows',[])}
-        rows.update({x['date']:x for x in m['rows']});m['rows']=[rows[k] for k in sorted(rows)]
+    macro=merge_macro_history(prior.get('macro',[]), macro)
     result=build(universe,margin,macro,prior=prior,complete=not args.partial_universe)
     result['margin_history_initialized']=True
     current_codes={s['code'] for s in result['stocks']};coverage={}

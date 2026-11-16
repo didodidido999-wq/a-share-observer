@@ -157,3 +157,9 @@ def test_treasury_spread_uses_us_market_timezone(tmp_path, monkeypatch):
     monkeypatch.setattr(g, "OUT", tmp_path)
     g.write_series("ust_10y2y", "spread", "treasury_spread", "bp", "treasury", [{"date":"2026-06-10", "value":25}])
     assert json.loads((tmp_path / "ust_10y2y.json").read_text())["market_timezone"] == "America/New_York"
+
+
+def test_retired_proxies_are_not_regular_collection_targets():
+    retired = {"korea_chip_mixed", "us_nasdaq_tech", "us_oil_gas_equities", "china_oil_gas_equities"}
+    assert not retired.intersection(x[0] for x in g.ETF_CANDIDATES)
+    assert len(g.ETF_CANDIDATES) == 7

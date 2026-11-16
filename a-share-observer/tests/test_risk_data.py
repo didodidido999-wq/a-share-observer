@@ -132,3 +132,22 @@ def test_empty_subsequent_page_rejects_incomplete_report(monkeypatch):
  monkeypatch.setattr(r.time,'sleep',lambda *a:None)
  with pytest.raises(ValueError,match='Incomplete report'):
   r.fetch_report('RPTA_WEB_RZRQ_GGMX','DATE',pagesize=1,max_pages=2)
+
+
+def test_regular_macro_refresh_preserves_provenance_and_missing_dates():
+ old={'id':'cgb_2y','unit':'%','history_backfill':{'added_rows':81},'publication_time_verified':False,'rows':[{'date':'2026-06-10','value':1.2}]}
+ new={'id':'cgb_2y','unit':'%','rows':[{'date':'2026-06-12','value':1.3}]}
+ result=r.merge_macro_history([old],[new])[0]
+ assert result['history_backfill']==old['history_backfill']
+ assert result['publication_time_verified'] is False
+ assert result['rows']==old['rows']+new['rows']
+ assert old['rows']==[{'date':'2026-06-10','value':1.2}]
+
+def test_regular_macro_refresh_rejects_conflicts_before_writing():
+ import pytest
+ old={'id':'cgb_2y','unit':'%','rows':[{'date':'2026-06-10','value':1.2}]}
+ with pytest.raises(ValueError,match='Macro historical conflict'):
+  r.merge_macro_history([old],[{**old,'rows':[{'date':'2026-06-10','value':9}]}])
+ with pytest.raises(ValueError,match='Macro unit conflict'):
+  r.merge_macro_history([old],[{**old,'unit':'bp'}])
+ assert r.merge_macro_history([old],[old])[0]['rows']==old['rows']

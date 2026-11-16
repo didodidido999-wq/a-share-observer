@@ -39,12 +39,8 @@ ETF_CANDIDATES = (
     ("hstech_etf", "513130.SH", "A股上市恒生科技 ETF代理"),
     ("gold_etf", "518880.SH", "A股上市黄金 ETF代理"),
     ("hsi_etf", "159920.SZ", "A股上市恒生指数 ETF代理"),
-    # These four candidates were verified by real /fund/market/historical
-    # calls (2026-09-30 ... 2026-10-28) using the existing API key.
-    ("korea_chip_mixed", "513310.SH", "中韩半导体ETF代理（不是韩国KOSPI）"),
-    ("us_nasdaq_tech", "159509.SZ", "纳指科技ETF代理（不是SOX）"),
-    ("us_oil_gas_equities", "513350.SH", "美国油气股票ETF代理（不是WTI/Brent）"),
-    ("china_oil_gas_equities", "159148.SZ", "国内石油天然气股票ETF代理"),
+    # Retired mixed-sector/commodity-equity proxies keep their historical files,
+    # but are no longer fetched as market-benchmark substitutes.
 ) 
 ETF_NAME_RULES = {
     "nasdaq100_etf": ("纳斯达克", "纳指"),
@@ -54,10 +50,6 @@ ETF_NAME_RULES = {
     "hstech_etf": ("恒生科技",),
     "gold_etf": ("黄金",),
     "hsi_etf": ("恒生",),
-    "korea_chip_mixed": ("中韩半导体", "中韩芯片"),
-    "us_nasdaq_tech": ("纳指科技", "纳斯达克科技"),
-    "us_oil_gas_equities": ("标普油气", "石油天然气", "油气"),
-    "china_oil_gas_equities": ("石油", "油气"),
 }
 
 
