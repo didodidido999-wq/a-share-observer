@@ -26,7 +26,7 @@ try {
  if(!await page.locator('#theme-recent-options').isVisible()||!await page.locator('.theme-activity-badge').count())throw Error('Recent discovery controls or dated badges absent');
  await page.locator('#theme-recent-days').selectOption('1');await page.locator('#theme-quiet-days').selectOption('10');await page.locator('#theme-recent-days').selectOption('3');await page.locator('#theme-quiet-days').selectOption('5');
  await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-recent-desktop.png'});
- await page.setViewportSize({width:390,height:844});await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-recent-mobile.png'});await page.setViewportSize({width:1440,height:1000});
+ await page.setViewportSize({width:390,height:844});await page.waitForFunction(()=>document.querySelector('.sidebar').getBoundingClientRect().right<=0);await page.locator('#theme-panel').scrollIntoViewIfNeeded();await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-recent-mobile.png'});await page.setViewportSize({width:1440,height:1000});
  await page.locator('#theme-filter').selectOption('all');if(await page.locator('#theme-recent-options').isVisible())throw Error('Inactive discovery controls should hide');
  const favoriteName=await page.locator('.theme-favorite').first().getAttribute('aria-label');await page.getByRole('button',{name:favoriteName,exact:true}).click();
  if(await page.locator('.theme-stock').count())throw Error('Favorite unexpectedly expands theme');
