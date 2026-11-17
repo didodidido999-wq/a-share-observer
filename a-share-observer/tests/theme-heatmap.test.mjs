@@ -23,3 +23,6 @@ test('retry ignores late stock responses from the previous generation',async()=>
 });
 
 test('board language never infers across unknown states or pre-admission dates',async()=>{const {c}=await setup();const label=c.window.MarketScopeThemes.boardLabel,m={since:fixture.dates[0]};assert.equal(label({daily:[[10,1,false],[0,0,false],[10,1,false]]},m,2),'3天2板');assert.equal(label({daily:[[10,1,false],[null,null,null],[10,1,false]]},m,2),'首板');assert.equal(label({daily:[[10,1,false],[-2,0,false]]},m,1),'断板');assert.equal(label({daily:[[null,null,null],[-2,0,false]]},m,1),'未涨停');assert.equal(label({daily:[[10,1,false],[10,2,false]]},m,1),'2天2板');});
+
+test('retry failure removes stale matrix coverage and pagination',async()=>{const {get,c}=await setup();assert.ok(get('theme-matrix').children.length);c.fetch=async()=>({ok:false});get('theme-retry').listeners.click();await new Promise(r=>setImmediate(r));assert.equal(get('theme-matrix').children.length,0);assert.equal(get('theme-warning').textContent,'');assert.equal(get('theme-page').textContent,'0/0');assert.match(get('theme-status').textContent,/加载失败/);});
+test('stale index explicitly warns instead of silently claiming selected date',async()=>{const {get,c}=await setup();await c.window.MarketScopeThemes.render({state:{selected:'2026-06-13'}});assert.match(get('theme-warning').textContent,/尚未收录.*2026-06-12/);});
