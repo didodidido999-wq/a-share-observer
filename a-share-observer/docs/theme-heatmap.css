@@ -7,3 +7,5 @@
 .theme-detail-controls{position:sticky;left:8px;width:min(700px,calc(100vw - 62px));display:flex;flex-wrap:wrap;align-items:center;gap:7px}.theme-detail-controls>span{flex-basis:100%;line-height:1.5}.theme-detail-info .theme-detail-controls button{margin:0}.theme-detail-controls button{white-space:nowrap}
 
 .theme-stock-heading{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.theme-stock-state{font-size:10px;color:#3e5965;background:#e6eef2;border-radius:3px;padding:2px 4px;white-space:nowrap}.theme-closed-list{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.theme-closed-list[hidden]{display:none}.theme-close{color:#8e3932}#theme-closed-note{margin-left:8px;font-size:11px}.theme-stock-day{height:39px}
+
+.theme-day-pair{grid-template-columns:1fr 1fr}.theme-day-pair span{display:grid;align-items:center;min-width:34px}.theme-stock-day.limit-up{box-shadow:inset 0 -2px #b23835}.theme-stock-day.limit-down{box-shadow:inset 0 -2px #187550}.theme-discovery-label input{width:auto;margin-right:4px}#theme-retry[hidden]{display:none}

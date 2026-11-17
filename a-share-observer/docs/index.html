@@ -19,7 +19,7 @@
 <script defer src="reviewed-context.js?v=1.1.0-query"></script>
 <script defer src="risk-workspace.js?v=2.2.0-query"></script>
 <script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=5.2.1-query"></script>
-<link rel="stylesheet" href="theme-heatmap.css?v=2"><script defer src="theme-model.js?v=1"></script><script defer src="theme-heatmap.js?v=2"></script>
+<link rel="stylesheet" href="theme-heatmap.css?v=4"><script defer src="theme-model.js?v=4"></script><script defer src="theme-heatmap.js?v=4"></script>
 <script defer src="event-sector.js?v=4.2.0"></script><script defer src="representatives.js?v=4.4.1-recovery"></script>
 <script defer src="funds-observer.js?v=1.3.0"></script><script defer src="etf-state.js?v=1.1.0"></script><script defer src="capital-workspace.js?v=1.0.0"></script>
 <link rel="stylesheet" href="research-hub.css?v=3">
@@ -165,14 +165,14 @@
   <div class="theme-controls">
    <label>题材 / 股票<input id="theme-search" type="search" placeholder="名称 / 代码"></label>
    <label>显示日期<select id="theme-window"><option value="10">近10日</option><option value="20" selected>近20日</option><option value="60">近60日</option><option value="0">全部历史</option></select></label>
-   <label>展开个股排序<select id="theme-sort"><option value="total">累计涨停天数</option><option value="streak">观察到的最高连板</option></select></label>
-   <div class="theme-pager"><button type="button" id="theme-prev" class="btn">上一页</button><span id="theme-page"></span><button type="button" id="theme-next" class="btn">下一页</button><button type="button" id="theme-retry" class="btn">重试</button></div>
+   <label class="theme-discovery-label"><span><input id="theme-discovery" type="checkbox"> 发现异动</span><select id="theme-quiet-days" aria-label="此前无涨停的交易日数"><option value="3">此前3日无涨停</option><option value="5" selected>此前5日无涨停</option><option value="10">此前10日无涨停</option></select></label>
+   <div class="theme-pager"><button type="button" id="theme-prev" class="btn">上一页</button><span id="theme-page"></span><button type="button" id="theme-next" class="btn">下一页</button><button type="button" id="theme-retry" class="btn" hidden>重试</button></div>
   </div>
   <button type="button" id="theme-closed-toggle" class="btn" aria-expanded="false">已关闭（0）</button><span id="theme-closed-note" class="inline-note">仅本浏览器；关闭不删除历史数据。</span>
   <div id="theme-closed-list" class="theme-closed-list" hidden></div>
   <div id="theme-status" class="inline-note" role="status"></div><p id="theme-warning" class="theme-warning" role="status" hidden></p>
   <div id="theme-matrix" class="theme-scroll" aria-label="题材逐日涨停及展开跌停个股轨迹"></div>
-  <p class="theme-legend">早期按现有成分回看，不代表当日真实归属或涨停原因 · 点击展开跌停与个股 · 红涨绿跌，深浅按涨幅 · 纳入后持续保留 · ≥ 已知下限 · 空白为缺失或尚未纳入</p>
+  <p class="theme-legend">早期按现有成分回看，不代表当日真实归属或涨停原因 · 展开同格红涨停 / 绿↓跌停及全部跟踪股 · 红涨绿跌，深浅按涨幅 · 纳入后持续保留 · ≥ 已知下限 · 空白为缺失或尚未纳入 · 异动仅筛选所选日有涨停、此前完整记录无涨停，不作预测</p>
  </article>
  <div class="section-head"><div><div class="kicker">SECTOR RESEARCH / CONNECTED VIEWS</div><h2>板块研究</h2><p>一套筛选贯穿排名、趋势与热力图；历史事件归属标明成分名单日期。</p></div></div>
  <article class="panel sector-research-panel" id="sector-research-panel">
