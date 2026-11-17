@@ -35,3 +35,25 @@ test('risk fills only matching date missing pct and recomputes coverage',()=>{
 test('partial pools retain lower bound and disappeared names retained',()=>{
  const a=snap(E,[],{});a.quality_manifest.limit_down_events.status='partial';const m=build([snap(D),a]);assert.equal(m.quality[1].down,'partial');assert.deepEqual(m.themes[0].daily[1],[0,0,1]);assert.equal(m.stocks.A.daily[1][2],null);
 });
+
+test('authorized current-cohort backcast preserves observed date and rejects missing index',()=>{
+ const s=snap('2026-06-10');delete s.event_sector_map;delete s.quality_manifest.sector_members;
+ s.quality_manifest.sector_backcast={status:'complete',membership_mode:'backcast_current',membership_observed_date:D};s.sectors[0].membership_mode='backcast_current';
+ const index={observed_date:D,status:'complete',members:{C:{A:'甲'}}};
+ assert.equal(build([s]).themes.length,0);
+ const m=build([s],{memberIndexes:{[D]:index}});assert.equal(m.themes[0].members[0].since,s.date);assert.equal(m.themes[0].members[0].membership_observed_date,D);assert.equal(m.quality[0].membership,'backcast_current');assert.equal(m.coverage.first_verified_membership,null);
+ assert.equal(build([s],{memberIndexes:{[D]:{...index,observed_date:E}}}).themes.length,0);
+});
+test('down tracking includes stocks that never entered the up pool',()=>{
+ const s=snap(D);s.limit_down_events=[{thscode:'B',name:'乙',price_change_ratio_pct:-10}];s.event_sector_map.B=['人工智能'];
+ const m=build([s]);assert.deepEqual(m.themes[0].members.map(x=>x.code),['A']);assert.deepEqual(m.themes[0].down_members.map(x=>x.code),['B']);assert.equal(m.themes[0].daily[0][1],1);assert.equal(m.stocks.B.daily[0][0],-10);
+});
+test('down counts use the days verified membership rather than historical union',()=>{
+ const a=snap(D),b=snap(E);for(const s of [a,b])s.limit_down_events=[{thscode:'B',name:'乙'}];a.event_sector_map.B=['人工智能'];b.event_sector_map.B=[];
+ const m=build([a,b]);assert.deepEqual(m.themes[0].daily.map(d=>d[1]),[1,0]);assert.deepEqual(m.themes[0].down_members[0].down_dates,[D]);
+});
+test('partial backcast events do not erase complete known up records',()=>{
+ const s=snap('2026-06-10');delete s.event_sector_map;delete s.quality_manifest.sector_members;
+ s.quality_manifest.sector_backcast={status:'partial',membership_mode:'backcast_current',membership_observed_date:D};s.quality_manifest.limit_down_events.status='partial';s.sectors[0].membership_mode='backcast_current';
+ const m=build([s],{memberIndexes:{[D]:{observed_date:D,status:'complete',members:{C:{A:'甲'}}}}});assert.equal(m.themes[0].daily[0][0],1);assert.equal(m.quality[0].down,'partial');
+});

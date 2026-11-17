@@ -4,10 +4,12 @@ const page=await browser.newPage({viewport:{width:1440,height:1000}});
 try {
  await page.goto((process.env.MARKET_URL||'http://127.0.0.1:8765/')+'#sectors',{waitUntil:'networkidle'});
  await page.locator('.theme-summary').first().waitFor();
- if(!await page.locator('.theme-summary .theme-up').count()||!await page.locator('.theme-summary .theme-down').count())throw Error('Both event sides required');
+ if(!await page.locator('.theme-summary .theme-up').count()||await page.locator('.theme-summary .theme-down').count())throw Error('Top level must show limit-ups only');
  const first=page.locator('.theme-name').first();await first.click();
  await page.locator('.theme-stock').first().waitFor();
  if(await page.locator('.theme-summary').first().evaluate(e=>!e.nextElementSibling.classList.contains('theme-detail-info')))throw Error('Expansion must be in original row position');
+ if(!await page.locator('.theme-down-summary').count())throw Error('Expanded down tracking absent');
+ if(!await page.locator('.theme-stock-day.return-up').count()||!await page.locator('.theme-stock-day.return-down').count())throw Error('Return heat colors absent');
  const values=await page.locator('.theme-stock .theme-sticky small').allTextContents();
  const counts=values.map(t=>Number(t.match(/· (\d+) 天/)?.[1]));if(counts.some((n,i)=>i>0&&n>counts[i-1]))throw Error('Cumulative limit-up count ordering broken');
  await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-desktop.png'});
