@@ -28,6 +28,11 @@ try {
  await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-recent-desktop.png'});
  await page.setViewportSize({width:390,height:844});await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-recent-mobile.png'});await page.setViewportSize({width:1440,height:1000});
  await page.locator('#theme-filter').selectOption('all');if(await page.locator('#theme-recent-options').isVisible())throw Error('Inactive discovery controls should hide');
+ const favoriteName=await page.locator('.theme-favorite').first().getAttribute('aria-label');await page.getByRole('button',{name:favoriteName,exact:true}).click();
+ if(await page.locator('.theme-stock').count())throw Error('Favorite unexpectedly expands theme');
+ await page.locator('#theme-filter').selectOption('favorites');if(await page.locator('.theme-summary').count()!==1)throw Error('Favorites-only filter failed');
+ await page.reload({waitUntil:'networkidle'});await page.locator('.theme-summary').first().waitFor();
+ if(await page.locator('.theme-favorite').first().getAttribute('aria-pressed')!=='true')throw Error('Favorite not persistent after reload');
  await page.locator('#theme-window').selectOption('0');
  await page.locator('#theme-search').fill('不可能匹配题材123');if(!await page.locator('#theme-matrix').innerText().then(t=>t.includes('没有匹配')))throw Error('Empty filter broken');
  await page.locator('#theme-search').fill('');await page.locator('.theme-name').first().click();
@@ -40,6 +45,7 @@ try {
  await page.getByRole('button',{name:'关闭题材',exact:true}).click();await page.getByRole('button',{name:'确认关闭此题材',exact:true}).click();await page.getByRole('button',{name:'恢复 '+name,exact:true}).waitFor();
  if(await page.locator('.theme-name strong').allTextContents().then(xs=>xs.some(x=>x.replace(/^[▾▸]\s*/,'')===name)))throw Error('Closed theme still active');
  await page.reload({waitUntil:'networkidle'});await page.locator('.theme-summary').first().waitFor();await page.locator('#theme-closed-toggle').click();await page.getByRole('button',{name:'恢复 '+name,exact:true}).click();if(!await page.locator('.theme-name strong').allTextContents().then(xs=>xs.some(x=>x.replace(/^[▾▸]\s*/,'')===name)))throw Error('Restore failed');
+ if(await page.locator('.theme-favorite').first().getAttribute('aria-pressed')!=='true')throw Error('Close/restore lost favorite');await page.locator('.theme-favorite').first().click();
  if(riskRequests)throw Error('Theme should not fetch individual risk archives: '+riskRequests);
  if(!await page.locator('#sector-research-panel').count())throw Error('Existing sector tracker removed');
  console.log('Theme heatmap: real archived data, inline expand/collapse, sorting, empty search, full history, mobile and existing tracker passed');

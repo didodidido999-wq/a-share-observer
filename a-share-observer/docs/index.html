@@ -165,11 +165,11 @@
   <div class="theme-controls">
    <label>题材 / 股票<input id="theme-search" type="search" placeholder="名称 / 代码"></label>
    <label>显示日期<select id="theme-window"><option value="10">近10日</option><option value="20" selected>近20日</option><option value="60">近60日</option><option value="0">全部历史</option></select></label>
-   <label class="theme-discovery-control">题材筛选<select id="theme-filter"><option value="all">全部题材</option><option value="recent">近期新出现涨停 · 看异动</option></select></label>
+   <label class="theme-discovery-control">题材筛选<select id="theme-filter"><option value="all">全部题材</option><option value="recent">近期新出现涨停 · 看异动</option><option value="favorites">只看收藏</option></select></label>
    <div id="theme-recent-options" class="theme-recent-options" hidden><label>出现范围<select id="theme-recent-days"><option value="1">所选当天</option><option value="3" selected>最近3个交易日</option><option value="5">最近5个交易日</option></select></label><label>出现前无涨停<select id="theme-quiet-days"><option value="3">连续3个交易日</option><option value="5" selected>连续5个交易日</option><option value="10">连续10个交易日</option></select></label></div>
    <div class="theme-pager"><button type="button" id="theme-prev" class="btn">上一页</button><span id="theme-page"></span><button type="button" id="theme-next" class="btn">下一页</button><button type="button" id="theme-retry" class="btn" hidden>重试</button></div>
   </div>
-  <button type="button" id="theme-closed-toggle" class="btn" aria-expanded="false">已关闭（0）</button><span id="theme-closed-note" class="inline-note">仅本浏览器；关闭不删除历史数据。</span>
+  <button type="button" id="theme-closed-toggle" class="btn" aria-expanded="false">已关闭（0）</button><span id="theme-closed-note" class="inline-note">收藏与关闭仅本浏览器保存；收藏遵循筛选。</span>
   <div id="theme-closed-list" class="theme-closed-list" hidden></div>
   <div id="theme-status" class="inline-note" role="status"></div><p id="theme-warning" class="theme-warning" role="status" hidden></p>
   <div id="theme-matrix" class="theme-scroll" aria-label="题材逐日涨停、跌停、指数涨幅、成交额及股票轨迹"></div>
