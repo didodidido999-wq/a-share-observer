@@ -11,8 +11,8 @@ try {
  console.log('Theme first render ms',Date.now()-started,'history files',archiveRequests.size);
  const first=page.locator('.theme-name').first();await first.click();
  await page.locator('.theme-stock').first().waitFor();
- if(await page.locator('.theme-summary').first().evaluate(e=>!e.nextElementSibling.classList.contains('theme-detail-info')))throw Error('Expansion must be in original row position');
- if(!await page.locator('.theme-day-pair .theme-down').count()||await page.locator('.theme-down-summary').count())throw Error('Down statistics must share original daily cell');
+ if(await page.locator('.theme-summary').first().evaluate(e=>!e.nextElementSibling.classList.contains('theme-down-summary')))throw Error('Expansion must be in original row position');
+ if(await page.locator('.theme-metric').count()!==3)throw Error('Expanded down/pct/amount rows absent');
  if((await page.locator('.theme-up').allTextContents()).some(x=>x.includes('涨停')))throw Error('Top counts must be numeric');
  if(!await page.locator('.theme-stock-day.return-up').count()||!await page.locator('.theme-stock-day.return-down').count())throw Error('Return heat colors absent');
  if(await page.locator('.theme-stock-day small').count())throw Error('Daily cells repeat board language');
@@ -22,7 +22,7 @@ try {
  const counts=values.map(t=>Number(t.match(/· (\d+) 天/)?.[1]));if(counts.some((n,i)=>i>0&&n>counts[i-1]))throw Error('Cumulative limit-up count ordering broken');
  await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-desktop.png'});
  await first.click();if(await page.locator('.theme-stock').count())throw Error('Repeated click did not collapse');
- await page.locator('#theme-discovery').check();await page.locator('#theme-quiet-days').selectOption('3');await page.locator('#theme-quiet-days').selectOption('10');await page.locator('#theme-quiet-days').selectOption('5');await page.locator('#theme-discovery').uncheck();
+ await page.locator('#theme-filter').selectOption('3');await page.locator('#theme-filter').selectOption('10');await page.locator('#theme-filter').selectOption('5');await page.locator('#theme-filter').selectOption('all');
  await page.locator('#theme-window').selectOption('0');
  await page.locator('#theme-search').fill('不可能匹配题材123');if(!await page.locator('#theme-matrix').innerText().then(t=>t.includes('没有匹配')))throw Error('Empty filter broken');
  await page.locator('#theme-search').fill('');await page.locator('.theme-name').first().click();

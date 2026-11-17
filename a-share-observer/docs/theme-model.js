@@ -3,7 +3,7 @@
 'use strict';
 const excluded=new Set(['沪股通','深股通','融资融券','转融券','融资标的','融券标的']);
 const num=v=>v==null||v===''||typeof v==='boolean'||!Number.isFinite(Number(v))?null:Number(v);
-const pool=(s,key)=>{if(!Array.isArray(s[key]))return 'unknown';if(key==='stock_list')return num(s.limits?.total)!==null&&s[key].length===Number(s.limits.total)?'complete':'partial';return ['complete','partial'].includes(s.quality_manifest?.[key]?.status)?s.quality_manifest[key].status:'partial';};
+const pool=(s,key)=>{if(!Array.isArray(s[key]))return 'unknown';if(key==='stock_list'){const seen=new Set();const valid=s[key].every(r=>r.thscode&&(!r.date||r.date===s.date)&&!seen.has(r.thscode)&&seen.add(r.thscode));return valid&&num(s.limits?.total)!==null&&s[key].length===Number(s.limits.total)?'complete':'partial';}return ['complete','partial'].includes(s.quality_manifest?.[key]?.status)?s.quality_manifest[key].status:'partial';};
 function concepts(s){
  const q=s.quality_manifest?.sector_members,observed=q?.membership_observed_date;
  if(q?.status!=='complete'||!observed||observed>s.date||/backcast/i.test(String(q.source||''))||/backcast/i.test(String(q.membership_mode||''))||!s.event_sector_map||Array.isArray(s.event_sector_map))return null;
@@ -27,23 +27,25 @@ function eventStats(s,c,mapping,options,rosterIds){
  const index=options.memberIndexes?.[c.observed],mode=c.mode||'historical';
  for(const formal of c.byName.values()){
   let signature=null,basis=null,all=[],status='unknown';
+  const observedRows=[...new Map((Array.isArray(rows)?rows:[]).filter(r=>r.thscode&&(!r.date||r.date===s.date)).map(r=>[r.thscode,r])).values()];
   const members=index?.status==='complete'&&index.observed_date===c.observed?index.members?.[formal.code]:null;
   if(members&&typeof members==='object'&&!Array.isArray(members)){
    const codes=Object.keys(members).sort(),key=JSON.stringify([mode,formal.code,codes]);
    if(!rosterIds.has(key))rosterIds.set(key,'roster:'+rosterIds.size);
    signature=rosterIds.get(key);basis='complete_roster';
-   if(complete){const set=new Set(codes);all=rows.filter(r=>set.has(r.thscode));status='complete';}
+   const set=new Set(codes);all=observedRows.filter(r=>set.has(r.thscode));if(complete)status='complete';
   }else{
    // Event maps contain event stocks only, so never use their keys as a roster.
    signature=JSON.stringify(['snapshot_boundary',mode,c.observed,formal.code]);basis='snapshot_boundary';
-   if(complete){all=rows.filter(r=>Array.isArray(mapping?.[r.thscode])&&mapping[r.thscode].includes(formal.name));
+   all=observedRows.filter(r=>Array.isArray(mapping?.[r.thscode])&&mapping[r.thscode].includes(formal.name));
+   if(complete){
     // Complete membership manifest plus independently archived full-sector count
     // is required to interpret missing event-map entries as zero.
     if(num(formal.limit_up_count)!==null&&Number(formal.limit_up_count)===all.length)status='complete';}
   }
   // The archived count includes ST. Check all stocks before applying non-ST scope.
   if(status==='complete'&&num(formal.limit_up_count)!==null&&Number(formal.limit_up_count)!==all.length)status='unknown';
-  result.set(formal.code,{up:status==='complete'?all.filter(r=>!r.is_st).length:null,status,signature:status==='complete'?signature:null,basis});
+  result.set(formal.code,{up:status==='complete'?all.filter(r=>!r.is_st).length:null,known:Array.isArray(rows)?all.filter(r=>!r.is_st).length:null,status,signature:status==='complete'?signature:null,basis});
  }
  return result;
 }
@@ -97,10 +99,32 @@ function build(input,options={}){
   const members=[...theme.members.values()];
   const downMembers=[...theme.down_members.values()];
   for(const m of [...members,...downMembers])if(!stocks[m.code])stocks[m.code]={name:names.get(m.code)||m.code,daily:dates.map((d,i)=>[prices[i].get(m.code)?.[0]??null,ups[i].get(m.code)??(quality[i].up==='complete'?0:null),downs[i].has(m.code)?true:quality[i].down==='complete'?false:null,prices[i].get(m.code)?.[1]??null])};
-  out.push({code:theme.code,name:theme.name,members,down_members:downMembers,event_scope:'full_concept_non_st',daily_event_up:eventDays.map(d=>d.get(theme.code)?.up??null),daily_event_quality:eventDays.map(d=>d.get(theme.code)?.status||'unknown'),membership_signature:eventDays.map(d=>d.get(theme.code)?.signature??null),membership_signature_basis:eventDays.map(d=>d.get(theme.code)?.basis??null),daily:dates.map((d,i)=>{if(!valid[i].has(theme.code))return[null,null,null];const active=members.filter(m=>m.since<=d);return[quality[i].up==='unknown'?null:active.filter(m=>ups[i].has(m.code)).length,quality[i].down==='unknown'?null:downMembers.filter(m=>m.down_dates.includes(d)).length,active.length];})});
+  out.push({code:theme.code,name:theme.name,members,down_members:downMembers,daily_sector_pct:snapshots.map(s=>{const r=(s.sectors||[]).find(r=>r.code===theme.code&&r.tag==='cn_concept'&&r.date===s.date);return num(r?.pct);}),daily_sector_turnover_yuan:snapshots.map(s=>{const r=(s.sectors||[]).find(r=>r.code===theme.code&&r.tag==='cn_concept'&&r.date===s.date);return num(r?.turnover);}),daily_event_up_known:eventDays.map(d=>d.get(theme.code)?.known??null),event_scope:'full_concept_non_st',daily_event_up:eventDays.map(d=>d.get(theme.code)?.up??null),daily_event_quality:eventDays.map(d=>d.get(theme.code)?.status||'unknown'),membership_signature:eventDays.map(d=>d.get(theme.code)?.signature??null),membership_signature_basis:eventDays.map(d=>d.get(theme.code)?.basis??null),daily:dates.map((d,i)=>{if(!valid[i].has(theme.code))return[null,null,null];const active=members.filter(m=>m.since<=d);return[quality[i].up==='unknown'?null:active.filter(m=>ups[i].has(m.code)).length,quality[i].down==='unknown'?null:downMembers.filter(m=>m.down_dates.includes(d)).length,active.length];})});
  }
- const model={schema_version:1,dates,quality,stocks,themes:out,price_sources:{e:'当日事件源涨跌幅',f:'同日采集的板块个股行情源涨跌幅',r:'东方财富转载交易所融资融券归档ZDF涨跌幅'},scope:'按当时概念归属或明确标记的现有成分回看纳入真实涨停记录；不是涨停原因归因。跌停仅使用该日有效映射。',methodology:{admission:'历史归属使用当日有效成分映射；backcast_current按归档标注日期的完整成分索引回看，非历史当日归属；首次纳入由真实当日事件确定。',daily:'[涨跌幅%, 连板数, 是否跌停, 来源短码]；null未知。',count:'已纳入跟踪池；partial为至少已观察数。',end:'不自动结束或删除股票。'}};
+ const model={schema_version:1,dates,quality,stocks,themes:out,price_sources:{e:'当日事件源涨跌幅',f:'同日采集的板块个股行情源涨跌幅',r:'东方财富转载交易所融资融券归档ZDF涨跌幅'},sector_metric_units:{daily_sector_pct:'%',daily_sector_turnover_yuan:'CNY'},scope:'按当时概念归属或明确标记的现有成分回看纳入真实涨停记录；不是涨停原因归因。跌停仅使用该日有效映射。',methodology:{admission:'历史归属使用当日有效成分映射；backcast_current按归档标注日期的完整成分索引回看，非历史当日归属；首次纳入由真实当日事件确定。',daily:'[涨跌幅%, 连板数, 是否跌停, 来源短码]；null未知。',count:'题材全概念非ST涨停使用daily_event_up；跌停使用当日有效归属；不以滚动观察池代替全题材统计。',end:'首次按题材内涨停纳入；随后按股票自身滚动60交易日涨停留存，完整无涨停移出，缺档待核验；原始历史不删除。'}};
  coverage(model);return model;
+}
+// Rolling membership is derived from dated qualifying events, never the UI range.
+function membersAt(model,theme,end,window=60){
+ const i=typeof end==='string'?model.dates.indexOf(end):end;
+ if(!Number.isInteger(i)||i<0||i>=model.dates.length||!Number.isInteger(window)||window<1)return [];
+ const day=model.dates[i],startIndex=Math.max(0,i-window+1),start=model.dates[startIndex];
+ const result=[];
+ for(const original of theme.members||[]){
+  if(!original.since||original.since>day)continue;
+  const code=original.code,daily=model.stocks?.[code]?.daily||[];
+  let complete=true,firstUp=null,lastUp=null;
+  // Admission must precede any retention/sorting evidence for this theme.
+  for(let j=startIndex;j<=i;j++){
+   if(model.dates[j]<original.since)continue;
+   const boards=num(daily[j]?.[1]);
+   if(boards===null)complete=false;
+   else if(boards>0){if(firstUp===null)firstUp=model.dates[j];lastUp=model.dates[j];}
+  }
+  if(firstUp===null&&complete)continue;
+  result.push({...original,window_first_up:firstUp,window_first_limit_up:firstUp,last_qualifying_limit_up:lastUp,eligibility:firstUp!==null?'confirmed':'unknown',retention_status:firstUp!==null?'within_window':'pending_verification',window_start:start,window_end:day});
+ }
+ return result;
 }
 function addRisk(model,record,{recompute=true}={}){
  const stock=model?.stocks?.[record?.code];if(!stock)return false;
@@ -110,5 +134,5 @@ function addRisk(model,record,{recompute=true}={}){
   if(check){stock.daily[i][0]=num(check.value);stock.daily[i][3]='r';changed=true;}}
  if(changed&&recompute)coverage(model);return changed;
 }
-root.MarketScopeThemeModel={build,addRisk,refreshCoverage:coverage,isNewActivity};
+root.MarketScopeThemeModel={build,addRisk,refreshCoverage:coverage,isNewActivity,membersAt};
 })(globalThis);
