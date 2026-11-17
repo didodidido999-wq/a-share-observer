@@ -49,4 +49,23 @@ try {
  if(riskRequests)throw Error('Theme should not fetch individual risk archives: '+riskRequests);
  if(!await page.locator('#sector-research-panel').count())throw Error('Existing sector tracker removed');
  console.log('Theme heatmap: real archived data, inline expand/collapse, sorting, empty search, full history, mobile and existing tracker passed');
+ await page.setViewportSize({width:1440,height:1000});await page.locator('#research-sector-tab').click();await page.locator('.startup-summary').first().waitFor();
+ if(await page.locator('#theme-panel').isVisible()||!await page.locator('#sector-research-panel').isVisible())throw Error('Research subpages not isolated or legacy tracker removed');
+ if(!await page.locator('#startup-warning').innerText().then(x=>x.includes('不代表全市场')&&/\d+ \/ \d+/.test(x)))throw Error('Startup coverage warning absent');
+ await page.locator('.startup-name').first().click();await page.locator('.startup-stock').first().waitFor();
+ await page.locator('#startup-metric').selectOption('cumulative');await page.locator('#startup-metric').selectOption('relative');await page.locator('#startup-metric').selectOption('daily');
+ await page.locator('#startup-sort').selectOption('return');await page.locator('#startup-sort').selectOption('recent');
+ await page.locator('#startup-panel').screenshot({path:'/tmp/marketscope-research-startup-desktop.png'});
+ await page.locator('.startup-name').first().click();await page.locator('.startup-favorite').first().click();await page.locator('#startup-filter').selectOption('favorites');
+ if(await page.locator('.startup-summary').count()!==1||await page.locator('.startup-stock').count())throw Error('Startup favorite should pin without expanding');
+ await page.reload({waitUntil:'networkidle'});await page.locator('#research-sector-tab').click();await page.locator('.startup-summary').first().waitFor();
+ if(await page.locator('.startup-favorite').first().getAttribute('aria-pressed')!=='true')throw Error('Startup favorite not persistent');
+ await page.locator('.startup-favorite').first().click();await page.locator('#startup-pct').selectOption('5');await page.locator('#startup-ratio').selectOption('2');await page.locator('#startup-pct').selectOption('3');await page.locator('#startup-ratio').selectOption('1.5');
+ await page.locator('#startup-search').fill('不可能找到123');if(!await page.locator('#startup-matrix').innerText().then(x=>x.includes('暂无')))throw Error('Startup empty search absent');await page.locator('#startup-search').fill('');
+ await page.locator('.startup-name').first().click();await page.setViewportSize({width:390,height:844});await page.waitForFunction(()=>document.querySelector('.sidebar').getBoundingClientRect().right<=0);await page.locator('#startup-panel').scrollIntoViewIfNeeded();
+ if(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+3))throw Error('Startup table leaks page overflow');
+ await page.locator('#startup-panel').screenshot({path:'/tmp/marketscope-research-startup-mobile.png'});
+ await page.locator('#research-theme-tab').click();if(!await page.locator('#theme-panel').isVisible()||await page.locator('#startup-panel').isVisible())throw Error('Return to theme view failed');
+ console.log('Startup trial: dated evidence, thresholds, cumulative/relative, favorites persistence, empty state, mobile and both research subpages passed');
+
 }finally{await browser.close();}

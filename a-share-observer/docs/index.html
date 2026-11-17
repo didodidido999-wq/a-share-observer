@@ -19,6 +19,7 @@
 <script defer src="reviewed-context.js?v=1.1.0-query"></script>
 <script defer src="risk-workspace.js?v=2.2.0-query"></script>
 <script defer src="vendor/echarts.min.js"></script><script defer src="v3.js?v=5.2.1-query"></script>
+<link rel="stylesheet" href="sector-startup.css?v=1"><script defer src="sector-startup-model.js?v=1"></script><script defer src="sector-startup.js?v=1"></script>
 <link rel="stylesheet" href="theme-heatmap.css?v=6"><script defer src="theme-model.js?v=6"></script><script defer src="theme-heatmap.js?v=6"></script>
 <script defer src="event-sector.js?v=4.2.0"></script><script defer src="representatives.js?v=4.4.1-recovery"></script>
 <script defer src="funds-observer.js?v=1.3.0"></script><script defer src="etf-state.js?v=1.1.0"></script><script defer src="capital-workspace.js?v=1.0.0"></script>
@@ -160,6 +161,7 @@
  </section>
 
  <section id="sectors" class="page">
+ <div class="research-tabs" role="tablist" aria-label="研究方式"><button type="button" id="research-theme-tab" role="tab" aria-selected="true" aria-controls="theme-panel">题材研究</button><button type="button" id="research-sector-tab" role="tab" aria-selected="false" aria-controls="sector-study">板块研究</button></div>
  <article class="panel" id="theme-panel">
   <div class="panel-header"><div><div class="kicker">THEME WATCHLIST</div><h2>题材涨停追踪</h2></div></div>
   <div class="theme-controls">
@@ -174,6 +176,13 @@
   <div id="theme-status" class="inline-note" role="status"></div><p id="theme-warning" class="theme-warning" role="status" hidden></p>
   <div id="theme-matrix" class="theme-scroll" aria-label="题材逐日涨停、跌停、指数涨幅、成交额及股票轨迹"></div>
   <p class="theme-legend">红涨绿跌 · 空白为缺失或未纳入 · ≥ 已知下限 · 早期按现有成分回看 · 题材涨幅与成交额为原概念指数数据</p>
+ </article>
+ <div id="sector-study" hidden>
+ <article class="panel" id="startup-panel">
+ <div class="panel-header"><div><div class="kicker">STOCK-LED SECTOR DISCOVERY / TRIAL</div><h2>个股启动 · 板块扩散</h2></div><span class="meta">试用版 · 非全市场</span></div>
+ <div class="startup-controls"><label>当日涨幅至少<select id="startup-pct"><option value="2">2%</option><option value="3" selected>3%</option><option value="5">5%</option></select></label><label>成交额 / 前5日均额<select id="startup-ratio"><option value="1.2">1.2倍</option><option value="1.5" selected>1.5倍</option><option value="2">2倍</option></select></label><label>板块 / 股票<input type="search" id="startup-search" placeholder="名称 / 代码"></label><label>查看<select id="startup-filter"><option value="all">有候选的板块</option><option value="favorites">只看收藏</option></select></label><label>股票格子<select id="startup-metric"><option value="daily">每日涨跌幅</option><option value="cumulative">启动以来累计</option><option value="relative">相对行业（百分点）</option></select></label><label>股票排序<select id="startup-sort"><option value="recent">启动日期近到远</option><option value="return">累计涨幅高到低</option></select></label></div>
+ <p id="startup-status" class="inline-note" role="status"></p><p id="startup-warning" class="theme-warning" role="status"></p><button type="button" id="startup-retry" class="btn" hidden>重试</button><div id="startup-matrix" class="theme-scroll" aria-label="板块新增启动股和后续轨迹"></div>
+ <p class="theme-legend">主数新增 · ↻再次达标 · 红涨绿跌 · 空白为缺失 · 收藏仅本浏览器保存</p>
  </article>
  <div class="section-head"><div><div class="kicker">SECTOR RESEARCH / CONNECTED VIEWS</div><h2>板块研究</h2><p>一套筛选贯穿排名、趋势与热力图；历史事件归属标明成分名单日期。</p></div></div>
  <article class="panel sector-research-panel" id="sector-research-panel">
@@ -196,6 +205,7 @@
   <div class="heat-scroll" id="sector-heat"></div>
   <p class="inline-note" id="heat-note">数据缺失显示 —，跌停部分归档以 ≥ 提示已知下限。</p>
  </article>
+ </div>
  </section>
 
  

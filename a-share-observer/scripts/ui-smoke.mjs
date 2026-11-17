@@ -69,6 +69,7 @@ try{
    'Switching capital tabs must preserve active ETF filter');
  await click('#capital-tab-financing');
  await click('#navigation [data-page="sectors"]');
+ await click('#research-sector-tab');
  await page.waitForSelector('#sector-turnover-rank .sector-rank-item',{timeout:30000});
  check(await visible('#sector-heat'),'Heatmap missing');
  await page.locator('#heat-metric').selectOption('turnover');

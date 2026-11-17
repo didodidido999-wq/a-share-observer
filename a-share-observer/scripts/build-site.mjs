@@ -9,3 +9,5 @@ copyFileSync(input, join(outDir, 'echarts.min.js'));
 console.log('Static website assembled in ./docs; ECharts bundled locally.');
 
 await import('./build-theme-index.mjs');
+
+await import('./build-sector-startup-index.mjs');
