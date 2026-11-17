@@ -2,7 +2,7 @@
   "schema_version": 1,
   "version": "cross-index-policy-research-v1.1",
   "kind": "scenario_research_not_scored_forecast",
-  "generated_at": "2026-11-17T08:24:56.083243+00:00",
+  "generated_at": "2026-11-17T14:26:07.184566+00:00",
   "data_date": "2026-11-17",
   "headline": "权重相对抗跌，市场多数股票仍承压",
   "scenario": "defensive_divergence",
@@ -432,7 +432,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 29.3,
+      "age_days": 29.5,
       "evidence_id": "nbs-2026q3-gdp-v1",
       "title": "三季度经济：增长与需求分项",
       "kind": "statistic",
@@ -513,7 +513,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 7.7,
+      "age_days": 7.9,
       "evidence_id": "nbs-202610-prices-v1",
       "title": "10月物价：消费与生产价格分化",
       "kind": "statistic",
@@ -607,7 +607,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 7.7,
+      "age_days": 7.9,
       "evidence_id": "nbs-202610-prices-comment-v1",
       "title": "统计局解读：能源价格传导",
       "kind": "official_commentary",
@@ -651,7 +651,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 4.7,
+      "age_days": 4.9,
       "evidence_id": "ndrc-20261112-fuel-price-v1",
       "title": "成品油调价：生效日期与传导范围",
       "kind": "policy",
@@ -722,7 +722,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 4.0,
+      "age_days": 4.2,
       "evidence_id": "pbc-202610-financial-statistics-v1",
       "title": "10月金融统计：社融存量与货币增速",
       "kind": "statistic",
@@ -839,7 +839,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.3,
+      "age_days": 3.5,
       "evidence_id": "nbs-202611-early-materials-v1",
       "title": "11月上旬生产资料：多数品种旬环比回落",
       "kind": "statistic",
@@ -968,7 +968,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 4.0,
+      "age_days": 4.2,
       "evidence_id": "pbc-20261116-outright-repo-plan-v1",
       "title": "11月16日买断式逆回购：已公告计划，结果待核验",
       "kind": "policy",
@@ -1037,7 +1037,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 1.3,
+      "age_days": 1.5,
       "evidence_id": "nbs-202610-economy-v1",
       "title": "10月经济数据：工业增长，消费偏弱、投资下降",
       "kind": "statistic",
@@ -1149,6 +1149,75 @@
         ],
         "interpretation": "工业与高技术制造业提供结构性支撑，消费和投资约束仍在；供需分化不支持把单项生产增长解读为全面需求复苏或确定的市场方向。",
         "limitations": "单月同比与累计同比不可直接混比。投资同比采用官方可比口径；没有可靠一致预期，不标注超预期或不及预期。本次晚间才观测入库，不倒填为当日盘中策略已知证据，也不改写已冻结预测。"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 0.5,
+      "evidence_id": "pbc-20261117-overnight-repo-v1",
+      "title": "11月17日隔夜逆回购操作结果",
+      "kind": "policy",
+      "fact": "人民银行以固定利率、数量招标方式开展7140亿元隔夜逆回购，操作利率1.25%，投标量和中标量均为7140亿元。",
+      "metrics": [
+        {
+          "name": "隔夜逆回购中标量",
+          "value": 7140,
+          "unit": "亿元",
+          "basis": "当日实际操作总量，非净投放"
+        },
+        {
+          "name": "隔夜逆回购操作利率",
+          "value": 1.25,
+          "unit": "%",
+          "basis": "当日隔夜操作利率"
+        }
+      ],
+      "role": "待研究证据",
+      "mechanism": "尚无经人工核验的具体传导规则。",
+      "scenario_effect": "只列为待研究，不自动改变方向。",
+      "counter_evidence": "未研究不等于中性或没有影响。",
+      "watch": "核实政策工具、覆盖对象、生效与执行。",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026111708520297433/index.html",
+      "available_at": "2026-11-17T14:25:21+00:00",
+      "published_at": "2026-11-17T09:20:30+08:00",
+      "publication_precision": "datetime",
+      "period": "2026-11-17",
+      "route": {
+        "page": "policy",
+        "anchor": "pbc-20261117-overnight-repo-v1"
+      },
+      "evidence_snapshot": {
+        "id": "pbc-20261117-overnight-repo-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "11月17日隔夜逆回购操作结果",
+        "kind": "policy",
+        "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026111708520297433/index.html",
+        "source_name": "中国人民银行公开市场业务操作室",
+        "published_at": "2026-11-17T09:20:30+08:00",
+        "published_precision": "datetime",
+        "published_date": "2026-11-17",
+        "observed_at": "2026-11-17T14:25:21+00:00",
+        "available_at": "2026-11-17T14:25:21+00:00",
+        "period": "2026-11-17",
+        "summary": "人民银行以固定利率、数量招标方式开展7140亿元隔夜逆回购，操作利率1.25%，投标量和中标量均为7140亿元。",
+        "metrics": [
+          {
+            "name": "隔夜逆回购中标量",
+            "value": 7140,
+            "unit": "亿元",
+            "basis": "当日实际操作总量，非净投放"
+          },
+          {
+            "name": "隔夜逆回购操作利率",
+            "value": 1.25,
+            "unit": "%",
+            "basis": "当日隔夜操作利率"
+          }
+        ],
+        "interpretation": "这是已实施的短期流动性操作，不是11月16日六个月买断式逆回购的结果，也不能将总操作量等同股票增量资金或确定利好。",
+        "limitations": "原公告未在本文同时列到期量，本记录不计算净投放。晚间才完成核验入库，不倒填今日盘中或已冻结预测；与六个月买断式计划严格分开。"
       }
     }
   ],
@@ -1284,5 +1353,5 @@
       "sha256": "3082a180dcadeb2299ce38d087225041784c302efe30800fb1c1b927e1bbd06c"
     }
   ],
-  "input_digest": "40ef0ce9e05ef5a59e14d1bc8fbed02fea8c8d1808a36e6f6e01ebc963298721"
+  "input_digest": "8079493c60b4d3d63bfa9497351a0ec505088fd4faad4f57e0e0b27cf624dcec"
 }
