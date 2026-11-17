@@ -1,0 +1,88 @@
+name: Isolated two-stock read-only historical probe
+on:
+  push:
+    branches: [probe/theme-two-stocks-20261117]
+    paths: ['.github/workflows/theme-two-stock-probe.yml']
+permissions:
+  contents: read
+concurrency:
+  group: theme-two-stock-readonly-probe
+  cancel-in-progress: false
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Probe exactly two public stocks for one completed trading day
+        env:
+          HITHINK_FINANCE_API_KEY: ${{ secrets.HITHINK_FINANCE_API_KEY }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os, json, time, math, urllib.request, urllib.parse, urllib.error
+          from datetime import datetime, timezone
+          from zoneinfo import ZoneInfo
+          tz = ZoneInfo('Asia/Shanghai')
+          day = '2026-11-16'
+          start = int(datetime(2026,11,16,tzinfo=tz).timestamp()*1000)
+          end = start + 86400000 - 1
+          key = os.environ.get('HITHINK_FINANCE_API_KEY','')
+          if not key:
+              print(json.dumps({'credential_available':False,'requests':0})); raise SystemExit(1)
+          fields = ['date_ms','open_price','high_price','low_price','close_price','volume','turnover','prev_price','price_change_ratio_pct']
+          def number(x):
+              return isinstance(x,(int,float)) and not isinstance(x,bool) and math.isfinite(x)
+          def summarize(rows):
+              if not isinstance(rows,list): return {'valid_item_array':False}
+              if len(rows)>10: return {'valid_item_array':True,'unexpected_row_count':len(rows)}
+              result=[]
+              for r in rows:
+                  if not isinstance(r,dict): result.append({'valid_record':False}); continue
+                  d=None
+                  if number(r.get('date_ms')):
+                      try: d=datetime.fromtimestamp(r['date_ms']/1000,tz).strftime('%Y-%m-%d')
+                      except (ValueError,OverflowError,OSError): pass
+                  price=[r.get(k) for k in ['open_price','high_price','low_price','close_price']]
+                  result.append({'date':d,'requested_date_match':d==day,
+                    'fields_present':[k for k in fields if k in r],
+                    'unexpected_field_count':len(set(r)-set(fields)),
+                    'ohlc_positive_finite':all(number(x) and x>0 for x in price),
+                    'volume_nonnegative':number(r.get('volume')) and r['volume']>=0,
+                    'turnover_nonnegative':number(r.get('turnover')) and r['turnover']>=0})
+              return {'row_count':len(rows),'rows':result}
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self,*args,**kwargs): return None
+          opener=urllib.request.build_opener(NoRedirect)
+          requests=[('/api/a-share/prices/historical-batch',{'thscodes':'600519.SH,000001.SZ'},['600519.SH','000001.SZ']),
+                    ('/api/a-share/prices/historical',{'thscode':'600519.SH'},['600519.SH'])]
+          for i,(path,params,stocks) in enumerate(requests):
+              if i: time.sleep(2)
+              params.update(interval='1d',adjust='none',start=start,end=end)
+              req=urllib.request.Request('https://fuyao.aicubes.cn'+path+'?'+urllib.parse.urlencode(params),headers={'X-api-key':key,'User-Agent':'a-share-observer-readonly-probe/1.0'})
+              report={'request_index':i+1,'endpoint':path,'requested_stocks':stocks,'requested_day':day,'adjust':'none','retries':0}
+              try:
+                  with opener.open(req,timeout=40) as response:
+                      raw=response.read(262145)
+                      report['http_status']=response.status
+                  if len(raw)>262144: raise ValueError('size_limit')
+                  envelope=json.loads(raw)
+                  code=envelope.get('code')
+                  report['business_code']=code if isinstance(code,int) else None
+                  if code==0:
+                      data=envelope.get('data') or {}
+                      if len(stocks)==1: report['quality']={stocks[0]:summarize(data.get('item'))}
+                      else:
+                          groups=data.get('item')
+                          report['quality']={}
+                          if isinstance(groups,list):
+                              for stock in stocks:
+                                  group=next((x for x in groups if isinstance(x,dict) and x.get('thscode')==stock),None)
+                                  report['quality'][stock]=summarize(group.get('item')) if group else {'group_missing':True}
+                          else: report['valid_group_array']=False
+              except urllib.error.HTTPError as e: report['http_status']=e.code
+              except Exception as e: report['error_class']=type(e).__name__
+              print(json.dumps(report,ensure_ascii=False,sort_keys=True))
+          PY
