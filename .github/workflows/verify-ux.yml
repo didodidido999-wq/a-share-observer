@@ -20,7 +20,7 @@ on:
       - 'a-share-observer/scripts/ui-smoke.mjs'
       - '.github/workflows/verify-ux.yml'
   push:
-    branches: [main]
+    branches: [main, feat/theme-client]
     paths:
       - '.github/workflows/research-ledger.yml'
       - 'a-share-observer/docs/**'
@@ -69,6 +69,8 @@ jobs:
         run: |
           node a-share-observer/scripts/research-hub-ui-smoke.mjs
           node a-share-observer/scripts/policy-ui-smoke.mjs
+      - name: Theme heatmap real-data interactions
+        run: node a-share-observer/scripts/theme-ui-smoke.mjs
       - name: Capture real-data layout evidence
         run: node a-share-observer/scripts/layout-evidence.mjs
       - name: Save browser audit evidence
@@ -90,6 +92,7 @@ jobs:
             /tmp/marketscope-risk-failed.png
             /tmp/marketscope-global-failed.png
             /tmp/marketscope-risk-mobile.png
+            /tmp/marketscope-theme*.png
             /tmp/marketscope-http.log
             /tmp/marketscope-today*.png
             /tmp/marketscope-risk*.png

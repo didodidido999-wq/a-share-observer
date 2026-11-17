@@ -253,6 +253,7 @@ function sortHeatSectors(arr,metric,sort){
  });
 }
 function renderSectors(){
+ window.MarketScopeThemes?.render({state,loadRange});
  syncHeatControls();
  if(state.page==='sectors'&&state.days.some(d=>!state.detailLoaded.has(d))&&!state.sectorDetailLoading){
    state.sectorDetailLoading=true;
