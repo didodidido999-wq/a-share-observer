@@ -1,7 +1,7 @@
 /* Source-dated theme watchlists. No retrospective membership or automatic exits. */
 (()=>{'use strict';
-let data=null,pending=null,context=null,expanded='',page=0,stockPage=0,query='',span=20,sort='total';
-const riskDone=new Set(),riskPending=new Set();
+let data=null,pending=null,context=null,expanded='',page=0,stockPage=0,query='',span=20,sort='total',generation=0;
+const riskDone=new Set(),riskPending=new Set(),riskFailed=new Set();
 const MEMBERSHIP_START='2026-10-28';
 const $=id=>document.getElementById(id),el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!=null)e.textContent=text;if(cls)e.className=cls;return e;};
 const finite=v=>v!==null&&v!==undefined&&Number.isFinite(Number(v));
@@ -12,12 +12,12 @@ function coverage(end){const admitted=new Map();for(const t of data.themes)for(c
 function labelCount(value,status){return value==null?'—':(status==='partial'?'≥':'')+value;}
 function toggle(name){expanded=expanded===name?'':name;stockPage=0;draw();}
 function makeCell(label,cls){const td=el('td',null,cls);td.append(label);return td;}
-function draw(){if(!data||!context||!$('theme-matrix'))return;const end=cutoff(),host=$('theme-matrix');host.replaceChildren();if(end<0){host.append(el('p','所选日期尚无题材归档。'));return;}
+function draw(){if(!data||!context||!$('theme-matrix'))return;const end=cutoff(),host=$('theme-matrix');host.replaceChildren();if(end<0){$('theme-status').textContent='所选日期无可核验归属，现有记录自 '+(data.coverage?.membership_start||MEMBERSHIP_START)+' 起。';$('theme-warning').textContent='';$('theme-warning').hidden=true;$('theme-page').textContent='0/0';$('theme-prev').disabled=true;$('theme-next').disabled=true;host.append(el('p','所选日期尚无题材归档。'));return;}
  const indices=data.dates.map((_,i)=>i).filter(i=>i<=end&&(span===0||i>end-span));
  const visible=data.themes.filter(t=>t.members.some(m=>m.since<=data.dates[end])&&(!query||t.name.toLowerCase().includes(query)||t.members.some(m=>m.since<=data.dates[end]&&(m.code+' '+data.stocks[m.code]?.name).toLowerCase().includes(query))));
  visible.sort((a,b)=>(b.daily[end]?.[0]||0)-(a.daily[end]?.[0]||0)||(b.daily[end]?.[2]||0)-(a.daily[end]?.[2]||0)||a.name.localeCompare(b.name,'zh'));
  const pages=Math.max(1,Math.ceil(visible.length/20));page=Math.min(page,pages-1);$('theme-page').textContent=`${page+1}/${pages} · ${visible.length} 题材`;$('theme-prev').disabled=page===0;$('theme-next').disabled=page===pages-1;
- const cov=coverage(end);$('theme-status').textContent=`归属记录自 ${data.coverage?.membership_start||'未知'} · 正式概念 · 涨跌停仅统计已纳入股票 · 已载入涨幅 ${cov.have}/${cov.total} 个股日（${cov.total?(100*cov.have/cov.total).toFixed(1):0}%） · 当日 ${cov.today}/${cov.count} 只`;if(cov.have<cov.total)$('theme-status').textContent+=' · 价格待补齐';$('theme-warning').textContent=cov.count&&cov.today/cov.count<.8?`所选日已载入涨幅仅 ${cov.today}/${cov.count} 只；缺失不是平盘，不能据此判断完整涨跌表现。`:'';$('theme-warning').hidden=!$('theme-warning').textContent;
+ const cov=coverage(end);$('theme-status').textContent=`归属记录自 ${data.coverage?.membership_start||'未知'} · 正式概念 · 涨跌停仅统计已纳入股票 · 已载入涨幅 ${cov.have}/${cov.total} 个股日（${cov.total?(100*cov.have/cov.total).toFixed(1):0}%） · 当日 ${cov.today}/${cov.count} 只`;if(cov.have<cov.total)$('theme-status').textContent+=' · 价格待补齐';if(riskFailed.size)$('theme-status').textContent+=' · '+riskFailed.size+' 只档案读取失败，可重试';$('theme-warning').textContent=cov.count&&cov.today/cov.count<.8?`所选日已载入涨幅仅 ${cov.today}/${cov.count} 只；缺失不是平盘，不能据此判断完整涨跌表现。`:'';$('theme-warning').hidden=!$('theme-warning').textContent;
  const table=el('table',null,'theme-table'),head=el('thead'),hr=el('tr');hr.append(el('th','题材 / 跟踪股'));for(const i of indices){const th=el('th',data.dates[i].slice(5));th.title=data.dates[i];hr.append(th);}head.append(hr);table.append(head);const body=el('tbody');
  for(const theme of visible.slice(page*20,page*20+20)){
   const tr=el('tr',null,'theme-summary'),name=el('button',null,'theme-name');name.type='button';name.setAttribute('aria-expanded',String(expanded===theme.code));name.append(el('strong',(expanded===theme.code?'▾ ':'▸ ')+theme.name),el('small',theme.members.filter(m=>m.since<=data.dates[end]).length+' 只持续跟踪'));name.addEventListener('click',()=>toggle(theme.code));tr.append(makeCell(name,'theme-sticky'));
@@ -33,20 +33,20 @@ function draw(){if(!data||!context||!$('theme-matrix'))return;const end=cutoff()
  if(!visible.length){host.append(el('p',data.coverage?.membership_start&&data.dates[end]<data.coverage.membership_start?'该日期无可核验概念归属；现有记录自 '+data.coverage.membership_start+' 起。':'没有匹配的题材或股票。'));return;}table.append(body);host.append(table);
 }
 async function loadRisk(codes){
- const todo=codes.filter(code=>!riskDone.has(code)&&!riskPending.has(code));if(!todo.length)return;
- todo.forEach(code=>riskPending.add(code));let cursor=0;
- await Promise.all(Array.from({length:Math.min(4,todo.length)},async()=>{while(cursor<todo.length){const code=todo[cursor++];try{const r=await fetch('data/risk-stocks/'+encodeURIComponent(code)+'.json');if(r.ok){const record=await r.json();if(record.code===code)window.MarketScopeThemeModel.addRisk(data,record);}}catch{}finally{riskDone.add(code);riskPending.delete(code);}}}));
- draw();
+ const todo=codes.filter(code=>!riskDone.has(code)&&!riskPending.has(code)&&!riskFailed.has(code));if(!todo.length)return;
+ const token=generation,model=data;todo.forEach(code=>riskPending.add(code));let cursor=0;
+ await Promise.all(Array.from({length:Math.min(4,todo.length)},async()=>{while(cursor<todo.length){const code=todo[cursor++];try{const r=await fetch('data/risk-stocks/'+encodeURIComponent(code)+'.json');if(token!==generation)return;if(r.status===404){riskDone.add(code);continue;}if(!r.ok)throw Error('archive unavailable');const record=await r.json();if(token!==generation)return;if(record.code!==code)throw Error('identity mismatch');window.MarketScopeThemeModel.addRisk(model,record);riskDone.add(code);}catch{if(token===generation)riskFailed.add(code);}finally{if(token===generation)riskPending.delete(code);}}}));
+ if(token===generation)draw();
 }
 async function render(ctx){context=ctx;
  if(ctx.state.detailLoaded&&ctx.state.days.some(d=>!ctx.state.detailLoaded.has(d))){$('theme-status').textContent='正在加载站内行情归档…';return;}
- if(!pending&&!data){$('theme-status').textContent='正在核对站内概念归属…';pending=(async()=>{
+ if(!pending&&!data){$('theme-status').textContent='正在核对站内概念归属…';const token=generation;const job=(async()=>{
  const days=(ctx.state.archive||ctx.state.days).filter(d=>d>=MEMBERSHIP_START);
  await ctx.loadRange(days);
- data=window.MarketScopeThemeModel.build(days.map(d=>ctx.state.detailLoaded?.has(d)?ctx.state.snapshots.get(d):{date:d}));
- })().catch(()=>{$('theme-status').textContent='概念归档加载失败，请重试。';}).finally(()=>pending=null);}
+ if(token!==generation)return;data=window.MarketScopeThemeModel.build(days.map(d=>ctx.state.detailLoaded?.has(d)?ctx.state.snapshots.get(d):{date:d}));
+ })().catch(()=>{if(token===generation)$('theme-status').textContent='概念归档加载失败，请重试。';}).finally(()=>{if(pending===job)pending=null;});pending=job;}
  if(pending)await pending;draw();
 }
-$('theme-search')?.addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();page=0;draw();});$('theme-window')?.addEventListener('change',e=>{span=Number(e.target.value);draw();});$('theme-sort')?.addEventListener('change',e=>{sort=e.target.value;stockPage=0;draw();});$('theme-prev')?.addEventListener('click',()=>{page=Math.max(0,page-1);draw();});$('theme-next')?.addEventListener('click',()=>{page++;draw();});$('theme-retry')?.addEventListener('click',()=>{riskDone.clear();data=null;if(context)render(context);});
+$('theme-search')?.addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();page=0;draw();});$('theme-window')?.addEventListener('change',e=>{span=Number(e.target.value);draw();});$('theme-sort')?.addEventListener('change',e=>{sort=e.target.value;stockPage=0;draw();});$('theme-prev')?.addEventListener('click',()=>{page=Math.max(0,page-1);draw();});$('theme-next')?.addEventListener('click',()=>{page++;draw();});$('theme-retry')?.addEventListener('click',()=>{generation++;riskDone.clear();riskPending.clear();riskFailed.clear();data=null;pending=null;if(context)render(context);});
 window.MarketScopeThemes={render};
 })();
