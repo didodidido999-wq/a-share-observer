@@ -2,3 +2,4 @@
 .startup-summary .theme-day{background:rgba(205,65,57,var(--up));color:#982f2a;font-size:13px;align-content:center}.startup-summary .theme-day:empty{background:transparent}.startup-stock td{font-size:12px}
 .startup-detail-controls{position:sticky;left:8px;width:min(760px,calc(100vw - 70px));display:flex;flex-wrap:wrap;align-items:center;gap:8px;text-align:left;font-size:12px;line-height:1.6}.startup-detail-controls button{min-height:44px}
 .startup-detail-controls{white-space:normal}.startup-table small.startup-meta{font-size:11px}.startup-table .startup-name{font-size:13px}.startup-table .startup-favorite{font-size:20px}
+.startup-pager{position:sticky;left:0;width:max-content;max-width:calc(100vw - 70px);padding:0 8px;background:#fff;z-index:2}

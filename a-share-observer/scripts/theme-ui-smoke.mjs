@@ -64,6 +64,7 @@ try {
  await page.locator('#startup-search').fill('不可能找到123');if(!await page.locator('#startup-matrix').innerText().then(x=>x.includes('暂无')))throw Error('Startup empty search absent');await page.locator('#startup-search').fill('');
  await page.locator('.startup-name').first().click();await page.setViewportSize({width:390,height:844});await page.waitForFunction(()=>document.querySelector('.sidebar').getBoundingClientRect().right<=0);await page.locator('#startup-panel').scrollIntoViewIfNeeded();
  if(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+3))throw Error('Startup table leaks page overflow');
+ const startupPagerBox=await page.locator('.startup-pager button').first().boundingBox();if(!startupPagerBox||startupPagerBox.x<0||startupPagerBox.x+startupPagerBox.width>390)throw Error('Startup pagination hidden after latest-date scroll');
  await page.locator('#startup-panel').screenshot({path:'/tmp/marketscope-research-startup-mobile.png'});
  await page.locator('#research-theme-tab').click();if(!await page.locator('#theme-panel').isVisible()||await page.locator('#startup-panel').isVisible())throw Error('Return to theme view failed');
  console.log('Startup trial: dated evidence, thresholds, cumulative/relative, favorites persistence, empty state, mobile and both research subpages passed');
