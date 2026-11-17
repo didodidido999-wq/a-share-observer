@@ -7,3 +7,5 @@ if (!existsSync(input)) throw new Error('Missing ECharts dependency; run npm ins
 mkdirSync(outDir, { recursive: true });
 copyFileSync(input, join(outDir, 'echarts.min.js'));
 console.log('Static website assembled in ./docs; ECharts bundled locally.');
+
+await import('./build-theme-index.mjs');

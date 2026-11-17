@@ -26,7 +26,7 @@ function draw(){if(!data||!context||!$('theme-matrix'))return;const end=cutoff()
  const visible=data.themes.filter(t=>t.members.some(m=>m.since<=data.dates[end])&&(!query||t.name.toLowerCase().includes(query)||t.members.some(m=>m.since<=data.dates[end]&&(m.code+' '+data.stocks[m.code]?.name).toLowerCase().includes(query))));
  visible.sort((a,b)=>(b.daily[end]?.[0]||0)-(a.daily[end]?.[0]||0)||(b.daily[end]?.[2]||0)-(a.daily[end]?.[2]||0)||a.name.localeCompare(b.name,'zh'));
  const pages=Math.max(1,Math.ceil(visible.length/20));page=Math.min(page,pages-1);$('theme-page').textContent=`${page+1}/${pages} · ${visible.length} 题材`;$('theme-prev').disabled=page===0;$('theme-next').disabled=page===pages-1;
- const cov=coverage(end);$('theme-status').textContent=`${data.coverage?.membership_start||'未知'} 至 ${data.dates[end]} · ${data.quality.slice(0,end+1).filter(q=>q.membership==='complete').length} 日当时归属 / ${data.quality.slice(0,end+1).filter(q=>q.membership==='backcast_current').length} 日按现有成分回看 · 名单日期 ${[...new Set(data.quality.slice(0,end+1).filter(q=>q.membership==='backcast_current').map(q=>q.membership_observed_date))].join('、')||'无回看'} · 涨停统计跟踪池 · 跌停统计已核验成分 · 已载入涨幅 ${cov.have}/${cov.total} 个股日（${cov.total?(100*cov.have/cov.total).toFixed(1):0}%） · 当日 ${cov.today}/${cov.count} 只`;if(cov.have<cov.total)$('theme-status').textContent+=' · 价格待补齐';if(riskFailed.size)$('theme-status').textContent+=' · '+riskFailed.size+' 只档案读取失败，可重试';$('theme-warning').textContent=cov.count&&cov.today/cov.count<.8?`所选日已载入涨幅仅 ${cov.today}/${cov.count} 只；缺失不是平盘，不能据此判断完整涨跌表现。`:'';$('theme-warning').hidden=!$('theme-warning').textContent;
+ const cov=coverage(end);$('theme-status').textContent=`${data.coverage?.membership_start||'未知'} 至 ${data.dates[end]} · ${data.quality.slice(0,end+1).filter(q=>q.membership==='complete').length} 日当时归属 / ${data.quality.slice(0,end+1).filter(q=>q.membership==='backcast_current').length} 日按现有成分回看 · 名单日期 ${[...new Set(data.quality.slice(0,end+1).filter(q=>q.membership==='backcast_current').map(q=>q.membership_observed_date))].join('、')||'无回看'} · 涨停统计跟踪池 · 跌停统计已核验成分 · 已载入涨幅 ${cov.have}/${cov.total} 个股日（${cov.total?(100*cov.have/cov.total).toFixed(1):0}%） · 当日 ${cov.today}/${cov.count} 只`;if(cov.have<cov.total)$('theme-status').textContent+=' · 价格待补齐';if(riskFailed.size)$('theme-status').textContent+=' · '+riskFailed.size+' 只档案读取失败，可重试';$('theme-warning').textContent=cov.count&&cov.today/cov.count<.8?`所选日已载入涨幅仅 ${cov.today}/${cov.count} 只；缺失不是平盘，不能据此判断完整涨跌表现。`:'';if(context.state.archive?.at(-1)>data.dates.at(-1))$('theme-warning').textContent+=' 题材索引仅截至 '+data.dates.at(-1)+'，落后站内最新归档，请重试。';$('theme-warning').hidden=!$('theme-warning').textContent;
  const table=el('table',null,'theme-table'),head=el('thead'),hr=el('tr');hr.append(el('th','题材 / 跟踪股'));for(const i of indices){const th=el('th',data.dates[i].slice(5));th.title=data.dates[i];hr.append(th);}head.append(hr);table.append(head);const body=el('tbody');
  for(const theme of visible.slice(page*20,page*20+20)){
   const tr=el('tr',null,'theme-summary'),name=el('button',null,'theme-name');name.type='button';name.setAttribute('aria-expanded',String(expanded===theme.code));name.append(el('strong',(expanded===theme.code?'▾ ':'▸ ')+theme.name),el('small',theme.members.filter(m=>m.since<=data.dates[end]).length+' 只持续跟踪'));name.addEventListener('click',()=>toggle(theme.code));tr.append(makeCell(name,'theme-sticky'));
@@ -49,16 +49,13 @@ async function loadRisk(codes){
  if(token===generation)draw();
 }
 async function render(ctx){context=ctx;
- if(ctx.state.detailLoaded&&ctx.state.days.some(d=>!ctx.state.detailLoaded.has(d))){$('theme-status').textContent='正在加载站内行情归档…';return;}
- if(!pending&&!data){$('theme-status').textContent='正在核对站内概念归属…';const token=generation;const job=(async()=>{
- const days=ctx.state.archive||ctx.state.days;
- await ctx.loadRange(days);
- if(token!==generation)return;const snapshots=days.map(d=>ctx.state.detailLoaded?.has(d)?ctx.state.snapshots.get(d):{date:d}),memberIndexes={};
- const observed=[...new Set(snapshots.map(s=>s?.quality_manifest?.sector_backcast?.membership_observed_date).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d||'')))];
- for(const date of observed){try{const response=await fetch('data/sector-member-index/'+date+'.json');if(response.ok){const index=await response.json();if(index.observed_date===date)memberIndexes[date]=index;}}catch{}}
- if(token!==generation)return;data=window.MarketScopeThemeModel.build(snapshots,{memberIndexes});
- const first=data.dates.indexOf(data.coverage?.membership_start);if(first>0){data.dates=data.dates.slice(first);data.quality=data.quality.slice(first);for(const stock of Object.values(data.stocks))stock.daily=stock.daily.slice(first);for(const theme of data.themes)theme.daily=theme.daily.slice(first);}
- })().catch(()=>{if(token===generation)$('theme-status').textContent='概念归档加载失败，请重试。';}).finally(()=>{if(pending===job)pending=null;});pending=job;}
+ if(!pending&&!data){$('theme-status').textContent='正在加载题材精简索引…';const token=generation;const job=(async()=>{
+ const response=await fetch('data/derived/theme-watch.json.gz?v='+encodeURIComponent(ctx.state.archive?.at(-1)||''));if(!response.ok)throw Error('index unavailable');
+ const bytes=new Uint8Array(await response.arrayBuffer());let text;
+ if(bytes[0]===31&&bytes[1]===139){const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));text=await new Response(stream).text();}else text=new TextDecoder().decode(bytes);
+ const model=JSON.parse(text);if(model.schema_version!==1||!Array.isArray(model.dates)||!Array.isArray(model.themes)||!model.stocks)throw Error('invalid index');
+ if(token!==generation)return;data=model;
+ })().catch(()=>{if(token===generation)$('theme-status').textContent='题材精简索引加载失败，请重试。';}).finally(()=>{if(pending===job)pending=null;});pending=job;}
  if(pending)await pending;draw();
 }
 $('theme-search')?.addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();page=0;draw();});$('theme-window')?.addEventListener('change',e=>{span=Number(e.target.value);draw();});$('theme-sort')?.addEventListener('change',e=>{sort=e.target.value;stockPage=0;draw();});$('theme-prev')?.addEventListener('click',()=>{page=Math.max(0,page-1);draw();});$('theme-next')?.addEventListener('click',()=>{page++;draw();});$('theme-retry')?.addEventListener('click',()=>{generation++;riskDone.clear();riskPending.clear();riskFailed.clear();data=null;pending=null;if(context)render(context);});
