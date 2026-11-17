@@ -600,6 +600,16 @@
         "calendar_hash": "a0fbf232f060fb166eb0601fd2abdd13b96d3a801c3d081fedf0bb1926b21316"
       },
       "hash": "f6aa27d2f6854b4a5b150901f67eb6a29bc22baaf652e5cf9667bbc2150a45dd"
+    },
+    {
+      "sequence": 8,
+      "previous_hash": "f6aa27d2f6854b4a5b150901f67eb6a29bc22baaf652e5cf9667bbc2150a45dd",
+      "kind": "activation",
+      "payload": {
+        "forecast_id": "research-20261117T082454Z-e67c990e3d",
+        "activated_at": "2026-11-17T08:27:27.658575+00:00"
+      },
+      "hash": "3f796dfb8cfba2524376afba1f8a683c5999b9a5ff8b0f3993f9f3264f310c80"
     }
   ]
 }
