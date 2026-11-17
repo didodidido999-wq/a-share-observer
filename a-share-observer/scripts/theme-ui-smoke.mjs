@@ -1,7 +1,7 @@
 import {chromium} from 'playwright';
 const browser=await chromium.launch({headless:true});
 const page=await browser.newPage({viewport:{width:1440,height:1000}});
-const archiveRequests=new Set();page.on('request',r=>{if(/data\/history\/.*\.json/.test(r.url()))archiveRequests.add(r.url());});
+let riskRequests=0;const archiveRequests=new Set();page.on('request',r=>{if(r.url().includes('/risk-stocks/'))riskRequests++;if(/data\/history\/.*\.json/.test(r.url()))archiveRequests.add(r.url());});
 const started=Date.now();
 try {
  await page.goto((process.env.MARKET_URL||'http://127.0.0.1:8765/')+'#sectors',{waitUntil:'networkidle'});
@@ -15,6 +15,9 @@ try {
  if(!await page.locator('.theme-down-summary').count())throw Error('Expanded down tracking absent');
  if(!await page.locator('.theme-stock-day.return-up').count()||!await page.locator('.theme-stock-day.return-down').count())throw Error('Return heat colors absent');
  await page.getByRole('button',{name:'只看所选日跌停股',exact:true}).click();await page.locator('.theme-stock').first().waitFor();if(!await page.locator('.theme-stock').count())throw Error('Down components not visible');await page.getByRole('button',{name:'显示全部跟踪股',exact:true}).click();
+ if(await page.locator('.theme-stock-day small').count())throw Error('Daily cells repeat board language');
+ if(!await page.locator('.theme-stock-state').count())throw Error('Name-side latest state missing');
+ if((await page.locator('.theme-stock-day.return-missing').allTextContents()).some(x=>x.trim()))throw Error('Missing return cells are not blank');
  const values=await page.locator('.theme-stock .theme-sticky small').allTextContents();
  const counts=values.map(t=>Number(t.match(/· (\d+) 天/)?.[1]));if(counts.some((n,i)=>i>0&&n>counts[i-1]))throw Error('Cumulative limit-up count ordering broken');
  await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-desktop.png'});
@@ -27,6 +30,12 @@ try {
  await page.setViewportSize({width:390,height:844});await page.locator('#theme-panel').scrollIntoViewIfNeeded();
  if(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+3))throw Error('Theme heatmap leaks horizontal page scroll');
  await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-mobile.png'});
+ const name=(await page.locator('.theme-name strong').first().innerText()).replace(/^[▾▸]\s*/,''),count=await page.locator('.theme-summary').count();
+ await page.getByRole('button',{name:'关闭题材',exact:true}).click();await page.getByRole('button',{name:'取消',exact:true}).click();if(await page.locator('.theme-summary').count()!==count)throw Error('Cancel changed active themes');
+ await page.getByRole('button',{name:'关闭题材',exact:true}).click();await page.getByRole('button',{name:'确认关闭此题材',exact:true}).click();await page.getByRole('button',{name:'恢复 '+name,exact:true}).waitFor();
+ if(await page.locator('.theme-name strong').allTextContents().then(xs=>xs.some(x=>x.replace(/^[▾▸]\s*/,'')===name)))throw Error('Closed theme still active');
+ await page.reload({waitUntil:'networkidle'});await page.locator('.theme-summary').first().waitFor();await page.locator('#theme-closed-toggle').click();await page.getByRole('button',{name:'恢复 '+name,exact:true}).click();if(!await page.locator('.theme-name strong').allTextContents().then(xs=>xs.some(x=>x.replace(/^[▾▸]\s*/,'')===name)))throw Error('Restore failed');
+ if(riskRequests)throw Error('Theme should not fetch individual risk archives: '+riskRequests);
  if(!await page.locator('#sector-research-panel').count())throw Error('Existing sector tracker removed');
  console.log('Theme heatmap: real archived data, inline expand/collapse, sorting, empty search, full history, mobile and existing tracker passed');
 }finally{await browser.close();}

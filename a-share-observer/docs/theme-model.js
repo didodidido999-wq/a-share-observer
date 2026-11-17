@@ -63,13 +63,13 @@ function build(input,options={}){
  const model={schema_version:1,dates,quality,stocks,themes:out,price_sources:{e:'当日事件源涨跌幅',f:'同日采集的板块个股行情源涨跌幅',r:'东方财富转载交易所融资融券归档ZDF涨跌幅'},scope:'按当时概念归属或明确标记的现有成分回看纳入真实涨停记录；不是涨停原因归因。跌停仅使用该日有效映射。',methodology:{admission:'历史归属使用当日有效成分映射；backcast_current按归档标注日期的完整成分索引回看，非历史当日归属；首次纳入由真实当日事件确定。',daily:'[涨跌幅%, 连板数, 是否跌停, 来源短码]；null未知。',count:'已纳入跟踪池；partial为至少已观察数。',end:'不自动结束或删除股票。'}};
  coverage(model);return model;
 }
-function addRisk(model,record){
+function addRisk(model,record,{recompute=true}={}){
  const stock=model?.stocks?.[record?.code];if(!stock)return false;
  const index=new Map(model.dates.map((d,i)=>[d,i]));let changed=false;
  for(const o of record.observations||[]){const i=index.get(o.date);if(i===undefined||num(stock.daily[i][0])!==null)continue;
   const check=(o.checks||[]).find(x=>x.id==='daily_change'&&x.unit==='%'&&num(x.value)!==null);
   if(check){stock.daily[i][0]=num(check.value);stock.daily[i][3]='r';changed=true;}}
- if(changed)coverage(model);return changed;
+ if(changed&&recompute)coverage(model);return changed;
 }
-root.MarketScopeThemeModel={build,addRisk};
+root.MarketScopeThemeModel={build,addRisk,refreshCoverage:coverage};
 })(globalThis);
