@@ -1,4 +1,4 @@
-/* Derived only from already-public, source-dated archives. No inferred memberships. */
+/* Existing public archives only. Historical membership and explicitly labeled current-cohort backcasts stay distinct. */
 (function(root){
 'use strict';
 const excluded=new Set(['沪股通','深股通','融资融券','转融券','融资标的','融券标的']);
@@ -39,7 +39,7 @@ function build(input,options={}){
    if(num(r.price_change_ratio_pct)!==null)p.set(code,[num(r.price_change_ratio_pct),'e']);
    if(key==='limit_down_events'){
     down.add(code);names.set(code,r.name||code);
-    if(!r.is_st&&c&&Array.isArray(mapping?.[code]))for(const name of mapping[code]){const formal=c.byName.get(name);if(!formal)continue;if(!themes.has(formal.code))themes.set(formal.code,{code:formal.code,name:formal.name,members:new Map(),down_members:new Map(),down_members:new Map()});const theme=themes.get(formal.code);if(!theme.down_members.has(code))theme.down_members.set(code,{code,since:date,membership_observed_date:c.observed,membership_mode:c.mode||'historical',down_dates:[]});theme.down_members.get(code).down_dates.push(date);}
+    if(!r.is_st&&c&&Array.isArray(mapping?.[code]))for(const name of mapping[code]){const formal=c.byName.get(name);if(!formal)continue;if(!themes.has(formal.code))themes.set(formal.code,{code:formal.code,name:formal.name,members:new Map(),down_members:new Map()});const theme=themes.get(formal.code);if(!theme.down_members.has(code))theme.down_members.set(code,{code,since:date,membership_observed_date:c.observed,membership_mode:c.mode||'historical',down_dates:[]});theme.down_members.get(code).down_dates.push(date);}
    }
    if(key!=='stock_list')continue;
    up.set(code,num(r.boards)||num(r.continue_day_cnt)||1);names.set(code,r.name||code);
@@ -60,7 +60,7 @@ function build(input,options={}){
   for(const m of [...members,...downMembers])if(!stocks[m.code])stocks[m.code]={name:names.get(m.code)||m.code,daily:dates.map((d,i)=>[prices[i].get(m.code)?.[0]??null,ups[i].get(m.code)??(quality[i].up==='complete'?0:null),downs[i].has(m.code)?true:quality[i].down==='complete'?false:null,prices[i].get(m.code)?.[1]??null])};
   out.push({code:theme.code,name:theme.name,members,down_members:downMembers,daily:dates.map((d,i)=>{if(!valid[i].has(theme.code))return[null,null,null];const active=members.filter(m=>m.since<=d);return[quality[i].up==='unknown'?null:active.filter(m=>ups[i].has(m.code)).length,quality[i].down==='unknown'?null:downMembers.filter(m=>m.down_dates.includes(d)).length,active.length];})});
  }
- const model={schema_version:1,dates,quality,stocks,themes:out,price_sources:{e:'当日事件源涨跌幅',f:'同日采集的板块个股行情源涨跌幅',r:'东方财富转载交易所融资融券归档ZDF涨跌幅'},scope:'按当日正式概念归属纳入涨停股票，随后持续跟踪；不是概念全部成分或涨停原因归因。',methodology:{admission:'仅用当日归档引用的有效成分快照及正式概念映射；原因原文仅作证据。',daily:'[涨跌幅%, 连板数, 是否跌停, 来源短码]；null未知。',count:'已纳入跟踪池；partial为至少已观察数。',end:'不自动结束或删除股票。'}};
+ const model={schema_version:1,dates,quality,stocks,themes:out,price_sources:{e:'当日事件源涨跌幅',f:'同日采集的板块个股行情源涨跌幅',r:'东方财富转载交易所融资融券归档ZDF涨跌幅'},scope:'按当时概念归属或明确标记的现有成分回看纳入真实涨停记录；不是涨停原因归因。跌停仅使用该日有效映射。',methodology:{admission:'历史归属使用当日有效成分映射；backcast_current按归档标注日期的完整成分索引回看，非历史当日归属；首次纳入由真实当日事件确定。',daily:'[涨跌幅%, 连板数, 是否跌停, 来源短码]；null未知。',count:'已纳入跟踪池；partial为至少已观察数。',end:'不自动结束或删除股票。'}};
  coverage(model);return model;
 }
 function addRisk(model,record){
