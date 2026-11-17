@@ -399,6 +399,207 @@
         "activated_at": "2026-11-16T15:08:35.356751+00:00"
       },
       "hash": "3c5ee44b54ae4b8decfb16febdd6e015f5660ef5aa9145a08253d613ed0d2e17"
+    },
+    {
+      "sequence": 6,
+      "previous_hash": "3c5ee44b54ae4b8decfb16febdd6e015f5660ef5aa9145a08253d613ed0d2e17",
+      "kind": "forecast",
+      "payload": {
+        "schema_version": 1,
+        "model_version": "breadth-trend-v1",
+        "issued_at": "2026-11-17T08:24:54.757265+00:00",
+        "issued_at_meaning": "generation_time_not_verified_publication",
+        "data_date": "2026-11-17",
+        "kind": "prospective_end_of_day",
+        "benchmark": "000300.SH",
+        "benchmark_name": "沪深300",
+        "reference_close": 3976.46,
+        "primary_horizon": 5,
+        "judgment": "down",
+        "label": "偏弱",
+        "analysis": "截至2026-11-17，沪深300近5个归档交易间隔变化-2.04%，上涨股票占比23.8%。两项同时偏弱，规则辅助结论为偏弱，重点观察宽度修复，而非断言持续下跌。",
+        "probabilities": null,
+        "thresholds_pct": {
+          "1": 0.5,
+          "5": 1.0,
+          "20": 2.0
+        },
+        "targets": [
+          {
+            "horizon": 1,
+            "judgment": "abstain",
+            "role": "辅助观察，不单独预测"
+          },
+          {
+            "horizon": 5,
+            "judgment": "down",
+            "role": "主判断"
+          },
+          {
+            "horizon": 20,
+            "judgment": "abstain",
+            "role": "辅助观察，不单独预测"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "benchmark:2026-11-17",
+            "title": "沪深300价格与近5个归档交易间隔",
+            "date": "2026-11-17",
+            "values": {
+              "close": 3976.46,
+              "pct": -0.083924,
+              "change_5_sessions_pct": -2.0361606361985807,
+              "start_date": "2026-11-10",
+              "input_points": [
+                [
+                  "2026-11-10",
+                  4059.11
+                ],
+                [
+                  "2026-11-11",
+                  4075.71
+                ],
+                [
+                  "2026-11-12",
+                  4043.93
+                ],
+                [
+                  "2026-11-13",
+                  4016.29
+                ],
+                [
+                  "2026-11-16",
+                  3979.8
+                ],
+                [
+                  "2026-11-17",
+                  3976.46
+                ]
+              ]
+            },
+            "inference": "价格动量提供趋势证据，不代表趋势必然延续；归档间隔不冒充已经核验的交易日历。",
+            "source": "站内真实日终归档；上游同花顺财经",
+            "available_at": "2026-11-17T16:24:14.552922+08:00",
+            "observed_at": "2026-11-17T08:24:54.757265+00:00",
+            "archive_sha256": "3082a180dcadeb2299ce38d087225041784c302efe30800fb1c1b927e1bbd06c",
+            "archive_url": "data/history/2026-11-17.json",
+            "route": {
+              "page": "today",
+              "date": "2026-11-17",
+              "anchor": "market-index-section"
+            }
+          },
+          {
+            "id": "breadth:2026-11-17",
+            "title": "全市场上涨覆盖与中位数",
+            "date": "2026-11-17",
+            "values": {
+              "up": 1326,
+              "down": 4119,
+              "flat": 128,
+              "up_ratio": 0.23793289072312937,
+              "median_pct": -1.312,
+              "turnover_100m": 14675.33
+            },
+            "inference": "宽度反映涨跌是否由少数权重股驱动；弱宽度支持风险警示，也可能接近短期超跌反弹。",
+            "source": "站内真实日终归档；上游同花顺财经",
+            "available_at": "2026-11-17T16:24:14.552922+08:00",
+            "observed_at": "2026-11-17T08:24:54.757265+00:00",
+            "archive_sha256": "3082a180dcadeb2299ce38d087225041784c302efe30800fb1c1b927e1bbd06c",
+            "archive_url": "data/history/2026-11-17.json",
+            "route": {
+              "page": "today",
+              "date": "2026-11-17",
+              "anchor": "kpi-grid"
+            }
+          },
+          {
+            "id": "style:2026-11-17",
+            "title": "权重与成长分化",
+            "date": "2026-11-17",
+            "values": {
+              "indices": [
+                {
+                  "name": "中证500",
+                  "code": "000905.SH",
+                  "close": 6283.01,
+                  "pct": -0.225021
+                },
+                {
+                  "name": "上证50",
+                  "code": "000016.SH",
+                  "close": 2768.36,
+                  "pct": 0.064701
+                },
+                {
+                  "name": "创业板指",
+                  "code": "399006.SZ",
+                  "close": 2292.2037,
+                  "pct": -1.198964
+                }
+              ]
+            },
+            "inference": "风格分化是反证检查：权重抗跌不代表多数股票止跌，成长回升也不等于广谱复苏。",
+            "source": "站内真实日终归档；上游同花顺财经",
+            "available_at": "2026-11-17T16:24:14.552922+08:00",
+            "observed_at": "2026-11-17T08:24:54.757265+00:00",
+            "archive_sha256": "3082a180dcadeb2299ce38d087225041784c302efe30800fb1c1b927e1bbd06c",
+            "archive_url": "data/history/2026-11-17.json",
+            "route": {
+              "page": "today",
+              "date": "2026-11-17",
+              "anchor": "market-index-section"
+            }
+          }
+        ],
+        "counter_evidence": [
+          "单日极弱宽度可能伴随超跌反弹，不能线性外推。",
+          "重大新政策和海外冲击尚未纳入量化规则，可能改变当前方向。"
+        ],
+        "invalidation": [
+          "上涨覆盖重新超过55%且5个归档间隔动量转正，重新评估偏弱判断。",
+          "上涨覆盖低于45%且动量转负，重新评估偏强判断。",
+          "数据源修订、关键输入缺失或超过4个自然日未更新时停止沿用该判断。"
+        ],
+        "limitations": [
+          "规则辅助研究，未校准概率，未证明预测能力。",
+          "这是盘后数据研究，不是当日14:45可得数据；不回填历史预测。",
+          "宏观、政策、机构持仓和外围代理仅作背景，不冒充本规则的已量化输入。",
+          "指数变化以发出时已知收盘值作研究参照，包含之后开盘跳空；不是可成交策略收益。",
+          "到期评价须核验交易日历，缺失或迟到行情不作零处理。"
+        ],
+        "baseline": {
+          "always_up": "up",
+          "momentum_sign": "down"
+        },
+        "input_hash": "c6979cba362cc68f15ee37094ef57c9f3aad3014337a8acc4ebeb3420b1673eb",
+        "id": "research-20261117T082454Z-e67c990e3d"
+      },
+      "hash": "596d1b3a303e7375f6fdde6319e618e2f66cbded945483e8a5823679a6a05dd8"
+    },
+    {
+      "sequence": 7,
+      "previous_hash": "596d1b3a303e7375f6fdde6319e618e2f66cbded945483e8a5823679a6a05dd8",
+      "kind": "evaluation",
+      "payload": {
+        "forecast_id": "research-20261116T145523Z-e3517da889",
+        "horizon": 1,
+        "due_date": "2026-11-17",
+        "evaluated_at": "2026-11-17T08:24:54.757265+00:00",
+        "status": "abstained",
+        "actual_close": 3976.46,
+        "return_pct": -0.08392381526710624,
+        "actual_class": "flat",
+        "correct": null,
+        "baselines": {
+          "always_up": false,
+          "momentum_sign": false
+        },
+        "source_archive_hash": "3082a180dcadeb2299ce38d087225041784c302efe30800fb1c1b927e1bbd06c",
+        "calendar_hash": "a0fbf232f060fb166eb0601fd2abdd13b96d3a801c3d081fedf0bb1926b21316"
+      },
+      "hash": "f6aa27d2f6854b4a5b150901f67eb6a29bc22baaf652e5cf9667bbc2150a45dd"
     }
   ]
 }
