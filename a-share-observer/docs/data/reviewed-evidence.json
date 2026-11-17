@@ -126,6 +126,24 @@
       "source_url": "https://static.cninfo.com.cn/finalpage/2025-08-30/1224619218.PDF",
       "source_title": "华夏中证沪深港黄金产业股票ETF 2025年中期报告：期末上市基金前十名持有人（第42页）",
       "note": "补录2025年旧披露，不能代表当前持仓或当前买卖。表列该实名资管计划持有36,343,374份、占上市总份额9.71%；基金为黄金产业股票ETF，非黄金现货。报告期末2025-06-30，送出日2025-08-30，精确公开时刻未知；不据此推断汇金整体增减持、不纳入历史已知回放。"
+    },
+    {
+      "id": "jinke-face-value-delisting-warning-20261116-v1",
+      "revision": 1,
+      "supersedes": null,
+      "code": "000656.SZ",
+      "kind": "event",
+      "metric_id": "delisting_risk_warning",
+      "value": null,
+      "unit": "",
+      "data_date": "2026-11-16",
+      "document_date": "2026-11-16",
+      "published_at": null,
+      "observed_at": "2026-11-17T08:53:20+00:00",
+      "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-17/1225674598.PDF",
+      "source_title": "金科股份关于公司股票存在可能因股价低于面值被终止上市的风险提示公告（2026-070）",
+      "note": "公司公告11月16日收盘价0.97元/股，首次披露可能触发面值退市的风险。公告说明连续20个交易日收盘均低于1元涉及终止上市条件；本记录不表示条件已满足或已决定退市。落款11月16日，巨潮PDF归档11月17日；精确公开时刻未核验，仅当前核验区展示，不用于历史可知回放。",
+      "status": "verified"
     }
   ],
   "catalog": [

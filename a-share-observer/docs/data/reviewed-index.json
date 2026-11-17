@@ -1,7 +1,29 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-16T21:04:48.837526+00:00",
-  "by_code": {},
+  "generated_at": "2026-11-17T08:53:34.359281+00:00",
+  "by_code": {
+    "000656.SZ": [
+      {
+        "id": "jinke-face-value-delisting-warning-20261116-v1",
+        "revision": 1,
+        "supersedes": null,
+        "code": "000656.SZ",
+        "kind": "event",
+        "metric_id": "delisting_risk_warning",
+        "value": null,
+        "unit": "",
+        "data_date": "2026-11-16",
+        "document_date": "2026-11-16",
+        "published_at": null,
+        "observed_at": "2026-11-17T08:53:20+00:00",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-17/1225674598.PDF",
+        "source_title": "金科股份关于公司股票存在可能因股价低于面值被终止上市的风险提示公告（2026-070）",
+        "note": "公司公告11月16日收盘价0.97元/股，首次披露可能触发面值退市的风险。公告说明连续20个交易日收盘均低于1元涉及终止上市条件；本记录不表示条件已满足或已决定退市。落款11月16日，巨潮PDF归档11月17日；精确公开时刻未核验，仅当前核验区展示，不用于历史可知回放。",
+        "status": "verified",
+        "available_at": "2026-11-17T08:53:20+00:00"
+      }
+    ]
+  },
   "by_asset": {
     "petrochina_controlling_shareholder_increase": [
       {
