@@ -162,7 +162,7 @@
 
  <section id="sectors" class="page">
  <div class="research-tabs" role="tablist" aria-label="研究方式"><button type="button" id="research-theme-tab" role="tab" aria-selected="true" aria-controls="theme-panel">题材研究</button><button type="button" id="research-sector-tab" role="tab" aria-selected="false" aria-controls="sector-study">板块研究</button></div>
- <article class="panel" id="theme-panel">
+ <article class="panel" id="theme-panel" role="tabpanel" aria-labelledby="research-theme-tab">
   <div class="panel-header"><div><div class="kicker">THEME WATCHLIST</div><h2>题材涨停追踪</h2></div></div>
   <div class="theme-controls">
    <label>题材 / 股票<input id="theme-search" type="search" placeholder="名称 / 代码"></label>
@@ -177,7 +177,7 @@
   <div id="theme-matrix" class="theme-scroll" aria-label="题材逐日涨停、跌停、指数涨幅、成交额及股票轨迹"></div>
   <p class="theme-legend">红涨绿跌 · 空白为缺失或未纳入 · ≥ 已知下限 · 早期按现有成分回看 · 题材涨幅与成交额为原概念指数数据</p>
  </article>
- <div id="sector-study" hidden>
+ <div id="sector-study" role="tabpanel" aria-labelledby="research-sector-tab" hidden>
  <article class="panel" id="startup-panel">
  <div class="panel-header"><div><div class="kicker">STOCK-LED SECTOR DISCOVERY / TRIAL</div><h2>个股启动 · 板块扩散</h2></div><span class="meta">试用版 · 非全市场</span></div>
  <div class="startup-controls"><label>当日涨幅至少<select id="startup-pct"><option value="2">2%</option><option value="3" selected>3%</option><option value="5">5%</option></select></label><label>成交额 / 前5日均额<select id="startup-ratio"><option value="1.2">1.2倍</option><option value="1.5" selected>1.5倍</option><option value="2">2倍</option></select></label><label>板块 / 股票<input type="search" id="startup-search" placeholder="名称 / 代码"></label><label>查看<select id="startup-filter"><option value="all">有候选的板块</option><option value="favorites">只看收藏</option></select></label><label>股票格子<select id="startup-metric"><option value="daily">每日涨跌幅</option><option value="cumulative">启动以来累计</option><option value="relative">相对行业（百分点）</option></select></label><label>股票排序<select id="startup-sort"><option value="recent">启动日期近到远</option><option value="return">累计涨幅高到低</option></select></label></div>
