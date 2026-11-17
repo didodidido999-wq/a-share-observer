@@ -12,11 +12,11 @@ function score(member,end){const series=data.stocks[member.code]?.daily||[];let 
 function boardLabel(stock,member,i){
  const point=stock.daily[i]||[],b=point[1],down=point[2]===true;
  if(!finite(b))return down?'跌停':'状态缺失';
- if(b===0){const prev=i>0&&data.dates[i-1]>=member.since?stock.daily[i-1]?.[1]:null;return (finite(prev)&&prev>0?'断板':down?'跌停':'未涨停')+(down&&finite(prev)&&prev>0?' · 跌停':'');}
+ if(b===0){const prev=i>0&&data.dates[i-1]>=member.since?stock.daily[i-1]?.[1]:null,broken=finite(prev)&&prev>0&&(finite(point[0])||down);return (broken?'断板':down?'跌停':'未涨停')+(down&&broken?' · 跌停':'');}
  if(b>1)return `${b}天${b}板`;
  let start=-1,count=0;
  for(let j=Math.max(0,i-9);j<=i;j++){if(data.dates[j]<member.since)continue;const n=stock.daily[j]?.[1];if(!finite(n)){start=-1;count=0;continue;}if(n>0){if(start<0)start=j;count++;}}
- return count>1?`${i-start+1}天${count}板`:'首板';
+ return count>1&&count<i-start+1?`${i-start+1}天${count}板`:'首板';
 }
 function coverage(end){const admitted=new Map();for(const t of data.themes)for(const m of t.members)if(m.since<=data.dates[end]&&(!admitted.has(m.code)||admitted.get(m.code)>m.since))admitted.set(m.code,m.since);let total=0,have=0,today=0;for(const [code,since]of admitted){for(let i=0;i<=end;i++)if(data.dates[i]>=since){total++;if(finite(data.stocks[code]?.daily[i]?.[0]))have++;}if(finite(data.stocks[code]?.daily[end]?.[0]))today++;}return {total,have,today,count:admitted.size};}
 function labelCount(value,status){return value==null?'—':(status==='partial'?'≥':'')+value;}
