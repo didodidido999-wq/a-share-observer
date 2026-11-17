@@ -59,6 +59,20 @@ function isNewActivity(model,theme,end,days){
  for(let j=i-days;j<=i;j++)if(theme.daily_event_quality?.[j]!=='complete'||num(theme.daily_event_up?.[j])===null||theme.membership_signature?.[j]!==signature)return null;
  return theme.daily_event_up.slice(i-days,i).every(n=>n===0);
 }
+// Latest confirmed start inside a recent window; later unknown windows stay explicit.
+function recentActivity(model,theme,end,recentDays=3,quietDays=5){
+ const i=typeof end==='string'?model.dates.indexOf(end):end;
+ const base={recentDays,quietDays,date:null,index:null,count:null,later_unknown_dates:[]};
+ if(!Number.isInteger(i)||i<0||i>=model.dates.length||!Number.isInteger(recentDays)||recentDays<1||!Number.isInteger(quietDays)||quietDays<1)return {...base,status:'unknown',reason:'invalid_window'};
+ const start=Math.max(0,i-recentDays+1),unknown=[];
+ for(let candidate=i;candidate>=start;candidate--){
+  const result=isNewActivity(model,theme,candidate,quietDays);
+  if(result===true)return {...base,status:'match',date:model.dates[candidate],index:candidate,count:theme.daily_event_up[candidate],later_unknown_dates:unknown};
+  if(result===null)unknown.push(model.dates[candidate]);
+ }
+ return {...base,status:unknown.length||i+1<recentDays?'unknown':'none',later_unknown_dates:unknown,...(i+1<recentDays?{reason:'insufficient_recent_history'}:{})};
+}
+
 function build(input,options={}){
  const snapshots=[...new Map((input||[]).filter(s=>s?.date).map(s=>[s.date,s])).values()].sort((a,b)=>a.date.localeCompare(b.date));
  const dates=snapshots.map(s=>s.date),themes=new Map(),prices=[],ups=[],downs=[],valid=[],names=new Map(),quality=[],eventDays=[],rosterIds=new Map();
@@ -134,5 +148,5 @@ function addRisk(model,record,{recompute=true}={}){
   if(check){stock.daily[i][0]=num(check.value);stock.daily[i][3]='r';changed=true;}}
  if(changed&&recompute)coverage(model);return changed;
 }
-root.MarketScopeThemeModel={build,addRisk,refreshCoverage:coverage,isNewActivity,membersAt};
+root.MarketScopeThemeModel={build,addRisk,refreshCoverage:coverage,isNewActivity,membersAt,recentActivity};
 })(globalThis);

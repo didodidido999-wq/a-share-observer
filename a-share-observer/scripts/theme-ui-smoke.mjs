@@ -22,7 +22,12 @@ try {
  const counts=values.map(t=>Number(t.match(/· (\d+) 天/)?.[1]));if(counts.some((n,i)=>i>0&&n>counts[i-1]))throw Error('Cumulative limit-up count ordering broken');
  await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-desktop.png'});
  await first.click();if(await page.locator('.theme-stock').count())throw Error('Repeated click did not collapse');
- await page.locator('#theme-filter').selectOption('3');await page.locator('#theme-filter').selectOption('10');await page.locator('#theme-filter').selectOption('5');await page.locator('#theme-filter').selectOption('all');
+ await page.locator('#theme-filter').selectOption('recent');
+ if(!await page.locator('#theme-recent-options').isVisible()||!await page.locator('.theme-activity-badge').count())throw Error('Recent discovery controls or dated badges absent');
+ await page.locator('#theme-recent-days').selectOption('1');await page.locator('#theme-quiet-days').selectOption('10');await page.locator('#theme-recent-days').selectOption('3');await page.locator('#theme-quiet-days').selectOption('5');
+ await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-recent-desktop.png'});
+ await page.setViewportSize({width:390,height:844});await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-recent-mobile.png'});await page.setViewportSize({width:1440,height:1000});
+ await page.locator('#theme-filter').selectOption('all');if(await page.locator('#theme-recent-options').isVisible())throw Error('Inactive discovery controls should hide');
  await page.locator('#theme-window').selectOption('0');
  await page.locator('#theme-search').fill('不可能匹配题材123');if(!await page.locator('#theme-matrix').innerText().then(t=>t.includes('没有匹配')))throw Error('Empty filter broken');
  await page.locator('#theme-search').fill('');await page.locator('.theme-name').first().click();
