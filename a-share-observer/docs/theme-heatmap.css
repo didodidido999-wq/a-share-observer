@@ -3,3 +3,5 @@
 .theme-warning{background:#fff2da;border-left:3px solid #bc8029;color:#784c13;padding:10px 12px;font-size:12px;line-height:1.5}.theme-warning[hidden]{display:none}
 
 .theme-day{min-height:40px}.theme-day .theme-up{display:grid;align-items:center}.theme-down-count{background:rgba(24,135,88,var(--down));color:#12623f;font-size:12px;padding:10px 5px!important}.theme-down-summary .theme-sticky{font-size:12px;background:#edf5ef}.theme-stock-day.return-up{background:rgba(205,65,57,var(--heat));color:#8b221e}.theme-stock-day.return-down{background:rgba(24,135,88,var(--heat));color:#0c5937}.theme-stock-day.return-flat{background:#f3f4f5;color:#414e57}.theme-stock-day.return-missing{background:#fafbfc;color:#647783}.theme-stock-day small{color:inherit;font-size:11px}
+
+.theme-detail-controls{position:sticky;left:8px;width:min(700px,calc(100vw - 62px));display:flex;flex-wrap:wrap;align-items:center;gap:7px}.theme-detail-controls>span{flex-basis:100%;line-height:1.5}.theme-detail-info .theme-detail-controls button{margin:0}.theme-detail-controls button{white-space:nowrap}

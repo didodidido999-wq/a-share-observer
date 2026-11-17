@@ -23,6 +23,7 @@ try {
  await page.locator('#theme-search').fill('不可能匹配题材123');if(!await page.locator('#theme-matrix').innerText().then(t=>t.includes('没有匹配')))throw Error('Empty filter broken');
  await page.locator('#theme-search').fill('');await page.locator('.theme-name').first().click();
  await page.locator('#theme-sort').selectOption('streak');
+ await page.locator('#theme-window').selectOption('20');
  await page.setViewportSize({width:390,height:844});await page.locator('#theme-panel').scrollIntoViewIfNeeded();
  if(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+3))throw Error('Theme heatmap leaks horizontal page scroll');
  await page.locator('#theme-panel').screenshot({path:'/tmp/marketscope-theme-mobile.png'});
