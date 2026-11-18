@@ -279,7 +279,7 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
             'expected_count':total,'source':f'weekly-member-snapshot:{member_date}',
             'membership_observed_date':member_date,
             'collected_at':datetime.now(base.TZ).isoformat()}
-    history.merge_day(day,{
+    additions = {
         'sectors':metrics_rows,
         'sector_focus_stocks':focus_rows,
         'event_sector_map':{code:sorted(groups) for code,groups in reverse.items()},
@@ -290,7 +290,21 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
             'sector_focus_stocks':{**status,'status':member_quality if (up_ok and down_ok) else 'partial',
                 'items_count':len(focus_rows)}
         }
-    })
+    }
+    # Breadth can remain partial (for example, a suspended member) while the
+    # focus module is complete. A retry must not replace its original dated
+    # source returns with historical close-to-close calculations or retimestamp
+    # the provenance used by the research models. Retry only incomplete modules.
+    prior_focus = snap.get('sector_focus_stocks')
+    focus_quality = quality.get('sector_focus_stocks') or {}
+    if (focus_quality.get('status') == 'complete'
+            and focus_quality.get('trade_date') == day
+            and isinstance(prior_focus, list)
+            and focus_quality.get('items_count') == len(prior_focus)
+            and all(r.get('trade_date') == day for r in prior_focus)):
+        additions.pop('sector_focus_stocks')
+        additions['quality_manifest'].pop('sector_focus_stocks')
+    history.merge_day(day, additions)
     history.create_dashboard()
     result={'mode':'daily-from-weekly','date':day,'membership_observed_date':member_date,
             'observed':observed,'total':total,'breadth_covered':coverage,

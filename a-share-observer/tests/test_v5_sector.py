@@ -206,3 +206,43 @@ def test_past_day_rejects_injected_snapshot(monkeypatch):
     import pytest
     with pytest.raises(ValueError,match='Historical input'):
         sector.run(day='2026-11-13',stock_snapshot=[{'thscode':'A'}])
+
+
+def test_breadth_retry_preserves_complete_focus_rows_and_original_provenance(monkeypatch):
+    """A suspended breadth member must not destroy same-day source returns at midnight."""
+    from datetime import datetime as RealDatetime
+    import targeted_backfill
+    class Clock(RealDatetime):
+        @classmethod
+        def now(cls, tz=None): return cls(2026, 11, 18, 1, 1, tzinfo=tz)
+    monkeypatch.setattr(sector, 'datetime', Clock)
+    day = '2026-11-17'
+    focus = [{'trade_date': day, 'sector_code': 'A', 'stock_code': 'X', 'pct': 3.1}]
+    quality = {'status': 'complete', 'trade_date': day, 'items_count': 1,
+               'collected_at': day + 'T16:24:14+08:00'}
+    snapshot = {'market': {'samples': 2}, 'sectors': [{'code': 'A'}],
+                'stock_list': [], 'limit_down_events': [], 'limits': {},
+                'sector_focus_stocks': focus,
+                'quality_manifest': {'sector_focus_stocks': quality,
+                    'sector_internal_metrics': {'status': 'partial'},
+                    'limit_down_events': {'status': 'complete'}}}
+    monkeypatch.setattr(sector.history, 'read_json', lambda *_: snapshot)
+    monkeypatch.setattr(sector, '_load_weekly', lambda _: {
+        'observed_date': '2026-11-15', 'members': {'A': {'X': 'stock', 'Y': 'suspended'}}})
+    monkeypatch.setattr(targeted_backfill, 'historical_stock_rows', lambda *a, **k: [
+        {'thscode': 'X', 'price_change_ratio_pct': 10, 'turnover': 1e8}])
+    writes = []
+    monkeypatch.setattr(sector.history, 'merge_day', lambda _, patch: writes.append(patch))
+    monkeypatch.setattr(sector.history, 'create_dashboard', lambda: None)
+    sector.run(day)
+    assert 'sector_focus_stocks' not in writes[-1]
+    assert 'sector_focus_stocks' not in writes[-1]['quality_manifest']
+    assert writes[-1]['quality_manifest']['sector_internal_metrics']['status'] == 'partial'
+    assert snapshot['sector_focus_stocks'] == focus
+    assert snapshot['quality_manifest']['sector_focus_stocks'] == quality
+    # Incomplete or structurally inconsistent focus modules must still be repaired.
+    for invalid in ({**quality, 'status': 'partial'}, {**quality, 'items_count': 2},
+                    {**quality, 'trade_date': '2026-11-16'}):
+        snapshot['quality_manifest']['sector_focus_stocks'] = invalid
+        sector.run(day)
+        assert writes[-1]['sector_focus_stocks'][0]['pct'] == 10
