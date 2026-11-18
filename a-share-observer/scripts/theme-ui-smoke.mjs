@@ -53,7 +53,9 @@ try {
  await page.locator('.startup-name').first().click();await page.locator('.startup-stock').first().waitFor();if(!await page.locator('.startup-detail').innerText().then(t=>t.includes('涨停跟踪股')))throw Error('Limit heatmap must expand actual limit-up watchpool');
  await page.locator('#startup-kind').selectOption('cn_concept');await page.locator('.startup-summary').first().waitFor();if(!await page.locator('#startup-status').innerText().then(t=>t.includes('概念')))throw Error('Concept mode not shown');await page.locator('#startup-view').selectOption('metrics');
  if(await page.locator('#theme-panel').isVisible()||!await page.locator('#sector-research-panel').isVisible())throw Error('Research subpages not isolated or legacy tracker removed');
+ if(await page.locator('#startup-search').isVisible()||await page.locator('#startup-filter').isVisible())throw Error('Metric view leaked inactive startup filters');
  if(await page.locator('#sector-kind').inputValue()!=='cn_concept')throw Error('Legacy metric kind did not synchronize');await page.locator('#startup-kind').selectOption('industry');await page.locator('#startup-view').selectOption('starts');await page.locator('#startup-options summary').click();
+ if(!await page.locator('#startup-search').isVisible()||!await page.locator('#startup-filter').isVisible())throw Error('Startup controls not restored after metrics');
  if(!await page.locator('#startup-warning').innerText().then(x=>x.includes('不代表全市场')&&/\d+ \/ \d+/.test(x)))throw Error('Startup coverage warning absent');
  await page.locator('.startup-name').first().click();await page.locator('.startup-stock').first().waitFor();
  await page.locator('#startup-metric').selectOption('cumulative');await page.locator('#startup-metric').selectOption('relative');await page.locator('#startup-metric').selectOption('daily');
