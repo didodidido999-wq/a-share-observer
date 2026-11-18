@@ -50,7 +50,10 @@ try {
  if(!await page.locator('#sector-research-panel').count())throw Error('Existing sector tracker removed');
  console.log('Theme heatmap: real archived data, inline expand/collapse, sorting, empty search, full history, mobile and existing tracker passed');
  await page.setViewportSize({width:1440,height:1000});await page.locator('#research-sector-tab').click();await page.locator('.startup-summary').first().waitFor();
+ await page.locator('.startup-name').first().click();await page.locator('.startup-stock').first().waitFor();if(!await page.locator('.startup-detail').innerText().then(t=>t.includes('涨停跟踪股')))throw Error('Limit heatmap must expand actual limit-up watchpool');
+ await page.locator('#startup-kind').selectOption('cn_concept');await page.locator('.startup-summary').first().waitFor();if(!await page.locator('#startup-status').innerText().then(t=>t.includes('概念')))throw Error('Concept mode not shown');await page.locator('#startup-view').selectOption('metrics');
  if(await page.locator('#theme-panel').isVisible()||!await page.locator('#sector-research-panel').isVisible())throw Error('Research subpages not isolated or legacy tracker removed');
+ if(await page.locator('#sector-kind').inputValue()!=='cn_concept')throw Error('Legacy metric kind did not synchronize');await page.locator('#startup-kind').selectOption('industry');await page.locator('#startup-view').selectOption('starts');await page.locator('#startup-options summary').click();
  if(!await page.locator('#startup-warning').innerText().then(x=>x.includes('不代表全市场')&&/\d+ \/ \d+/.test(x)))throw Error('Startup coverage warning absent');
  await page.locator('.startup-name').first().click();await page.locator('.startup-stock').first().waitFor();
  await page.locator('#startup-metric').selectOption('cumulative');await page.locator('#startup-metric').selectOption('relative');await page.locator('#startup-metric').selectOption('daily');
@@ -60,12 +63,14 @@ try {
  if(await page.locator('.startup-summary').count()!==1||await page.locator('.startup-stock').count())throw Error('Startup favorite should pin without expanding');
  await page.reload({waitUntil:'networkidle'});await page.locator('#research-sector-tab').click();await page.locator('.startup-summary').first().waitFor();
  if(await page.locator('.startup-favorite').first().getAttribute('aria-pressed')!=='true')throw Error('Startup favorite not persistent');
+ await page.locator('#startup-view').selectOption('starts');await page.locator('#startup-options summary').click();
  await page.locator('.startup-favorite').first().click();await page.locator('#startup-pct').selectOption('5');await page.locator('#startup-ratio').selectOption('2');await page.locator('#startup-pct').selectOption('3');await page.locator('#startup-ratio').selectOption('1.5');
  await page.locator('#startup-search').fill('不可能找到123');if(!await page.locator('#startup-matrix').innerText().then(x=>x.includes('暂无')))throw Error('Startup empty search absent');await page.locator('#startup-search').fill('');
  await page.locator('.startup-name').first().click();await page.setViewportSize({width:390,height:844});await page.waitForFunction(()=>document.querySelector('.sidebar').getBoundingClientRect().right<=0);await page.locator('#startup-panel').scrollIntoViewIfNeeded();
  if(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+3))throw Error('Startup table leaks page overflow');
  const startupPagerBox=await page.locator('.startup-pager button').first().boundingBox();if(!startupPagerBox||startupPagerBox.x<0||startupPagerBox.x+startupPagerBox.width>390)throw Error('Startup pagination hidden after latest-date scroll');
  await page.locator('#startup-panel').screenshot({path:'/tmp/marketscope-research-startup-mobile.png'});
+ await page.locator('#startup-view').selectOption('limits');await page.locator('.startup-name').first().click();await page.locator('.startup-stock').first().waitFor();await page.locator('#startup-panel').screenshot({path:'/tmp/marketscope-research-sector-limits-mobile.png'});
  await page.locator('#research-theme-tab').click();if(!await page.locator('#theme-panel').isVisible()||await page.locator('#startup-panel').isVisible())throw Error('Return to theme view failed');
  console.log('Startup trial: dated evidence, thresholds, cumulative/relative, favorites persistence, empty state, mobile and both research subpages passed');
 
