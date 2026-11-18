@@ -70,7 +70,7 @@ try {
  if(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+3))throw Error('Startup table leaks page overflow');
  const startupPagerBox=await page.locator('.startup-pager button').first().boundingBox();if(!startupPagerBox||startupPagerBox.x<0||startupPagerBox.x+startupPagerBox.width>390)throw Error('Startup pagination hidden after latest-date scroll');
  await page.locator('#startup-panel').screenshot({path:'/tmp/marketscope-research-startup-mobile.png'});
- await page.locator('#startup-view').selectOption('limits');await page.locator('.startup-name').first().click();await page.locator('.startup-stock').first().waitFor();await page.locator('#startup-panel').screenshot({path:'/tmp/marketscope-research-sector-limits-mobile.png'});
+ await page.locator('#startup-view').selectOption('limits');if(!await page.locator('#startup-matrix').evaluate(h=>Math.abs(h.scrollWidth-h.clientWidth-h.scrollLeft)<3))throw Error('Changed research view did not reveal latest dates');await page.locator('.startup-name').first().click();await page.locator('.startup-stock').first().waitFor();await page.locator('#startup-panel').screenshot({path:'/tmp/marketscope-research-sector-limits-mobile.png'});
  await page.locator('#research-theme-tab').click();if(!await page.locator('#theme-panel').isVisible()||await page.locator('#startup-panel').isVisible())throw Error('Return to theme view failed');
  console.log('Startup trial: dated evidence, thresholds, cumulative/relative, favorites persistence, empty state, mobile and both research subpages passed');
 
