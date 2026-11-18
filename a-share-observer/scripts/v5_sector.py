@@ -21,6 +21,7 @@ from statistics import median
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import update as base
 import history
+import suspensions
 from closed_market import resolve_target, COLLECTION_READY_TIME
 
 DATA = history.DATA
@@ -48,7 +49,7 @@ def current_members(client_get, code):
     return members
 
 
-def compute_sector(members, prices, up, down, hot, down_complete, up_complete=True):
+def compute_sector(members, prices, up, down, hot, down_complete, up_complete=True, suspended=None):
     """Return null for unverified event counts and insufficient price samples."""
     count = len(members)
     matched = [(code, prices[code]) for code in members if code in prices]
@@ -57,9 +58,16 @@ def compute_sector(members, prices, up, down, hot, down_complete, up_complete=Tr
     up_n = len(set(members) & up) if up_complete else None
     down_n = len(set(members) & down) if down_complete else None
     values = [v for _, v in valid]
+    # Only missing quotes with independent full-day evidence are not applicable.
+    valid_codes = {c for c, _ in valid}
+    excluded = (set(members) & set(suspended or {})) - valid_codes - up - down
     return {
         'member_count': count,
         'member_price_sample': len(values),
+        'member_suspended_count': len(excluded),
+        'member_expected_price_sample': count - len(excluded),
+        'member_missing_price_count': count - len(excluded) - len(values),
+        'member_suspensions': [suspended[c] for c in sorted(excluded)],
         'member_up_ratio': round(100 * sum(v > 0 for v in values) / len(values), 2) if values else None,
         'member_median': round(median(values), 3) if values else None,
         'limit_up_count': up_n,
@@ -253,6 +261,16 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
     down_ok=quality.get('limit_down_events',{}).get('status')=='complete'
     reps=history.read_json(DATA/'representatives.json', {})
     representatives={x['code'] for x in reps.get('universe',[]) if x.get('code')}
+    suspension_evidence = {}
+    missing = {c for members in member_lists.values() for c in members
+               if base.num(prices.get(c, {}).get('price_change_ratio_pct')) is None}
+    suspension_error = None
+    if missing:
+        try:
+            suspension_evidence = suspensions.fetch_full_session(day, now.isoformat())
+        except (ValueError, base.requests.RequestException) as exc:
+            # Fail closed: an unavailable/ambiguous source never excuses gaps.
+            suspension_error = type(exc).__name__
     metrics_rows=[]
     focus_rows=[]
     reverse=defaultdict(set)
@@ -260,7 +278,7 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
         members=member_lists.get(code)
         if members is None:
             continue
-        values=compute_sector(members,prices,up,down,hot,down_ok,up_ok)
+        values=compute_sector(members,prices,up,down,hot,down_ok,up_ok,suspension_evidence)
         metrics_rows.append({'code':code,'name':meta.get('name',code),
             'tag':meta.get('tag'),'date':day,'membership_observed_date':member_date,**values})
         for stock in members:
@@ -271,7 +289,7 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
     observed=len(metrics_rows)
     total=len(catalog)
     coverage=sum(x['member_count']==0 or
-                 x['member_price_sample']>=.90*x['member_count'] for x in metrics_rows)
+                 x['member_price_sample']>=.90*x['member_expected_price_sample'] for x in metrics_rows)
     member_quality='complete' if observed==total else 'partial'
     internals_quality='complete' if (member_quality=='complete' and coverage==observed
                                      and up_ok and down_ok) else 'partial'
@@ -286,7 +304,11 @@ def run(day=None, client_get=None, stock_snapshot=None, workers=None):
         'quality_manifest':{
             'sector_members':status,
             'sector_internal_metrics':{**status, 'status':internals_quality,
-                'items_count':coverage, 'source':'weekly members + actual daily stock returns/events'},
+                'items_count':coverage, 'source':'weekly members + actual daily stock returns/events + dated suspension evidence',
+                'suspension_source':suspensions.SOURCE,
+                'suspension_lookup_error':suspension_error,
+                'suspended_member_observations':sum(x['member_suspended_count'] for x in metrics_rows),
+                'missing_price_observations':sum(x['member_missing_price_count'] for x in metrics_rows)},
             'sector_focus_stocks':{**status,'status':member_quality if (up_ok and down_ok) else 'partial',
                 'items_count':len(focus_rows)}
         }

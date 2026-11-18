@@ -5,6 +5,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 import v5_sector as sector
+import pytest
+
+@pytest.fixture(autouse=True)
+def no_live_suspension_network(monkeypatch):
+    monkeypatch.setattr(sector.suspensions, "fetch_full_session", lambda *_: {})
 
 
 def test_members_reject_unproven_empty_or_truncated_records():
