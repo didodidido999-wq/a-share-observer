@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-18T09:08:58.743489+00:00",
+  "generated_at": "2026-11-18T09:09:33.792205+00:00",
   "current": {
     "schema_version": 1,
     "model_version": "breadth-trend-v1",
@@ -1004,7 +1004,7 @@
   ],
   "reviews": [],
   "background": {
-    "observed_at": "2026-11-18T09:08:58.743489+00:00",
+    "observed_at": "2026-11-18T09:09:33.792205+00:00",
     "items": [
       {
         "title": "三季度经济：增长与需求分项",
