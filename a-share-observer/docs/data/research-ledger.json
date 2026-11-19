@@ -1022,6 +1022,16 @@
         "calendar_hash": "a0fbf232f060fb166eb0601fd2abdd13b96d3a801c3d081fedf0bb1926b21316"
       },
       "hash": "e9ece0c2aa3a4a01eec196293cc9eb7141e63db935d21bbf160806047faadcab"
+    },
+    {
+      "sequence": 14,
+      "previous_hash": "e9ece0c2aa3a4a01eec196293cc9eb7141e63db935d21bbf160806047faadcab",
+      "kind": "activation",
+      "payload": {
+        "forecast_id": "research-20261119T084415Z-fcf6667b2c",
+        "activated_at": "2026-11-19T08:51:52.180180+00:00"
+      },
+      "hash": "72bf268d6685270da5ac67d995292ecc81cdf1b1f09ddf329129bc26dfc7d220"
     }
   ]
 }
