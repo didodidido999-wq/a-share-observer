@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-18T19:26:23.710224+00:00",
+  "generated_at": "2026-11-19T08:44:37.595336+00:00",
   "by_code": {
     "000656.SZ": [
       {
@@ -21,6 +21,48 @@
         "note": "公司公告11月16日收盘价0.97元/股，首次披露可能触发面值退市的风险。公告说明连续20个交易日收盘均低于1元涉及终止上市条件；本记录不表示条件已满足或已决定退市。落款11月16日，巨潮PDF归档11月17日；精确公开时刻未核验，仅当前核验区展示，不用于历史可知回放。",
         "status": "verified",
         "available_at": "2026-11-17T08:53:20+00:00"
+      }
+    ],
+    "688300.SH": [
+      {
+        "id": "lianrui-convertible-redemption-condition-warning-20261117-v1",
+        "revision": 1,
+        "supersedes": null,
+        "code": "688300.SH",
+        "kind": "event",
+        "metric_id": "convertible_terms",
+        "value": null,
+        "unit": "",
+        "data_date": "2026-11-17",
+        "document_date": "2026-11-18",
+        "published_at": null,
+        "observed_at": "2026-11-19T08:41:48+00:00",
+        "source_url": "https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-11-18/688300_20261118_L1C9.pdf",
+        "source_title": "联瑞新材关于“联瑞转债”预计满足赎回条件的提示性公告（2026-075）",
+        "note": "联瑞转债118064：公告披露11月4日至11月17日已有10个交易日收盘价不低于当期转股价48.50元/股的130%（63.05元/股）。若未来连续20个交易日中再有5日达到该条件，将触发有条件赎回条款；触发后仍须董事会审议是否赎回。本记录仅为条件接近提示，不表示已触发、已决定或已完成赎回。公告落款11月18日，精确公布时刻未核实，仅当前核验区展示，不用于历史已知回放。",
+        "status": "verified",
+        "available_at": "2026-11-19T08:41:48+00:00"
+      }
+    ],
+    "300054.SZ": [
+      {
+        "id": "dinglong-convertible-no-early-redemption-20261118-v1",
+        "revision": 1,
+        "supersedes": null,
+        "code": "300054.SZ",
+        "kind": "event",
+        "metric_id": "convertible_terms",
+        "value": null,
+        "unit": "",
+        "data_date": "2026-11-18",
+        "document_date": "2026-11-19",
+        "published_at": null,
+        "observed_at": "2026-11-19T08:44:37+00:00",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-19/1225677228.PDF",
+        "source_title": "鼎龙股份关于不提前赎回鼎龙转债的公告（2026-098）",
+        "note": "鼎龙转债123255：公司公告10月29日至11月18日已满足连续30个交易日中15日收盘价不低于当期转股价28.38元/股的130%（36.89元/股），触发有条件赎回条款。11月18日董事会决定本次不提前赎回，并决定11月19日至2027年5月18日期间再次触发该条款也不行使提前赎回权利；5月18日后首个交易日起重新计算，届时若再触发须另行审议。本记录是已公告决策，不表示转债无其他风险。公告落款11月19日，精确公布时刻未核实，仅当前核验区展示，不用于历史已知回放。",
+        "status": "verified",
+        "available_at": "2026-11-19T08:44:37+00:00"
       }
     ]
   },
