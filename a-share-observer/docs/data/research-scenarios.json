@@ -2,7 +2,7 @@
   "schema_version": 1,
   "version": "cross-index-policy-research-v1.1",
   "kind": "scenario_research_not_scored_forecast",
-  "generated_at": "2026-11-19T08:44:16.564235+00:00",
+  "generated_at": "2026-11-19T13:50:38.044141+00:00",
   "data_date": "2026-11-19",
   "headline": "指数与市场宽度分化，暂不归为单边趋势",
   "scenario": "mixed",
@@ -432,7 +432,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 31.3,
+      "age_days": 31.5,
       "evidence_id": "nbs-2026q3-gdp-v1",
       "title": "三季度经济：增长与需求分项",
       "kind": "statistic",
@@ -513,7 +513,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 9.7,
+      "age_days": 9.9,
       "evidence_id": "nbs-202610-prices-v1",
       "title": "10月物价：消费与生产价格分化",
       "kind": "statistic",
@@ -607,7 +607,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 9.7,
+      "age_days": 9.9,
       "evidence_id": "nbs-202610-prices-comment-v1",
       "title": "统计局解读：能源价格传导",
       "kind": "official_commentary",
@@ -651,7 +651,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 6.7,
+      "age_days": 6.9,
       "evidence_id": "ndrc-20261112-fuel-price-v1",
       "title": "成品油调价：生效日期与传导范围",
       "kind": "policy",
@@ -722,7 +722,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 6.0,
+      "age_days": 6.2,
       "evidence_id": "pbc-202610-financial-statistics-v1",
       "title": "10月金融统计：社融存量与货币增速",
       "kind": "statistic",
@@ -839,7 +839,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 5.3,
+      "age_days": 5.5,
       "evidence_id": "nbs-202611-early-materials-v1",
       "title": "11月上旬生产资料：多数品种旬环比回落",
       "kind": "statistic",
@@ -968,7 +968,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 6.0,
+      "age_days": 6.2,
       "evidence_id": "pbc-20261116-outright-repo-plan-v1",
       "title": "11月16日买断式逆回购：已公告计划，结果待核验",
       "kind": "policy",
@@ -1037,7 +1037,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.3,
+      "age_days": 3.5,
       "evidence_id": "nbs-202610-economy-v1",
       "title": "10月经济数据：工业增长，消费偏弱、投资下降",
       "kind": "statistic",
@@ -1154,7 +1154,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 2.3,
+      "age_days": 2.5,
       "evidence_id": "pbc-20261117-overnight-repo-v1",
       "title": "11月17日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1223,7 +1223,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 1.3,
+      "age_days": 1.5,
       "evidence_id": "pbc-20261118-overnight-repo-v1",
       "title": "11月18日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1292,7 +1292,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 9.7,
+      "age_days": 9.9,
       "evidence_id": "mof-20261109-us-tariff-v1",
       "title": "对美加征关税措施：24%税率继续暂停两个月",
       "kind": "policy",
@@ -1358,6 +1358,144 @@
         ],
         "interpretation": "这是指定加征关税措施的延续安排。企业影响仍需按商品税号、原产地及其他适用税费核对，不能推导全部进口商品总税率或A股确定方向。",
         "limitations": "11月9日发布的旧公告在11月18日首次核验入库，不是今日新政策；原文仅给公开日期，按次日零时保守界限。不可由本条推断全部关税豁免，亦不回填历史预测。"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 0.5,
+      "evidence_id": "pbc-20261119-overnight-repo-v1",
+      "title": "11月19日隔夜逆回购操作结果",
+      "kind": "policy",
+      "fact": "人民银行以固定利率、数量招标方式开展7675亿元隔夜逆回购，利率1.25%，投标量与中标量均为7675亿元。",
+      "metrics": [
+        {
+          "name": "隔夜逆回购中标量",
+          "value": 7675,
+          "unit": "亿元",
+          "basis": "当日操作总量，非净投放"
+        },
+        {
+          "name": "隔夜逆回购操作利率",
+          "value": 1.25,
+          "unit": "%",
+          "basis": "当日隔夜操作利率"
+        }
+      ],
+      "role": "待研究证据",
+      "mechanism": "尚无经人工核验的具体传导规则。",
+      "scenario_effect": "只列为待研究，不自动改变方向。",
+      "counter_evidence": "未研究不等于中性或没有影响。",
+      "watch": "核实政策工具、覆盖对象、生效与执行。",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026111908555223899/index.html",
+      "available_at": "2026-11-19T13:50:37+00:00",
+      "published_at": "2026-11-19T09:20:30+08:00",
+      "publication_precision": "datetime",
+      "period": "2026-11-19",
+      "route": {
+        "page": "policy",
+        "anchor": "pbc-20261119-overnight-repo-v1"
+      },
+      "evidence_snapshot": {
+        "id": "pbc-20261119-overnight-repo-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "11月19日隔夜逆回购操作结果",
+        "kind": "policy",
+        "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026111908555223899/index.html",
+        "source_name": "中国人民银行公开市场业务操作室",
+        "published_at": "2026-11-19T09:20:30+08:00",
+        "published_precision": "datetime",
+        "published_date": "2026-11-19",
+        "observed_at": "2026-11-19T13:50:37+00:00",
+        "available_at": "2026-11-19T13:50:37+00:00",
+        "period": "2026-11-19",
+        "summary": "人民银行以固定利率、数量招标方式开展7675亿元隔夜逆回购，利率1.25%，投标量与中标量均为7675亿元。",
+        "metrics": [
+          {
+            "name": "隔夜逆回购中标量",
+            "value": 7675,
+            "unit": "亿元",
+            "basis": "当日操作总量，非净投放"
+          },
+          {
+            "name": "隔夜逆回购操作利率",
+            "value": 1.25,
+            "unit": "%",
+            "basis": "当日隔夜操作利率"
+          }
+        ],
+        "interpretation": "短期流动性操作，不能据此推断股票增量资金，也不是11月16日六个月买断式逆回购的结果。",
+        "limitations": "原公告未同时披露到期量，本记录不计算净投放；盘后核验留存，不进入已冻结预测。"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 0.5,
+      "evidence_id": "pbc-20261119-treasury-cash-deposit-v1",
+      "title": "11月19日中央国库现金管理第23期招标结果",
+      "kind": "policy",
+      "fact": "中央国库现金管理商业银行定期存款第23期中标1000亿元，利率1.30%，11月19日起息、12月17日到期，采用单一价格利率招标。",
+      "metrics": [
+        {
+          "name": "中央国库现金管理定存中标量",
+          "value": 1000,
+          "unit": "亿元",
+          "basis": "本期定期存款实际中标量"
+        },
+        {
+          "name": "中央国库现金管理定存中标利率",
+          "value": 1.3,
+          "unit": "%",
+          "basis": "本期中标利率"
+        }
+      ],
+      "role": "待研究证据",
+      "mechanism": "尚无经人工核验的具体传导规则。",
+      "scenario_effect": "只列为待研究，不自动改变方向。",
+      "counter_evidence": "未研究不等于中性或没有影响。",
+      "watch": "核实政策工具、覆盖对象、生效与执行。",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125481/2026111909215227241/index.html",
+      "available_at": "2026-11-19T13:50:37+00:00",
+      "published_at": "2026-11-19T09:40:00+08:00",
+      "publication_precision": "datetime",
+      "period": "2026-11-19",
+      "route": {
+        "page": "policy",
+        "anchor": "pbc-20261119-treasury-cash-deposit-v1"
+      },
+      "evidence_snapshot": {
+        "id": "pbc-20261119-treasury-cash-deposit-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "11月19日中央国库现金管理第23期招标结果",
+        "kind": "policy",
+        "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125481/2026111909215227241/index.html",
+        "source_name": "财政部、中国人民银行",
+        "published_at": "2026-11-19T09:40:00+08:00",
+        "published_precision": "datetime",
+        "published_date": "2026-11-19",
+        "observed_at": "2026-11-19T13:50:37+00:00",
+        "available_at": "2026-11-19T13:50:37+00:00",
+        "period": "2026-11-19",
+        "summary": "中央国库现金管理商业银行定期存款第23期中标1000亿元，利率1.30%，11月19日起息、12月17日到期，采用单一价格利率招标。",
+        "metrics": [
+          {
+            "name": "中央国库现金管理定存中标量",
+            "value": 1000,
+            "unit": "亿元",
+            "basis": "本期定期存款实际中标量"
+          },
+          {
+            "name": "中央国库现金管理定存中标利率",
+            "value": 1.3,
+            "unit": "%",
+            "basis": "本期中标利率"
+          }
+        ],
+        "interpretation": "这是国库现金管理的商业银行定期存款操作，不是逆回购或股票资金。",
+        "limitations": "未核对同期定存到期额，不与隔夜逆回购简单相加或计算银行体系净投放；盘后核验，不写入既有冻结预测。"
       }
     }
   ],
@@ -1493,5 +1631,5 @@
       "sha256": "4bd0dce48be2b3885309151560c916d1d822fe8aa00ef6c5c87fe84e2b726d58"
     }
   ],
-  "input_digest": "7b6c9fadb60aaef460178f64e17acd5a78aad0c2819bf2915bb09e3e1f3aea50"
+  "input_digest": "b5b65c41528eaa88377d066ad8be25ad3c4e5082db785be3338c0da536ae6534"
 }
