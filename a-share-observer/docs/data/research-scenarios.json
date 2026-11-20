@@ -2,42 +2,42 @@
   "schema_version": 1,
   "version": "cross-index-policy-research-v1.1",
   "kind": "scenario_research_not_scored_forecast",
-  "generated_at": "2026-11-19T13:50:38.044141+00:00",
-  "data_date": "2026-11-19",
-  "headline": "指数与市场宽度分化，暂不归为单边趋势",
-  "scenario": "mixed",
+  "generated_at": "2026-11-20T08:23:30.064221+00:00",
+  "data_date": "2026-11-20",
+  "headline": "权重相对抗跌，市场多数股票仍承压",
+  "scenario": "defensive_divergence",
   "policy_conclusion": "需求与成本证据提示行业分化；已生效成品油调价提供局部成本缓和反证。 社融须区分存量增长与累计增量变化，尚不支持直接推断股市增量资金。 旬价为成本分化提供新反证，仍需区分供给和需求原因。 逆回购计划列为后续验证条件，未当作已实施净投放。",
-  "strongest_counter_evidence": "上证50当日+0.323%，相对沪深300抗跌；但这不等于多数股票止跌。 已实施的成品油调价可能缓和部分下游成本，限制单边悲观解释。",
+  "strongest_counter_evidence": "上证50当日+0.449%，相对沪深300抗跌；但这不等于多数股票止跌。 已实施的成品油调价可能缓和部分下游成本，限制单边悲观解释。",
   "coverage": "结构判断使用国内指数/市场宽度；政策和统计证据改变情景解释与反证，不转换为未经验证的数值权重。",
   "role_boundary": "当前综合研究，不替代已激活v1预测，不自动进入其命中统计；本版本没有已验证的上涨概率。",
   "signals": [
     {
       "label": "沪深300当日",
-      "value": 0.026859,
+      "value": -0.759629,
       "unit": "%",
       "route": {
         "page": "today",
-        "date": "2026-11-19",
+        "date": "2026-11-20",
         "anchor": "market-index-section"
       }
     },
     {
       "label": "上涨股票占比",
-      "value": 11.645433339314552,
+      "value": 5.617372577171572,
       "unit": "%",
       "route": {
         "page": "today",
-        "date": "2026-11-19",
+        "date": "2026-11-20",
         "anchor": "kpi-grid"
       }
     },
     {
       "label": "上证50当日",
-      "value": 0.322658,
+      "value": 0.449258,
       "unit": "%",
       "route": {
         "page": "today",
-        "date": "2026-11-19",
+        "date": "2026-11-20",
         "anchor": "market-index-section"
       }
     }
@@ -48,37 +48,37 @@
       "name": "沪深300",
       "group": "large",
       "group_label": "权重与大盘",
-      "close": 3984.84,
-      "daily_pct": 0.026859,
+      "close": 3954.57,
+      "daily_pct": -0.759629,
       "changes": {
         "1": {
-          "pct": 0.026858980312627345,
-          "start_date": "2026-11-18",
-          "end_date": "2026-11-19",
+          "pct": -0.7596289938868295,
+          "start_date": "2026-11-19",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "5": {
-          "pct": -1.461202345243362,
-          "start_date": "2026-11-12",
-          "end_date": "2026-11-19",
+          "pct": -1.5367416197535455,
+          "start_date": "2026-11-13",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "20": {
-          "pct": -1.2749300101578154,
-          "start_date": "2026-10-22",
-          "end_date": "2026-11-19",
+          "pct": -3.6722991817953687,
+          "start_date": "2026-10-23",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         }
       },
       "route": {
         "page": "today",
-        "date": "2026-11-19",
+        "date": "2026-11-20",
         "anchor": "market-index-section"
       },
       "source_snapshot": {
-        "path": "data/history/2026-11-19.json",
-        "sha256": "4bd0dce48be2b3885309151560c916d1d822fe8aa00ef6c5c87fe84e2b726d58",
-        "available_at": "2026-11-19T16:43:40.622387+08:00"
+        "path": "data/history/2026-11-20.json",
+        "sha256": "0afc6d7426f90966e6431b6ef655641e99ab7d2b8de2a07fb3ab3df3b73172e2",
+        "available_at": "2026-11-20T16:22:49.064363+08:00"
       }
     },
     {
@@ -86,37 +86,37 @@
       "name": "上证50",
       "group": "large",
       "group_label": "权重与大盘",
-      "close": 2773.46,
-      "daily_pct": 0.322658,
+      "close": 2785.92,
+      "daily_pct": 0.449258,
       "changes": {
         "1": {
-          "pct": 0.32265765733179297,
-          "start_date": "2026-11-18",
-          "end_date": "2026-11-19",
+          "pct": 0.44925832714370895,
+          "start_date": "2026-11-19",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "5": {
-          "pct": 0.050143033906069334,
-          "start_date": "2026-11-12",
-          "end_date": "2026-11-19",
+          "pct": 0.3927899618741515,
+          "start_date": "2026-11-13",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "20": {
           "pct": null,
-          "start_date": "2026-10-22",
-          "end_date": "2026-11-19",
+          "start_date": "2026-10-23",
+          "end_date": "2026-11-20",
           "status": "missing"
         }
       },
       "route": {
         "page": "today",
-        "date": "2026-11-19",
+        "date": "2026-11-20",
         "anchor": "market-index-section"
       },
       "source_snapshot": {
-        "path": "data/history/2026-11-19.json",
-        "sha256": "4bd0dce48be2b3885309151560c916d1d822fe8aa00ef6c5c87fe84e2b726d58",
-        "available_at": "2026-11-19T16:43:40.622387+08:00"
+        "path": "data/history/2026-11-20.json",
+        "sha256": "0afc6d7426f90966e6431b6ef655641e99ab7d2b8de2a07fb3ab3df3b73172e2",
+        "available_at": "2026-11-20T16:22:49.064363+08:00"
       }
     },
     {
@@ -124,37 +124,37 @@
       "name": "上证指数",
       "group": "large",
       "group_label": "权重与大盘",
-      "close": 3577.62,
-      "daily_pct": -0.284573,
+      "close": 3533.79,
+      "daily_pct": -1.225116,
       "changes": {
         "1": {
-          "pct": -0.2845731263744433,
-          "start_date": "2026-11-18",
-          "end_date": "2026-11-19",
+          "pct": -1.225116138662019,
+          "start_date": "2026-11-19",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "5": {
-          "pct": -2.139322670911936,
-          "start_date": "2026-11-12",
-          "end_date": "2026-11-19",
+          "pct": -2.766932188699489,
+          "start_date": "2026-11-13",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "20": {
-          "pct": -2.1981777076732656,
-          "start_date": "2026-10-22",
-          "end_date": "2026-11-19",
+          "pct": -4.245789165636992,
+          "start_date": "2026-10-23",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         }
       },
       "route": {
         "page": "today",
-        "date": "2026-11-19",
+        "date": "2026-11-20",
         "anchor": "market-index-section"
       },
       "source_snapshot": {
-        "path": "data/history/2026-11-19.json",
-        "sha256": "4bd0dce48be2b3885309151560c916d1d822fe8aa00ef6c5c87fe84e2b726d58",
-        "available_at": "2026-11-19T16:43:40.622387+08:00"
+        "path": "data/history/2026-11-20.json",
+        "sha256": "0afc6d7426f90966e6431b6ef655641e99ab7d2b8de2a07fb3ab3df3b73172e2",
+        "available_at": "2026-11-20T16:22:49.064363+08:00"
       }
     },
     {
@@ -162,37 +162,37 @@
       "name": "中证500",
       "group": "mid",
       "group_label": "中盘与扩散",
-      "close": 6251.96,
-      "daily_pct": -0.481677,
+      "close": 6006.08,
+      "daily_pct": -3.932847,
       "changes": {
         "1": {
-          "pct": -0.48167685945414984,
-          "start_date": "2026-11-18",
-          "end_date": "2026-11-19",
+          "pct": -3.9328466592876477,
+          "start_date": "2026-11-19",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "5": {
-          "pct": -5.332858884186454,
-          "start_date": "2026-11-12",
-          "end_date": "2026-11-19",
+          "pct": -7.105571271473621,
+          "start_date": "2026-11-13",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "20": {
-          "pct": -6.059727282972094,
-          "start_date": "2026-10-22",
-          "end_date": "2026-11-19",
+          "pct": -11.862456782949149,
+          "start_date": "2026-10-23",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         }
       },
       "route": {
         "page": "today",
-        "date": "2026-11-19",
+        "date": "2026-11-20",
         "anchor": "market-index-section"
       },
       "source_snapshot": {
-        "path": "data/history/2026-11-19.json",
-        "sha256": "4bd0dce48be2b3885309151560c916d1d822fe8aa00ef6c5c87fe84e2b726d58",
-        "available_at": "2026-11-19T16:43:40.622387+08:00"
+        "path": "data/history/2026-11-20.json",
+        "sha256": "0afc6d7426f90966e6431b6ef655641e99ab7d2b8de2a07fb3ab3df3b73172e2",
+        "available_at": "2026-11-20T16:22:49.064363+08:00"
       }
     },
     {
@@ -205,32 +205,32 @@
       "changes": {
         "1": {
           "pct": null,
-          "start_date": "2026-11-18",
-          "end_date": "2026-11-19",
+          "start_date": "2026-11-19",
+          "end_date": "2026-11-20",
           "status": "missing"
         },
         "5": {
           "pct": null,
-          "start_date": "2026-11-12",
-          "end_date": "2026-11-19",
+          "start_date": "2026-11-13",
+          "end_date": "2026-11-20",
           "status": "missing"
         },
         "20": {
           "pct": null,
-          "start_date": "2026-10-22",
-          "end_date": "2026-11-19",
+          "start_date": "2026-10-23",
+          "end_date": "2026-11-20",
           "status": "missing"
         }
       },
       "route": {
         "page": "today",
-        "date": "2026-11-19",
+        "date": "2026-11-20",
         "anchor": "market-index-section"
       },
       "source_snapshot": {
-        "path": "data/history/2026-11-19.json",
-        "sha256": "4bd0dce48be2b3885309151560c916d1d822fe8aa00ef6c5c87fe84e2b726d58",
-        "available_at": "2026-11-19T16:43:40.622387+08:00"
+        "path": "data/history/2026-11-20.json",
+        "sha256": "0afc6d7426f90966e6431b6ef655641e99ab7d2b8de2a07fb3ab3df3b73172e2",
+        "available_at": "2026-11-20T16:22:49.064363+08:00"
       }
     },
     {
@@ -238,37 +238,37 @@
       "name": "创业板指",
       "group": "growth",
       "group_label": "成长与弹性",
-      "close": 2293.3416,
-      "daily_pct": -0.790753,
+      "close": 2212.1274,
+      "daily_pct": -3.541304,
       "changes": {
         "1": {
-          "pct": -0.7907525317301101,
-          "start_date": "2026-11-18",
-          "end_date": "2026-11-19",
+          "pct": -3.5413040952992025,
+          "start_date": "2026-11-19",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "5": {
-          "pct": -8.611018681939198,
-          "start_date": "2026-11-12",
-          "end_date": "2026-11-19",
+          "pct": -8.819047972350525,
+          "start_date": "2026-11-13",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "20": {
-          "pct": -11.003891884088668,
-          "start_date": "2026-10-22",
-          "end_date": "2026-11-19",
+          "pct": -17.583924873057878,
+          "start_date": "2026-10-23",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         }
       },
       "route": {
         "page": "today",
-        "date": "2026-11-19",
+        "date": "2026-11-20",
         "anchor": "market-index-section"
       },
       "source_snapshot": {
-        "path": "data/history/2026-11-19.json",
-        "sha256": "4bd0dce48be2b3885309151560c916d1d822fe8aa00ef6c5c87fe84e2b726d58",
-        "available_at": "2026-11-19T16:43:40.622387+08:00"
+        "path": "data/history/2026-11-20.json",
+        "sha256": "0afc6d7426f90966e6431b6ef655641e99ab7d2b8de2a07fb3ab3df3b73172e2",
+        "available_at": "2026-11-20T16:22:49.064363+08:00"
       }
     },
     {
@@ -276,37 +276,37 @@
       "name": "科创50",
       "group": "growth",
       "group_label": "成长与弹性",
-      "close": 1270.78,
-      "daily_pct": 1.826136,
+      "close": 1231.09,
+      "daily_pct": -3.123279,
       "changes": {
         "1": {
-          "pct": 1.8261364273752134,
-          "start_date": "2026-11-18",
-          "end_date": "2026-11-19",
+          "pct": -3.1232786162829207,
+          "start_date": "2026-11-19",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "5": {
-          "pct": -2.9820436083796475,
-          "start_date": "2026-11-12",
-          "end_date": "2026-11-19",
+          "pct": -3.7955394401638087,
+          "start_date": "2026-11-13",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "20": {
-          "pct": -2.6870974905618406,
-          "start_date": "2026-10-22",
-          "end_date": "2026-11-19",
+          "pct": -8.503838693134947,
+          "start_date": "2026-10-23",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         }
       },
       "route": {
         "page": "today",
-        "date": "2026-11-19",
+        "date": "2026-11-20",
         "anchor": "market-index-section"
       },
       "source_snapshot": {
-        "path": "data/history/2026-11-19.json",
-        "sha256": "4bd0dce48be2b3885309151560c916d1d822fe8aa00ef6c5c87fe84e2b726d58",
-        "available_at": "2026-11-19T16:43:40.622387+08:00"
+        "path": "data/history/2026-11-20.json",
+        "sha256": "0afc6d7426f90966e6431b6ef655641e99ab7d2b8de2a07fb3ab3df3b73172e2",
+        "available_at": "2026-11-20T16:22:49.064363+08:00"
       }
     },
     {
@@ -314,37 +314,37 @@
       "name": "深证成指",
       "group": "growth",
       "group_label": "成长与弹性",
-      "close": 10583.2044,
-      "daily_pct": -0.714929,
+      "close": 10256.3885,
+      "daily_pct": -3.088062,
       "changes": {
         "1": {
-          "pct": -0.7149287677379768,
-          "start_date": "2026-11-18",
-          "end_date": "2026-11-19",
+          "pct": -3.088061872829384,
+          "start_date": "2026-11-19",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "5": {
-          "pct": -5.490024268671412,
-          "start_date": "2026-11-12",
-          "end_date": "2026-11-19",
+          "pct": -6.494779231286019,
+          "start_date": "2026-11-13",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "20": {
-          "pct": -6.816005888713173,
-          "start_date": "2026-10-22",
-          "end_date": "2026-11-19",
+          "pct": -12.142013252553197,
+          "start_date": "2026-10-23",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         }
       },
       "route": {
         "page": "today",
-        "date": "2026-11-19",
+        "date": "2026-11-20",
         "anchor": "market-index-section"
       },
       "source_snapshot": {
-        "path": "data/history/2026-11-19.json",
-        "sha256": "4bd0dce48be2b3885309151560c916d1d822fe8aa00ef6c5c87fe84e2b726d58",
-        "available_at": "2026-11-19T16:43:40.622387+08:00"
+        "path": "data/history/2026-11-20.json",
+        "sha256": "0afc6d7426f90966e6431b6ef655641e99ab7d2b8de2a07fb3ab3df3b73172e2",
+        "available_at": "2026-11-20T16:22:49.064363+08:00"
       }
     },
     {
@@ -352,37 +352,37 @@
       "name": "北证50",
       "group": "other",
       "group_label": "独立市场观察",
-      "close": 798.639,
-      "daily_pct": -3.993234,
+      "close": 759.898,
+      "daily_pct": -4.850878,
       "changes": {
         "1": {
-          "pct": -3.9932344140879983,
-          "start_date": "2026-11-18",
-          "end_date": "2026-11-19",
+          "pct": -4.8508775554411905,
+          "start_date": "2026-11-19",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "5": {
-          "pct": -12.05113691425349,
-          "start_date": "2026-11-12",
-          "end_date": "2026-11-19",
+          "pct": -13.28641803154288,
+          "start_date": "2026-11-13",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         },
         "20": {
-          "pct": -17.388439497693277,
-          "start_date": "2026-10-22",
-          "end_date": "2026-11-19",
+          "pct": -22.844848593150946,
+          "start_date": "2026-10-23",
+          "end_date": "2026-11-20",
           "status": "observed_archive_intervals"
         }
       },
       "route": {
         "page": "today",
-        "date": "2026-11-19",
+        "date": "2026-11-20",
         "anchor": "market-index-section"
       },
       "source_snapshot": {
-        "path": "data/history/2026-11-19.json",
-        "sha256": "4bd0dce48be2b3885309151560c916d1d822fe8aa00ef6c5c87fe84e2b726d58",
-        "available_at": "2026-11-19T16:43:40.622387+08:00"
+        "path": "data/history/2026-11-20.json",
+        "sha256": "0afc6d7426f90966e6431b6ef655641e99ab7d2b8de2a07fb3ab3df3b73172e2",
+        "available_at": "2026-11-20T16:22:49.064363+08:00"
       }
     }
   ],
@@ -432,7 +432,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 31.5,
+      "age_days": 32.3,
       "evidence_id": "nbs-2026q3-gdp-v1",
       "title": "三季度经济：增长与需求分项",
       "kind": "statistic",
@@ -513,7 +513,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 9.9,
+      "age_days": 10.7,
       "evidence_id": "nbs-202610-prices-v1",
       "title": "10月物价：消费与生产价格分化",
       "kind": "statistic",
@@ -607,7 +607,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 9.9,
+      "age_days": 10.7,
       "evidence_id": "nbs-202610-prices-comment-v1",
       "title": "统计局解读：能源价格传导",
       "kind": "official_commentary",
@@ -651,7 +651,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 6.9,
+      "age_days": 7.7,
       "evidence_id": "ndrc-20261112-fuel-price-v1",
       "title": "成品油调价：生效日期与传导范围",
       "kind": "policy",
@@ -722,7 +722,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 6.2,
+      "age_days": 7.0,
       "evidence_id": "pbc-202610-financial-statistics-v1",
       "title": "10月金融统计：社融存量与货币增速",
       "kind": "statistic",
@@ -839,7 +839,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 5.5,
+      "age_days": 6.3,
       "evidence_id": "nbs-202611-early-materials-v1",
       "title": "11月上旬生产资料：多数品种旬环比回落",
       "kind": "statistic",
@@ -968,7 +968,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 6.2,
+      "age_days": 7.0,
       "evidence_id": "pbc-20261116-outright-repo-plan-v1",
       "title": "11月16日买断式逆回购：已公告计划，结果待核验",
       "kind": "policy",
@@ -1037,7 +1037,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.5,
+      "age_days": 4.3,
       "evidence_id": "nbs-202610-economy-v1",
       "title": "10月经济数据：工业增长，消费偏弱、投资下降",
       "kind": "statistic",
@@ -1154,7 +1154,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 2.5,
+      "age_days": 3.3,
       "evidence_id": "pbc-20261117-overnight-repo-v1",
       "title": "11月17日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1223,7 +1223,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 1.5,
+      "age_days": 2.3,
       "evidence_id": "pbc-20261118-overnight-repo-v1",
       "title": "11月18日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1292,7 +1292,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 9.9,
+      "age_days": 10.7,
       "evidence_id": "mof-20261109-us-tariff-v1",
       "title": "对美加征关税措施：24%税率继续暂停两个月",
       "kind": "policy",
@@ -1363,7 +1363,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 0.5,
+      "age_days": 1.3,
       "evidence_id": "pbc-20261119-overnight-repo-v1",
       "title": "11月19日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1432,7 +1432,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 0.5,
+      "age_days": 1.3,
       "evidence_id": "pbc-20261119-treasury-cash-deposit-v1",
       "title": "11月19日中央国库现金管理第23期招标结果",
       "kind": "policy",
@@ -1525,11 +1525,6 @@
     "未纳入外盘ETF代理为原指数信号；境外时差/汇率/溢价及商品成本传导尚未量化。"
   ],
   "source_manifest": [
-    {
-      "date": "2026-10-22",
-      "available_at": "2026-10-28T10:26:20.881303+08:00",
-      "sha256": "a3767b28eb9c702297ee9956e5f6e180bdd888d6dacbd5e4b48a7b704e4ab405"
-    },
     {
       "date": "2026-10-23",
       "available_at": "2026-10-28T10:26:20.921868+08:00",
@@ -1629,7 +1624,12 @@
       "date": "2026-11-19",
       "available_at": "2026-11-19T16:43:40.622387+08:00",
       "sha256": "4bd0dce48be2b3885309151560c916d1d822fe8aa00ef6c5c87fe84e2b726d58"
+    },
+    {
+      "date": "2026-11-20",
+      "available_at": "2026-11-20T16:22:49.064363+08:00",
+      "sha256": "0afc6d7426f90966e6431b6ef655641e99ab7d2b8de2a07fb3ab3df3b73172e2"
     }
   ],
-  "input_digest": "b5b65c41528eaa88377d066ad8be25ad3c4e5082db785be3338c0da536ae6534"
+  "input_digest": "850370b5d9057e3727c0442a0987b8de848370925a1de8e8abfa3fc8a677ff3b"
 }
