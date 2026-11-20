@@ -2,7 +2,7 @@
   "schema_version": 1,
   "version": "cross-index-policy-research-v1.1",
   "kind": "scenario_research_not_scored_forecast",
-  "generated_at": "2026-11-20T17:00:24.435716+00:00",
+  "generated_at": "2026-11-20T17:14:11.816603+00:00",
   "data_date": "2026-11-20",
   "headline": "权重相对抗跌，市场多数股票仍承压",
   "scenario": "defensive_divergence",
@@ -513,7 +513,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 11.0,
+      "age_days": 11.1,
       "evidence_id": "nbs-202610-prices-v1",
       "title": "10月物价：消费与生产价格分化",
       "kind": "statistic",
@@ -607,7 +607,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 11.0,
+      "age_days": 11.1,
       "evidence_id": "nbs-202610-prices-comment-v1",
       "title": "统计局解读：能源价格传导",
       "kind": "official_commentary",
@@ -651,7 +651,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 8.0,
+      "age_days": 8.1,
       "evidence_id": "ndrc-20261112-fuel-price-v1",
       "title": "成品油调价：生效日期与传导范围",
       "kind": "policy",
@@ -839,7 +839,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 6.6,
+      "age_days": 6.7,
       "evidence_id": "nbs-202611-early-materials-v1",
       "title": "11月上旬生产资料：多数品种旬环比回落",
       "kind": "statistic",
@@ -1292,7 +1292,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 11.0,
+      "age_days": 11.1,
       "evidence_id": "mof-20261109-us-tariff-v1",
       "title": "对美加征关税措施：24%税率继续暂停两个月",
       "kind": "policy",
@@ -1700,5 +1700,5 @@
       "sha256": "0afc6d7426f90966e6431b6ef655641e99ab7d2b8de2a07fb3ab3df3b73172e2"
     }
   ],
-  "input_digest": "7da33d2fdc1e2a1690cd4bf6571fb5ba032eb676f39b16702f53ee03d5bff5c1"
+  "input_digest": "2a3a8153a26a918f95de5c6984806282579e04bab9f9c4b2ee81d175cc8f4bf1"
 }
