@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-20T08:26:53.377504+00:00",
+  "generated_at": "2026-11-20T16:19:44.484330+00:00",
   "current": {
     "schema_version": 1,
     "model_version": "breadth-trend-v1",
@@ -1441,7 +1441,7 @@
   ],
   "reviews": [],
   "background": {
-    "observed_at": "2026-11-20T08:26:53.377504+00:00",
+    "observed_at": "2026-11-20T16:19:44.484330+00:00",
     "items": [
       {
         "title": "三季度经济：增长与需求分项",
@@ -1626,6 +1626,20 @@
         "available_at": "2026-11-19T13:50:37+00:00"
       },
       {
+        "title": "11月20日隔夜逆回购操作结果",
+        "fact": "人民银行开展3795亿元隔夜逆回购，操作利率1.25%，投标量与中标量均为3795亿元。",
+        "analysis": "银行间短期流动性操作，不能据此推断股市增量资金。",
+        "limitations": "央行此公告未列到期量；不计算净投放，也不是六个月买断式逆回购结果。",
+        "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026112008523941940/index.html",
+        "evidence_id": "pbc-20261120-overnight-repo-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "pbc-20261120-overnight-repo-v1"
+        },
+        "data_date": "2026-11-20",
+        "available_at": "2026-11-20T13:39:30+00:00"
+      },
+      {
         "title": "中国国债2年收益率",
         "fact": "1.2276%",
         "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
@@ -1675,10 +1689,10 @@
       },
       {
         "title": "融资交易背景",
-        "fact": "融资余额 22082.617 亿元；净买入 -88.338 亿元",
+        "fact": "融资余额 21927.426 亿元；净买入 -155.191 亿元",
         "analysis": "杠杆资金的边际变化需结合成交规模与价格确认，单日净买入不代表持续增量资金。",
         "limitations": "融资不是全部散户或主力资金；ETF份额变化也不能确认汇金买卖。未纳入方向规则。",
-        "data_date": "2026-11-18",
+        "data_date": "2026-11-19",
         "source_url": "https://data.eastmoney.com/rzrq/total.html",
         "route": {
           "page": "capital",
