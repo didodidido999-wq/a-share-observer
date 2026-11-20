@@ -2,7 +2,7 @@
   "schema_version": 1,
   "version": "cross-index-policy-research-v1.1",
   "kind": "scenario_research_not_scored_forecast",
-  "generated_at": "2026-11-20T16:56:28.537396+00:00",
+  "generated_at": "2026-11-20T17:00:24.435716+00:00",
   "data_date": "2026-11-20",
   "headline": "权重相对抗跌，市场多数股票仍承压",
   "scenario": "defensive_divergence",
@@ -1154,7 +1154,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.6,
+      "age_days": 3.7,
       "evidence_id": "pbc-20261117-overnight-repo-v1",
       "title": "11月17日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1223,7 +1223,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 2.6,
+      "age_days": 2.7,
       "evidence_id": "pbc-20261118-overnight-repo-v1",
       "title": "11月18日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1363,7 +1363,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 1.6,
+      "age_days": 1.7,
       "evidence_id": "pbc-20261119-overnight-repo-v1",
       "title": "11月19日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1501,7 +1501,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 0.6,
+      "age_days": 0.7,
       "evidence_id": "pbc-20261120-overnight-repo-v1",
       "title": "11月20日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1700,5 +1700,5 @@
       "sha256": "0afc6d7426f90966e6431b6ef655641e99ab7d2b8de2a07fb3ab3df3b73172e2"
     }
   ],
-  "input_digest": "c55325c198f9f534ddc78acaba660c0305e80cdc573b1ac10a077d8591023a9a"
+  "input_digest": "7da33d2fdc1e2a1690cd4bf6571fb5ba032eb676f39b16702f53ee03d5bff5c1"
 }
