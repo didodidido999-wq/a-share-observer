@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-11-19T13:50:37+00:00",
+  "checked_at": "2026-11-20T13:39:30+00:00",
   "records": [
     {
       "id": "nbs-2026q3-gdp-v1",
@@ -506,6 +506,38 @@
       ],
       "interpretation": "这是国库现金管理的商业银行定期存款操作，不是逆回购或股票资金。",
       "limitations": "未核对同期定存到期额，不与隔夜逆回购简单相加或计算银行体系净投放；盘后核验，不写入既有冻结预测。"
+    },
+    {
+      "id": "pbc-20261120-overnight-repo-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "11月20日隔夜逆回购操作结果",
+      "kind": "policy",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026112008523941940/index.html",
+      "source_name": "中国人民银行公开市场业务操作室",
+      "published_at": "2026-11-20T09:20:30+08:00",
+      "published_precision": "datetime",
+      "published_date": "2026-11-20",
+      "observed_at": "2026-11-20T13:39:30+00:00",
+      "available_at": "2026-11-20T13:39:30+00:00",
+      "period": "2026-11-20",
+      "summary": "人民银行开展3795亿元隔夜逆回购，操作利率1.25%，投标量与中标量均为3795亿元。",
+      "metrics": [
+        {
+          "name": "隔夜逆回购中标量",
+          "value": 3795,
+          "unit": "亿元",
+          "basis": "当日操作总量，非净投放"
+        },
+        {
+          "name": "隔夜逆回购操作利率",
+          "value": 1.25,
+          "unit": "%",
+          "basis": "当日隔夜操作利率"
+        }
+      ],
+      "interpretation": "银行间短期流动性操作，不能据此推断股市增量资金。",
+      "limitations": "央行此公告未列到期量；不计算净投放，也不是六个月买断式逆回购结果。"
     }
   ],
   "events": [
@@ -634,6 +666,24 @@
       "warning": "依据现行常规发布时间推算，不是针对11月的独立发布通知；须等授权机构正式公布结果。",
       "revision": 1,
       "supersedes": null
+    },
+    {
+      "id": "cfets-20261120-lpr-v2",
+      "title": "11月贷款市场报价利率（LPR）结果",
+      "scheduled_at": "2026-11-20T09:00:00+08:00",
+      "timezone": "Asia/Shanghai",
+      "announced_at": "2024-07-22T09:15:00+08:00",
+      "observed_at": "2026-11-20T13:39:30+00:00",
+      "available_at": "2026-11-20T13:39:30+00:00",
+      "source_url": "https://www.chinamoney.com.cn/chinese/rdgz/20261120/3453464.html",
+      "status": "released",
+      "plan": "按全国银行间同业拆借中心公布的每月20日（遇节假日顺延）9:00规则推算；核对1年期与5年以上品种是否变化。",
+      "result": "1年期LPR为3.00%，5年期以上LPR为3.50%，两项均与上月持平，本次报价在下次发布前有效。",
+      "result_published_at": "2026-11-20T09:00:00+08:00",
+      "consensus": null,
+      "warning": "按授权发布方原始公告校验；未取得一致预期，不作超预期判断；不回填冻结判断。",
+      "revision": 2,
+      "supersedes": "cfets-20261120-lpr"
     }
   ],
   "watchlist": [
