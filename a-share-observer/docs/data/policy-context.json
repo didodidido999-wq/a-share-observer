@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-11-20T13:39:30+00:00",
+  "checked_at": "2026-11-21T13:55:56+00:00",
   "records": [
     {
       "id": "nbs-2026q3-gdp-v1",
@@ -538,6 +538,101 @@
       ],
       "interpretation": "银行间短期流动性操作，不能据此推断股市增量资金。",
       "limitations": "央行此公告未列到期量；不计算净投放，也不是六个月买断式逆回购结果。"
+    },
+    {
+      "id": "mof-202610-fiscal-receipts-spending-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "1–10月财政收支：一般预算与土地收入分化",
+      "kind": "statistic",
+      "source_url": "https://gks.mof.gov.cn/tongjishuju/202611/t20261119_4004986.htm",
+      "source_name": "财政部国库司",
+      "published_at": null,
+      "published_precision": "date",
+      "published_date": "2026-11-20",
+      "observed_at": "2026-11-21T13:55:56+00:00",
+      "available_at": "2026-11-21T13:55:56+00:00",
+      "period": "2026年1–10月",
+      "summary": "全国一般公共预算收入同比增长4.9%、支出增长1.0%；国有土地使用权出让收入下降25.8%。证券交易印花税累计2511亿元、增长54.1%。",
+      "metrics": [
+        {
+          "name": "全国一般公共预算收入同比",
+          "value": 4.9,
+          "unit": "%",
+          "basis": "1–10月累计同比"
+        },
+        {
+          "name": "全国一般公共预算支出同比",
+          "value": 1.0,
+          "unit": "%",
+          "basis": "1–10月累计同比"
+        },
+        {
+          "name": "国有土地使用权出让收入同比",
+          "value": -25.8,
+          "unit": "%",
+          "basis": "1–10月累计同比"
+        },
+        {
+          "name": "证券交易印花税",
+          "value": 2511,
+          "unit": "亿元",
+          "basis": "1–10月累计额"
+        },
+        {
+          "name": "证券交易印花税同比",
+          "value": 54.1,
+          "unit": "%",
+          "basis": "1–10月累计同比"
+        }
+      ],
+      "interpretation": "一般预算收入增长和土地出让收入回落同时存在，不能用前者代表各类地方财政收入同步改善。",
+      "limitations": "是累计统计而非新财政政策。证券交易印花税是税收收入，不是股市净流入；财政部页面仅注明公布日期。",
+      "availability_boundary": "2026-11-21T00:00:00+08:00"
+    },
+    {
+      "id": "pbc-202610-financial-market-operations-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "10月金融市场：银行间资金利率回落",
+      "kind": "statistic",
+      "source_url": "https://www.pbc.gov.cn/goutongjiaoliu/113456/113469/2026112015225760018/index.html",
+      "source_name": "中国人民银行",
+      "published_at": "2026-11-20T18:00:05+08:00",
+      "published_precision": "datetime",
+      "published_date": "2026-11-20",
+      "observed_at": "2026-11-21T13:55:56+00:00",
+      "available_at": "2026-11-21T13:55:56+00:00",
+      "period": "2026年10月",
+      "summary": "10月DR001和DR007月加权平均利率分别为1.28%和1.34%，环比分别下降10和6个基点。",
+      "metrics": [
+        {
+          "name": "DR001",
+          "value": 1.28,
+          "unit": "%",
+          "basis": "10月加权平均利率"
+        },
+        {
+          "name": "DR001环比变化",
+          "value": -10,
+          "unit": "BP",
+          "basis": "10月月均对9月月均"
+        },
+        {
+          "name": "DR007",
+          "value": 1.34,
+          "unit": "%",
+          "basis": "10月加权平均利率"
+        },
+        {
+          "name": "DR007环比变化",
+          "value": -6,
+          "unit": "BP",
+          "basis": "10月月均对9月月均"
+        }
+      ],
+      "interpretation": "10月银行间短期融资成本较9月回落，可作流动性背景。",
+      "limitations": "是月度统计，不是当前报价、新降息或A股增量资金证据；原文在11月20日收盘以后发布。"
     }
   ],
   "events": [
