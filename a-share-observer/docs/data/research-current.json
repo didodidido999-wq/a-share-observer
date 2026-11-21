@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-20T17:14:16.561714+00:00",
+  "generated_at": "2026-11-21T16:25:28.192409+00:00",
   "current": {
     "schema_version": 1,
     "model_version": "breadth-trend-v1",
@@ -1441,7 +1441,7 @@
   ],
   "reviews": [],
   "background": {
-    "observed_at": "2026-11-20T17:14:16.561714+00:00",
+    "observed_at": "2026-11-21T16:25:28.192409+00:00",
     "items": [
       {
         "title": "三季度经济：增长与需求分项",
@@ -1640,12 +1640,40 @@
         "available_at": "2026-11-20T13:39:30+00:00"
       },
       {
+        "title": "1–10月财政收支：一般预算与土地收入分化",
+        "fact": "全国一般公共预算收入同比增长4.9%、支出增长1.0%；国有土地使用权出让收入下降25.8%。证券交易印花税累计2511亿元、增长54.1%。",
+        "analysis": "一般预算收入增长和土地出让收入回落同时存在，不能用前者代表各类地方财政收入同步改善。",
+        "limitations": "是累计统计而非新财政政策。证券交易印花税是税收收入，不是股市净流入；财政部页面仅注明公布日期。",
+        "source_url": "https://gks.mof.gov.cn/tongjishuju/202611/t20261119_4004986.htm",
+        "evidence_id": "mof-202610-fiscal-receipts-spending-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "mof-202610-fiscal-receipts-spending-v1"
+        },
+        "data_date": "2026年1–10月",
+        "available_at": "2026-11-21T13:55:56+00:00"
+      },
+      {
+        "title": "10月金融市场：银行间资金利率回落",
+        "fact": "10月DR001和DR007月加权平均利率分别为1.28%和1.34%，环比分别下降10和6个基点。",
+        "analysis": "10月银行间短期融资成本较9月回落，可作流动性背景。",
+        "limitations": "是月度统计，不是当前报价、新降息或A股增量资金证据；原文在11月20日收盘以后发布。",
+        "source_url": "https://www.pbc.gov.cn/goutongjiaoliu/113456/113469/2026112015225760018/index.html",
+        "evidence_id": "pbc-202610-financial-market-operations-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "pbc-202610-financial-market-operations-v1"
+        },
+        "data_date": "2026年10月",
+        "available_at": "2026-11-21T13:55:56+00:00"
+      },
+      {
         "title": "中国国债2年收益率",
-        "fact": "1.2276%",
+        "fact": "1.233%",
         "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
         "limitations": "短历史、公布时刻未核验；仅当前背景，不纳入方向规则或历史14:45回放。",
         "source_url": "https://data.eastmoney.com/cjsj/zmgzsyl.html",
-        "data_date": "2026-11-19",
+        "data_date": "2026-11-20",
         "route": {
           "page": "macro",
           "anchor": "risk-macro-section"
@@ -1653,11 +1681,11 @@
       },
       {
         "title": "中国国债10年收益率",
-        "fact": "1.5755%",
+        "fact": "1.5803%",
         "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
         "limitations": "短历史、公布时刻未核验；仅当前背景，不纳入方向规则或历史14:45回放。",
         "source_url": "https://data.eastmoney.com/cjsj/zmgzsyl.html",
-        "data_date": "2026-11-19",
+        "data_date": "2026-11-20",
         "route": {
           "page": "macro",
           "anchor": "risk-macro-section"
@@ -1665,11 +1693,11 @@
       },
       {
         "title": "Shibor隔夜",
-        "fact": "1.26%",
+        "fact": "1.2612%",
         "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
         "limitations": "短历史、公布时刻未核验；仅当前背景，不纳入方向规则或历史14:45回放。",
         "source_url": "https://data.eastmoney.com/shibor/shibor.aspx",
-        "data_date": "2026-11-19",
+        "data_date": "2026-11-20",
         "route": {
           "page": "macro",
           "anchor": "risk-macro-section"
@@ -1677,11 +1705,11 @@
       },
       {
         "title": "Shibor1周",
-        "fact": "1.368%",
+        "fact": "1.362%",
         "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
         "limitations": "短历史、公布时刻未核验；仅当前背景，不纳入方向规则或历史14:45回放。",
         "source_url": "https://data.eastmoney.com/shibor/shibor.aspx",
-        "data_date": "2026-11-19",
+        "data_date": "2026-11-20",
         "route": {
           "page": "macro",
           "anchor": "risk-macro-section"
