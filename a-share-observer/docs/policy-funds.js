@@ -45,7 +45,7 @@ function mount(){
  const more=el('details',undefined,'pf-advanced');const sum=el('summary','交叉筛选与数据说明');more.append(sum);const sourceGroup=el('fieldset',undefined,'pf-source-group');sourceGroup.append(el('legend','组合资金来源（可多选）'));
  for(const [key,name] of Object.entries(sources)){const l=el('label',undefined,'pf-source-check');const box=el('input');box.type='checkbox';box.value=key;box.dataset.sourceCheck=key;l.append(box,el('span',name));sourceGroup.append(l);}
  more.append(sourceGroup);
- const combine=el('label',undefined,'pf-combine');const andBox=el('input');andBox.type='checkbox';andBox.id='pf-and';combine.append(andBox,el('span','所选资金来源必须全部满足（AND）；不选时为任意来源（OR）'));more.append(combine,note('组合来源只说明不同资金证据存在，不代表不同机构在同日共同买入。'));const clear=el('button','清空筛选','pf-clear');clear.type='button';clear.id='pf-reset';more.append(clear);panel.append(more);
+ const combine=el('label',undefined,'pf-combine');const andBox=el('input');andBox.type='checkbox';andBox.id='pf-and';combine.append(andBox,el('span','所选资金来源必须全部满足（AND）；不选时为任意来源（OR）'));more.append(combine,note('组合来源只说明不同资金证据存在，不代表不同机构在同日共同买入。'));const clear=el('button','清空筛选','pf-clear');clear.type='button';clear.id='pf-reset';panel.append(more,clear);
  const count=el('div',undefined,'pf-results');count.id='pf-results';count.setAttribute('role','status');panel.append(count);
  const area=el('div',undefined,'pf-rows');area.id='pf-rows';panel.append(area);host.append(panel);
  const foot=el('p','财务质量、未来成长和估值评级尚未完成逐股年报与最新财报核验，统一显示“待评估”，不会用示例分数替代真实研究。历史持仓快照不等于公告日交易。','pf-footer');host.append(foot);
