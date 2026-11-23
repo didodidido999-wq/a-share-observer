@@ -24,6 +24,7 @@ try{
  check(!(await page.locator('#global-values').innerText()).trim(),'ICE displayed unlicensed prices');
  check(!requested.length,'Default ICE query requested data');
  await page.locator('#global-single').selectOption('ice_brent_futures');
+ await page.waitForURL(url=>new URLSearchParams(url.hash.split('?')[1]||'').get('query')==='ice_brent_futures');
  await oilLink().waitFor();
  check(new URL(page.url()).hash.includes('query=ice_brent_futures'),'ICE independent query was not deep-linked');
  check(!requested.length,'Independent ICE query requested data');
