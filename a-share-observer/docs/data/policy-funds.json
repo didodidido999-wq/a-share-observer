@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-22",
+  "updated_at": "2026-11-23T00:00:00+08:00",
+  "scope": "人工整理的部分核验观察池；不是五类资金全量名单、动态实时持仓、完整ETF底仓或投资评级。",
+  "coverage": {
+    "loan": "证监会截至2026-10末902家发行人、1110单公告为回填基准；本文件仅部分候选",
+    "swap": "第三批互换便利已知操作规模1000亿元；逐只股票买入名单未披露",
+    "insurance": "仅部分有公开持仓证据的候选，未完成险资全部账户核查",
+    "state": "国新诚通等仅部分公开事件",
+    "etf": "首批18只ETF前十大180条、去重107只的2026-11-16历史基准；本文件只展示少量样例，不是完整107只"
+  },
+  "overview": [
+    {
+      "key": "loan",
+      "label": "回购增持贷款",
+      "value": "约4400亿元",
+      "basis": "证监会累计申请上限／央行已签约额为不同口径",
+      "source": "https://www.csrc.gov.cn/csrc/c100028/c7668092/content.shtml"
+    },
+    {
+      "key": "swap",
+      "label": "互换便利",
+      "value": "1000亿元",
+      "basis": "第三批操作规模，个股买入明细未知",
+      "source": "https://www.csrc.gov.cn/csrc/c100028/c7513113/content.shtml"
+    },
+    {
+      "key": "etf",
+      "label": "主动ETF",
+      "value": "约360亿元",
+      "basis": "首批18只募集额，不是待买入规模",
+      "source": "https://pdf.dfcfw.com/pdf/H2_AN202611171831792655_1.pdf"
+    },
+    {
+      "key": "insurance",
+      "label": "险资与国资",
+      "value": "持续跟踪",
+      "basis": "机构持仓、权益公告按主体核对",
+      "source": "https://www.csrc.gov.cn/csrc/c100028/c7668092/content.shtml"
+    }
+  ],
+  "stocks": [
+    {
+      "code": "002039",
+      "name": "黔源电力",
+      "tags": [
+        "state"
+      ],
+      "status": "executed",
+      "action": "国新产业资本持股由6%升至7%",
+      "event_date": "2026-11-17",
+      "disclosed": "2026-11-18",
+      "quantity": "427.568万股（第二轮）",
+      "cash": "未披露",
+      "funding": "自有资金；不是专项贷款买入",
+      "source": "https://www.cfi.net.cn/p20261118001151.html",
+      "subject": "国新产业资本",
+      "kind": "股东增持",
+      "basis": "已执行；历史记录"
+    },
+    {
+      "code": "600487",
+      "name": "亨通光电",
+      "tags": [
+        "loan"
+      ],
+      "status": "executed",
+      "action": "控股股东首次增持",
+      "event_date": "2026-11-20",
+      "disclosed": "2026-11-20",
+      "quantity": "55万股",
+      "cash": "2013.21万元",
+      "funding": "此前专项贷款承诺上限5.4亿元；本笔用贷未证实",
+      "source": "https://www.cfi.net.cn/p20261120001721.html",
+      "subject": "控股股东",
+      "kind": "股东增持",
+      "basis": "已成交，贷款提款未披露"
+    },
+    {
+      "code": "002463",
+      "name": "沪电股份",
+      "tags": [
+        "loan"
+      ],
+      "status": "executed",
+      "action": "公司首次回购",
+      "event_date": "2026-11-20",
+      "disclosed": "2026-11-21",
+      "quantity": "24.89万股",
+      "cash": "1999.93万元",
+      "funding": "此前专项贷款承诺上限9亿元；本笔用贷未证实",
+      "source": "https://static.cninfo.com.cn/finalpage/2026-11-21/1225682149.PDF",
+      "subject": "上市公司",
+      "kind": "股份回购",
+      "basis": "已成交，贷款提款未披露"
+    },
+    {
+      "code": "603223",
+      "name": "恒通股份",
+      "tags": [
+        "loan"
+      ],
+      "status": "executed",
+      "action": "控股股东南山集团增持",
+      "event_date": "2026-11-20",
+      "disclosed": "2026-11-21",
+      "quantity": "546.67万股",
+      "cash": "4355.67万元",
+      "funding": "公告资金含自有资金和增持专项贷款；贷款使用额未拆分",
+      "source": "https://static.cninfo.com.cn/finalpage/2026-11-21/1225681041.PDF",
+      "subject": "南山集团",
+      "kind": "股东增持",
+      "basis": "已成交；专项贷款分项未披露"
+    },
+    {
+      "code": "300715",
+      "name": "凯伦股份",
+      "tags": [
+        "loan"
+      ],
+      "status": "executed",
+      "action": "矽彩光电累计增持进展",
+      "event_date": "2026-11-20",
+      "disclosed": "2026-11-20",
+      "quantity": "累计1243.046万股",
+      "cash": "累计1.795052亿元",
+      "funding": "专项贷款承诺上限3亿元；实际提款未知",
+      "source": "https://file.finance.sina.com.cn/211.154.219.97:9494/MRGG/CNSESZ_STOCK/2026/2026-11/2026-11-20/12716969.PDF",
+      "subject": "矽彩光电",
+      "kind": "股东增持",
+      "basis": "累计进展；非单日成交"
+    },
+    {
+      "code": "600177",
+      "name": "雅戈尔",
+      "tags": [
+        "loan"
+      ],
+      "status": "executed",
+      "action": "控股股东累计增持进展",
+      "event_date": "2026-11-20",
+      "disclosed": "2026-11-21",
+      "quantity": "累计7807.5686万股",
+      "cash": "累计6.030268亿元",
+      "funding": "自有资金及银行贷款；实际贷款提款未知",
+      "source": "https://file.finance.sina.com.cn/211.154.219.97:9494/MRGG/CNSESH_STOCK/2026/2026-11/2026-11-21/12716992.PDF",
+      "subject": "控股股东",
+      "kind": "股东增持",
+      "basis": "累计进展；存在其他股东减持"
+    },
+    {
+      "code": "603993",
+      "name": "洛阳钼业",
+      "tags": [
+        "loan",
+        "insurance"
+      ],
+      "status": "planned",
+      "action": "公司回购贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-14",
+      "quantity": "—",
+      "cash": "承诺上限18亿元",
+      "funding": "贷款承诺不等于实际放款或回购",
+      "source": "https://www.csrc.gov.cn/csrc/c100028/c7668092/content.shtml",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "本记录为历史候选；逐股公告链接待补"
+    },
+    {
+      "code": "600886",
+      "name": "国投电力",
+      "tags": [
+        "insurance"
+      ],
+      "status": "holding",
+      "action": "鸿鹄三期1号三季报持仓增加",
+      "event_date": null,
+      "report_date": "2026-09-30",
+      "disclosed": "2026-10-30",
+      "quantity": "约增加2203.05万股",
+      "cash": "—",
+      "funding": "报表前后持仓对照；不等于公告日买入",
+      "source": "https://static.cninfo.com.cn/finalpage/2026-08-28/1225520619.PDF",
+      "subject": "鸿鹄三期1号",
+      "kind": "机构持仓",
+      "basis": "须以2026三季报与半年报联合复核"
+    },
+    {
+      "code": "000333",
+      "name": "美的集团",
+      "tags": [
+        "etf"
+      ],
+      "status": "holding",
+      "action": "首批主动ETF前十大持仓涉及7只基金",
+      "event_date": null,
+      "report_date": "2026-11-16",
+      "disclosed": "2026-11-17",
+      "quantity": "7只基金持仓频次",
+      "cash": "—",
+      "funding": "仅为18只ETF上市公告披露前十大快照",
+      "source": "https://pdf.dfcfw.com/pdf/H2_AN202611171831792655_1.pdf",
+      "subject": "首批主动ETF",
+      "kind": "基金持仓快照",
+      "basis": "汇总频次；来源为单基金示例，详见18份基准公告"
+    },
+    {
+      "code": "300750",
+      "name": "宁德时代",
+      "tags": [
+        "etf",
+        "insurance"
+      ],
+      "status": "holding",
+      "action": "首批主动ETF前十大持仓涉及5只基金",
+      "event_date": null,
+      "report_date": "2026-11-16",
+      "disclosed": "2026-11-17",
+      "quantity": "5只基金持仓频次",
+      "cash": "—",
+      "funding": "非逐股新买入；险资线索待逐主体复核",
+      "source": "https://pdf.dfcfw.com/pdf/H2_AN202611171831792655_1.pdf",
+      "subject": "首批主动ETF",
+      "kind": "基金持仓快照",
+      "basis": "汇总频次；非全部实际持仓"
+    },
+    {
+      "code": "300308",
+      "name": "中际旭创",
+      "tags": [
+        "etf",
+        "insurance"
+      ],
+      "status": "planned",
+      "action": "董事长提议20亿—40亿元回购",
+      "event_date": null,
+      "disclosed": "2026-11-18",
+      "quantity": "—",
+      "cash": "提议20亿—40亿元",
+      "funding": "尚非实际买入；专项贷款尚未证实",
+      "source": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12713112&stockid=300308",
+      "subject": "董事长",
+      "kind": "回购提议",
+      "basis": "提议阶段；ETF及险资仅为不同来源历史线索"
+    },
+    {
+      "code": "600690",
+      "name": "海尔智家",
+      "tags": [
+        "loan",
+        "insurance"
+      ],
+      "status": "executed",
+      "action": "公司截至10月底累计回购",
+      "event_date": "2026-10-31",
+      "disclosed": "2026-11-03",
+      "quantity": "—",
+      "cash": "累计约23.36亿元",
+      "funding": "最高50亿元融资承诺；实际贷款提款未披露",
+      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?CompanyCode=10000497&gather=1&id=12687134",
+      "subject": "上市公司",
+      "kind": "股份回购",
+      "basis": "历史累计值，非披露日新增买入"
+    }
+  ]
+}
