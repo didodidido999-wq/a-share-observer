@@ -1,4 +1,4 @@
-/* Synthetic prices exercise non-oil groups. ICE and retired oil queries must request no price feed. */
+/* Synthetic prices exercise non-oil groups. Retired oil queries must expose neither prices nor external links. */
 import {chromium} from 'playwright';
 const base=process.env.MARKET_URL||'http://127.0.0.1:8765/';
 const [before,day]=(await fetch(new URL('data/dates.json',base)).then(r=>r.json())).dates.slice(-2);
@@ -16,26 +16,20 @@ await page.route('**/data/global/series/*.json',r=>{
 const check=(x,m)=>{if(!x)throw Error(m);};
 const wait=()=>page.waitForFunction(()=>document.querySelector('#global-status')?.textContent.includes('已读取'));
 const option=()=>page.evaluate(()=>window.echarts.getInstanceByDom(document.getElementById('global-context-chart')).getOption());
-const oilLink=()=>page.getByRole('link',{name:'查看 ICE 官方布伦特期货行情 ↗'});
 try{
  await page.goto(new URL('#macro',base).href,{waitUntil:'domcontentloaded'});
- await oilLink().waitFor();
- check((await oilLink().getAttribute('href'))==='https://www.ice.com/products/219/Brent-Crude-Futures/data','Wrong official ICE destination');
- check(!(await page.locator('#global-values').innerText()).trim(),'ICE displayed unlicensed prices');
- check(!requested.length,'Default ICE query requested data');
- await page.locator('#global-single').selectOption('ice_brent_futures');
- await page.waitForURL(url=>new URLSearchParams(url.hash.split('?')[1]||'').get('query')==='ice_brent_futures');
- await oilLink().waitFor();
- check(new URL(page.url()).hash.includes('query=ice_brent_futures'),'ICE independent query was not deep-linked');
- check(!requested.length,'Independent ICE query requested data');
- for(const id of ['wti_spot','brent_spot','sc_crude_continuous']){
+ await wait();let c=await option();
+ check(c.series[0].data.every(x=>x===2)&&c.series[0].name.includes(before),'Treasury did not respect common prior date');
+ check(!(await page.locator('#global-single option').allTextContents()).some(x=>/原油|油气/.test(x)),'Oil link remains in single queries');
+ check(!(await page.locator('#global-group option').allTextContents()).some(x=>/原油|油气/.test(x)),'Oil link remains in groups');
+ const initialRequests=requested.length;
+ for(const id of ['ice_brent_futures','wti_spot','brent_spot','sc_crude_continuous']){
   await page.goto(new URL('#macro?query='+id+'&anchor=global-context',base).href);
   await page.waitForFunction(()=>document.querySelector('#global-status')?.textContent.includes('已移出'));
   check(!(await page.locator('#global-values').innerText()).trim(),'Retired query displayed a substitute price');
+  check(!(await page.locator('#global-reviewed a').count()),'Retired oil query showed outgoing link');
  }
- check(!requested.length,'Retired oil queries fetched prices');
- await page.locator('#global-group').selectOption('curve');await wait();let c=await option();
- check(c.series[0].data.every(x=>x===2)&&c.series[0].name.includes(before),'Treasury did not respect common prior date');
+ check(requested.length===initialRequests,'Retired oil queries fetched prices');
  await page.locator('#global-group').selectOption('spread');
  await page.waitForFunction(()=>document.querySelector('#global-status')?.textContent.includes('读取失败'));
  check(await page.locator('#global-retry').isVisible(),'Failure retry absent');
@@ -47,8 +41,8 @@ try{
  await page.locator('#global-assets input').first().uncheck();await wait();
  check((await option()).series.length===proxyCount-1,'Asset deselection did not update trend');
  await page.setViewportSize({width:390,height:844});
- await page.locator('#global-group').selectOption('ice_brent');
- await oilLink().waitFor();
+ await page.locator('#global-group').selectOption('curve');
+ await wait();
  check(await page.locator('#global-context').evaluate(e=>e.scrollWidth<=e.clientWidth+1),'Global panel mobile overflow');
  check(!errors.length,errors.join(';'));
  console.log('Global context synthetic browser smoke passed.');

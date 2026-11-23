@@ -10,11 +10,10 @@ test('explicit cross-border policy excludes same China date regardless of timezo
 test('all commodity spot series conservatively exclude same-date observations',()=>{assert.equal(u.rowsBefore({kind:'commodity_spot',market_timezone:null,rows:[{date:'2026-11-13',value:1}]},'2026-11-13').length,0);});
 
 
-test('ICE Brent futures is the only active oil query and never substitutes old series',()=>{
- const oil=u.singleCatalog.filter(x=>/原油|油气/.test(x.label));
- assert.equal(oil.length,1);assert.equal(oil[0].id,'ice_brent_futures');assert.equal(oil[0].kind,'gap');
- assert.equal(oil[0].proxy,null);assert.deepEqual(Array.from(u.groups.ice_brent.ids),['ice_brent_futures']);
- for(const id of ['wti_spot','brent_spot','sc_crude_continuous','china_oil_gas_equities','us_oil_gas_equities'])assert.ok(u.retiredQueries[id]);
- assert.equal(u.groups.sc,undefined);assert.equal(u.groups.crude_spot,undefined);
- assert.equal(u.gapSources.ice_brent_futures.url,'https://www.ice.com/products/219/Brent-Crude-Futures/data');
+test('unavailable crude oil queries are not offered as external links or proxy prices',()=>{
+ assert.equal(u.singleCatalog.filter(x=>/原油|油气/.test(x.label)).length,0);
+ for(const id of ['ice_brent_futures','wti_spot','brent_spot','sc_crude_continuous','china_oil_gas_equities','us_oil_gas_equities']){
+  assert.ok(u.retiredQueries[id]);assert.equal(u.gapSources[id],undefined);
+ }
+ assert.equal(u.groups.ice_brent,undefined);assert.equal(u.groups.sc,undefined);assert.equal(u.groups.crude_spot,undefined);
 });
