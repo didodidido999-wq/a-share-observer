@@ -13,9 +13,9 @@ try {
  await page.locator('#global-context').scrollIntoViewIfNeeded();
  await page.locator('#global-context').waitFor({state:'visible'});
  if(!new URL(page.url()).hash.startsWith('#macro'))throw Error('Macro route not selected');
- await page.locator('#global-group').selectOption('ice_brent');
- await page.getByRole('link',{name:'查看 ICE 官方布伦特期货行情 ↗'}).waitFor({state:'visible'});
- await page.locator('#global-context').screenshot({path:'/tmp/marketscope-ice-brent.png'});
+ await page.locator('#global-group').selectOption('brent_proxy');
+ await page.waitForFunction(()=>document.querySelector('#global-values')?.textContent.includes('美元/桶'));
+ await page.locator('#global-context').screenshot({path:'/tmp/marketscope-brent-spot.png'});
  await page.goto(new URL('#today',base).href,{waitUntil:'networkidle'});
  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
  await page.waitForTimeout(350);
