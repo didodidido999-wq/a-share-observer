@@ -15,6 +15,7 @@ try{
   check(await page.getByText('原政策档案保持可见').isVisible(),'Existing policy pane lost');
   await page.getByRole('tab',{name:'股票观察池'}).click();
   await page.getByText('政策资金股票观察池').waitFor();
+  await page.locator('.pf-row').first().waitFor();
   check(await page.locator('.pf-row').count()===fixture.stocks.length,'Not all unique stock records rendered');
   check(await page.getByText('待评估').count()>0,'Unverified financial grades replaced with fabricated scores');
   check(await page.getByText('互换便利实际逐股标的仍未知').count()>0,'Swap unknown flag missing');
