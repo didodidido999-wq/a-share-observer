@@ -13,9 +13,9 @@ try {
  await page.locator('#global-context').scrollIntoViewIfNeeded();
  await page.locator('#global-context').waitFor({state:'visible'});
  if(!new URL(page.url()).hash.startsWith('#macro'))throw Error('Macro route not selected');
- await page.locator('#global-group').selectOption('curve');
- await page.waitForFunction(()=>document.querySelector('#global-status')?.textContent.includes('曲线共同观测日'));
- await page.locator('#global-context').screenshot({path:'/tmp/marketscope-treasury-curve.png'});
+ await page.locator('#global-group').selectOption('brent_proxy');
+ await page.waitForFunction(()=>document.querySelector('#global-values')?.textContent.includes('美元/桶'));
+ await page.locator('#global-context').screenshot({path:'/tmp/marketscope-brent-spot.png'});
  await page.goto(new URL('#today',base).href,{waitUntil:'networkidle'});
  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
  await page.waitForTimeout(350);
