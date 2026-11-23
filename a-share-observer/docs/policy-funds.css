@@ -24,7 +24,7 @@
 .pf-field{display:flex;flex-direction:column;min-width:0;gap:5px;color:#5b6d7b;font-size:11px;font-weight:700}
 .pf-field select,.pf-field input{border:1px solid #d7e1e6;background:#fff;border-radius:7px;padding:9px 10px;color:#1e3b4d;width:100%;min-width:0;font-size:13px;outline-offset:2px}
 .pf-advanced{margin:0 16px;padding:8px 0 12px;font-size:12px;border-top:1px solid #eef1f3}.pf-advanced summary{cursor:pointer;color:#406477;font-weight:700}
-.pf-combine{display:flex;gap:8px;align-items:center;margin:11px 0}.pf-clear{border:1px solid #cbd7dd;background:white;border-radius:7px;padding:7px 11px}
+.pf-combine{display:flex;gap:8px;align-items:center;margin:11px 0}.pf-clear{border:1px solid #cbd7dd;background:white;border-radius:7px;padding:7px 11px;margin:0 16px 12px;align-self:start;justify-self:start}
 .pf-results{padding:10px 16px;background:#f8fafb;font-size:12px;color:#60727d;border-top:1px solid #edf1f3;border-bottom:1px solid #e7eef1}
 .pf-table-head,.pf-row{display:grid;grid-template-columns:minmax(125px,1.04fr) minmax(120px,1fr) minmax(180px,1.6fr) minmax(100px,.75fr) minmax(90px,.8fr) minmax(92px,.7fr) 48px;gap:10px;align-items:center;padding:12px 16px}
 .pf-table-head{font-size:11px;color:#6f8190;font-weight:700;background:#f6f9fa}
