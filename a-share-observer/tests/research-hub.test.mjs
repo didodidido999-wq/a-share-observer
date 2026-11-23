@@ -36,8 +36,8 @@ test('old exact-date route replaces recent days with a trailing consecutive arch
  assert.deepEqual(Array.from(state.days),archive.slice(3,13));assert.deepEqual(requested,archive.slice(3,13));
  assert.equal(state.compareBase,archive[3]);assert.equal(state.selected,archive[12]);assert.ok(state.days.every(d=>d<=state.selected));
 });
-test('restrained site identity preserves the exact user slogan and shared design tokens',()=>{
- assert.ok(html.includes('看好网，做好人，得好报</p>'));
+test('restrained site identity preserves the published slogan and shared design tokens',()=>{
+ assert.ok(html.includes('看好股，做好人，得好报</p>'));
  const research=html.slice(html.indexOf('<section id="research"'),html.indexOf('<section id="policy"'));assert.ok(research.includes('class="brand-slogan"'));assert.ok(!html.includes('class="brand-statement"'));
  assert.ok(html.includes('aria-label="品牌主张"'));
  assert.equal((html.match(/class="brand-slogan"/g)||[]).length,1);

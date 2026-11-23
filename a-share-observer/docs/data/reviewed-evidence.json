@@ -234,6 +234,42 @@
       "source_title": "丽岛新材关于不向下修正丽岛转债转股价格的公告（2026-045）",
       "note": "丽岛转债 113680：公司公告 11 月 20 日达到下修条款，当日董事会决定不下修，现行转股价 12.91 元/股。公告另载 2026 年 11 月 21 日至 2027 年 5 月 20 日如再次触发也不提出下修方案，2027 年 5 月 21 日起重新起算。本记录是已公告决策，不表示无其他风险。精确公布时刻未核实。",
       "status": "verified"
+    },
+    {
+      "revision": 1,
+      "supersedes": null,
+      "kind": "event",
+      "metric_id": "convertible_terms",
+      "value": null,
+      "unit": "",
+      "data_date": "2026-11-20",
+      "document_date": "2026-11-21",
+      "published_at": null,
+      "observed_at": "2026-11-23T08:50:19.681455+00:00",
+      "status": "verified",
+      "id": "peacebird-convertible-possible-downward-reset-20261120-v1",
+      "code": "603877.SH",
+      "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-21/1225680928.PDF",
+      "source_title": "太平鸟关于“太平转债”预计触发转股价格向下修正条件的提示性公告（2026-052）",
+      "note": "太平转债（113627）：11月9日至20日已有10个交易日股票收盘价低于17.52元/股，现行转股价20.61元/股。任意连续30个交易日中至少15日符合才触发。本公告是预计触发提示，不是已触发或已下修。公告落款11月21日，公布时刻未确认。"
+    },
+    {
+      "revision": 1,
+      "supersedes": null,
+      "kind": "event",
+      "metric_id": "convertible_terms",
+      "value": null,
+      "unit": "",
+      "data_date": "2026-11-20",
+      "document_date": "2026-11-21",
+      "published_at": null,
+      "observed_at": "2026-11-23T08:50:19.681455+00:00",
+      "status": "verified",
+      "id": "jindi-convertible-possible-downward-reset-20261120-v1",
+      "code": "603270.SH",
+      "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-21/1225680963.PDF",
+      "source_title": "金帝股份关于“金帝转债”预计触发转股价格向下修正条件的提示性公告（2026-116）",
+      "note": "金帝转债（113706）：10月27日至11月20日已有10个交易日股票收盘价低于26.03元/股，现行转股价30.62元/股；公告表示未来11个交易日内再有5日符合才触发。转股起始日按公告为12月22日，非交易日顺延。上述不代表已触发、已下修或已转股。公告落款11月21日，公布时刻未确认。"
     }
   ],
   "catalog": [
