@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-11-21T13:55:56+00:00",
+  "checked_at": "2026-11-23T14:21:02+00:00",
   "records": [
     {
       "id": "nbs-2026q3-gdp-v1",
@@ -633,6 +633,97 @@
       ],
       "interpretation": "10月银行间短期融资成本较9月回落，可作流动性背景。",
       "limitations": "是月度统计，不是当前报价、新降息或A股增量资金证据；原文在11月20日收盘以后发布。"
+    },
+    {
+      "id": "pbc-20261123-overnight-repo-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "11月23日隔夜逆回购操作结果",
+      "kind": "policy",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026112309000142020/index.html",
+      "source_name": "中国人民银行公开市场业务操作室",
+      "published_at": "2026-11-23T09:20:30+08:00",
+      "published_precision": "datetime",
+      "published_date": "2026-11-23",
+      "observed_at": "2026-11-23T14:21:02+00:00",
+      "available_at": "2026-11-23T14:21:02+00:00",
+      "period": "2026-11-23",
+      "summary": "人民银行开展4995亿元隔夜逆回购，利率1.25%，投标量与中标量均为4995亿元。",
+      "metrics": [
+        {
+          "name": "隔夜逆回购中标量",
+          "value": 4995,
+          "unit": "亿元",
+          "basis": "当日操作总量，非净投放"
+        },
+        {
+          "name": "隔夜逆回购操作利率",
+          "value": 1.25,
+          "unit": "%",
+          "basis": "当日隔夜操作利率"
+        }
+      ],
+      "interpretation": "用于观察银行间短期流动性，不直接说明股票资金流入。",
+      "limitations": "公告未列到期量，不计算净投放；并非买断式逆回购或MLF结果。"
+    },
+    {
+      "id": "ndrc-20261120-government-investment-dispatch-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "发改委调度政府投资项目建设与资金支付",
+      "kind": "official_commentary",
+      "source_url": "https://www.ndrc.gov.cn/fzggw/wld/yxh/zyhd/202611/t20261123_1409007.html",
+      "source_name": "国家发展改革委投资司",
+      "published_at": null,
+      "published_precision": "date",
+      "published_date": "2026-11-23",
+      "observed_at": "2026-11-23T14:21:02+00:00",
+      "available_at": "2026-11-24T00:00:00+08:00",
+      "period": "2026-11-20会议，2026-11-23公开",
+      "summary": "会议要求加快政府投资项目建设和资金支付，并做好重大项目前期工作和储备。",
+      "metrics": [],
+      "interpretation": "可观察已有项目的付款和工程进度是否加快。",
+      "limitations": "未公布新增预算金额、项目清单或实际支付结果；会议日期不是网页公开日期。",
+      "availability_boundary": "2026-11-24T00:00:00+08:00"
+    },
+    {
+      "id": "ndrc-20261123-eldercare-childcare-plan-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "四部门印发养老和托育服务体系建设方案",
+      "kind": "policy",
+      "source_url": "https://www.ndrc.gov.cn/xwdt/tzgg/202611/t20261123_1409026.html",
+      "source_name": "国家发展改革委、民政部、国家卫生健康委、教育部",
+      "published_at": null,
+      "published_precision": "date",
+      "published_date": "2026-11-23",
+      "observed_at": "2026-11-23T14:21:02+00:00",
+      "available_at": "2026-11-24T00:00:00+08:00",
+      "period": "发改社会〔2026〕1623号，目标至2030年",
+      "summary": "方案提出扩大养老和托育服务供给，推进设施改造、医养结合和普惠托育。",
+      "metrics": [
+        {
+          "name": "养老机构护理型床位占比",
+          "value": 73,
+          "unit": "%",
+          "basis": "2030年目标"
+        },
+        {
+          "name": "社区养老服务机构和设施覆盖率",
+          "value": 70,
+          "unit": "%",
+          "basis": "2030年目标"
+        },
+        {
+          "name": "3岁以下婴幼儿入托率提升",
+          "value": 6,
+          "unit": "个百分点",
+          "basis": "2030年目标，相比2025年"
+        }
+      ],
+      "interpretation": "后续可跟踪地方实施细则、设施改造与采购落地。",
+      "limitations": "目标不是已实现数据；方案未公布对应的项目拨付或企业订单。11月9日为成文日期。",
+      "availability_boundary": "2026-11-24T00:00:00+08:00"
     }
   ],
   "events": [
