@@ -1,4 +1,4 @@
-# A股市场观察 · MarketScope
+# 安牛｜A股研究网站
 
 线上地址：https://www.aniu999.com/ ；网站由腾讯云 EdgeOne Makers 托管，代码及按天历史数据存储在 GitHub。
 
