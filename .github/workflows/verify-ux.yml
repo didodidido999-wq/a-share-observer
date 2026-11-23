@@ -69,6 +69,7 @@ jobs:
         run: |
           node a-share-observer/scripts/research-hub-ui-smoke.mjs
           node a-share-observer/scripts/policy-ui-smoke.mjs
+          node a-share-observer/scripts/policy-funds-ui-smoke.mjs
       - name: Theme heatmap real-data interactions
         run: node a-share-observer/scripts/theme-ui-smoke.mjs
       - name: Capture real-data layout evidence
