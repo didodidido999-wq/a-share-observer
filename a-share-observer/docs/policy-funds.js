@@ -34,7 +34,7 @@ function mount(){
  const warning=el('div',undefined,'pf-coverage');warning.id='pf-coverage';host.append(warning);
  const panel=el('section',undefined,'pf-workspace');panel.setAttribute('aria-label','政策资金股票观察池');
  const quick=el('div',undefined,'pf-quick');quick.id='pf-quick';quick.setAttribute('role','group');quick.setAttribute('aria-label','快捷筛选');
- for(const [key,title] of [['all','全部已核实'],['executed','实际执行'],['quality','中长线优选'],['cross','多来源线索'],['favorite','我的关注']]){const b=el('button',title);b.type='button';b.dataset.quick=key;quick.append(b);}
+ for(const [key,title] of [['all','全部已核实'],['executed','实际执行'],['quality','中长线优选'],['cross','多来源线索'],['favorite','我的关注（本机）']]){const b=el('button',title);b.type='button';b.dataset.quick=key;quick.append(b);}
  panel.append(quick);
  const filters=el('div',undefined,'pf-filters');
  const makeSelect=(id,title,items)=>{const wrap=el('label',undefined,'pf-field');wrap.append(el('span',title));const sel=el('select');sel.id=id;for(const [v,n] of items){const o=el('option',n);o.value=v;sel.append(o);}wrap.append(sel);filters.append(wrap);return sel;};
@@ -48,7 +48,7 @@ function mount(){
  const combine=el('label',undefined,'pf-combine');const andBox=el('input');andBox.type='checkbox';andBox.id='pf-and';combine.append(andBox,el('span','所选资金来源必须全部满足（AND）；不选时为任意来源（OR）'));more.append(combine,note('组合来源只说明不同资金证据存在，不代表不同机构在同日共同买入。'));const clear=el('button','清空筛选','pf-clear');clear.type='button';clear.id='pf-reset';panel.append(more,clear);
  const count=el('div',undefined,'pf-results');count.id='pf-results';count.setAttribute('role','status');panel.append(count);
  const area=el('div',undefined,'pf-rows');area.id='pf-rows';panel.append(area);host.append(panel);
- const foot=el('p','财务质量、未来成长和估值评级尚未完成逐股年报与最新财报核验，统一显示“待评估”，不会用示例分数替代真实研究。历史持仓快照不等于公告日交易。','pf-footer');host.append(foot);
+ const foot=el('p','财务质量、未来成长和估值评级尚未完成逐股年报与最新财报核验，统一显示“待评估”，不会用示例分数替代真实研究。历史持仓快照不等于公告日交易；个人关注仅保存在当前浏览器。','pf-footer');host.append(foot);
  const backdrop=el('div',undefined,'pf-backdrop');backdrop.id='pf-backdrop';backdrop.hidden=true;
  const drawer=el('aside',undefined,'pf-drawer');drawer.id='pf-drawer';drawer.setAttribute('role','dialog');drawer.setAttribute('aria-modal','true');drawer.setAttribute('aria-labelledby','pf-detail-title');drawer.tabIndex=-1;backdrop.append(drawer);document.body.append(backdrop);
  backdrop.addEventListener('click',e=>{if(e.target===backdrop)closeDetail();});
