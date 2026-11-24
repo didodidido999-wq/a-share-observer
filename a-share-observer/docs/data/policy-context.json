@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-11-23T14:21:02+00:00",
+  "checked_at": "2026-11-24T13:41:12+00:00",
   "records": [
     {
       "id": "nbs-2026q3-gdp-v1",
@@ -724,6 +724,172 @@
       "interpretation": "后续可跟踪地方实施细则、设施改造与采购落地。",
       "limitations": "目标不是已实现数据；方案未公布对应的项目拨付或企业订单。11月9日为成文日期。",
       "availability_boundary": "2026-11-24T00:00:00+08:00"
+    },
+    {
+      "id": "pbc-20261124-overnight-repo-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "11月24日隔夜逆回购操作结果",
+      "kind": "policy",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026112408521492245/index.html",
+      "source_name": "中国人民银行公开市场业务操作室",
+      "published_at": "2026-11-24T09:20:30+08:00",
+      "published_precision": "datetime",
+      "published_date": "2026-11-24",
+      "observed_at": "2026-11-24T13:41:12+00:00",
+      "available_at": "2026-11-24T13:41:12+00:00",
+      "period": "2026-11-24",
+      "summary": "人民银行开展5160亿元隔夜逆回购，利率1.25%，投标量与中标量均为5160亿元。",
+      "metrics": [
+        {
+          "name": "隔夜逆回购中标量",
+          "value": 5160,
+          "unit": "亿元",
+          "basis": "操作总量，非净投放"
+        },
+        {
+          "name": "隔夜逆回购操作利率",
+          "value": 1.25,
+          "unit": "%",
+          "basis": "隔夜操作利率"
+        }
+      ],
+      "interpretation": "用于观察银行间短期流动性。",
+      "limitations": "未列到期额，不计算净投放；不是7天期或买断式逆回购。"
+    },
+    {
+      "id": "nbs-20261124-material-prices-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "11月中旬流通领域生产资料价格",
+      "kind": "statistic",
+      "source_url": "https://www.stats.gov.cn/sj/zxfbhjd/202611/t20261123_1965935.html",
+      "source_name": "国家统计局",
+      "published_at": "2026-11-24T09:30:00+08:00",
+      "published_precision": "datetime",
+      "published_date": "2026-11-24",
+      "observed_at": "2026-11-24T13:41:12+00:00",
+      "available_at": "2026-11-24T13:41:12+00:00",
+      "period": "2026年11月中旬与上旬对比",
+      "summary": "11月中旬对比上旬，50种生产资料中11种上涨、38种下降、1种持平；电解铜跌1.8%、铝锭跌2.6%、液化天然气跌4.5%。",
+      "metrics": [
+        {
+          "name": "价格上涨产品",
+          "value": 11,
+          "unit": "种",
+          "basis": "监测50种"
+        },
+        {
+          "name": "价格下降产品",
+          "value": 38,
+          "unit": "种",
+          "basis": "监测50种"
+        },
+        {
+          "name": "价格持平产品",
+          "value": 1,
+          "unit": "种",
+          "basis": "监测50种"
+        }
+      ],
+      "interpretation": "可用于观察原料价格变化是否跨品种扩散。",
+      "limitations": "独立旬度流通价格监测，不是PPI、企业采购价或实时商品报价。"
+    },
+    {
+      "id": "pbc-20261124-hk-central-bank-bills-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "人民银行在香港发行两期央票",
+      "kind": "policy",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026112413453178865/index.html",
+      "source_name": "中国人民银行公开市场业务操作室",
+      "published_at": "2026-11-24T14:00:00+08:00",
+      "published_precision": "datetime",
+      "published_date": "2026-11-24",
+      "observed_at": "2026-11-24T13:41:12+00:00",
+      "available_at": "2026-11-24T13:41:12+00:00",
+      "period": "2026-11-24，第十期及第十一期",
+      "summary": "通过香港金管局CMU平台在港发行3个月央票200亿元、中标利率1.32%；1年期300亿元、中标利率1.41%。",
+      "metrics": [
+        {
+          "name": "3个月发行量",
+          "value": 200,
+          "unit": "亿元",
+          "basis": "香港央票，91天"
+        },
+        {
+          "name": "3个月中标利率",
+          "value": 1.32,
+          "unit": "%",
+          "basis": "香港央票"
+        },
+        {
+          "name": "1年期发行量",
+          "value": 300,
+          "unit": "亿元",
+          "basis": "香港央票，1年"
+        },
+        {
+          "name": "1年期中标利率",
+          "value": 1.41,
+          "unit": "%",
+          "basis": "香港央票"
+        }
+      ],
+      "interpretation": "用于跟踪离岸人民币流动性工具。",
+      "limitations": "不能与境内逆回购或MLF合并为入市资金。"
+    },
+    {
+      "id": "pbc-20261125-7d-repo-tender-plan-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "央行预告11月25日5000亿元7天期逆回购",
+      "kind": "policy",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/5492845/2026112416390750568/index.html",
+      "source_name": "中国人民银行公开市场业务操作室",
+      "published_at": "2026-11-24T17:00:00+08:00",
+      "published_precision": "datetime",
+      "published_date": "2026-11-24",
+      "observed_at": "2026-11-24T13:41:12+00:00",
+      "available_at": "2026-11-24T13:41:12+00:00",
+      "period": "2026-11-25，招标计划",
+      "summary": "公告计划以固定数量、利率招标、多重价位中标方式开展5000亿元7天期逆回购。",
+      "metrics": [
+        {
+          "name": "拟招标规模",
+          "value": 5000,
+          "unit": "亿元",
+          "basis": "计划规模，不是已中标"
+        }
+      ],
+      "interpretation": "后续核对实际中标及到期口径。",
+      "limitations": "招标预告，不是实际中标、已投放或净投放；无具体计划时刻。"
+    },
+    {
+      "id": "pbc-20261125-mlf-tender-plan-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "央行预告11月25日8000亿元一年期MLF",
+      "kind": "policy",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125437/125446/125873/2026112417194622152/index.html",
+      "source_name": "中国人民银行",
+      "published_at": "2026-11-24T17:18:35+08:00",
+      "published_precision": "datetime",
+      "published_date": "2026-11-24",
+      "observed_at": "2026-11-24T13:41:12+00:00",
+      "available_at": "2026-11-24T13:41:12+00:00",
+      "period": "2026-11-25，招标计划",
+      "summary": "公告计划以固定数量、利率招标、多重价位中标方式开展8000亿元一年期中期借贷便利操作。",
+      "metrics": [
+        {
+          "name": "拟招标规模",
+          "value": 8000,
+          "unit": "亿元",
+          "basis": "计划规模，不是已中标"
+        }
+      ],
+      "interpretation": "后续核对实际操作、到期规模及期限。",
+      "limitations": "招标预告，不代表已完成或净投放，无具体计划时刻；不与7天期操作相混。"
     }
   ],
   "events": [
@@ -870,6 +1036,24 @@
       "warning": "按授权发布方原始公告校验；未取得一致预期，不作超预期判断；不回填冻结判断。",
       "revision": 2,
       "supersedes": "cfets-20261120-lpr"
+    },
+    {
+      "id": "nbs-20261124-materials-v2",
+      "title": "11月中旬重要生产资料价格",
+      "scheduled_at": "2026-11-24T09:30:00+08:00",
+      "timezone": "Asia/Shanghai",
+      "announced_at": "2025-12-25T09:30:00+08:00",
+      "observed_at": "2026-11-24T13:41:12+00:00",
+      "available_at": "2026-11-24T13:41:12+00:00",
+      "source_url": "https://www.stats.gov.cn/sj/zxfbhjd/202611/t20261123_1965935.html",
+      "status": "released",
+      "plan": "原材料成本变化是否延续，不能用旬价直接替代PPI。",
+      "result": "11月中旬对比上旬，50种生产资料中11种上涨、38种下降、1种持平；电解铜跌1.8%、铝锭跌2.6%、液化天然气跌4.5%。",
+      "result_published_at": "2026-11-24T09:30:00+08:00",
+      "consensus": null,
+      "warning": "流通领域旬度批发和销售价格，不等于PPI；无一致预期，不能据此判断超预期。核验时间不倒填冻结记录。",
+      "revision": 2,
+      "supersedes": "nbs-20261124-materials"
     }
   ],
   "watchlist": [
