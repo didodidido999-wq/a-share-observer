@@ -270,6 +270,42 @@
       "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-21/1225680963.PDF",
       "source_title": "金帝股份关于“金帝转债”预计触发转股价格向下修正条件的提示性公告（2026-116）",
       "note": "金帝转债（113706）：10月27日至11月20日已有10个交易日股票收盘价低于26.03元/股，现行转股价30.62元/股；公告表示未来11个交易日内再有5日符合才触发。转股起始日按公告为12月22日，非交易日顺延。上述不代表已触发、已下修或已转股。公告落款11月21日，公布时刻未确认。"
+    },
+    {
+      "id": "lingkang-convertible-maturity-notice-20261123-v1",
+      "revision": 1,
+      "supersedes": null,
+      "code": "603669.SH",
+      "kind": "event",
+      "metric_id": "convertible_terms",
+      "value": null,
+      "unit": "",
+      "data_date": "2026-11-23",
+      "document_date": "2026-11-23",
+      "published_at": null,
+      "observed_at": "2026-11-24T07:47:44Z",
+      "status": "verified",
+      "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-23/1225682850.PDF",
+      "source_title": "灵康药业关于“灵康转债”到期兑付暨摘牌的公告（2026-054）",
+      "note": "灵康转债（113610）：公告安排 11 月 25 日为最后交易日，11 月 26 日起停止交易，11 月 30 日为最后转股日、到期日和兑付登记日，12 月 1 日发放资金并摘牌，未转股债券到期按 115 元/张兑付本息（含税）。这是到期兑付安排，不是提前强赎或正股退市。原文未列明确发布时间。"
+    },
+    {
+      "id": "bethel-convertible-optional-put-notice-20261120-v1",
+      "revision": 1,
+      "supersedes": null,
+      "code": "603596.SH",
+      "kind": "event",
+      "metric_id": "convertible_terms",
+      "value": null,
+      "unit": "",
+      "data_date": "2026-11-20",
+      "document_date": "2026-11-20",
+      "published_at": null,
+      "observed_at": "2026-11-24T07:47:44Z",
+      "status": "verified",
+      "source_url": "https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-11-20/603596_20261120_B6CG.pdf",
+      "source_title": "伯特利关于“伯25转债”可选择回售的第二次提示性公告（2026-115）",
+      "note": "伯25转债（113696）：部分募集资金用途变更后附加回售条款生效。公告安排 11 月 25 日至 12 月 1 日申报自愿回售，100.12 元/张（含息、含税），期间可交易但停止转股，安排 12 月 4 日付款。回售由持有人选择，不是强制赎回；实际回售结果尚未公告。原文未列明确发布时间。"
     }
   ],
   "catalog": [
