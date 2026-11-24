@@ -153,7 +153,10 @@
       "summary": "董事会通过10—15亿元回购；期限3个月，11月24日披露贷款承诺；新一轮实际买入待核。",
       "next_date": null,
       "next": "查首次回购、贷款提款、价格上限及累计进展",
-      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12718878&stockid=603799"
+      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12718878&stockid=603799",
+      "stock_codes": [
+        "603799"
+      ]
     },
     {
       "id": "wanhua",
@@ -163,7 +166,10 @@
       "summary": "提议3—5亿元回购并注销，须经过审议；不是实际回购。",
       "next_date": null,
       "next": "核验董事会和股东会审议、实施及注销",
-      "source": "https://www.nbd.com.cn/articles/2026-11-24/4657379.html"
+      "source": "https://www.nbd.com.cn/articles/2026-11-24/4657379.html",
+      "stock_codes": [
+        "600309"
+      ]
     }
   ],
   "themes": [

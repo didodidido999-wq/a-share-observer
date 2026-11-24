@@ -6,3 +6,5 @@
 - stocks code 为保留前导零的6位字符串，全池一股一行；themes、horizons、drivers 为数组；priority='重点'或'观察'，core_rank 仅重点排序；state='active'或'archived'。保留 added_at、更新 updated_at、review。逐股 company_evidence 为日期、阶段、真实披露 URL；政策受益、贷款承诺、ETF持仓、实际增持互不等同。不得使用资金池标签推断新买入。
 - 核查订单/中标、业绩、估值、量价、风险；缺失明确待核；失效候选归档而非删除，保留归档原因。变更写 change_log（date,summary）；如有新增政策/升级/降级/失效，通知用户。
 - 更新前校验 events/themes ID 唯一、股票代码唯一、关联ID存在、合法日期/状态、来源可核查。不能写入或部署时，报告具体错误，保留原数据；不得假称已同步。
+
+- 公司专属催化 events 可设置 stock_codes（六位字符串数组），避免把某一公司的回购事件套到同行；其余事件由主题关联。
