@@ -1,0 +1,1751 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-24",
+  "checked_at": "2026-11-24",
+  "scope": "政策受益研究初选；短期5—20个交易日，中期1—6个月；排序为研究优先级，不代表上涨概率或交易指令。公司业务关系需持续逐股核实，未做统一估值、量价和风险复核。",
+  "method": "2008历史参照：稳市资金→经济政策→真实订单/资源价格→利润增量；不直接复制历史板块。",
+  "events": [
+    {
+      "id": "margin",
+      "title": "融资保证金下调至80%",
+      "date": "2026-11-22",
+      "status": "scheduled",
+      "summary": "最低融资保证金比例100%→80%；测算的新增融资空间不等于实际入市资金。",
+      "next_date": "2026-11-30",
+      "next": "实施后跟踪融资余额、成交额和券商成交表现",
+      "source": "https://www.sse.com.cn/aboutus/mediacenter/hotandd/c/c_20261122_10838649.shtml"
+    },
+    {
+      "id": "marketmaking",
+      "title": "创业板股票做市交易细则",
+      "date": "2026-11-22",
+      "status": "consultation",
+      "summary": "征求意见稿；正式规则、实施日、资格和做市股票名单尚未确定。",
+      "next_date": "2026-12-06",
+      "next": "意见反馈截止；等待正式规则及名单",
+      "source": "https://www.szse.cn/disclosure/notice/general/t20261122_623987.html"
+    },
+    {
+      "id": "sixnet",
+      "title": "六张网重大项目建设",
+      "date": "2026-11-06",
+      "status": "published",
+      "summary": "发改委调度新型电网、算力网、通信网、水网、地下管网、物流网；加快配套政策、项目库和明年计划。",
+      "next_date": null,
+      "next": "跟踪各网投资计划、招标、订单、项目资金到位",
+      "source": "https://www.ndrc.gov.cn/xwdt/xwfb/202611/t20261106_1408663.html"
+    },
+    {
+      "id": "capital",
+      "title": "8000亿元新型政策性金融工具",
+      "date": "2026-10-28",
+      "status": "implemented",
+      "summary": "三家政策性银行已完成投放；项目资本金工具，不是新增股票买入资金，也非全部投向六张网。",
+      "next_date": null,
+      "next": "跟踪项目实际开工、资金拨付和中标",
+      "source": "https://www.xinhuanet.com/fortune/20261028/dcc3e81a5a6f4e9c983e3baeb844b54e/c.html"
+    },
+    {
+      "id": "storage",
+      "title": "十五五新型储能实施方案",
+      "date": "2026-11-13",
+      "status": "published",
+      "summary": "2030年全国新型储能装机目标3亿千瓦，平均储能时长约3小时；规划目标不是已签订单。",
+      "next_date": null,
+      "next": "跟踪容量电价、招标量、价格及订单利润率",
+      "source": "https://www.nea.gov.cn/20261113/6a2b2141529448ddb8650df1784abe73/c.html"
+    },
+    {
+      "id": "loan",
+      "title": "回购增持再贷款制度化",
+      "date": "2026-11-02",
+      "status": "published",
+      "summary": "再贷款利率由1.25%降至1%；累计申请贷款额度上限约4400亿元，区别申请、签约、放款和实际回购。",
+      "next_date": null,
+      "next": "逐公司核实新方案、贷款承诺、实际成交和剩余额度",
+      "source": "https://www.beijing.gov.cn/ywdt/zybwdt/202611/t20261103_4929447.html"
+    },
+    {
+      "id": "swap",
+      "title": "第三次互换便利操作",
+      "date": "2026-11-03",
+      "status": "implemented",
+      "summary": "操作金额1000亿元；31家券商、基金参与投标，费率10bp；不等于1000亿元已经买股，具体标的未知。",
+      "next_date": null,
+      "next": "观察机构实际公开资金证据、市场流动性",
+      "source": "https://jx.people.com.cn/n2/2026/1106/c186330-41743346.html"
+    },
+    {
+      "id": "fees",
+      "title": "交易所降费措施",
+      "date": "2026-11-22",
+      "status": "published",
+      "summary": "交易单元使用费等减免；部分既有减免延至2028年。",
+      "next_date": null,
+      "next": "核对细则及券商成本节约",
+      "source": "https://www.nbd.com.cn/articles/2026-11-23/4655274.html"
+    },
+    {
+      "id": "care",
+      "title": "一老一小服务体系建设",
+      "date": "2026-11-23",
+      "status": "published",
+      "summary": "养老、托育设施及医养结合扩容；政策目标不等于设备公司订单。",
+      "next_date": null,
+      "next": "跟踪地方财政预算、采购订单与医保支付",
+      "source": "https://www.ndrc.gov.cn/xxgk/jd/jd/202611/t20261123_1409029.html"
+    },
+    {
+      "id": "etf",
+      "title": "首批18只主动ETF上市",
+      "date": "2026-11-23",
+      "status": "implemented",
+      "summary": "募集规模约360亿元；上市公告前十大持仓为历史快照，不是后续买入保证。",
+      "next_date": null,
+      "next": "与原资金证据池的逐股基金持仓交叉核验",
+      "source": "https://pdf.dfcfw.com/pdf/H2_AN202611171831792655_1.pdf"
+    },
+    {
+      "id": "december",
+      "title": "12月政治局与中央经济工作会议",
+      "date": null,
+      "status": "watch",
+      "summary": "按历年政策节奏跟踪；具体会议日期、增量政策及力度尚未公布。",
+      "next_date": null,
+      "next": "关注会议通稿、2027年财政、内需、产业投资定调",
+      "source": null
+    },
+    {
+      "id": "demand",
+      "title": "扩大内需与消费增量政策",
+      "date": null,
+      "status": "watch",
+      "summary": "等待正式方案、资金规模、适用范围和实施期限；不预设补贴。",
+      "next_date": null,
+      "next": "跟踪消费补贴、设备更新、服务消费正式文件",
+      "source": null
+    },
+    {
+      "id": "buybackrules",
+      "title": "护盘式回购制度优化",
+      "date": null,
+      "status": "watch",
+      "summary": "关注证监会后续规则或征求意见；未见最终方案则保留预期。",
+      "next_date": null,
+      "next": "等待正式规则，核验适用条件",
+      "source": "https://www.csrc.gov.cn/csrc/c100028/c7668092/content.shtml"
+    },
+    {
+      "id": "monetary",
+      "title": "新一轮降准降息与财政增量",
+      "date": null,
+      "status": "watch",
+      "summary": "假设情景，未确认新的具体安排；不将预测列为已出台政策。",
+      "next_date": null,
+      "next": "关注央行、财政部正式公告",
+      "source": null
+    },
+    {
+      "id": "huayou",
+      "title": "华友钴业新一轮回购",
+      "date": "2026-11-23",
+      "status": "published",
+      "summary": "董事会通过10—15亿元回购；期限3个月，11月24日披露贷款承诺；新一轮实际买入待核。",
+      "next_date": null,
+      "next": "查首次回购、贷款提款、价格上限及累计进展",
+      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12718878&stockid=603799"
+    },
+    {
+      "id": "wanhua",
+      "title": "万华化学董事长回购提议",
+      "date": "2026-11-24",
+      "status": "proposal",
+      "summary": "提议3—5亿元回购并注销，须经过审议；不是实际回购。",
+      "next_date": null,
+      "next": "核验董事会和股东会审议、实施及注销",
+      "source": "https://www.nbd.com.cn/articles/2026-11-24/4657379.html"
+    }
+  ],
+  "themes": [
+    {
+      "id": "grid",
+      "name": "电网设备",
+      "rank": 1,
+      "short": "较高",
+      "medium": "重点",
+      "policies": [
+        "sixnet",
+        "capital",
+        "storage"
+      ],
+      "logic": "电网投资→输变电/配网设备→中标和交付",
+      "verify": "国家电网、南方电网批次招标、中标、订单毛利",
+      "risk": "采购延迟、招标降价"
+    },
+    {
+      "id": "storage",
+      "name": "储能",
+      "rank": 2,
+      "short": "较高",
+      "medium": "重点",
+      "policies": [
+        "storage",
+        "sixnet"
+      ],
+      "logic": "装机和电价机制→电芯、PCS、系统集成、温控需求",
+      "verify": "独立储能招标、容量电价、订单与利润率",
+      "risk": "价格竞争、利用率不足"
+    },
+    {
+      "id": "broker",
+      "name": "券商与金融科技",
+      "rank": 3,
+      "short": "重点",
+      "medium": "较高",
+      "policies": [
+        "margin",
+        "marketmaking",
+        "fees",
+        "swap"
+      ],
+      "logic": "融资空间和成交活跃→利息、佣金、信息服务收入",
+      "verify": "两融余额、成交额、做市资格和经纪业务数据",
+      "risk": "融资需求不足、政策反弹回落"
+    },
+    {
+      "id": "metal",
+      "name": "铜及有色资源",
+      "rank": 4,
+      "short": "观察",
+      "medium": "较高",
+      "policies": [
+        "sixnet",
+        "storage",
+        "capital"
+      ],
+      "logic": "电网/算力/储能需求→资源价格及矿企经营杠杆",
+      "verify": "铜价、库存、矿产量、加工费、订单",
+      "risk": "全球需求回落、成本和供给增加"
+    },
+    {
+      "id": "compute",
+      "name": "算力基础设施",
+      "rank": 5,
+      "short": "较高",
+      "medium": "较高",
+      "policies": [
+        "sixnet",
+        "capital"
+      ],
+      "logic": "算力网、通信网→服务器、光模块、电源和散热",
+      "verify": "资本开支、招标、中标、订单、海外需求",
+      "risk": "估值过高、算力供需错配"
+    },
+    {
+      "id": "semi",
+      "name": "国产半导体",
+      "rank": 6,
+      "short": "较高",
+      "medium": "较高",
+      "policies": [
+        "sixnet",
+        "marketmaking",
+        "december"
+      ],
+      "logic": "国产算力与设备国产化；做市仅可能改善流动性",
+      "verify": "晶圆厂资本开支、设备验收、产品交付",
+      "risk": "技术限制、估值与需求波动"
+    },
+    {
+      "id": "water",
+      "name": "水利及地下管网",
+      "rank": 7,
+      "short": "观察",
+      "medium": "较高",
+      "policies": [
+        "sixnet",
+        "capital"
+      ],
+      "logic": "水网和地下管网→管材、工程设备及施工需求",
+      "verify": "专项债、项目招标、回款和现金流",
+      "risk": "低毛利、地方财政与回款"
+    },
+    {
+      "id": "finance",
+      "name": "银行与保险",
+      "rank": 8,
+      "short": "较高",
+      "medium": "观察",
+      "policies": [
+        "loan",
+        "swap",
+        "etf",
+        "margin"
+      ],
+      "logic": "长期资金配置及权益市场修复；银行保险资金证据另列",
+      "verify": "股东持仓、净息差、投资收益和分红",
+      "risk": "净息差、资产质量、权益波动"
+    },
+    {
+      "id": "consumer",
+      "name": "家电及消费",
+      "rank": 9,
+      "short": "观察",
+      "medium": "待确认",
+      "policies": [
+        "demand",
+        "december",
+        "etf"
+      ],
+      "logic": "可能受益于内需政策和存量更新；等待资金及细则",
+      "verify": "补贴范围、零售数据、渠道库存",
+      "risk": "需求透支、补贴政策不及预期"
+    },
+    {
+      "id": "health",
+      "name": "养老及医疗康复",
+      "rank": 10,
+      "short": "观察",
+      "medium": "待确认",
+      "policies": [
+        "care"
+      ],
+      "logic": "服务体系扩容→养老设施、康复与家用医疗采购",
+      "verify": "地方配套、设备采购和医保支付",
+      "risk": "财政约束、订单转化弱"
+    },
+    {
+      "id": "property",
+      "name": "房地产",
+      "rank": 11,
+      "short": "观察",
+      "medium": "待确认",
+      "policies": [
+        "demand",
+        "monetary",
+        "december"
+      ],
+      "logic": "仅作为增量政策情景观察，未形成明确股票主线",
+      "verify": "正式地产政策、销售、信用及现金流",
+      "risk": "债务、销售和去库存"
+    },
+    {
+      "id": "buyback",
+      "name": "回购增持及化工修复",
+      "rank": 12,
+      "short": "较高",
+      "medium": "观察",
+      "policies": [
+        "loan",
+        "huayou",
+        "wanhua",
+        "buybackrules"
+      ],
+      "logic": "回购资金与治理信号；不等于基本面改善",
+      "verify": "逐公司回购实际成交、价格上限、利润修复",
+      "risk": "仅计划未成交、盈利恶化"
+    }
+  ],
+  "stocks": [
+    {
+      "code": "300059",
+      "name": "东方财富",
+      "themes": [
+        "broker"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "broker",
+          "logic": "经纪、两融与市场活跃度"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 1
+    },
+    {
+      "code": "600030",
+      "name": "中信证券",
+      "themes": [
+        "broker"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "broker",
+          "logic": "头部券商、机构业务及做市"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 2
+    },
+    {
+      "code": "601211",
+      "name": "国泰海通",
+      "themes": [
+        "broker"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "broker",
+          "logic": "资本实力、经纪和机构业务"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 3
+    },
+    {
+      "code": "300033",
+      "name": "同花顺",
+      "themes": [
+        "broker"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "broker",
+          "logic": "金融信息服务"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "300803",
+      "name": "指南针",
+      "themes": [
+        "broker"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "broker",
+          "logic": "金融科技与证券业务"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "600958",
+      "name": "东方证券",
+      "themes": [
+        "broker"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "broker",
+          "logic": "经纪、机构业务与资管"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "600312",
+      "name": "平高电气",
+      "themes": [
+        "grid"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "grid",
+          "logic": "特高压开关及GIS"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 5
+    },
+    {
+      "code": "601179",
+      "name": "中国西电",
+      "themes": [
+        "grid"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "grid",
+          "logic": "特高压一次设备"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 6
+    },
+    {
+      "code": "600406",
+      "name": "国电南瑞",
+      "themes": [
+        "grid"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "grid",
+          "logic": "电网自动化与调度"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 7
+    },
+    {
+      "code": "002028",
+      "name": "思源电气",
+      "themes": [
+        "grid"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "grid",
+          "logic": "输变电设备和海外需求"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 8
+    },
+    {
+      "code": "600089",
+      "name": "特变电工",
+      "themes": [
+        "grid"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "grid",
+          "logic": "变压器及输变电工程"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "000400",
+      "name": "许继电气",
+      "themes": [
+        "grid"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "grid",
+          "logic": "直流输电及配网"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "601126",
+      "name": "四方股份",
+      "themes": [
+        "grid"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "grid",
+          "logic": "继电保护与自动化"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "603606",
+      "name": "东方电缆",
+      "themes": [
+        "grid"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "grid",
+          "logic": "电力电缆与海缆"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "300274",
+      "name": "阳光电源",
+      "themes": [
+        "storage"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "storage",
+          "logic": "储能系统和PCS"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 9
+    },
+    {
+      "code": "300750",
+      "name": "宁德时代",
+      "themes": [
+        "storage"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "storage",
+          "logic": "储能电芯和系统"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 10
+    },
+    {
+      "code": "688411",
+      "name": "海博思创",
+      "themes": [
+        "storage"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "storage",
+          "logic": "储能系统集成"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "300014",
+      "name": "亿纬锂能",
+      "themes": [
+        "storage"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "storage",
+          "logic": "储能电池"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "002335",
+      "name": "科华数据",
+      "themes": [
+        "storage",
+        "compute"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "storage",
+          "logic": "储能与电源"
+        },
+        {
+          "theme": "compute",
+          "logic": "数据中心电源"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 11
+    },
+    {
+      "code": "300693",
+      "name": "盛弘股份",
+      "themes": [
+        "storage"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "storage",
+          "logic": "储能变流器与电能质量"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "002837",
+      "name": "英维克",
+      "themes": [
+        "storage",
+        "compute"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "storage",
+          "logic": "储能温控与液冷"
+        },
+        {
+          "theme": "compute",
+          "logic": "算力液冷"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "002518",
+      "name": "科士达",
+      "themes": [
+        "storage",
+        "compute"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "storage",
+          "logic": "储能与UPS"
+        },
+        {
+          "theme": "compute",
+          "logic": "数据中心UPS"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "688041",
+      "name": "海光信息",
+      "themes": [
+        "compute",
+        "semi"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "compute",
+          "logic": "国产CPU、DCU"
+        },
+        {
+          "theme": "semi",
+          "logic": "国产算力芯片"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "688256",
+      "name": "寒武纪",
+      "themes": [
+        "compute",
+        "semi"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "compute",
+          "logic": "国产AI芯片"
+        },
+        {
+          "theme": "semi",
+          "logic": "国产AI芯片"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "000977",
+      "name": "浪潮信息",
+      "themes": [
+        "compute"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "compute",
+          "logic": "AI服务器"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "300442",
+      "name": "润泽科技",
+      "themes": [
+        "compute"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "compute",
+          "logic": "数据中心"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "300308",
+      "name": "中际旭创",
+      "themes": [
+        "compute"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "compute",
+          "logic": "高速光模块"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "300502",
+      "name": "新易盛",
+      "themes": [
+        "compute"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "compute",
+          "logic": "高速光模块"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "002371",
+      "name": "北方华创",
+      "themes": [
+        "semi"
+      ],
+      "horizons": [
+        "medium",
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "semi",
+          "logic": "半导体设备"
+        },
+        {
+          "theme": "semi",
+          "logic": "科技核心资产流动性观察"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 12
+    },
+    {
+      "code": "688012",
+      "name": "中微公司",
+      "themes": [
+        "semi"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "semi",
+          "logic": "刻蚀及薄膜设备"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "688981",
+      "name": "中芯国际",
+      "themes": [
+        "semi"
+      ],
+      "horizons": [
+        "medium",
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "semi",
+          "logic": "晶圆制造"
+        },
+        {
+          "theme": "semi",
+          "logic": "科技核心资产流动性观察"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "601899",
+      "name": "紫金矿业",
+      "themes": [
+        "metal"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "metal",
+          "logic": "铜与黄金资源"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 13
+    },
+    {
+      "code": "603993",
+      "name": "洛阳钼业",
+      "themes": [
+        "metal"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "metal",
+          "logic": "铜钴资源"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 14
+    },
+    {
+      "code": "600362",
+      "name": "江西铜业",
+      "themes": [
+        "metal"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "metal",
+          "logic": "铜矿与冶炼"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "000630",
+      "name": "铜陵有色",
+      "themes": [
+        "metal"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "metal",
+          "logic": "铜产业链"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "000878",
+      "name": "云南铜业",
+      "themes": [
+        "metal"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "metal",
+          "logic": "铜资源与冶炼"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "601600",
+      "name": "中国铝业",
+      "themes": [
+        "metal"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "metal",
+          "logic": "铝资源及冶炼"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "000807",
+      "name": "云铝股份",
+      "themes": [
+        "metal"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "metal",
+          "logic": "电解铝"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "603799",
+      "name": "华友钴业",
+      "themes": [
+        "metal",
+        "buyback"
+      ],
+      "horizons": [
+        "medium",
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "metal",
+          "logic": "镍钴与电池材料"
+        },
+        {
+          "theme": "buyback",
+          "logic": "新一轮回购方案及贷款承诺，实际买入待核"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [
+        {
+          "date": "2026-11-24",
+          "stage": "贷款承诺（不等于提款或成交）",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12718878&stockid=603799"
+        }
+      ],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 4
+    },
+    {
+      "code": "000778",
+      "name": "新兴铸管",
+      "themes": [
+        "water"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "water",
+          "logic": "球墨铸铁管"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "002457",
+      "name": "青龙管业",
+      "themes": [
+        "water"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "water",
+          "logic": "输水管道"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "002671",
+      "name": "龙泉股份",
+      "themes": [
+        "water"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "water",
+          "logic": "大型输水管道"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "002372",
+      "name": "伟星新材",
+      "themes": [
+        "water"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "water",
+          "logic": "塑料管材"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "601669",
+      "name": "中国电建",
+      "themes": [
+        "water"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "water",
+          "logic": "水利、电力工程"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "600502",
+      "name": "安徽建工",
+      "themes": [
+        "water"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "water",
+          "logic": "水利与基础设施"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "600031",
+      "name": "三一重工",
+      "themes": [
+        "water"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "water",
+          "logic": "工程机械"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "000425",
+      "name": "徐工机械",
+      "themes": [
+        "water"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "water",
+          "logic": "工程机械"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "601318",
+      "name": "中国平安",
+      "themes": [
+        "finance"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "finance",
+          "logic": "权益资产与长期资金配置"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "600036",
+      "name": "招商银行",
+      "themes": [
+        "finance"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "finance",
+          "logic": "机构配置、估值修复"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "600919",
+      "name": "江苏银行",
+      "themes": [
+        "finance"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "finance",
+          "logic": "主动ETF持仓线索"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "000333",
+      "name": "美的集团",
+      "themes": [
+        "consumer"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "consumer",
+          "logic": "家电、设备更新"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "000651",
+      "name": "格力电器",
+      "themes": [
+        "consumer"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "consumer",
+          "logic": "家电消费"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "600690",
+      "name": "海尔智家",
+      "themes": [
+        "consumer"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "consumer",
+          "logic": "家电消费升级"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "600519",
+      "name": "贵州茅台",
+      "themes": [
+        "consumer"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "consumer",
+          "logic": "消费修复"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "000858",
+      "name": "五粮液",
+      "themes": [
+        "consumer"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "consumer",
+          "logic": "消费修复"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "601888",
+      "name": "中国中免",
+      "themes": [
+        "consumer"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "consumer",
+          "logic": "旅游及服务消费"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "300760",
+      "name": "迈瑞医疗",
+      "themes": [
+        "health"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "health",
+          "logic": "医疗设备"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "002223",
+      "name": "鱼跃医疗",
+      "themes": [
+        "health"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "health",
+          "logic": "家用医疗、养老"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "688626",
+      "name": "翔宇医疗",
+      "themes": [
+        "health"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "health",
+          "logic": "康复设备"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "待核最新估值、财报、量价及风险"
+    },
+    {
+      "code": "600309",
+      "name": "万华化学",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "董事长回购提议，待审议"
+        },
+        {
+          "theme": "buyback",
+          "logic": "化工景气及利润修复"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [
+        {
+          "date": "2026-11-24",
+          "stage": "董事长提议（不等于方案通过或成交）",
+          "source": "https://www.nbd.com.cn/articles/2026-11-24/4657379.html"
+        }
+      ],
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 15
+    }
+  ],
+  "change_log": [
+    {
+      "date": "2026-11-24",
+      "summary": "建立首批60只去重候选、15只重点、16个政策或公司催化节点。所有股票为研究初选，未完成交易筛选。"
+    }
+  ],
+  "archived": []
+}

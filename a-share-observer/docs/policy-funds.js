@@ -49,6 +49,7 @@ function mount(){
  const count=el('div',undefined,'pf-results');count.id='pf-results';count.setAttribute('role','status');panel.append(count);
  const area=el('div',undefined,'pf-rows');area.id='pf-rows';panel.append(area);host.append(panel);
  const foot=el('p','财务质量、未来成长和估值评级尚未完成逐股年报与最新财报核验，统一显示“待评估”，不会用示例分数替代真实研究。历史持仓快照不等于公告日交易；个人关注仅保存在当前浏览器。','pf-footer');host.append(foot);
+ window.AniuPolicyOpportunities?.mount(host,head,()=>data);
  const backdrop=el('div',undefined,'pf-backdrop');backdrop.id='pf-backdrop';backdrop.hidden=true;
  const drawer=el('aside',undefined,'pf-drawer');drawer.id='pf-drawer';drawer.setAttribute('role','dialog');drawer.setAttribute('aria-modal','true');drawer.setAttribute('aria-labelledby','pf-detail-title');drawer.tabIndex=-1;backdrop.append(drawer);document.body.append(backdrop);
  backdrop.addEventListener('click',e=>{if(e.target===backdrop)closeDetail();});
