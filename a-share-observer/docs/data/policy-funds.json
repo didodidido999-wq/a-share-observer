@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "as_of": "2026-11-22",
-  "updated_at": "2026-11-23T00:00:00+08:00",
+  "updated_at": "2026-11-25T07:18:00+08:00",
   "scope": "人工整理的部分核验观察池；不是五类资金全量名单、动态实时持仓、完整ETF底仓或投资评级。",
   "coverage": {
     "loan": "证监会截至2026-10末902家发行人、1110单公告为回填基准；本文件仅部分候选",
@@ -15,15 +15,15 @@
       "key": "loan",
       "label": "回购增持贷款",
       "value": "约4400亿元",
-      "basis": "证监会累计申请上限／央行已签约额为不同口径",
+      "basis": "截至2026年10月底累计申请额度上限，含中国国新、中国诚通；不是放款额",
       "source": "https://www.csrc.gov.cn/csrc/c100028/c7668092/content.shtml"
     },
     {
       "key": "swap",
       "label": "互换便利",
       "value": "1000亿元",
-      "basis": "第三批操作规模，个股买入明细未知",
-      "source": "https://www.csrc.gov.cn/csrc/c100028/c7513113/content.shtml"
+      "basis": "第三批实际操作规模，未披露逐股买入明细",
+      "source": "https://www.sse.com.cn/aboutus/mediacenter/hotandd/c/c_20261112_10837510.shtml"
     },
     {
       "key": "etf",
@@ -234,16 +234,16 @@
         "insurance"
       ],
       "status": "planned",
-      "action": "董事长提议20亿—40亿元回购",
+      "action": "20亿—40亿元回购获批，已开专户",
       "event_date": null,
-      "disclosed": "2026-11-18",
+      "disclosed": "2026-11-25",
       "quantity": "—",
-      "cash": "提议20亿—40亿元",
-      "funding": "尚非实际买入；专项贷款尚未证实",
-      "source": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12713112&stockid=300308",
-      "subject": "董事长",
-      "kind": "回购提议",
-      "basis": "提议阶段；ETF及险资仅为不同来源历史线索"
+      "cash": "计划20亿—40亿元",
+      "funding": "拟用自有或自筹资金，未披露专项贷款",
+      "source": "https://static.cninfo.com.cn/finalpage/2026-11-25/1225686830.PDF",
+      "subject": "上市公司",
+      "kind": "股份回购计划",
+      "basis": "11月18日提议、23日董事会通过；已开专户，尚未披露首次成交。ETF及险资标签为独立历史线索。"
     },
     {
       "code": "600690",
