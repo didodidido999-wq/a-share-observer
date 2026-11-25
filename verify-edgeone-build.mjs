@@ -12,6 +12,8 @@ const required = [
   'policy-context.css',
   'policy-workspace.js',
   'policy-workspace.css',
+  'aniu-visual.css',
+  'aniu-mark.svg',
   join('data','policy-opportunities.json'),
   join('data','policy-funds.json'),
   join('data','research-current.json'),

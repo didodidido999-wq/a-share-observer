@@ -27,7 +27,7 @@ const data={opportunities:null,funds:null,context:null};
 const errors={};
 const fileNames={opportunities:'policy-opportunities.json',funds:'policy-funds.json',context:'policy-context.json'};
 const sourceTitle={opportunities:'股票机会',funds:'资金披露',context:'宏观政策档案'};
-let stockFilter={scope:'core',horizon:'all',theme:'all',q:''};
+let stockFilter={scope:'core',horizon:'all',theme:'all',q:''},selectedStock=null;
 let fundFilter={source:'all',status:'all',q:'',favorites:false};
 let favorites=new Set();try{favorites=new Set(JSON.parse(root.localStorage.getItem('policy-funds-favorites')||'[]'));}catch{}
 function saveFav(){try{root.localStorage.setItem('policy-funds-favorites',JSON.stringify([...favorites]));}catch{}}
@@ -70,28 +70,61 @@ function render(c){ctx=c||ctx;host=d.getElementById('policy-workspace');if(!host
 const navigation=ctx?.state?.policyNavigation;const a=navigation?navigation.anchor:getAnchor(),seq=++drawSerial;const newRoute=navigation?navigation.serial!==lastNavigation:a!==lastAnchor;if(newRoute){view=a?'policy':'stocks';if(a){archiveMode='current';calendarDays=30;macroKind='all';}}if(navigation)lastNavigation=navigation.serial;lastAnchor=a;
 if(!data.opportunities&&!data.funds&&!data.context){host.replaceChildren(memo('正在读取政策、资金和股票研究…'));}else renderShell();
 load().then(()=>{if(seq!==drawSerial)return;renderShell();});}
+function renderOverview(){
+const all=stocks(),core=all.filter(s=>s.priority==='重点'),op=data.opportunities;
+const el=n('section',null,'pw-hero');el.setAttribute('aria-label','政策研究概览');
+const left=n('div',null,'pw-hero-stats'),grid=n('div',null,'pw-hero-grid');
+for(const [name,value,accent] of [['重点股票',core.length,true],['全部候选',all.length,false],['增持回购候选',all.filter(s=>(s.themes||[]).includes('buyback')).length,false]]){
+ const item=n('div',null,'pw-hero-stat');item.append(n('span',name,'pw-hero-label'));const num=n('strong',value,'pw-hero-value'+(accent?' pw-hero-accent':''));num.append(n('small','只'));item.append(num);grid.append(item);
+}left.append(grid);
+const periods=[['短期',core.filter(s=>s.horizons?.includes('short')&&!s.horizons?.includes('medium')).length,'short'],['短中期',core.filter(s=>s.horizons?.includes('short')&&s.horizons?.includes('medium')).length,'both'],['中期',core.filter(s=>!s.horizons?.includes('short')&&s.horizons?.includes('medium')).length,'medium']];
+const known=periods.reduce((a,p)=>a+p[1],0);if(core.length>known)periods.push(['待评估',core.length-known,'unknown']);
+const footer=n('div',null,'pw-hero-foot'),bar=n('div',null,'pw-hero-bar'),legend=n('div',null,'pw-hero-legend');
+for(const [label,count,key] of periods){if(count){const band=n('span',null,key);band.style.flex=String(count);bar.append(band);}const cap=n('span',null,key);cap.append(n('i'),n('span',label+' '+count));legend.append(cap);}
+bar.setAttribute('aria-label',periods.map(p=>p[0]+' '+p[1]).join('，'));footer.append(bar,legend);left.append(footer);
+const right=n('div',null,'pw-hero-next');const next=(op.events||[]).filter(e=>e.next_date&&e.next_date>=today()&&!['expired','cancelled'].includes(e.status)).sort((a,b)=>a.next_date.localeCompare(b.next_date))[0];
+const line=n('div',null,'pw-next-head');line.append(n('span','下一政策催化','pw-hero-label'));if(next)line.append(badge(next.status));right.append(line);
+if(next){const stamp=n('strong',next.next_date.slice(5).replace('-','.'),'pw-next-date');right.append(stamp);const row=n('div',null,'pw-next-event');row.append(n('strong',next.title),btn('查看政策 ↗',()=>{archiveMode='current';calendarDays=30;show('policy');d.getElementById(next.id)?.scrollIntoView({block:'center'});},'pw-hero-action'));right.append(row);}
+else{right.append(n('strong','待确认','pw-next-date'),memo('暂无已收录的确定未来节点'),btn('查看政策日历 ↗',()=>{archiveMode='current';show('policy');},'pw-hero-action'));}
+el.append(left,right);return el;
+}
 function renderShell(){if(!host)return;host.replaceChildren();host.className='pw-workspace';
+if(data.opportunities)host.append(renderOverview());
+const surface=n('div',null,'pw-paper');const toolbar=n('div',null,'pw-paper-top');toolbar.append(n('strong','研究工作区','pw-paper-title'));
 const nav=n('nav',null,'pw-nav');nav.setAttribute('aria-label','政策板块');
-for(const [key,title] of [['stocks','股票机会'],['policy','政策与日历'],['funds','资金追踪']]){const b=btn(title,()=>show(key),'pw-tab');b.dataset.view=key;b.setAttribute('aria-current',view===key?'page':'false');nav.append(b);}host.append(nav);
-const strip=n('div',null,'pw-data-strip');const bits=[];if(data.opportunities)bits.push('股票研究 '+(data.opportunities.as_of||'日期待核'));if(data.funds)bits.push('原资金证据 '+(data.funds.as_of||'日期待核'));if(data.context)bits.push('宏观核查 '+day(data.context.checked_at));strip.append(n('span',bits.join('　·　')||'数据尚未取得'),btn('刷新数据',async()=>{await load(true);renderShell();},'pw-text-button'));host.append(strip);
-const problems=Object.keys(errors);if(problems.length)host.append(n('p',problems.map(k=>sourceTitle[k]+'读取失败'+(data[k]?'（保留上次成功快照）':'')).join('；')+'。缺失不等于无事件。','pw-warning'));
-const staleDate=day(data.opportunities?.checked_at),staleTime=Date.parse(staleDate+'T00:00:00Z');if(Number.isFinite(staleTime)&&today()>new Date(staleTime+3*86400000).toISOString().slice(0,10))host.append(n('p','股票研究已超过3天未核查，请核对最新公告。','pw-warning'));
-const content=n('div',null,'pw-content');host.append(content);
+for(const [key,title] of [['stocks','股票机会'],['policy','政策与日历'],['funds','资金追踪']]){const b=btn(title,()=>show(key),'pw-tab');b.dataset.view=key;b.setAttribute('aria-current',view===key?'page':'false');nav.append(b);}toolbar.append(nav,n('span',view==='stocks'?'股票研究':view==='policy'?'政策档案':'资金证据','pw-paper-hint'));surface.append(toolbar);host.append(surface);
+const strip=n('div',null,'pw-data-strip');const bits=[];if(data.opportunities)bits.push('股票研究 '+(data.opportunities.as_of||'日期待核'));if(data.funds)bits.push('原资金证据 '+(data.funds.as_of||'日期待核'));if(data.context)bits.push('宏观核查 '+day(data.context.checked_at));strip.append(n('span',bits.join('　·　')||'数据尚未取得'),btn('刷新数据',async()=>{await load(true);renderShell();},'pw-text-button'));surface.append(strip);
+const problems=Object.keys(errors);if(problems.length)surface.append(n('p',problems.map(k=>sourceTitle[k]+'读取失败'+(data[k]?'（保留上次成功快照）':'')).join('；')+'。缺失不等于无事件。','pw-warning'));
+const staleDate=day(data.opportunities?.checked_at),staleTime=Date.parse(staleDate+'T00:00:00Z');if(Number.isFinite(staleTime)&&today()>new Date(staleTime+3*86400000).toISOString().slice(0,10))surface.append(n('p','股票研究已超过3天未核查，请核对最新公告。','pw-warning'));
+const content=n('div',null,'pw-content');surface.append(content);
 if(view==='stocks')drawStocks(content);else if(view==='policy')drawPolicy(content);else drawFunds(content);
 }
 function drawStocks(host){
 if(!data.opportunities&&!data.funds){host.append(memo('研究数据暂不可用。'));return;}
 const all=stocks(),archived=stocks(true).filter(s=>s.state==='archived'),core=all.filter(s=>s.priority==='重点'),tmap=new Map((data.opportunities?.themes||[]).map(t=>[t.id,t]));
 const h=n('div',null,'pw-heading');h.append(n('h2','股票机会'),n('span',`${core.length}只重点 / ${all.length}只候选`,'pw-total'));host.append(h,memo('以研究优先级排序，不是上涨概率或交易评级。短期 5—20 个交易日，中期 1—6 个月。点击股票查看政策、资金和风险。'));
-const panel=n('section',null,'pw-panel');const controls=n('div',null,'pw-filters');const scopes=n('div',null,'pw-segment');
+const panel=n('section',null,'pw-panel pw-stock-panel');const controls=n('div',null,'pw-filters');const scopes=n('div',null,'pw-segment');
 const scopeBtns=[];for(const [id,txt] of [['core','重点'],['all','全部候选'],['favorite','我的关注'],...(archived.length?[['archived','已归档']]:[])]){const b=btn(txt,()=>{stockFilter.scope=id;update();},'pw-seg');b.dataset.scope=id;scopeBtns.push([id,b]);scopes.append(b);}controls.append(scopes,select('研究期限',[['all','全部期限'],['short','短期'],['medium','中期']],stockFilter.horizon,v=>{stockFilter.horizon=v;update();}),select('产业方向',[['all','全部方向'],...[...tmap.values()].sort((a,b)=>a.rank-b.rank).map(t=>[t.id,t.name])],stockFilter.theme,v=>{stockFilter.theme=v;update();}),search('搜索股票名称 / 代码',stockFilter.q,v=>{stockFilter.q=v;if(v.trim()&&stockFilter.scope==='core')stockFilter.scope='all';update();}));panel.append(controls);
-const status=n('p',null,'pw-result');status.setAttribute('role','status');panel.append(status);const list=n('div',null,'pw-stock-list');list.id='policy-opportunity-list';panel.append(list);host.append(panel);
+const status=n('p',null,'pw-result');status.setAttribute('role','status');panel.append(status);const list=n('div',null,'pw-stock-list');list.id='policy-opportunity-list';panel.append(list);
+const split=n('div',null,'pw-stock-workspace'),preview=n('aside',null,'pw-stock-preview');preview.setAttribute('aria-label','选中股票研究摘要');split.append(panel,preview);host.append(split);
 function update(){for(const [id,b] of scopeBtns)b.setAttribute('aria-pressed',String(stockFilter.scope===id));const q=stockFilter.q.trim().toLowerCase();const rows=(stockFilter.scope==='archived'?archived:all).filter(s=>(stockFilter.scope==='all'||stockFilter.scope==='archived'||stockFilter.scope==='core'&&s.priority==='重点'||stockFilter.scope==='favorite'&&favorites.has(s.code))&&(stockFilter.horizon==='all'||(s.horizons||[]).includes(stockFilter.horizon))&&(stockFilter.theme==='all'||(s.themes||[]).includes(stockFilter.theme))&&(!q||(s.code+' '+s.name).toLowerCase().includes(q)));
 status.textContent=`显示 ${rows.length} 只 · ${stockFilter.scope==='core'?'重点研究':stockFilter.scope==='favorite'?'本机收藏':stockFilter.scope==='archived'?'历史归档':'全部候选'}`;
-list.replaceChildren();if(!rows.length){list.append(memo('当前筛选无匹配股票。'));return;}
+list.replaceChildren();if(!rows.length){list.append(memo('当前筛选无匹配股票。'));selectedStock=null;preview.replaceChildren(memo('请选择一只股票查看研究。'));return;}
+if(!rows.some(s=>s.code===selectedStock))selectedStock=(rows.find(s=>allFundEntries(s).some(e=>e.status==='executed'))||rows[0]).code;
 const head=n('div',null,'pw-stock-head');for(const t of ['股票','关注理由','研究期限','资金线索'])head.append(n('span',t));list.append(head);
-for(const s of rows){const row=btn('',()=>openStock(s.code),'pw-stock-row');row.dataset.code=s.code;const id=n('span',null,'pw-stock-id');id.append(n('strong',s.name),n('small',s.code+(stockFilter.scope!=='core'&&s.priority==='重点'?' · 重点':'')));const term=(s.horizons||[]).map(h=>h==='short'?'短期':'中期').join(' / ')||'待评估';row.append(id,n('span',reasons(s),'pw-stock-reason'),n('span',term,'pw-stock-term'),n('span',fundStatus(s),'pw-stock-evidence'));row.setAttribute('aria-label','查看'+s.name+' '+s.code+'详情');list.append(row);}}
+for(const s of rows){const row=btn('',()=>{selectedStock=s.code;for(const r of list.querySelectorAll('.pw-stock-row')){const active=r.dataset.code===selectedStock;r.classList.toggle('pw-selected',active);r.setAttribute('aria-pressed',String(active));}renderStockPreview(preview,s);if(root.matchMedia('(max-width: 820px)').matches)openStock(s.code);},'pw-stock-row');row.dataset.code=s.code;row.classList.toggle('pw-selected',s.code===selectedStock);row.setAttribute('aria-pressed',String(s.code===selectedStock));const id=n('span',null,'pw-stock-id');id.append(n('strong',s.name),n('small',s.code+(stockFilter.scope!=='core'&&s.priority==='重点'?' · 重点':'')));const term=(s.horizons||[]).map(h=>h==='short'?'短期':'中期').join(' / ')||'待评估';row.append(id,n('span',reasons(s),'pw-stock-reason'),n('span',term,'pw-stock-term'),n('span',fundStatus(s),'pw-stock-evidence'));row.setAttribute('aria-label','查看'+s.name+' '+s.code+'详情');list.append(row);}renderStockPreview(preview,rows.find(s=>s.code===selectedStock));}
 update();}
+function renderStockPreview(host,s){
+ host.replaceChildren();if(!s){host.append(memo('请选择股票'));return;}
+ const heading=n('div',null,'pw-preview-head');const name=n('div');name.append(n('h3',s.name),memo(s.code+' · '+((s.horizons||[]).map(h=>h==='short'?'短期':'中期').join(' / ')||'期限待核')));const fav=btn(favorites.has(s.code)?'已关注':'＋ 关注',()=>{favorites.has(s.code)?favorites.delete(s.code):favorites.add(s.code);saveFav();if(stockFilter.scope==='favorite')renderShell();else renderStockPreview(host,s);},'pw-preview-fav');heading.append(name,fav);host.append(heading,memo(reasons(s)));
+ const entries=allFundEntries(s),entry=entries.find(e=>e.kind==='buyback'&&e.status==='executed')||entries.find(e=>e.kind==='buyback'&&e.status!=='unknown')||entries.find(e=>e.kind!=='clue');
+ const mini=n('div',null,'pw-preview-metrics');const metrics=(title,value,note,primary)=>{const c=n('div',null,'pw-preview-metric'+(primary?' pw-preview-primary':''));c.append(n('small',title),n('strong',value),n('span',note));mini.append(c);};
+ if(entry?.kind==='buyback'&&hasNum(entry.r.plan_min_100m)&&hasNum(entry.r.plan_max_100m)){const r=entry.r;metrics('计划金额',money(r.plan_min_100m).replace('亿元','')+'–'+money(r.plan_max_100m),'同一计划披露区间',true);metrics('累计成交',money(r.actual_100m),'未核实不作零值',false);}
+ else{metrics('研究期限',(s.horizons||[]).map(h=>h==='short'?'短期':'中期').join(' / ')||'待核','独立研究周期',true);metrics('资金线索',fundStatus(s),'以披露事件为准',false);}host.append(mini);
+ const tmap=new Map((data.opportunities?.themes||[]).map(t=>[t.id,t]));const t=(s.drivers||[]).map(x=>tmap.get(x.theme)).find(x=>x&&x.id!=='buyback')||(s.drivers||[]).map(x=>tmap.get(x.theme)).find(Boolean);
+ const facts=n('div',null,'pw-preview-facts');for(const [k,v] of [['资金线索',entry?.kind==='buyback'?(entry.r.notes||'以正式公告为准'):entry?.r?.action||'暂无已收录的资金交易证据'],['关注逻辑',reasons(s)],['验证节点',t?.verify||'跟踪公告、业绩、政策及市场表现']]){const l=n('div');l.append(n('strong',k),n('span',v));facts.append(l);}host.append(facts);
+ const foot=n('div',null,'pw-preview-foot');foot.append(n('small',(data.opportunities?.as_of||'日期待核')+' 研究快照'),btn('完整研究 ›',()=>openStock(s.code),'pw-preview-open'));host.append(foot);
+}
 function openDialog(title,subtitle,body,code){
 closeDialog();previousFocus=d.activeElement;dialog=n('dialog',null,'pw-dialog');dialog.setAttribute('aria-labelledby','pw-detail-title');const header=n('div',null,'pw-dialog-head');const left=n('div');const h=n('h2',title);h.id='pw-detail-title';left.append(h,memo(subtitle));const actions=n('div',null,'pw-dialog-actions');if(code){const star=btn(favorites.has(code)?'取消关注':'加入关注',()=>{if(favorites.has(code))favorites.delete(code);else favorites.add(code);saveFav();star.textContent=favorites.has(code)?'取消关注':'加入关注';},'pw-button');actions.append(star);}actions.append(btn('关闭 ×',closeDialog,'pw-button'));header.append(left,actions);dialog.append(header,body);d.body.append(dialog);const opened=dialog;opened.addEventListener('close',()=>{if(dialog!==opened)return;finishDialog(opened);});opened.showModal();}
 function finishDialog(old){dialog=null;old.remove();const focus=previousFocus;previousFocus=null;if(view==='stocks'&&stockFilter.scope==='favorite')renderShell();if(focus?.isConnected)focus.focus({preventScroll:true});}
