@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "as_of": "2026-11-24",
-  "checked_at": "2026-11-24",
+  "as_of": "2026-11-25",
+  "checked_at": "2026-11-25",
   "scope": "统一观察清单合并短中期政策研究和增持回购候选，按代码去重。短期5—20个交易日，中期1—6个月；重点为研究顺序，非交易评级。历史902家及11月新增111家公司仍未全量对账；待核线索不计为确认贷款或成交。",
   "method": "2008历史参照：稳市资金→经济政策→真实订单/资源价格→利润增量；不直接复制历史板块。",
   "events": [
@@ -1990,24 +1990,27 @@
       "priority": "重点",
       "state": "active",
       "added_at": "2026-11-24",
-      "updated_at": "2026-11-24",
+      "updated_at": "2026-11-25",
       "company_evidence": [],
-      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "review": "短期：第三期已有实际回购及新增专项贷款承诺，维持重点研究；需核后续成交与实际提款、相对强弱。中期：服务器和智能硬件订单、利润与现金流质量及估值未完成同口径比较，不因融资承诺升档。",
       "buyback_records": [
         {
           "id": "20261120-3",
           "status": "executed",
-          "date": "2026-11-24",
+          "date": "2026-11-25",
           "subject": "上市公司",
-          "loan_cap_100m": null,
+          "loan_cap_100m": 6,
           "plan_min_100m": 6,
           "plan_max_100m": 10,
           "actual_100m": 1.7814516245,
           "deadline": "2027-05-20",
           "purpose": "员工持股或股权激励",
           "source": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12720051&stockid=603296",
-          "notes": "2026年第三期计划为自有资金；不把其他期次贷款套入本期。",
-          "evidence_level": "公告全文或公告镜像"
+          "notes": "第三期计划11月20日批准，11月23日调整后续资金来源为自有及自筹。11月25日公告贷款承诺6亿元、且不超过回购金额90%，期限3年。保留此前累计实际1.7814516245亿元（11月24日披露）；不能认为该笔动用新增贷款。距离计划下限4.2185483755亿元，实际提款未核。",
+          "evidence_level": "公告全文或公告镜像",
+          "additional_sources": [
+            "https://www.cfi.cn/p20261124002272.html"
+          ]
         }
       ],
       "core_rank": 7
@@ -3134,24 +3137,28 @@
       "priority": "观察",
       "state": "active",
       "added_at": "2026-11-24",
-      "updated_at": "2026-11-24",
+      "updated_at": "2026-11-25",
       "company_evidence": [],
-      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "review": "原待核线索升级为实际回购；观察，尚待确认贷款提款、估值和再融资稀释及减持风险，不因累计回购升重点。",
       "buyback_records": [
         {
-          "id": "candidate",
-          "status": "unknown",
-          "date": null,
-          "subject": "待核",
-          "loan_cap_100m": null,
-          "plan_min_100m": null,
-          "plan_max_100m": null,
-          "actual_100m": null,
-          "deadline": null,
-          "purpose": "待核",
-          "source": null,
-          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
-          "evidence_level": "待核线索"
+          "id": "20261105",
+          "status": "executed",
+          "date": "2026-11-25",
+          "subject": "上市公司",
+          "loan_cap_100m": 0.9,
+          "plan_min_100m": 0.5,
+          "plan_max_100m": 1,
+          "actual_100m": 0.199959,
+          "deadline": "2027-11-04",
+          "purpose": "员工持股或股权激励",
+          "source": "https://www.cfi.net.cn/p20261125000655.html",
+          "notes": "11月25日17:01公开、公告落款11月26日；截至11月25日累计15.9万股、1999.59万元；11月17日披露交行杭州临安支行贷款承诺0.9亿元、3年；11月10日首笔5万股发生于承诺前，不能把累计成交都归为用贷。剩余至下限0.300041亿元。",
+          "evidence_level": "公告全文或公告镜像",
+          "additional_sources": [
+            "https://www.cfi.net.cn/p20261120000728.html",
+            "https://stock.stockstar.com/notice/SN2026111100000844.shtml"
+          ]
         }
       ]
     },
@@ -3869,6 +3876,135 @@
       "updated_at": "2026-11-24",
       "company_evidence": [],
       "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险"
+    },
+    {
+      "code": "002203",
+      "name": "海亮股份",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "公司具体回购计划或已披露成交，独立核实资金与经营质量"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-25",
+      "updated_at": "2026-11-25",
+      "company_evidence": [],
+      "review": "短期观察3个月计划及首次成交；中期核铜加工利润率、现金流、负债和估值，出售用途非注销。",
+      "buyback_records": [
+        {
+          "id": "20261120",
+          "status": "loan",
+          "date": "2026-11-24",
+          "subject": "上市公司",
+          "loan_cap_100m": 5,
+          "plan_min_100m": 3,
+          "plan_max_100m": 5,
+          "actual_100m": null,
+          "deadline": "2027-02-20",
+          "purpose": "维护公司价值及股东权益（出售）",
+          "source": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12719733&stockid=002203",
+          "notes": "浙商银行承诺不超过5亿元，承诺函有效至2027-06-15；不等于贷款期限或放款，回购期限为董事会批准起3个月。实际回购、提款待核。",
+          "evidence_level": "公告全文或公告镜像",
+          "additional_sources": []
+        }
+      ]
+    },
+    {
+      "code": "300884",
+      "name": "狄耐克",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "公司具体回购计划或已披露成交，独立核实资金与经营质量"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-25",
+      "updated_at": "2026-11-25",
+      "company_evidence": [],
+      "review": "短期关注实际首笔回购和不同用途期限；中期核地产关联需求、应收与现金流，未完成估值比较。",
+      "buyback_records": [
+        {
+          "id": "20261125",
+          "status": "loan",
+          "date": "2026-11-25",
+          "subject": "上市公司",
+          "loan_cap_100m": 0.72,
+          "plan_min_100m": 0.5,
+          "plan_max_100m": 0.8,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "员工持股/股权激励及维护公司价值（出售）",
+          "source": "https://www.cfi.net.cn/p20261125001092.html",
+          "notes": "交行厦门分行承诺0.72亿元、3年；维护价值部分3个月，激励部分12个月；不得合并为单一截止日；实际提款和买入未知。",
+          "evidence_level": "公告全文或公告镜像",
+          "additional_sources": [
+            "https://cfi.net.cn/p20261125001093.html"
+          ]
+        }
+      ]
+    },
+    {
+      "code": "000967",
+      "name": "盈峰环境",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "公司具体回购计划或已披露成交，独立核实资金与经营质量"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-25",
+      "updated_at": "2026-11-25",
+      "company_evidence": [],
+      "review": "已完成历史计划，仅作资金及治理观察，不计未来买盘；观察环卫装备和服务订单、现金流及估值。",
+      "buyback_records": [
+        {
+          "id": "20260730-1",
+          "status": "complete",
+          "date": "2026-11-25",
+          "subject": "上市公司",
+          "loan_cap_100m": 1.8,
+          "plan_min_100m": 1,
+          "plan_max_100m": 2,
+          "actual_100m": 1.9798396982,
+          "deadline": null,
+          "purpose": "员工持股或股权激励",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12723507&stockid=000967",
+          "notes": "11月24日完成第一期，累计2715.13万股；10月末累计1.8825051082亿元；11月增加0.09733459亿元、172.19万股。8月3日签署建行佛山分行贷款合同；公告确认自有资金及专项贷款，提款分项未披露。已完成，未来剩余买盘为0。",
+          "evidence_level": "公告全文或公告镜像",
+          "additional_sources": [
+            "https://paper.cnstock.com/html/2026-08/01/content_2251014.htm",
+            "https://epaper.cs.com.cn/zgzqb/html/2026-11/03/nw.D110000zgzqb_20261103_6-B020.htm",
+            "https://i.ifeng.com/c/8vKh0sejlfu"
+          ]
+        }
+      ]
     }
   ],
   "change_log": [
@@ -3879,6 +4015,10 @@
     {
       "date": "2026-11-24",
       "summary": "新增统一清单和独立增持回购信息池：108只研究候选，26只重点；保留历史902家未全量核实说明及证据层级。"
+    },
+    {
+      "date": "2026-11-25",
+      "summary": "新增观察海亮股份、狄耐克、盈峰环境（已完成、非未来买盘）；华勤第三期新增6亿元贷款承诺并保留同计划此前成交；华正新材从待核升级已实际回购。108→111只，26只重点暂不调整：全池财务/量价/估值尚未同口径完成，不能强制排名。历史贷款基准及旧记录不覆盖。"
     }
   ],
   "archived": [],
