@@ -353,6 +353,96 @@
       "subject": "上市公司",
       "kind": "股份回购",
       "basis": "已完成，非单日成交；11月较10月末增加973.3459万元；不计未来买盘。10月末用贷披露：https://epaper.cs.com.cn/zgzqb/html/2026-11/03/nw.D110000zgzqb_20261103_6-B020.htm"
+    },
+    {
+      "code": "003041",
+      "name": "真爱美家",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "第三期回购获专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-25",
+      "quantity": "—",
+      "cash": "承诺上限9000万元",
+      "funding": "兴业银行广州分行；提款未确认",
+      "source": "https://www.cfi.net.cn/p20261124001893.html",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "第三期回购计划5000万—1亿元；不混入第一期已成交9997.53万元"
+    },
+    {
+      "code": "301200",
+      "name": "大族数控",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-17",
+      "quantity": "—",
+      "cash": "承诺上限2.7亿元",
+      "funding": "中信银行深圳分行；提款未知",
+      "source": "https://www.cfi.net.cn/p20261116001396.html",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "历史补录；2亿—3亿元计划，期限2个月；实际成交待核"
+    },
+    {
+      "code": "603306",
+      "name": "华懋科技",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-19",
+      "quantity": "—",
+      "cash": "承诺上限1.08亿元",
+      "funding": "建行厦门市分行；提款未知",
+      "source": "https://epaper.cs.com.cn/zgzqb/html/2026-11/19/nw.D110000zgzqb_20261119_3-B017.htm",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "历史补录；0.6亿—1.2亿元计划用于可转债转换，实际成交待核"
+    },
+    {
+      "code": "603293",
+      "name": "埃泰克",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-19",
+      "quantity": "—",
+      "cash": "承诺上限4500万元",
+      "funding": "招商银行芜湖分行；提款未知",
+      "source": "https://cfi.net.cn/p20261118001288.html",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "历史补录；3000万—5000万元回购计划，实际成交待核"
+    },
+    {
+      "code": "688141",
+      "name": "杰华特",
+      "tags": [
+        "loan"
+      ],
+      "status": "executed",
+      "action": "控股股东一致行动人首次增持",
+      "event_date": "2026-11-17",
+      "disclosed": "2026-11-18",
+      "quantity": "172711股",
+      "cash": "1025.03万元",
+      "funding": "10月15日专项贷款承诺上限1亿元；当笔用贷未确认",
+      "source": "https://jinguxun.com/article/news/11096612",
+      "subject": "杭州杰沃信息咨询合伙企业（有限合伙）",
+      "kind": "股东增持",
+      "basis": "历史补录；原计划8000万—1.6亿元；贷款原公告https://finance.sina.cn/2026-10-15/detail-inivfmzh1339970.d.html"
     }
   ]
 }
