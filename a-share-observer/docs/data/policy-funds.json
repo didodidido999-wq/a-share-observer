@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "as_of": "2026-11-22",
-  "updated_at": "2026-11-25T07:18:00+08:00",
+  "as_of": "2026-11-25",
+  "updated_at": "2026-11-25T21:12:25+08:00",
   "scope": "人工整理的部分核验观察池；不是五类资金全量名单、动态实时持仓、完整ETF底仓或投资评级。",
   "coverage": {
     "loan": "证监会截至2026-10末902家发行人、1110单公告为回填基准；本文件仅部分候选",
@@ -263,6 +263,96 @@
       "subject": "上市公司",
       "kind": "股份回购",
       "basis": "历史累计值，非披露日新增买入"
+    },
+    {
+      "code": "603296",
+      "name": "华勤技术",
+      "tags": [
+        "loan"
+      ],
+      "status": "executed",
+      "action": "第三期A股回购已执行；新增专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-25",
+      "quantity": "本轮未复核股数",
+      "cash": "此前累计1.7814516245亿元；新增贷款承诺6亿元",
+      "funding": "贷款承诺在此前实际回购之后披露；当笔用贷未证实，实际提款未知",
+      "source": "https://www.cfi.cn/p20261124002272.html",
+      "subject": "上市公司",
+      "kind": "股份回购及融资承诺",
+      "basis": "第三期6亿—10亿元计划，非其他期次；此前成交来源：https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12720051&stockid=603296"
+    },
+    {
+      "code": "603186",
+      "name": "华正新材",
+      "tags": [
+        "loan"
+      ],
+      "status": "executed",
+      "action": "11月25日累计回购进展",
+      "event_date": "2026-11-25",
+      "disclosed": "2026-11-25",
+      "quantity": "累计15.90万股",
+      "cash": "累计1999.59万元",
+      "funding": "11月17日专项贷款承诺9000万元，首笔回购早于贷款承诺；实际提款未知",
+      "source": "https://www.cfi.net.cn/p20261125000655.html",
+      "subject": "上市公司",
+      "kind": "股份回购",
+      "basis": "11月25日晚公开，公告落款11月26日；累计非单日。回购计划0.5亿—1亿元"
+    },
+    {
+      "code": "002203",
+      "name": "海亮股份",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "公司取得股票回购贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-24",
+      "quantity": "—",
+      "cash": "承诺上限5亿元",
+      "funding": "浙商银行承诺；正式合同、提款与成交均待核",
+      "source": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12719733&stockid=002203",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "3亿—5亿元回购方案，维护价值用途为出售；承诺函有效至2027-06-15，不是贷款期限"
+    },
+    {
+      "code": "300884",
+      "name": "狄耐克",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "公司取得股票回购贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-25",
+      "quantity": "—",
+      "cash": "承诺上限7200万元",
+      "funding": "交通银行厦门分行，3年；合同及提款待核",
+      "source": "https://www.cfi.net.cn/p20261125001092.html",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "计划5000万—8000万元；激励部分12个月，维护价值部分3个月；实际回购待核"
+    },
+    {
+      "code": "000967",
+      "name": "盈峰环境",
+      "tags": [
+        "loan"
+      ],
+      "status": "executed",
+      "action": "第一期回购实施完成",
+      "event_date": "2026-11-24",
+      "disclosed": "2026-11-25",
+      "quantity": "累计2715.13万股",
+      "cash": "累计1.9798396982亿元",
+      "funding": "自有资金和银行股票回购专项贷款；8月3日签合同；实际专项贷款金额未拆分",
+      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12723507&stockid=000967",
+      "subject": "上市公司",
+      "kind": "股份回购",
+      "basis": "已完成，非单日成交；11月较10月末增加973.3459万元；不计未来买盘。10月末用贷披露：https://epaper.cs.com.cn/zgzqb/html/2026-11/03/nw.D110000zgzqb_20261103_6-B020.htm"
     }
   ]
 }
