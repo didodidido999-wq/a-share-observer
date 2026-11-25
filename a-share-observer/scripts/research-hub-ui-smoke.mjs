@@ -45,7 +45,7 @@ try{
   for(const route of ['research','today','policy','risk']){
    await navigate({page:route,date:latest});await active(route);
    if(route==='research')await page.locator('.research-verdict').first().waitFor();
-   if(route==='policy')await page.locator('#policy-macro').waitFor();
+   if(route==='policy')await page.locator('#policy-opportunity-list').waitFor();
    if(route==='risk'){await page.locator('#risk-query').fill('601857');await page.locator('#risk-search-form').getByRole('button',{name:'查询',exact:true}).click();await page.locator('#risk-trend-chart').waitFor();}
    await page.evaluate(()=>window.scrollTo(0,0));await page.waitForTimeout(250);
    if(route!=='research')check(!(await page.locator('.brand-slogan').isVisible()),'Slogan leaked into '+route);
