@@ -56,7 +56,7 @@ async function navigate({page='research',date=null,anchor=null,query=null}={},wr
  }
  document.body.classList.toggle('risk-route',page==='risk');document.body.dataset.route=page;stop();window.MarketScopeEvents?.stop();state.page=page;state.query=query;if(page==='policy')state.policyNavigation={serial,anchor};
  document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===page));
- $('crumb').textContent=$('page-title').textContent=PAGE_NAMES[page][0];$('page-desc').textContent=PAGE_NAMES[page][1];$('sidebar').classList.remove('open');renderPage();
+ $('crumb').textContent=$('page-title').textContent=PAGE_NAMES[page][0];$('page-desc').textContent=PAGE_NAMES[page][1];$('sidebar').classList.remove('open');$('menu-btn')?.setAttribute('aria-expanded','false');renderPage();
  const hash=routeHash(page,state.selected,anchor,state.query);if(write&&location.hash!==hash)history.pushState(null,'',hash);
  focusRouteAnchor(page,anchor,serial);return true;
 }
@@ -538,7 +538,11 @@ function renderHistory(){const a=$('history-a').value||state.days[0],b=$('histor
  for(const [key,label] of [['market','全市场行情'],['limits','涨停池'],['limit_down_events','跌停池'],['limit_break_events','炸板池'],['sector_members','板块历史成分'],['hot_rank_daily','热股历史'],['anomaly_daily','当日异动']]){let fallback=key==='market'?s.market:key==='limits'?s.limits:s[key];let st=fieldStatus(b,key)||((fallback&&(!Array.isArray(fallback)||fallback.length))?'旧档案（字段有限）':'未采集');fact(q,`${label} · ${b}`,String(st),!['complete','旧档案（字段有限）'].includes(st));}}
 function bind(){document.querySelectorAll('[data-route]').forEach(el=>el.addEventListener('click',()=>nav(el.dataset.route)));document.querySelectorAll('#navigation [data-page]').forEach(el=>el.addEventListener('click',()=>nav(el.dataset.page)));
  document.querySelectorAll('[data-market-jump]').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.marketJump)?.scrollIntoView({behavior:'smooth',block:'start'})));
- $('menu-btn').addEventListener('click',()=>$('sidebar').classList.toggle('open'));
+ const menu=$('menu-btn'),side=$('sidebar');function setMenu(open,restore=false){side.classList.toggle('open',open);menu.setAttribute('aria-expanded',String(open));if(!open&&restore)menu.focus();}
+ menu.addEventListener('click',()=>setMenu(!side.classList.contains('open')));
+ $('aniu-close-menu')?.addEventListener('click',()=>setMenu(false,true));
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&side.classList.contains('open'))setMenu(false,true);});
+ document.addEventListener('click',e=>{if(side.classList.contains('open')&&!side.contains(e.target)&&!menu.contains(e.target))setMenu(false);});
  $('range-preset').addEventListener('change',()=>{$('apply-range').textContent=$('range-preset').value==='custom'?'应用自选区间':'应用区间';});
  $('apply-range').addEventListener('click',()=>applyRange($('range-preset').value));
  $('day-slider').addEventListener('input',e=>{stop();setDay(state.days[Number(e.target.value)]);});

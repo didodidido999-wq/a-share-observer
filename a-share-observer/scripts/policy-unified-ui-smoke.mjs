@@ -7,7 +7,7 @@ const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH
 const check=(v,m)=>{if(!v)throw Error(m)};
 try{for(const viewport of [{width:1280,height:850},{width:390,height:844}]){
  const page=await browser.newPage({viewport});const errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.route('**/policy-workspace-test.html',r=>r.fulfill({contentType:'text/html; charset=utf-8',body:'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="v3.css"><link rel="stylesheet" href="policy-workspace.css"><script defer src="policy-context.js"></script><script defer src="policy-workspace.js"></script></head><body><main style="max-width:1300px;margin:auto;padding:12px"><section id="policy"><div id="policy-workspace"></div></section></main></body></html>'}));
+ await page.route('**/policy-workspace-test.html',r=>r.fulfill({contentType:'text/html; charset=utf-8',body:'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="v3.css"><link rel="stylesheet" href="policy-workspace.css"><link rel="stylesheet" href="aniu-visual.css"><script defer src="policy-context.js"></script><script defer src="policy-workspace.js"></script></head><body><main style="max-width:1300px;margin:auto;padding:12px"><section id="policy"><div id="policy-workspace"></div></section></main></body></html>'}));
  for(const [p,j] of [['policy-opportunities.json',research],['policy-funds.json',funds],['policy-context.json',context]])await page.route('**/data/'+p,r=>r.fulfill({contentType:'application/json',body:JSON.stringify(j)}));
  await page.goto(new URL('policy-workspace-test.html',base).href);await page.waitForFunction(()=>window.AniuPolicyWorkspace);
  await page.evaluate(()=>{Date.now=()=>Date.parse('2026-11-24T12:00:00Z');window.MarketScopePolicy.render({state:{selected:'2026-11-13'}});});
@@ -16,7 +16,7 @@ try{for(const viewport of [{width:1280,height:850},{width:390,height:844}]){
  const core=research.stocks.filter(s=>s.priority==='重点'&&s.state!=='archived').map(s=>s.code).sort();
  const displayed=(await page.locator('.pw-stock-row').evaluateAll(ns=>ns.map(n=>n.dataset.code))).sort();
  check(JSON.stringify(core)===JSON.stringify(displayed),'default core membership changed');
- check(await page.locator('.pw-tab').count()===3,'redundant navigation');check(await page.locator('.pw-hero-value').first().textContent()===String(core.length)+'只','hero count diverges from core dataset');
+ check(await page.locator('.pw-tab').count()===3,'redundant navigation');check(await page.locator('.pw-nav').evaluate(n=>n.getBoundingClientRect().top-n.closest('.pw-paper').getBoundingClientRect().top>=8),'policy island touches surface top');check(await page.locator('.pw-hero-value').first().textContent()===String(core.length)+'只','hero count diverges from core dataset');
  await page.getByRole('button',{name:'全部候选',exact:true}).click();
  const codes=await page.locator('.pw-stock-row').evaluateAll(ns=>ns.map(n=>n.dataset.code));
  check(new Set(codes).size===codes.length,'duplicate stock codes');
