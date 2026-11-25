@@ -27,12 +27,14 @@ test('async capital sources refresh on their actual route',()=>{
 test('missing exact date rejects navigation and racing loads are guarded',()=>{assert.ok(js.includes('未替换为其他日期'));assert.ok(js.includes('serial!==routeSerial'));assert.ok(js.includes("history.pushState"));assert.ok(js.includes("'popstate'"));});
 test('old exact-date route replaces recent days with a trailing consecutive archive window',async()=>{
  const archive=Array.from({length:25},(_,i)=>`2026-01-${String(i+1).padStart(2,'0')}`),elements=new Map();
- const element=id=>{if(!elements.has(id))elements.set(id,{classList:{remove(){}},textContent:'',value:''});return elements.get(id);};
+ const element=id=>{if(!elements.has(id)){const attributes=new Map();elements.set(id,{classList:{remove(){}},textContent:'',value:'',setAttribute:(name,value)=>attributes.set(name,String(value)),getAttribute:name=>attributes.get(name)??null});}return elements.get(id);};
+ element('menu-btn').setAttribute('aria-expanded','true');
  const state={archive,days:archive.slice(-10),detailLoaded:new Set(),selected:archive.at(-1),page:'today'};
  let requested;
  const ctx={URLSearchParams,location:{hash:'#today'},state,$:element,notice(){},stop(){},renderPage(){},setSelectors(){},loadRange:async days=>{requested=[...days];days.forEach(d=>state.detailLoaded.add(d));},history:{pushState(){}},document:{body:{classList:{toggle(){}},dataset:{}},querySelectorAll:()=>[]},window:{scrollTo(){}}};
  vm.createContext(ctx);vm.runInContext(js.slice(js.indexOf('const PAGE_NAMES='),js.indexOf('function nav('))+';globalThis.run=navigate;',ctx);
  assert.equal(await ctx.run({page:'today',date:archive[12]}),true);
+ assert.equal(element('menu-btn').getAttribute('aria-expanded'),'false');
  assert.deepEqual(Array.from(state.days),archive.slice(3,13));assert.deepEqual(requested,archive.slice(3,13));
  assert.equal(state.compareBase,archive[3]);assert.equal(state.selected,archive[12]);assert.ok(state.days.every(d=>d<=state.selected));
 });
