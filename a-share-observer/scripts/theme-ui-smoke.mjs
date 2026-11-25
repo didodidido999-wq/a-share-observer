@@ -9,10 +9,26 @@ try {
  if(!await page.locator('.theme-summary .theme-up').count()||await page.locator('.theme-summary .theme-down').count())throw Error('Top level must show limit-ups only');
  if(archiveRequests.size>25)throw Error('Default theme view downloads excessive history archives: '+archiveRequests.size);
  console.log('Theme first render ms',Date.now()-started,'history files',archiveRequests.size);
+
+ const paint=async loc=>loc.evaluate(el=>{
+  const own=getComputedStyle(el),child=el.querySelector('.theme-up'),row=el.closest('tr');
+  return [own.backgroundColor,own.color,own.filter,child?getComputedStyle(child).backgroundColor:null,child?getComputedStyle(child).color:null,row?getComputedStyle(row).backgroundColor:null];
+ });
+ const checkHover=async(loc,label)=>{
+  await loc.scrollIntoViewIfNeeded();await page.mouse.move(0,0);
+  const before=await paint(loc);await loc.hover();const after=await paint(loc);
+  if(JSON.stringify(before)!==JSON.stringify(after))throw Error(label+' hover changed data color: '+JSON.stringify({before,after}));
+  await page.mouse.move(0,0);
+ };
+
+ await checkHover(page.locator('.theme-summary .theme-day').first(),'Theme count');
+ await checkHover(page.locator('#research-theme-tab'),'Active research tab');
  const first=page.locator('.theme-name').first();await first.click();
  await page.locator('.theme-stock').first().waitFor();
  if(await page.locator('.theme-summary').first().evaluate(e=>!e.nextElementSibling.classList.contains('theme-down-summary')))throw Error('Expansion must be in original row position');
  if(await page.locator('.theme-metric').count()!==3)throw Error('Expanded down/pct/amount rows absent');
+ if(await page.locator('.theme-summary.is-expanded').count()!==1)throw Error('Theme expansion state absent');
+ await checkHover(page.locator('.theme-stock-day.return-up').first(),'Rising stock');await checkHover(page.locator('.theme-stock-day.return-down').first(),'Falling stock');
  if((await page.locator('.theme-up').allTextContents()).some(x=>x.includes('涨停')))throw Error('Top counts must be numeric');
  if(!await page.locator('.theme-stock-day.return-up').count()||!await page.locator('.theme-stock-day.return-down').count())throw Error('Return heat colors absent');
  if(await page.locator('.theme-stock-day small').count())throw Error('Daily cells repeat board language');
@@ -50,9 +66,10 @@ try {
  if(!await page.locator('#sector-research-panel').count())throw Error('Existing sector tracker removed');
  console.log('Theme heatmap: real archived data, inline expand/collapse, sorting, empty search, full history, mobile and existing tracker passed');
  await page.setViewportSize({width:1440,height:1000});await page.locator('#research-sector-tab').click();await page.locator('.startup-summary').first().waitFor();
- await page.locator('.startup-name').first().click();await page.locator('.startup-stock').first().waitFor();if(!await page.locator('.startup-detail').innerText().then(t=>t.includes('涨停跟踪股')))throw Error('Limit heatmap must expand actual limit-up watchpool');
+ await checkHover(page.locator('.startup-summary .theme-day').first(),'Board limit-up count');await page.locator('.startup-name').first().click();await page.locator('.startup-stock').first().waitFor();if(await page.locator('.startup-summary.is-expanded').count()!==1)throw Error('Board expansion state absent');if(!await page.locator('.startup-detail').innerText().then(t=>t.includes('涨停跟踪股')))throw Error('Limit heatmap must expand actual limit-up watchpool');
  await page.locator('#startup-kind').selectOption('cn_concept');await page.locator('.startup-summary').first().waitFor();if(!await page.locator('#startup-status').innerText().then(t=>t.includes('概念')))throw Error('Concept mode not shown');await page.locator('#startup-view').selectOption('metrics');
  if(await page.locator('#theme-panel').isVisible()||!await page.locator('#sector-research-panel').isVisible())throw Error('Research subpages not isolated or legacy tracker removed');
+ await page.locator('.heat-cell-button').first().waitFor();await checkHover(page.locator('.heat-cell-button').first(),'Board metric heat cell');
  if(await page.locator('#startup-search').isVisible()||await page.locator('#startup-filter').isVisible())throw Error('Metric view leaked inactive startup filters');
  if(await page.locator('#sector-kind').inputValue()!=='cn_concept')throw Error('Legacy metric kind did not synchronize');await page.locator('#startup-kind').selectOption('industry');await page.locator('#startup-view').selectOption('starts');await page.locator('#startup-options summary').click();
  if(!await page.locator('#startup-search').isVisible()||!await page.locator('#startup-filter').isVisible())throw Error('Startup controls not restored after metrics');

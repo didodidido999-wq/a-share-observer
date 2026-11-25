@@ -284,7 +284,7 @@ function renderSectors(){
  top.forEach((item,i)=>{
    const lower=heatIsLowerBound(item.code,state.selected,metric);
    const card=text('button','','sector-rank-item'+(state.sectorFocus===item.code?' is-selected':''));
-   card.type='button';
+   card.type='button';card.setAttribute('aria-pressed',String(state.sectorFocus===item.code));
    card.setAttribute('aria-label','第'+(i+1)+'名 '+item.name+' '+heatValueText(item.value,metric,lower)+unit+'，查看对应板块');
    card.append(text('small',String(i+1)),text('span',item.name),
       text('strong',heatValueText(item.value,metric,lower)+unit));
@@ -348,7 +348,7 @@ function renderSectors(){
    for(const d of days){
      const v=metricValue(item.code,d,metric),lower=heatIsLowerBound(item.code,d,metric);
      const cell=text('button',heatValueText(v,metric,lower),'heat-cell heat-cell-button'+(v==null?' no-data':'')+(lower?' is-lower-bound':'')+(d===state.selected?' is-current':''));
-     cell.type='button';total++;if(v!=null)known++;
+     cell.type='button';cell.setAttribute('aria-pressed',String(open&&d===state.selected));total++;if(v!=null)known++;
      const point=sectorValue(d,item.code);
      cell.title=item.name+' · '+d+' · '+label+' '+heatValueText(v,metric,lower)+unit+
        (point.membership_mode==='backcast_current'?' · 以'+point.membership_observed_date+'成员回算':'');
