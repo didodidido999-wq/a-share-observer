@@ -23,11 +23,17 @@
 @media(max-width:780px){.po-entry-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.po-unified-row{grid-template-columns:minmax(90px,112px) minmax(0,1fr) 12px;gap:7px}.po-entry{padding:11px}.po-unified-controls{align-items:stretch}.po-unified-controls input{flex:1 1 100%}}
 @media(max-width:400px){.po-entry{padding:10px}.po-entry-count{font-size:19px}.po-unified-row{grid-template-columns:minmax(80px,96px) minmax(0,1fr) 10px}.po-unified-reason{font-size:11px}}
 
-/* The unified watchlist stays in one vertical column; information-pool cards are navigation only. */
-.po-home-layout{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);gap:12px;align-items:start}
-.po-home-layout>.po-entry-grid{grid-template-columns:repeat(2,minmax(0,1fr));margin:12px 0;position:sticky;top:12px}
-.po-home-layout>.po-unified-section{min-width:0}
-.po-home-layout .po-entry{padding:11px;gap:5px}
-.po-home-layout .po-entry-count{font-size:20px}
-@media(max-width:1050px){.po-home-layout{grid-template-columns:minmax(0,1fr)}.po-home-layout>.po-entry-grid{position:static;grid-row:1;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(146px,26%);overflow-x:auto;max-width:100%;scroll-snap-type:x proximity;padding-bottom:6px;margin-bottom:0}.po-home-layout .po-entry{scroll-snap-align:start}.po-home-layout>.po-unified-section{margin-top:0}}
-@media(max-width:480px){.po-home-layout>.po-entry-grid{grid-auto-columns:minmax(140px,45%)}}
+
+/* Stock-row inline routing. Conventional menus remain visible in every pool. */
+.po-category-nav{display:flex;flex-wrap:wrap;gap:6px 14px;border-bottom:1px solid #e2ebef;padding:0 0 10px;margin:0 0 12px}
+.po-category{background:transparent;border:0;border-bottom:2px solid transparent;border-radius:0;padding:7px 2px;color:#486676;font-size:13px;font-weight:600;cursor:pointer}
+.po-category:hover,.po-category[aria-pressed=true]{color:#173b4c;border-bottom-color:#48758a}
+.po-unified-section{width:100%;min-width:0}.po-unified-row{grid-template-columns:minmax(96px,146px) minmax(0,1fr) 30px;gap:12px;cursor:default;align-items:start;padding:12px 6px}
+.po-unified-name{border:0;background:transparent;padding:2px 0;text-align:left;color:#183e53;cursor:pointer;align-self:center;align-items:flex-start}
+.po-unified-name:hover strong{text-decoration:underline}.po-unified-meta{gap:6px}.po-stock-links{display:flex;flex-wrap:wrap;align-items:center;gap:5px 7px}
+.po-inline-link{background:#fff;border:1px solid #d9e5ea;border-radius:5px;color:#285c73;padding:4px 7px;font-size:12px;line-height:1.4;cursor:pointer;max-width:100%;overflow-wrap:anywhere;text-align:left}
+.po-inline-link:hover{background:#eaf2f5;border-color:#9eb9c6;text-decoration:underline}.po-inline-link.po-buyback-link{font-weight:700;border-color:#abc1cc;background:#f3f7f9}
+.po-fund-link{border-style:solid;color:#406477}.po-unified-arrow{border:0;background:transparent;align-self:center;cursor:pointer;padding:4px;color:#547d99}
+.po-category:focus-visible,.po-inline-link:focus-visible,.po-unified-name:focus-visible,.po-unified-arrow:focus-visible{outline:2px solid #275d74;outline-offset:2px}
+@media(max-width:780px){.po-unified-row{grid-template-columns:minmax(82px,110px) minmax(0,1fr) 22px;gap:7px;padding:11px 2px}.po-category-nav{gap:4px 12px}.po-category{font-size:12px}.po-inline-link{font-size:11px;padding:3px 5px}}
+@media(max-width:400px){.po-unified-row{grid-template-columns:minmax(72px,89px) minmax(0,1fr) 18px}.po-stock-links{gap:4px}}

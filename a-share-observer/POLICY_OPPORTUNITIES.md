@@ -11,3 +11,6 @@
 
 ## 统一清单与增持回购事件（2026-11-24）
 默认统一清单按代码合并 active stocks 和原资金证据；重点优先，分类卡片跳转独立信息池。原资金证据表不复制为研究评级。增持回购独立 theme id=buyback；化工 id=chemical。stocks[].buyback_records 按事件 id 保留，字段 status（executed/loan/planned/proposal/complete/unknown/cancelled）、date、subject、loan_cap_100m、plan_min_100m、plan_max_100m、actual_100m（亿元，未知 null）、deadline、purpose、source、additional_sources（可选）、notes、evidence_level。只在同一计划口径已核实际金额时计算距离计划下限/上限；已完成不计未来买盘。候选线索标 unknown，不能冒充902家已核历史发行人。保留 buyback_coverage 基准及范围，逐步补齐并更新实际执行状态，不删除历史事件或把不同期次合并；资金证据旧文件不由本专项覆盖。重点候选不应被固定数量限制。新事件与公司代码、实际日期、原公告对应；原资金池和研究池交集仅表示有已收录证据。
+
+## 2026-11-24 交互修订
+统一清单独占整列，不再设独立入口卡片区。分类菜单始终可用；个股行内每个资金来源/主题标签分别跳转到对应信息池并预填该股代码，股票名称进入全部个股研究。未核线索仅标待核。返回保留统一清单筛选及个股位置。数据格式、覆盖范围和日常维护任务不变。
