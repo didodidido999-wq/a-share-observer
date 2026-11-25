@@ -72,7 +72,7 @@ function mount(){
  clear.addEventListener('click',()=>{Object.assign(state,{quick:'all',source:'all',selectedSources:[],status:'all',sort:'disclosed',search:'',combine:'or'});$('pf-source').value='all';$('pf-status').value='all';$('pf-sort').value='disclosed';$('pf-search').value='';$('pf-and').checked=false;for(const b of sourceGroup.querySelectorAll('input'))b.checked=false;renderListing();});
  area.addEventListener('click',e=>{const fav=e.target.closest('[data-favorite]');if(fav){const k=fav.dataset.favorite;state.favorites.has(k)?state.favorites.delete(k):state.favorites.add(k);saveFavorites();renderListing();return;}const btn=e.target.closest('button[data-open]');if(btn)openDetail(btn.dataset.open,btn);});
  host.querySelector('#pf-coverage').append(note('正在加载证据快照…'));
- load().then(()=>{renderOverview();renderListing();}).catch(()=>{$('pf-coverage').replaceChildren(note('资金证据读取失败：无法判断是否没有相关资金动作。'));const retry=el('button','重新读取');retry.onclick=()=>{ready=false;host.replaceChildren();backdrop.remove();mount();};$('pf-coverage').append(retry);});
+ load().then(()=>{renderOverview();renderListing();host.dispatchEvent(new Event('aniu-policy-evidence-loaded'));}).catch(()=>{$('pf-coverage').replaceChildren(note('资金证据读取失败：无法判断是否没有相关资金动作。'));const retry=el('button','重新读取');retry.onclick=()=>{ready=false;host.replaceChildren();backdrop.remove();mount();};$('pf-coverage').append(retry);});
 }
 function renderOverview(){
  const host=$('pf-overview');host.replaceChildren();

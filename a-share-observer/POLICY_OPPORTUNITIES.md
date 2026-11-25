@@ -8,3 +8,6 @@
 - 更新前校验 events/themes ID 唯一、股票代码唯一、关联ID存在、合法日期/状态、来源可核查。不能写入或部署时，报告具体错误，保留原数据；不得假称已同步。
 
 - 公司专属催化 events 可设置 stock_codes（六位字符串数组），避免把某一公司的回购事件套到同行；其余事件由主题关联。
+
+## 统一清单与增持回购事件（2026-11-24）
+默认统一清单按代码合并 active stocks 和原资金证据；重点优先，分类卡片跳转独立信息池。原资金证据表不复制为研究评级。增持回购独立 theme id=buyback；化工 id=chemical。stocks[].buyback_records 按事件 id 保留，字段 status（executed/loan/planned/proposal/complete/unknown/cancelled）、date、subject、loan_cap_100m、plan_min_100m、plan_max_100m、actual_100m（亿元，未知 null）、deadline、purpose、source、additional_sources（可选）、notes、evidence_level。只在同一计划口径已核实际金额时计算距离计划下限/上限；已完成不计未来买盘。候选线索标 unknown，不能冒充902家已核历史发行人。保留 buyback_coverage 基准及范围，逐步补齐并更新实际执行状态，不删除历史事件或把不同期次合并；资金证据旧文件不由本专项覆盖。重点候选不应被固定数量限制。新事件与公司代码、实际日期、原公告对应；原资金池和研究池交集仅表示有已收录证据。

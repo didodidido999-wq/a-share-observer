@@ -2,7 +2,7 @@
   "schema_version": 1,
   "as_of": "2026-11-24",
   "checked_at": "2026-11-24",
-  "scope": "政策受益研究初选；短期5—20个交易日，中期1—6个月；排序为研究优先级，不代表上涨概率或交易指令。公司业务关系需持续逐股核实，未做统一估值、量价和风险复核。",
+  "scope": "统一观察清单合并短中期政策研究和增持回购候选，按代码去重。短期5—20个交易日，中期1—6个月；重点为研究顺序，非交易评级。历史902家及11月新增111家公司仍未全量对账；待核线索不计为确认贷款或成交。",
   "method": "2008历史参照：稳市资金→经济政策→真实订单/资源价格→利润增量；不直接复制历史板块。",
   "events": [
     {
@@ -176,7 +176,7 @@
     {
       "id": "grid",
       "name": "电网设备",
-      "rank": 1,
+      "rank": 2,
       "short": "较高",
       "medium": "重点",
       "policies": [
@@ -191,7 +191,7 @@
     {
       "id": "storage",
       "name": "储能",
-      "rank": 2,
+      "rank": 3,
       "short": "较高",
       "medium": "重点",
       "policies": [
@@ -205,7 +205,7 @@
     {
       "id": "broker",
       "name": "券商与金融科技",
-      "rank": 3,
+      "rank": 4,
       "short": "重点",
       "medium": "较高",
       "policies": [
@@ -221,7 +221,7 @@
     {
       "id": "metal",
       "name": "铜及有色资源",
-      "rank": 4,
+      "rank": 5,
       "short": "观察",
       "medium": "较高",
       "policies": [
@@ -236,7 +236,7 @@
     {
       "id": "compute",
       "name": "算力基础设施",
-      "rank": 5,
+      "rank": 6,
       "short": "较高",
       "medium": "较高",
       "policies": [
@@ -250,7 +250,7 @@
     {
       "id": "semi",
       "name": "国产半导体",
-      "rank": 6,
+      "rank": 7,
       "short": "较高",
       "medium": "较高",
       "policies": [
@@ -265,7 +265,7 @@
     {
       "id": "water",
       "name": "水利及地下管网",
-      "rank": 7,
+      "rank": 8,
       "short": "观察",
       "medium": "较高",
       "policies": [
@@ -279,7 +279,7 @@
     {
       "id": "finance",
       "name": "银行与保险",
-      "rank": 8,
+      "rank": 9,
       "short": "较高",
       "medium": "观察",
       "policies": [
@@ -295,7 +295,7 @@
     {
       "id": "consumer",
       "name": "家电及消费",
-      "rank": 9,
+      "rank": 10,
       "short": "观察",
       "medium": "待确认",
       "policies": [
@@ -310,7 +310,7 @@
     {
       "id": "health",
       "name": "养老及医疗康复",
-      "rank": 10,
+      "rank": 11,
       "short": "观察",
       "medium": "待确认",
       "policies": [
@@ -323,7 +323,7 @@
     {
       "id": "property",
       "name": "房地产",
-      "rank": 11,
+      "rank": 12,
       "short": "观察",
       "medium": "待确认",
       "policies": [
@@ -337,19 +337,78 @@
     },
     {
       "id": "buyback",
-      "name": "回购增持及化工修复",
-      "rank": 12,
-      "short": "较高",
-      "medium": "观察",
+      "name": "增持回购",
+      "rank": 1,
+      "short": "重点",
+      "medium": "较高",
       "policies": [
         "loan",
         "huayou",
         "wanhua",
         "buybackrules"
       ],
-      "logic": "回购资金与治理信号；不等于基本面改善",
-      "verify": "逐公司回购实际成交、价格上限、利润修复",
-      "risk": "仅计划未成交、盈利恶化"
+      "logic": "实际回购或增持→尚未执行的计划额度→潜在买盘；另核企业经营及产业共振",
+      "verify": "逐事件核对主体、贷款承诺/放款、计划上下限、实际成交、剩余额度、用途、期限、流通市值及估值",
+      "risk": "贷款不等于成交，计划可能缩减或终止；股权激励不等于注销，基本面与市场风险独立存在"
+    },
+    {
+      "id": "chemical",
+      "name": "化工及周期修复",
+      "rank": 13,
+      "short": "观察",
+      "medium": "待确认",
+      "policies": [
+        "demand",
+        "december",
+        "monetary"
+      ],
+      "logic": "真实需求与供需改善→价格及利润弹性",
+      "verify": "产品价差、库存、开工率、现金流",
+      "risk": "产能过剩、需求不及预期"
+    },
+    {
+      "id": "logistics",
+      "name": "物流网",
+      "rank": 14,
+      "short": "观察",
+      "medium": "较高",
+      "policies": [
+        "sixnet",
+        "capital"
+      ],
+      "logic": "物流基础设施投资与效率改善",
+      "verify": "项目开工、吞吐量、盈利及回款",
+      "risk": "项目回报率低、需求不及预期"
+    },
+    {
+      "id": "equipment",
+      "name": "先进制造及设备",
+      "rank": 15,
+      "short": "较高",
+      "medium": "较高",
+      "policies": [
+        "sixnet",
+        "capital",
+        "december"
+      ],
+      "logic": "设备更新、产业投资、国产化→制造业订单",
+      "verify": "订单、交付、现金流及产能利用",
+      "risk": "设备投资周期、过度扩产"
+    },
+    {
+      "id": "fundwatch",
+      "name": "长期资金配置观察",
+      "rank": 16,
+      "short": "较高",
+      "medium": "较高",
+      "policies": [
+        "loan",
+        "swap",
+        "etf"
+      ],
+      "logic": "跟踪具名机构实际持仓及交易，资金证据单独核实",
+      "verify": "基金报告、权益变动、股东持仓及交易公告",
+      "risk": "持仓快照不是当日买入；政策支持不保证涨幅"
     }
   ],
   "stocks": [
@@ -509,7 +568,7 @@
       "updated_at": "2026-11-24",
       "company_evidence": [],
       "review": "待核最新估值、财报、量价及风险",
-      "core_rank": 5
+      "core_rank": 16
     },
     {
       "code": "601179",
@@ -532,7 +591,7 @@
       "updated_at": "2026-11-24",
       "company_evidence": [],
       "review": "待核最新估值、财报、量价及风险",
-      "core_rank": 6
+      "core_rank": 17
     },
     {
       "code": "600406",
@@ -555,7 +614,7 @@
       "updated_at": "2026-11-24",
       "company_evidence": [],
       "review": "待核最新估值、财报、量价及风险",
-      "core_rank": 7
+      "core_rank": 18
     },
     {
       "code": "002028",
@@ -578,7 +637,7 @@
       "updated_at": "2026-11-24",
       "company_evidence": [],
       "review": "待核最新估值、财报、量价及风险",
-      "core_rank": 8
+      "core_rank": 19
     },
     {
       "code": "600089",
@@ -689,7 +748,7 @@
       "updated_at": "2026-11-24",
       "company_evidence": [],
       "review": "待核最新估值、财报、量价及风险",
-      "core_rank": 9
+      "core_rank": 20
     },
     {
       "code": "300750",
@@ -712,7 +771,7 @@
       "updated_at": "2026-11-24",
       "company_evidence": [],
       "review": "待核最新估值、财报、量价及风险",
-      "core_rank": 10
+      "core_rank": 21
     },
     {
       "code": "688411",
@@ -729,12 +788,13 @@
           "logic": "储能系统集成"
         }
       ],
-      "priority": "观察",
+      "priority": "重点",
       "state": "active",
       "added_at": "2026-11-24",
       "updated_at": "2026-11-24",
       "company_evidence": [],
-      "review": "待核最新估值、财报、量价及风险"
+      "review": "待核最新估值、财报、量价及风险",
+      "core_rank": 22
     },
     {
       "code": "300014",
@@ -784,7 +844,7 @@
       "updated_at": "2026-11-24",
       "company_evidence": [],
       "review": "待核最新估值、财报、量价及风险",
-      "core_rank": 11
+      "core_rank": 23
     },
     {
       "code": "300693",
@@ -867,10 +927,12 @@
       "name": "海光信息",
       "themes": [
         "compute",
-        "semi"
+        "semi",
+        "buyback"
       ],
       "horizons": [
-        "medium"
+        "medium",
+        "short"
       ],
       "drivers": [
         {
@@ -880,14 +942,36 @@
         {
           "theme": "semi",
           "logic": "国产算力芯片"
+        },
+        {
+          "theme": "buyback",
+          "logic": "国产算力、CPU/DCU"
         }
       ],
-      "priority": "观察",
+      "priority": "重点",
       "state": "active",
       "added_at": "2026-11-24",
       "updated_at": "2026-11-24",
       "company_evidence": [],
-      "review": "待核最新估值、财报、量价及风险"
+      "review": "待核最新估值、财报、量价及风险",
+      "buyback_records": [
+        {
+          "id": "20261104",
+          "status": "executed",
+          "date": "2026-11-20",
+          "subject": "上市公司",
+          "loan_cap_100m": 7.2,
+          "plan_min_100m": 5,
+          "plan_max_100m": 8,
+          "actual_100m": 2.3525904058,
+          "deadline": "2027-11-03",
+          "purpose": "员工持股或股权激励",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?CompanyCode=80505315&gather=1&id=12714660",
+          "notes": "首笔成交11月19日；贷款实际提款未披露。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ],
+      "core_rank": 10
     },
     {
       "code": "688256",
@@ -964,23 +1048,47 @@
       "code": "300308",
       "name": "中际旭创",
       "themes": [
-        "compute"
+        "compute",
+        "buyback"
       ],
       "horizons": [
-        "medium"
+        "medium",
+        "short"
       ],
       "drivers": [
         {
           "theme": "compute",
           "logic": "高速光模块"
+        },
+        {
+          "theme": "buyback",
+          "logic": "高速光模块及大额回购"
         }
       ],
-      "priority": "观察",
+      "priority": "重点",
       "state": "active",
       "added_at": "2026-11-24",
       "updated_at": "2026-11-24",
       "company_evidence": [],
-      "review": "待核最新估值、财报、量价及风险"
+      "review": "待核最新估值、财报、量价及风险",
+      "buyback_records": [
+        {
+          "id": "20261123",
+          "status": "planned",
+          "date": "2026-11-24",
+          "subject": "上市公司",
+          "loan_cap_100m": null,
+          "plan_min_100m": 20,
+          "plan_max_100m": 40,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "员工持股/股权激励及维护公司价值",
+          "source": "https://finance.eastmoney.com/a/202611243938669713.html",
+          "notes": "11月24日披露报告书，价格上限600元；专项贷款和实际成交待核。",
+          "evidence_level": "权威财经报道"
+        }
+      ],
+      "core_rank": 13
     },
     {
       "code": "300502",
@@ -1030,7 +1138,7 @@
       "updated_at": "2026-11-24",
       "company_evidence": [],
       "review": "待核最新估值、财报、量价及风险",
-      "core_rank": 12
+      "core_rank": 24
     },
     {
       "code": "688012",
@@ -1085,15 +1193,21 @@
       "code": "601899",
       "name": "紫金矿业",
       "themes": [
-        "metal"
+        "metal",
+        "buyback"
       ],
       "horizons": [
-        "medium"
+        "medium",
+        "short"
       ],
       "drivers": [
         {
           "theme": "metal",
           "logic": "铜与黄金资源"
+        },
+        {
+          "theme": "buyback",
+          "logic": "铜金资源及回购进度"
         }
       ],
       "priority": "重点",
@@ -1102,21 +1216,44 @@
       "updated_at": "2026-11-24",
       "company_evidence": [],
       "review": "待核最新估值、财报、量价及风险",
-      "core_rank": 13
+      "core_rank": 5,
+      "buyback_records": [
+        {
+          "id": "20261119",
+          "status": "executed",
+          "date": "2026-11-21",
+          "subject": "上市公司",
+          "loan_cap_100m": null,
+          "plan_min_100m": 20,
+          "plan_max_100m": 30,
+          "actual_100m": 1.001295237,
+          "deadline": null,
+          "purpose": "用途待核",
+          "source": "https://epaper.cs.com.cn/zgzqb/html/2026-11/21/nw.D110000zgzqb_20261121_2-B028.htm",
+          "notes": "11月20日首次回购；期限自2026-11-19董事会批准起不超过12个月；方案允许专项贷款，不代表已有贷款承诺。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ]
     },
     {
       "code": "603993",
       "name": "洛阳钼业",
       "themes": [
-        "metal"
+        "metal",
+        "buyback"
       ],
       "horizons": [
-        "medium"
+        "medium",
+        "short"
       ],
       "drivers": [
         {
           "theme": "metal",
           "logic": "铜钴资源"
+        },
+        {
+          "theme": "buyback",
+          "logic": "铜钴资源及回购进度"
         }
       ],
       "priority": "重点",
@@ -1125,7 +1262,24 @@
       "updated_at": "2026-11-24",
       "company_evidence": [],
       "review": "待核最新估值、财报、量价及风险",
-      "core_rank": 14
+      "core_rank": 4,
+      "buyback_records": [
+        {
+          "id": "20261106",
+          "status": "executed",
+          "date": "2026-11-19",
+          "subject": "上市公司",
+          "loan_cap_100m": 18,
+          "plan_min_100m": 10,
+          "plan_max_100m": 20,
+          "actual_100m": 0.999985,
+          "deadline": "2027-02-05",
+          "purpose": "维护公司价值及股东权益",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12713042&stockid=603993",
+          "notes": "11月18日首次成交；已取得贷款承诺并开立专户，当笔提款和用贷金额未证实。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ]
     },
     {
       "code": "600362",
@@ -1270,7 +1424,27 @@
         }
       ],
       "review": "待核最新估值、财报、量价及风险",
-      "core_rank": 4
+      "core_rank": 12,
+      "buyback_records": [
+        {
+          "id": "20261122",
+          "status": "loan",
+          "date": "2026-11-24",
+          "subject": "上市公司",
+          "loan_cap_100m": 13.5,
+          "plan_min_100m": 10,
+          "plan_max_100m": 15,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "维护公司价值及股东权益",
+          "source": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12721026&stockid=603799",
+          "notes": "董事会11月22日批准，期限3个月，价格上限45元；新计划实际成交待核。贷款承诺额度另据11月24日中国基金报。",
+          "evidence_level": "回购报告书及权威财经报道",
+          "additional_sources": [
+            "https://www.chnfund.com/article/AR0700cce9-b449-1f2e-f944-3a251d4291e3"
+          ]
+        }
+      ]
     },
     {
       "code": "000778",
@@ -1562,23 +1736,47 @@
       "code": "600690",
       "name": "海尔智家",
       "themes": [
-        "consumer"
+        "consumer",
+        "buyback"
       ],
       "horizons": [
-        "medium"
+        "medium",
+        "short"
       ],
       "drivers": [
         {
           "theme": "consumer",
           "logic": "家电消费升级"
+        },
+        {
+          "theme": "buyback",
+          "logic": "公司截至10月底累计回购"
         }
       ],
-      "priority": "观察",
+      "priority": "重点",
       "state": "active",
       "added_at": "2026-11-24",
       "updated_at": "2026-11-24",
       "company_evidence": [],
-      "review": "待核最新估值、财报、量价及风险"
+      "review": "待核最新估值、财报、量价及风险",
+      "buyback_records": [
+        {
+          "id": "fund-600690",
+          "status": "executed",
+          "date": "2026-11-03",
+          "subject": "上市公司",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "股份回购",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?CompanyCode=10000497&gather=1&id=12687134",
+          "notes": "公司截至10月底累计回购；累计约23.36亿元；历史累计值，非披露日新增买入；最高50亿元融资承诺；实际贷款提款未披露",
+          "evidence_level": "原资金池证据（须持续核验）"
+        }
+      ],
+      "core_rank": 26
     },
     {
       "code": "600519",
@@ -1716,7 +1914,8 @@
       "code": "600309",
       "name": "万华化学",
       "themes": [
-        "buyback"
+        "buyback",
+        "chemical"
       ],
       "horizons": [
         "short",
@@ -1730,6 +1929,10 @@
         {
           "theme": "buyback",
           "logic": "化工景气及利润修复"
+        },
+        {
+          "theme": "chemical",
+          "logic": "化工周期及拟注销回购"
         }
       ],
       "priority": "重点",
@@ -1744,14 +1947,1963 @@
         }
       ],
       "review": "待核最新估值、财报、量价及风险",
-      "core_rank": 15
+      "core_rank": 15,
+      "buyback_records": [
+        {
+          "id": "20261124",
+          "status": "proposal",
+          "date": "2026-11-24",
+          "subject": "上市公司",
+          "loan_cap_100m": null,
+          "plan_min_100m": 3,
+          "plan_max_100m": 5,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "注销减资",
+          "source": "https://finance.eastmoney.com/a/202611243938669713.html",
+          "notes": "董事长提议，须经审议；股东会通过后12个月内。",
+          "evidence_level": "权威财经报道"
+        }
+      ]
+    },
+    {
+      "code": "603296",
+      "name": "华勤技术",
+      "themes": [
+        "buyback",
+        "compute"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "服务器及智能硬件"
+        },
+        {
+          "theme": "compute",
+          "logic": "服务器及智能硬件"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "20261120-3",
+          "status": "executed",
+          "date": "2026-11-24",
+          "subject": "上市公司",
+          "loan_cap_100m": null,
+          "plan_min_100m": 6,
+          "plan_max_100m": 10,
+          "actual_100m": 1.7814516245,
+          "deadline": "2027-05-20",
+          "purpose": "员工持股或股权激励",
+          "source": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12720051&stockid=603296",
+          "notes": "2026年第三期计划为自有资金；不把其他期次贷款套入本期。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ],
+      "core_rank": 7
+    },
+    {
+      "code": "300476",
+      "name": "胜宏科技",
+      "themes": [
+        "buyback",
+        "compute"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "AI高端PCB"
+        },
+        {
+          "theme": "compute",
+          "logic": "AI高端PCB"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "20261116",
+          "status": "executed",
+          "date": "2026-11-24",
+          "subject": "上市公司",
+          "loan_cap_100m": null,
+          "plan_min_100m": 1.5,
+          "plan_max_100m": 3,
+          "actual_100m": 0.01034354,
+          "deadline": null,
+          "purpose": "员工持股或股权激励",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?CompanyCode=80323384&gather=1&id=12722481",
+          "notes": "首次成交11月23日；期限自11月16日起不超过12个月；专项贷款金额待单独核验。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ],
+      "core_rank": 11
+    },
+    {
+      "code": "603019",
+      "name": "中科曙光",
+      "themes": [
+        "buyback",
+        "compute"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "高性能计算和服务器"
+        },
+        {
+          "theme": "compute",
+          "logic": "高性能计算和服务器"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "202611",
+          "status": "executed",
+          "date": "2026-11-24",
+          "subject": "上市公司",
+          "loan_cap_100m": 4.5,
+          "plan_min_100m": 3,
+          "plan_max_100m": 5,
+          "actual_100m": 0.49924,
+          "deadline": "2027-10-25",
+          "purpose": "用途待核",
+          "source": "https://www.yicai.com/brief/103452391.html",
+          "notes": "11月20日首次成交约4992.4万元，11月24日披露贷款承诺；贷款提款和当笔用贷待核。",
+          "evidence_level": "公告报道；首次回购原公告直连曾失败",
+          "additional_sources": [
+            "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-11-21/603019_20261121_U6DE.pdf"
+          ]
+        }
+      ],
+      "core_rank": 9
+    },
+    {
+      "code": "300724",
+      "name": "捷佳伟创",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "光伏设备及行业出清"
+        },
+        {
+          "theme": "equipment",
+          "logic": "光伏设备及行业出清"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "20261123",
+          "status": "loan",
+          "date": "2026-11-23",
+          "subject": "上市公司",
+          "loan_cap_100m": 4.5,
+          "plan_min_100m": 3,
+          "plan_max_100m": 5,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "员工持股或股权激励",
+          "source": "https://static.cninfo.com.cn/finalpage/2026-11-23/1225683685.PDF",
+          "notes": "实际提款及成交待核；贷款期限不超过3年。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ]
+    },
+    {
+      "code": "301611",
+      "name": "珂玛科技",
+      "themes": [
+        "buyback",
+        "semi"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "先进陶瓷及国产替代"
+        },
+        {
+          "theme": "semi",
+          "logic": "先进陶瓷及国产替代"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "20261123",
+          "status": "loan",
+          "date": "2026-11-23",
+          "subject": "上市公司",
+          "loan_cap_100m": 1.08,
+          "plan_min_100m": 0.7,
+          "plan_max_100m": 1.2,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "员工持股或股权激励",
+          "source": "https://www.cfi.net.cn/p20261123001706.html",
+          "notes": "计划、承诺及后续实际买入分开；提款待核。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ]
+    },
+    {
+      "code": "300019",
+      "name": "硅宝科技",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "工业胶及新能源材料"
+        },
+        {
+          "theme": "equipment",
+          "logic": "工业胶及新能源材料"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "20261123",
+          "status": "executed",
+          "date": "2026-11-23",
+          "subject": "上市公司",
+          "loan_cap_100m": 1.44,
+          "plan_min_100m": 0.8,
+          "plan_max_100m": 1.6,
+          "actual_100m": 0.01581,
+          "deadline": null,
+          "purpose": "用途待核",
+          "source": "https://www.cfi.net.cn/p20261123001605.html",
+          "notes": "11月17日首次回购158.10万元；贷款承诺11月23日披露；用贷待核。",
+          "evidence_level": "公告镜像及此前日检记录"
+        }
+      ]
+    },
+    {
+      "code": "600787",
+      "name": "中储股份",
+      "themes": [
+        "buyback",
+        "logistics"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "物流网与国资控股股东增持"
+        },
+        {
+          "theme": "logistics",
+          "logic": "物流网与国资控股股东增持"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "20260918",
+          "status": "executed",
+          "date": "2026-11-24",
+          "subject": "控股股东",
+          "loan_cap_100m": 1.35,
+          "plan_min_100m": 0.75,
+          "plan_max_100m": 1.5,
+          "actual_100m": 0.736164,
+          "deadline": "2026-12-29",
+          "purpose": "股东增持",
+          "source": "https://www.cfi.net.cn/p20261124001111.html",
+          "notes": "11月23日至24日新增861.95万元；累计金额非本日新增，贷款使用比例未拆分。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ]
+    },
+    {
+      "code": "688267",
+      "name": "中触媒",
+      "themes": [
+        "buyback",
+        "chemical"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "催化剂、工业需求"
+        },
+        {
+          "theme": "chemical",
+          "logic": "催化剂、工业需求"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "20251216",
+          "status": "complete",
+          "date": "2026-11-24",
+          "subject": "控股股东",
+          "loan_cap_100m": 0.72,
+          "plan_min_100m": 0.42,
+          "plan_max_100m": 0.8,
+          "actual_100m": 0.79974,
+          "deadline": "2026-11-20",
+          "purpose": "股东增持",
+          "source": "https://www.cfi.net.cn/p20261124000672.html",
+          "notes": "历史计划完成，累计金额不是未来买盘；实际提款未知。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ]
+    },
+    {
+      "code": "600487",
+      "name": "亨通光电",
+      "themes": [
+        "buyback",
+        "compute"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "控股股东首次增持"
+        },
+        {
+          "theme": "compute",
+          "logic": "控股股东首次增持"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "fund-600487",
+          "status": "executed",
+          "date": "2026-11-20",
+          "subject": "控股股东",
+          "loan_cap_100m": 5.4,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "股东增持",
+          "source": "https://www.cfi.net.cn/p20261120001721.html",
+          "notes": "控股股东首次增持；2013.21万元；已成交，贷款提款未披露；此前专项贷款承诺上限5.4亿元；本笔用贷未证实",
+          "evidence_level": "原资金池证据（须持续核验）"
+        }
+      ],
+      "core_rank": 8
+    },
+    {
+      "code": "002463",
+      "name": "沪电股份",
+      "themes": [
+        "buyback",
+        "compute"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "公司首次回购"
+        },
+        {
+          "theme": "compute",
+          "logic": "公司首次回购"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "fund-002463",
+          "status": "executed",
+          "date": "2026-11-21",
+          "subject": "上市公司",
+          "loan_cap_100m": 9,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "股份回购",
+          "source": "https://static.cninfo.com.cn/finalpage/2026-11-21/1225682149.PDF",
+          "notes": "公司首次回购；1999.93万元；已成交，贷款提款未披露；此前专项贷款承诺上限9亿元；本笔用贷未证实",
+          "evidence_level": "原资金池证据（须持续核验）"
+        }
+      ],
+      "core_rank": 6
+    },
+    {
+      "code": "603223",
+      "name": "恒通股份",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "控股股东南山集团增持"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "fund-603223",
+          "status": "executed",
+          "date": "2026-11-21",
+          "subject": "南山集团",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "股东增持",
+          "source": "https://static.cninfo.com.cn/finalpage/2026-11-21/1225681041.PDF",
+          "notes": "控股股东南山集团增持；4355.67万元；已成交；专项贷款分项未披露；公告资金含自有资金和增持专项贷款；贷款使用额未拆分",
+          "evidence_level": "原资金池证据（须持续核验）"
+        }
+      ]
+    },
+    {
+      "code": "300715",
+      "name": "凯伦股份",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "矽彩光电累计增持进展"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "fund-300715",
+          "status": "executed",
+          "date": "2026-11-20",
+          "subject": "矽彩光电",
+          "loan_cap_100m": 3,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "股东增持",
+          "source": "https://file.finance.sina.com.cn/211.154.219.97:9494/MRGG/CNSESZ_STOCK/2026/2026-11/2026-11-20/12716969.PDF",
+          "notes": "矽彩光电累计增持进展；累计1.795052亿元；累计进展；非单日成交；专项贷款承诺上限3亿元；实际提款未知",
+          "evidence_level": "原资金池证据（须持续核验）"
+        }
+      ]
+    },
+    {
+      "code": "600177",
+      "name": "雅戈尔",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "控股股东累计增持进展"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "fund-600177",
+          "status": "executed",
+          "date": "2026-11-21",
+          "subject": "控股股东",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "股东增持",
+          "source": "https://file.finance.sina.com.cn/211.154.219.97:9494/MRGG/CNSESH_STOCK/2026/2026-11/2026-11-21/12716992.PDF",
+          "notes": "控股股东累计增持进展；累计6.030268亿元；累计进展；存在其他股东减持；自有资金及银行贷款；实际贷款提款未知",
+          "evidence_level": "原资金池证据（须持续核验）"
+        }
+      ]
+    },
+    {
+      "code": "002960",
+      "name": "青鸟智控",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "消防与智能控制"
+        },
+        {
+          "theme": "equipment",
+          "logic": "消防与智能控制"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "202611-loan",
+          "status": "loan",
+          "date": null,
+          "subject": "相关贷款主体（待核）",
+          "loan_cap_100m": 12,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "用途与执行待核",
+          "source": "https://finance.eastmoney.com/a/202611243937787825.html",
+          "notes": "报道汇总列出贷款承诺额度；逐公司原公告、实际提款及进展待核。",
+          "evidence_level": "权威财经报道汇总"
+        }
+      ]
+    },
+    {
+      "code": "002821",
+      "name": "凯莱英",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "医药研发外包"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "202611-loan",
+          "status": "loan",
+          "date": null,
+          "subject": "相关贷款主体（待核）",
+          "loan_cap_100m": 12.6,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "用途与执行待核",
+          "source": "https://finance.sina.com.cn/roll/2026-11-16/doc-iniyxuez5907232.shtml",
+          "notes": "报道汇总列出贷款承诺额度；逐公司原公告、实际提款及进展待核。",
+          "evidence_level": "权威财经报道汇总"
+        }
+      ]
+    },
+    {
+      "code": "603268",
+      "name": "松发股份",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "船舶制造和重组后业绩"
+        },
+        {
+          "theme": "equipment",
+          "logic": "船舶制造和重组后业绩"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "202611-loan",
+          "status": "loan",
+          "date": null,
+          "subject": "相关贷款主体（待核）",
+          "loan_cap_100m": 9,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "用途与执行待核",
+          "source": "https://finance.sina.com.cn/roll/2026-11-16/doc-iniyxuez5907232.shtml",
+          "notes": "报道汇总列出贷款承诺额度；逐公司原公告、实际提款及进展待核。",
+          "evidence_level": "权威财经报道汇总"
+        }
+      ]
+    },
+    {
+      "code": "300919",
+      "name": "中伟新材",
+      "themes": [
+        "buyback",
+        "storage"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "股东拟增持，新能源材料"
+        },
+        {
+          "theme": "storage",
+          "logic": "股东拟增持，新能源材料"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "202611-loan",
+          "status": "loan",
+          "date": null,
+          "subject": "控股股东",
+          "loan_cap_100m": 9,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "用途与执行待核",
+          "source": "https://finance.eastmoney.com/a/202611243937787825.html",
+          "notes": "报道汇总列出贷款承诺额度；逐公司原公告、实际提款及进展待核。",
+          "evidence_level": "权威财经报道汇总"
+        }
+      ],
+      "core_rank": 14
+    },
+    {
+      "code": "300408",
+      "name": "三环集团",
+      "themes": [
+        "buyback",
+        "semi"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "电子陶瓷"
+        },
+        {
+          "theme": "semi",
+          "logic": "电子陶瓷"
+        }
+      ],
+      "priority": "重点",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "202611-loan",
+          "status": "loan",
+          "date": null,
+          "subject": "相关贷款主体（待核）",
+          "loan_cap_100m": 8.1,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "用途与执行待核",
+          "source": "https://finance.sina.com.cn/roll/2026-11-16/doc-iniyxuez5907232.shtml",
+          "notes": "报道汇总列出贷款承诺额度；逐公司原公告、实际提款及进展待核。",
+          "evidence_level": "权威财经报道汇总"
+        }
+      ],
+      "core_rank": 25
+    },
+    {
+      "code": "002602",
+      "name": "世纪华通",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "游戏业务及经营质量"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "202611-loan",
+          "status": "loan",
+          "date": null,
+          "subject": "相关贷款主体（待核）",
+          "loan_cap_100m": 5.4,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "用途与执行待核",
+          "source": "https://finance.sina.com.cn/roll/2026-11-16/doc-iniyxuez5907232.shtml",
+          "notes": "报道汇总列出贷款承诺额度；逐公司原公告、实际提款及进展待核。",
+          "evidence_level": "权威财经报道汇总"
+        }
+      ]
+    },
+    {
+      "code": "688727",
+      "name": "恒坤新材",
+      "themes": [
+        "buyback",
+        "semi"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "半导体材料"
+        },
+        {
+          "theme": "semi",
+          "logic": "半导体材料"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "20261119",
+          "status": "loan",
+          "date": "2026-11-19",
+          "subject": "上市公司",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "回购",
+          "source": "https://www.sse.com.cn/assortment/stock/list/info/announcement/index.shtml?productId=688727",
+          "notes": "交易所公告目录确认存在专项贷款承诺函公告，金额及执行待核。",
+          "evidence_level": "交易所公告目录"
+        }
+      ]
+    },
+    {
+      "code": "603293",
+      "name": "埃泰克",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "汽车电子零部件"
+        },
+        {
+          "theme": "equipment",
+          "logic": "汽车电子零部件"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "20261112",
+          "status": "proposal",
+          "date": "2026-11-12",
+          "subject": "上市公司",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "回购预案",
+          "source": "https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=603293&endDate=2026-11-13&name=%E5%9F%83%E6%B3%B0%E5%85%8B&orgId=9900063176&startDate=2026-11-13&url=disclosure%2Flist%2Fsearch",
+          "notes": "巨潮公告目录确认回购预案；金额、审批、贷款及实际执行待核。",
+          "evidence_level": "巨潮公告目录"
+        }
+      ]
+    },
+    {
+      "code": "002020",
+      "name": "京新药业",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "注销减资、医药经营质量"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "20261124",
+          "status": "proposal",
+          "date": "2026-11-24",
+          "subject": "上市公司",
+          "loan_cap_100m": null,
+          "plan_min_100m": 1,
+          "plan_max_100m": 2,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "注销减资",
+          "source": "https://finance.eastmoney.com/a/202611243938669713.html",
+          "notes": "11月24日新方案为拟回购，不能与已完成历史计划混用。",
+          "evidence_level": "权威财经报道"
+        }
+      ]
+    },
+    {
+      "code": "605589",
+      "name": "圣泉集团",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "电子材料、拟注销回购"
+        },
+        {
+          "theme": "equipment",
+          "logic": "电子材料、拟注销回购"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "20261123",
+          "status": "proposal",
+          "date": "2026-11-24",
+          "subject": "上市公司",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": 4,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "注销减资",
+          "source": "https://www.chnfund.com/article/AR0700cce9-b449-1f2e-f944-3a251d4291e3",
+          "notes": "报道确认回购计划上限及注销用途，具体公告、执行和贷款待核。",
+          "evidence_level": "权威财经报道"
+        }
+      ]
+    },
+    {
+      "code": "601868",
+      "name": "中国能建",
+      "themes": [
+        "buyback",
+        "water"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "能源基建与央企股东增持"
+        },
+        {
+          "theme": "water",
+          "logic": "能源基建与央企股东增持"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "20261123",
+          "status": "planned",
+          "date": "2026-11-24",
+          "subject": "控股股东",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": 7,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "股东增持",
+          "source": "https://www.chnfund.com/article/AR0700cce9-b449-1f2e-f944-3a251d4291e3",
+          "notes": "增持计划上限7亿元，不设价格区间；实际成交和专项贷款待核。",
+          "evidence_level": "权威财经报道"
+        }
+      ]
+    },
+    {
+      "code": "688556",
+      "name": "高测股份",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "光伏设备行业出清"
+        },
+        {
+          "theme": "equipment",
+          "logic": "光伏设备行业出清"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "301200",
+      "name": "大族数控",
+      "themes": [
+        "buyback",
+        "compute"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "PCB设备"
+        },
+        {
+          "theme": "compute",
+          "logic": "PCB设备"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "603186",
+      "name": "华正新材",
+      "themes": [
+        "buyback",
+        "compute"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "电子材料"
+        },
+        {
+          "theme": "compute",
+          "logic": "电子材料"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "003015",
+      "name": "日久光电",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "电子功能材料"
+        },
+        {
+          "theme": "equipment",
+          "logic": "电子功能材料"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "603306",
+      "name": "华懋科技",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "汽车零部件"
+        },
+        {
+          "theme": "equipment",
+          "logic": "汽车零部件"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "605333",
+      "name": "沪光股份",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "汽车线束"
+        },
+        {
+          "theme": "equipment",
+          "logic": "汽车线束"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "600176",
+      "name": "中国巨石",
+      "themes": [
+        "buyback",
+        "chemical"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "玻纤周期"
+        },
+        {
+          "theme": "chemical",
+          "logic": "玻纤周期"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "603833",
+      "name": "欧派家居",
+      "themes": [
+        "buyback",
+        "consumer"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "家居及消费复苏"
+        },
+        {
+          "theme": "consumer",
+          "logic": "家居及消费复苏"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "003041",
+      "name": "真爱美家",
+      "themes": [
+        "buyback",
+        "consumer"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "家纺消费"
+        },
+        {
+          "theme": "consumer",
+          "logic": "家纺消费"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "600515",
+      "name": "海南机场",
+      "themes": [
+        "buyback",
+        "logistics"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "交通与消费"
+        },
+        {
+          "theme": "logistics",
+          "logic": "交通与消费"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "605100",
+      "name": "华丰股份",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "工业装备"
+        },
+        {
+          "theme": "equipment",
+          "logic": "工业装备"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "002655",
+      "name": "共达电声",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "声学零部件"
+        },
+        {
+          "theme": "equipment",
+          "logic": "声学零部件"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "000338",
+      "name": "潍柴动力",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "装备制造"
+        },
+        {
+          "theme": "equipment",
+          "logic": "装备制造"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "600482",
+      "name": "中国动力",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "高端装备"
+        },
+        {
+          "theme": "equipment",
+          "logic": "高端装备"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "buyback_records": [
+        {
+          "id": "candidate",
+          "status": "unknown",
+          "date": null,
+          "subject": "待核",
+          "loan_cap_100m": null,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": null,
+          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
+          "evidence_level": "待核线索"
+        }
+      ]
+    },
+    {
+      "code": "601688",
+      "name": "华泰证券",
+      "themes": [
+        "broker"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "broker",
+          "logic": "券商业务、成交和两融"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险"
+    },
+    {
+      "code": "601988",
+      "name": "中国银行",
+      "themes": [
+        "fundwatch"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "fundwatch",
+          "logic": "主动ETF历史持仓及银行经营待核"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险"
+    },
+    {
+      "code": "601088",
+      "name": "中国神华",
+      "themes": [
+        "fundwatch"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "fundwatch",
+          "logic": "长期资金及能源现金流待核"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险"
+    },
+    {
+      "code": "600941",
+      "name": "中国移动",
+      "themes": [
+        "fundwatch"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "fundwatch",
+          "logic": "长期资金及通信业务待核"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险"
+    },
+    {
+      "code": "000157",
+      "name": "中联重科",
+      "themes": [
+        "equipment"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "equipment",
+          "logic": "工程机械"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险"
+    },
+    {
+      "code": "601100",
+      "name": "恒立液压",
+      "themes": [
+        "equipment"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "equipment",
+          "logic": "工程机械液压件"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险"
+    },
+    {
+      "code": "002352",
+      "name": "顺丰控股",
+      "themes": [
+        "logistics"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "logistics",
+          "logic": "物流网络"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险"
+    },
+    {
+      "code": "601598",
+      "name": "中国外运",
+      "themes": [
+        "logistics"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "logistics",
+          "logic": "物流网络"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险"
+    },
+    {
+      "code": "002039",
+      "name": "黔源电力",
+      "themes": [
+        "fundwatch"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "fundwatch",
+          "logic": "原资金观察池记录；详情以具名主体披露为准"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险"
+    },
+    {
+      "code": "600886",
+      "name": "国投电力",
+      "themes": [
+        "fundwatch"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "fundwatch",
+          "logic": "原资金观察池记录；详情以具名主体披露为准"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-24",
+      "updated_at": "2026-11-24",
+      "company_evidence": [],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险"
     }
   ],
   "change_log": [
     {
       "date": "2026-11-24",
       "summary": "建立首批60只去重候选、15只重点、16个政策或公司催化节点。所有股票为研究初选，未完成交易筛选。"
+    },
+    {
+      "date": "2026-11-24",
+      "summary": "新增统一清单和独立增持回购信息池：108只研究候选，26只重点；保留历史902家未全量核实说明及证据层级。"
     }
   ],
-  "archived": []
+  "archived": [],
+  "buyback_coverage": {
+    "baseline_issuers": 902,
+    "baseline_events": 1110,
+    "baseline_date": "2026-10-31",
+    "november_issuers": 111,
+    "november_loan_cap_100m": 229.56,
+    "november_date": "2026-11-23",
+    "status": "部分样本，历史全量对账未完成",
+    "sources": [
+      {
+        "title": "证监会官方历史统计",
+        "url": "https://www.csrc.gov.cn/csrc/c100028/c7668092/content.shtml"
+      },
+      {
+        "title": "11月新增披露统计",
+        "url": "https://finance.eastmoney.com/a/202611243937787825.html"
+      },
+      {
+        "title": "证券时报贷款明细数据库（待全量获取）",
+        "url": "https://www.stcn.com/dc/jdsj.html?type=hgzczdk"
+      }
+    ],
+    "notes": "贷款承诺、签约、提款、买入、剩余买盘分别核验；当前候选含普通回购和未核验线索，不可作为902家覆盖率分子。"
+  }
 }
