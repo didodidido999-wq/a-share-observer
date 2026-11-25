@@ -56,7 +56,7 @@ async function navigate({page='research',date=null,anchor=null,query=null}={},wr
  }
  document.body.classList.toggle('risk-route',page==='risk');document.body.dataset.route=page;stop();window.MarketScopeEvents?.stop();state.page=page;state.query=query;if(page==='policy')state.policyNavigation={serial,anchor};
  document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===page));
- $('crumb').textContent=$('page-title').textContent=PAGE_NAMES[page][0];$('page-desc').textContent=PAGE_NAMES[page][1];$('sidebar').classList.remove('open');$('menu-btn')?.setAttribute('aria-expanded','false');renderPage();
+ $('crumb').textContent=$('page-title').textContent=PAGE_NAMES[page][0];$('sidebar').classList.remove('open');$('menu-btn')?.setAttribute('aria-expanded','false');renderPage();
  const hash=routeHash(page,state.selected,anchor,state.query);if(write&&location.hash!==hash)history.pushState(null,'',hash);
  focusRouteAnchor(page,anchor,serial);return true;
 }
