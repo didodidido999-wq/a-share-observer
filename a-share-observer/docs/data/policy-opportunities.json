@@ -2873,24 +2873,24 @@
       "priority": "观察",
       "state": "active",
       "added_at": "2026-11-24",
-      "updated_at": "2026-11-24",
+      "updated_at": "2026-11-25",
       "company_evidence": [],
-      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "review": "原提议升级为贷款承诺；待核首笔回购和汽车电子业绩兑现。",
       "buyback_records": [
         {
           "id": "20261112",
-          "status": "proposal",
-          "date": "2026-11-12",
+          "status": "loan",
+          "date": "2026-11-19",
           "subject": "上市公司",
-          "loan_cap_100m": null,
-          "plan_min_100m": null,
-          "plan_max_100m": null,
+          "loan_cap_100m": 0.45,
+          "plan_min_100m": 0.3,
+          "plan_max_100m": 0.5,
           "actual_100m": null,
-          "deadline": null,
-          "purpose": "回购预案",
-          "source": "https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=603293&endDate=2026-11-13&name=%E5%9F%83%E6%B3%B0%E5%85%8B&orgId=9900063176&startDate=2026-11-13&url=disclosure%2Flist%2Fsearch",
-          "notes": "巨潮公告目录确认回购预案；金额、审批、贷款及实际执行待核。",
-          "evidence_level": "巨潮公告目录"
+          "deadline": "2027-11-12",
+          "purpose": "员工持股或股权激励",
+          "source": "https://cfi.net.cn/p20261118001288.html",
+          "notes": "同一计划由提议升级为获批并取得招行芜湖分行专项贷款承诺，期限不超过36个月；实际提款和成交未知。",
+          "evidence_level": "公告全文或公告镜像"
         }
       ]
     },
@@ -3092,24 +3092,24 @@
       "priority": "观察",
       "state": "active",
       "added_at": "2026-11-24",
-      "updated_at": "2026-11-24",
+      "updated_at": "2026-11-25",
       "company_evidence": [],
-      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "review": "待核线索转为专项贷款承诺；两个月催化明确，仍须比较真实成交、流通市值与估值。",
       "buyback_records": [
         {
-          "id": "candidate",
-          "status": "unknown",
-          "date": null,
-          "subject": "待核",
-          "loan_cap_100m": null,
-          "plan_min_100m": null,
-          "plan_max_100m": null,
+          "id": "20261109",
+          "status": "loan",
+          "date": "2026-11-17",
+          "subject": "上市公司",
+          "loan_cap_100m": 2.7,
+          "plan_min_100m": 2,
+          "plan_max_100m": 3,
           "actual_100m": null,
-          "deadline": null,
-          "purpose": "待核",
-          "source": null,
-          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
-          "evidence_level": "待核线索"
+          "deadline": "2027-01-09",
+          "purpose": "维护公司价值及股东权益",
+          "source": "https://www.cfi.net.cn/p20261116001396.html",
+          "notes": "11月16日晚公开；中信银行深圳分行承诺，期限不超过3年；回购期2个月，价格上限214元；实际提款及成交待核。",
+          "evidence_level": "公告全文或公告镜像"
         }
       ]
     },
@@ -3231,24 +3231,24 @@
       "priority": "观察",
       "state": "active",
       "added_at": "2026-11-24",
-      "updated_at": "2026-11-24",
+      "updated_at": "2026-11-25",
       "company_evidence": [],
-      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "review": "已确认贷款承诺；中期还要核可转债转换、利润与现金流。",
       "buyback_records": [
         {
-          "id": "candidate",
-          "status": "unknown",
-          "date": null,
-          "subject": "待核",
-          "loan_cap_100m": null,
-          "plan_min_100m": null,
-          "plan_max_100m": null,
+          "id": "20261102",
+          "status": "loan",
+          "date": "2026-11-19",
+          "subject": "上市公司",
+          "loan_cap_100m": 1.08,
+          "plan_min_100m": 0.6,
+          "plan_max_100m": 1.2,
           "actual_100m": null,
-          "deadline": null,
-          "purpose": "待核",
-          "source": null,
-          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
-          "evidence_level": "待核线索"
+          "deadline": "2027-11-02",
+          "purpose": "可转债转换",
+          "source": "https://epaper.cs.com.cn/zgzqb/html/2026-11/19/nw.D110000zgzqb_20261119_3-B017.htm",
+          "notes": "建设银行厦门市分行承诺上限1.08亿元；本轮未确认提款及成交。非注销。",
+          "evidence_level": "公告全文或公告镜像"
         }
       ]
     },
@@ -3411,24 +3411,39 @@
       "priority": "观察",
       "state": "active",
       "added_at": "2026-11-24",
-      "updated_at": "2026-11-24",
+      "updated_at": "2026-11-25",
       "company_evidence": [],
-      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险",
+      "review": "按独立期次核验；第三期新获贷款承诺，第一期成交为历史进展；观察，不合并不同期次资金。",
       "buyback_records": [
         {
-          "id": "candidate",
-          "status": "unknown",
-          "date": null,
-          "subject": "待核",
+          "id": "20261023-1",
+          "status": "executed",
+          "date": "2026-11-20",
+          "subject": "上市公司",
           "loan_cap_100m": null,
-          "plan_min_100m": null,
-          "plan_max_100m": null,
+          "plan_min_100m": 1,
+          "plan_max_100m": 2,
+          "actual_100m": 0.999753,
+          "deadline": null,
+          "purpose": "维护公司价值及股东权益",
+          "source": "https://www.cfi.net.cn/p20261120001936.html",
+          "notes": "第一期截至11月20日累计312.12万股、9997.53万元，计划由0.5—1亿调整为1—2亿；本轮未核本期贷款额度或实际提款，不借用第三期额度。",
+          "evidence_level": "公告全文或公告镜像"
+        },
+        {
+          "id": "20261124-3",
+          "status": "loan",
+          "date": "2026-11-25",
+          "subject": "上市公司",
+          "loan_cap_100m": 0.9,
+          "plan_min_100m": 0.5,
+          "plan_max_100m": 1,
           "actual_100m": null,
           "deadline": null,
-          "purpose": "待核",
-          "source": null,
-          "notes": "来自此前研究候选，尚无本次逐股原公告核实；不得当作确认贷款、已成交或已持仓。",
-          "evidence_level": "待核线索"
+          "purpose": "维护公司价值及股东权益",
+          "source": "https://www.cfi.net.cn/p20261124001893.html",
+          "notes": "11月24日晚公开；第三期兴业银行广州分行承诺9000万元、期限不超过3年；第三期未核成交和提款，不套用第一期成交；第二期尚待核。",
+          "evidence_level": "公告全文或公告镜像"
         }
       ]
     },
@@ -4005,6 +4020,50 @@
           ]
         }
       ]
+    },
+    {
+      "code": "688141",
+      "name": "杰华特",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "已发生大股东增持且计划未完成"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-25",
+      "updated_at": "2026-11-25",
+      "company_evidence": [],
+      "review": "历史补录：短期跟踪同计划后续增持、实际提款；中期核模拟芯片毛利率修复、研发及现金流、估值；不自动升重点。",
+      "buyback_records": [
+        {
+          "id": "20261015",
+          "status": "executed",
+          "date": "2026-11-18",
+          "subject": "杭州杰沃信息咨询合伙企业（有限合伙）",
+          "loan_cap_100m": 1,
+          "plan_min_100m": 0.8,
+          "plan_max_100m": 1.6,
+          "actual_100m": 0.102503,
+          "deadline": "2027-10-14",
+          "purpose": "股东增持",
+          "source": "https://finance.sina.cn/2026-10-15/detail-inivfmzh1339970.d.html",
+          "notes": "10月15日披露贷款承诺1亿元，主体当时持有6.13%；11月17日首次增持172711股、1025.03万元；当笔用贷未确认，剩余至下限0.697497亿元。历史补录，不是11月25日成交。",
+          "evidence_level": "公告全文或公告镜像",
+          "additional_sources": [
+            "https://jinguxun.com/article/news/11096612",
+            "https://stock.stockstar.com/RB2026111900000216.shtml"
+          ]
+        }
+      ]
     }
   ],
   "change_log": [
@@ -4019,6 +4078,10 @@
     {
       "date": "2026-11-25",
       "summary": "新增观察海亮股份、狄耐克、盈峰环境（已完成、非未来买盘）；华勤第三期新增6亿元贷款承诺并保留同计划此前成交；华正新材从待核升级已实际回购。108→111只，26只重点暂不调整：全池财务/量价/估值尚未同口径完成，不能强制排名。历史贷款基准及旧记录不覆盖。"
+    },
+    {
+      "date": "2026-11-25",
+      "summary": "补核大族数控、华懋科技、真爱美家原待核线索及埃泰克既有提议，分别确认贷款承诺，真爱美家第一/第三期独立保留；新增历史补录杰华特，11月17日首次增持。候选112只、重点26只不变。历史对账底表未并入网站。"
     }
   ],
   "archived": [],
