@@ -22,3 +22,12 @@
 .po-buyback-coverage{padding:12px;background:#f8fafb;border:1px solid #dce5e9;border-radius:7px;margin-bottom:12px;line-height:1.6}.po-buyback-record{border:1px solid #dce5e9;border-radius:7px;padding:11px;margin:8px 0}.po-buyback-records h5{font-size:14px;margin:12px 0 6px}.po-buyback-fields{display:grid;grid-template-columns:minmax(90px,40%) minmax(0,1fr);font-size:12px;gap:0}.po-buyback-fields dt,.po-buyback-fields dd{border-bottom:1px solid #edf1f3;padding:7px;margin:0;overflow-wrap:anywhere}.po-buyback-fields dt{color:#607987}.po-buyback-fields dd{color:#183e53}
 @media(max-width:780px){.po-entry-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.po-unified-row{grid-template-columns:minmax(90px,112px) minmax(0,1fr) 12px;gap:7px}.po-entry{padding:11px}.po-unified-controls{align-items:stretch}.po-unified-controls input{flex:1 1 100%}}
 @media(max-width:400px){.po-entry{padding:10px}.po-entry-count{font-size:19px}.po-unified-row{grid-template-columns:minmax(80px,96px) minmax(0,1fr) 10px}.po-unified-reason{font-size:11px}}
+
+/* The unified watchlist stays in one vertical column; information-pool cards are navigation only. */
+.po-home-layout{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);gap:12px;align-items:start}
+.po-home-layout>.po-entry-grid{grid-template-columns:repeat(2,minmax(0,1fr));margin:12px 0;position:sticky;top:12px}
+.po-home-layout>.po-unified-section{min-width:0}
+.po-home-layout .po-entry{padding:11px;gap:5px}
+.po-home-layout .po-entry-count{font-size:20px}
+@media(max-width:1050px){.po-home-layout{grid-template-columns:minmax(0,1fr)}.po-home-layout>.po-entry-grid{position:static;grid-row:1;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(146px,26%);overflow-x:auto;max-width:100%;scroll-snap-type:x proximity;padding-bottom:6px;margin-bottom:0}.po-home-layout .po-entry{scroll-snap-align:start}.po-home-layout>.po-unified-section{margin-top:0}}
+@media(max-width:480px){.po-home-layout>.po-entry-grid{grid-auto-columns:minmax(140px,45%)}}
