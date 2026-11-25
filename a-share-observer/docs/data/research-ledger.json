@@ -1958,6 +1958,16 @@
         "calendar_hash": "a0fbf232f060fb166eb0601fd2abdd13b96d3a801c3d081fedf0bb1926b21316"
       },
       "hash": "767eaed0a53909438df3b48dc938e50afda387801a5a293c9331dca642100d9c"
+    },
+    {
+      "sequence": 30,
+      "previous_hash": "767eaed0a53909438df3b48dc938e50afda387801a5a293c9331dca642100d9c",
+      "kind": "activation",
+      "payload": {
+        "forecast_id": "research-20261125T073554Z-c42cdec64f",
+        "activated_at": "2026-11-25T07:39:50.181977+00:00"
+      },
+      "hash": "50d886f49a056e17f4e74a2f755839bdaa5dd005c0aaf9ee8cb7960933687954"
     }
   ]
 }
