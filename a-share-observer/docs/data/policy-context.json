@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-11-25T13:57:32+00:00",
+  "checked_at": "2026-11-26T13:47:19+00:00",
   "records": [
     {
       "id": "nbs-2026q3-gdp-v1",
@@ -922,6 +922,38 @@
       ],
       "interpretation": "跟踪银行间短期流动性操作；与同日7天期逆回购和1年期MLF招标预告区分。",
       "limitations": "本公告仅确认隔夜逆回购中标，不证明其他期限的操作结果、综合净投放或股票市场资金流向。"
+    },
+    {
+      "id": "pbc-20261126-overnight-repo-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "人民银行11月26日开展5715亿元隔夜逆回购",
+      "kind": "policy",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026112608535053011/index.html",
+      "source_name": "中国人民银行公开市场业务操作室",
+      "published_at": "2026-11-26T09:20:30+08:00",
+      "published_precision": "datetime",
+      "published_date": "2026-11-26",
+      "observed_at": "2026-11-26T13:47:19+00:00",
+      "available_at": "2026-11-26T13:47:19+00:00",
+      "period": "2026-11-26，隔夜期",
+      "summary": "人民银行以固定利率、数量招标方式开展5715亿元隔夜逆回购，投标量、中标量均为5715亿元，利率为1.25%。",
+      "metrics": [
+        {
+          "name": "隔夜逆回购中标量",
+          "value": 5715,
+          "unit": "亿元",
+          "basis": "当日隔夜逆回购操作毛额"
+        },
+        {
+          "name": "隔夜操作利率",
+          "value": 1.25,
+          "unit": "%",
+          "basis": "隔夜逆回购固定操作利率"
+        }
+      ],
+      "interpretation": "作为银行间短期流动性背景观察，隔夜操作与其他期限分别记录。",
+      "limitations": "本公告未披露同期到期量，不能单独推算净投放，也不代表A股资金流入。"
     }
   ],
   "events": [
