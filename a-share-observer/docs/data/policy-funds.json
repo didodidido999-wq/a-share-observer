@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "as_of": "2026-11-25",
-  "updated_at": "2026-11-25T21:12:25+08:00",
+  "as_of": "2026-11-26",
+  "updated_at": "2026-11-26T13:33:51.234Z",
   "scope": "人工整理的部分核验观察池；不是五类资金全量名单、动态实时持仓、完整ETF底仓或投资评级。",
   "coverage": {
     "loan": "证监会截至2026-10末902家发行人、1110单公告为回填基准；本文件仅部分候选",
@@ -378,17 +378,17 @@
       "tags": [
         "loan"
       ],
-      "status": "planned",
-      "action": "取得回购专项贷款承诺",
-      "event_date": null,
-      "disclosed": "2026-11-17",
-      "quantity": "—",
-      "cash": "承诺上限2.7亿元",
-      "funding": "中信银行深圳分行；提款未知",
-      "source": "https://www.cfi.net.cn/p20261116001396.html",
+      "status": "executed",
+      "action": "专项贷款到账；同一期回购已完成",
+      "event_date": "2026-11-25",
+      "disclosed": "2026-11-26",
+      "quantity": "2269550股",
+      "cash": "29426.54835万元（累计）",
+      "funding": "2.7亿元贷款承诺；董秘确认贷款已到账，金额及逐笔用贷未披露",
+      "source": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12724141&stockid=301200",
       "subject": "上市公司",
-      "kind": "回购融资承诺",
-      "basis": "历史补录；2亿—3亿元计划，期限2个月；实际成交待核"
+      "kind": "公司回购完成",
+      "basis": "11月18—25日累计；原2—3亿元计划已结束，无剩余未来买盘；用途为出售；原贷款公告及到账证据：https://www.cfi.net.cn/p20261116001396.html；https://epaper.stcn.com/att/202611/25/8e5ee034-5339-45af-be60-bb15409ed47d.pdf"
     },
     {
       "code": "603306",
@@ -443,6 +443,114 @@
       "subject": "杭州杰沃信息咨询合伙企业（有限合伙）",
       "kind": "股东增持",
       "basis": "历史补录；原计划8000万—1.6亿元；贷款原公告https://finance.sina.cn/2026-10-15/detail-inivfmzh1339970.d.html"
+    },
+    {
+      "code": "300953",
+      "name": "震裕科技",
+      "tags": [
+        "loan"
+      ],
+      "status": "executed",
+      "action": "首次回购；随后披露专项贷款承诺",
+      "event_date": "2026-11-20",
+      "disclosed": "2026-11-26",
+      "quantity": "86000股",
+      "cash": "704.85436万元（首笔）",
+      "funding": "交通银行宁波宁海支行；承诺上限1.8亿元；实际提款及当笔用贷未确认",
+      "source": "https://www.cfi.net.cn/p20261125001097.html",
+      "subject": "上市公司",
+      "kind": "公司回购",
+      "basis": "计划1—2亿元；11月20日首次回购704.85436万元；11月25日晚披露贷款承诺，期限3年；当笔用贷未确认。 https://www.cfi.net.cn/p20261123000553.html"
+    },
+    {
+      "code": "300910",
+      "name": "瑞丰新材",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-25",
+      "quantity": "未确认",
+      "cash": "贷款承诺上限4.5亿元",
+      "funding": "平安银行郑州分行；承诺上限4.5亿元；实际提款及当笔用贷未确认",
+      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?CompanyCode=80537583&gather=1&id=12723558",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "计划2.5—5亿元；期限不超过3年；回购价格上限35.11元；签约、提款、成交未确认。 "
+    },
+    {
+      "code": "002460",
+      "name": "赣锋锂业",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-24",
+      "quantity": "未确认",
+      "cash": "贷款承诺上限3.6亿元",
+      "funding": "工商银行新余高新支行；承诺上限3.6亿元；实际提款及当笔用贷未确认",
+      "source": "https://www.cfi.net.cn/p20261123001617.html",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "计划2—4亿元；11月23日晚披露，期限不超过36个月；签约、提款、实际回购未确认；回购到期日待查报告书。 "
+    },
+    {
+      "code": "300723",
+      "name": "一品红",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-26",
+      "quantity": "未确认",
+      "cash": "贷款承诺上限2.25亿元",
+      "funding": "兴业银行广州分行；承诺上限2.25亿元；实际提款及当笔用贷未确认",
+      "source": "https://www.cfi.cn/p20261126000724.html",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "计划2—3亿元；贷款承诺函11月23日出具，期限不超过3年；回购价格上限42元，期限不超过3个月；签约、提款、成交未确认。 https://www.cfi.net.cn/p20261123001536.html"
+    },
+    {
+      "code": "603786",
+      "name": "科博达",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-26",
+      "quantity": "未确认",
+      "cash": "贷款承诺上限2.25亿元",
+      "funding": "招商银行上海分行；承诺上限2.25亿元；实际提款及当笔用贷未确认",
+      "source": "https://finance.eastmoney.com/a/202611263940638740.html",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "计划1.5—2.5亿元；11月26日公开、公告列表标27日；贷款不超过36个月，回购上限56元，期限6个月；实际成交及提款未确认。 https://www.cfi.net.cn/p20261123002378.html；https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=603786&endDate=2026-11-27&name=%E7%A7%91%E5%8D%9A%E8%BE%BE&orgId=DR0000117&startDate=2026-11-27&url=disclosure%2Flist%2Fsearch"
+    },
+    {
+      "code": "688343",
+      "name": "云天励飞",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-26",
+      "quantity": "未确认",
+      "cash": "贷款承诺上限0.45亿元",
+      "funding": "中国银行深圳龙岗支行；承诺上限0.45亿元；实际提款及当笔用贷未确认",
+      "source": "https://www.caiwennews.com/article/1719940.shtml",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "计划0.25—0.5亿元；11月26日公开、公告列表标27日；贷款期限3年、回购上限75元，期限3个月；签约、提款、成交未确认。 https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=688343&endDate=2026-11-27&name=%E4%BA%91%E5%A4%A9%E5%8A%B1%E9%A3%9E&orgId=9900047695&startDate=2026-11-27&url=disclosure%2Flist%2Fsearch"
     }
   ]
 }
