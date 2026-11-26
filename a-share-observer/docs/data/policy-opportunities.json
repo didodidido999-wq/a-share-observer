@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "as_of": "2026-11-25",
-  "checked_at": "2026-11-25",
-  "scope": "统一观察清单合并短中期政策研究和增持回购候选，按代码去重。短期5—20个交易日，中期1—6个月；重点为研究顺序，非交易评级。历史902家及11月新增111家公司仍未全量对账；待核线索不计为确认贷款或成交。",
+  "as_of": "2026-11-26",
+  "checked_at": "2026-11-26",
+  "scope": "统一观察清单合并短中期政策研究和增持回购候选，按代码去重。短期5—20个交易日，中期1—6个月；重点为研究顺序，非交易评级。历史902家及11月披露123家公司仍未全量对账；待核线索不计为确认贷款或成交。",
   "method": "2008历史参照：稳市资金→经济政策→真实订单/资源价格→利润增量；不直接复制历史板块。",
   "events": [
     {
@@ -169,6 +169,19 @@
       "source": "https://www.nbd.com.cn/articles/2026-11-24/4657379.html",
       "stock_codes": [
         "600309"
+      ]
+    },
+    {
+      "id": "taishan3-fcd",
+      "title": "中国广核台山3号机组全面建设",
+      "date": "2026-11-25",
+      "status": "implemented",
+      "summary": "11月25日完成核反应堆主厂房第一罐混凝土浇筑，进入土建，单台1200MW；不等于已投产。",
+      "next_date": null,
+      "next": "核实工程、招标与资本开支，投产时间以公司正式公告为准",
+      "source": "https://www.cfi.net.cn/p20261125000839.html",
+      "stock_codes": [
+        "003816"
       ]
     }
   ],
@@ -389,7 +402,8 @@
       "policies": [
         "sixnet",
         "capital",
-        "december"
+        "december",
+        "taishan3-fcd"
       ],
       "logic": "设备更新、产业投资、国产化→制造业订单",
       "verify": "订单、交付、现金流及产能利用",
@@ -3092,24 +3106,29 @@
       "priority": "观察",
       "state": "active",
       "added_at": "2026-11-24",
-      "updated_at": "2026-11-25",
+      "updated_at": "2026-11-26",
       "company_evidence": [],
-      "review": "待核线索转为专项贷款承诺；两个月催化明确，仍须比较真实成交、流通市值与估值。",
+      "review": "短期：已完成回购，移除本期未来买盘逻辑，维持观察。中期：前三季度营收78.41亿元、归母15.44亿元（同比+100.90%、+214.03%），需核高端PCB设备订单、现金流、估值与后续出售风险；不因回购完成升重点。",
       "buyback_records": [
         {
           "id": "20261109",
-          "status": "loan",
-          "date": "2026-11-17",
+          "status": "complete",
+          "date": "2026-11-26",
           "subject": "上市公司",
           "loan_cap_100m": 2.7,
           "plan_min_100m": 2,
           "plan_max_100m": 3,
-          "actual_100m": null,
+          "actual_100m": 2.942654835,
           "deadline": "2027-01-09",
-          "purpose": "维护公司价值及股东权益",
-          "source": "https://www.cfi.net.cn/p20261116001396.html",
-          "notes": "11月16日晚公开；中信银行深圳分行承诺，期限不超过3年；回购期2个月，价格上限214元；实际提款及成交待核。",
-          "evidence_level": "公告全文或公告镜像"
+          "purpose": "维护公司价值及股东权益（出售）",
+          "source": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12724141&stockid=301200",
+          "notes": "11月16日公开2.7亿元贷款承诺；11月24日座谈会董秘确认贷款已到账（金额未知）；11月18日至25日累计回购2269550股、294265483.50元；计划已完成，剩余未来买盘为0；各笔用贷金额未披露；结果公告12个月后可出售，并非直接注销。",
+          "evidence_level": "公告全文及公司董秘公开发言",
+          "additional_sources": [
+            "https://www.cfi.net.cn/p20261116001396.html",
+            "https://epaper.stcn.com/att/202611/25/8e5ee034-5339-45af-be60-bb15409ed47d.pdf",
+            "https://finance.sina.com.cn/roll/2026-11-25/doc-inizykqc4117525.shtml"
+          ]
         }
       ]
     },
@@ -4064,6 +4083,303 @@
           ]
         }
       ]
+    },
+    {
+      "code": "300953",
+      "name": "震裕科技",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "已发生回购，新增贷款承诺；当笔用贷未知"
+        },
+        {
+          "theme": "equipment",
+          "logic": "精密制造与电池结构件需求，核实订单与现金流"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-26",
+      "updated_at": "2026-11-26",
+      "company_evidence": [],
+      "review": "短期：11月20日首次回购704.85436万元；11月25日晚披露贷款承诺，期限3年；当笔用贷未确认。 需核同一计划剩余额度、流通市值及量价。中期：精密制造与电池结构件需求，核实订单与现金流；财报与估值未统一核验，不自动升重点。",
+      "buyback_records": [
+        {
+          "id": "20261119",
+          "status": "executed",
+          "date": "2026-11-26",
+          "subject": "上市公司",
+          "loan_cap_100m": 1.8,
+          "plan_min_100m": 1,
+          "plan_max_100m": 2,
+          "actual_100m": 0.070485436,
+          "deadline": "2027-11-18",
+          "purpose": "股权激励或员工持股",
+          "source": "https://www.cfi.net.cn/p20261125001097.html",
+          "additional_sources": [
+            "https://www.cfi.net.cn/p20261123000553.html"
+          ],
+          "notes": "交通银行宁波宁海支行；11月20日首次回购704.85436万元；11月25日晚披露贷款承诺，期限3年；当笔用贷未确认。 截止日按董事会期限推算，待正式到期日核准。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ]
+    },
+    {
+      "code": "300910",
+      "name": "瑞丰新材",
+      "themes": [
+        "buyback",
+        "chemical"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "专项贷款承诺待执行"
+        },
+        {
+          "theme": "chemical",
+          "logic": "润滑油添加剂，核需求、产品毛利与海外风险"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-26",
+      "updated_at": "2026-11-26",
+      "company_evidence": [],
+      "review": "短期：期限不超过3年；回购价格上限35.11元；签约、提款、成交未确认。 需核同一计划剩余额度、流通市值及量价。中期：润滑油添加剂，核需求、产品毛利与海外风险；财报与估值未统一核验，不自动升重点。",
+      "buyback_records": [
+        {
+          "id": "20261123",
+          "status": "loan",
+          "date": "2026-11-25",
+          "subject": "上市公司",
+          "loan_cap_100m": 4.5,
+          "plan_min_100m": 2.5,
+          "plan_max_100m": 5,
+          "actual_100m": null,
+          "deadline": "2027-11-22",
+          "purpose": "用途待查回购方案原文",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?CompanyCode=80537583&gather=1&id=12723558",
+          "additional_sources": [],
+          "notes": "平安银行郑州分行；期限不超过3年；回购价格上限35.11元；签约、提款、成交未确认。 截止日按董事会期限推算，待正式到期日核准。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ]
+    },
+    {
+      "code": "002460",
+      "name": "赣锋锂业",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "专项贷款承诺待执行"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-26",
+      "updated_at": "2026-11-26",
+      "company_evidence": [],
+      "review": "短期：11月23日晚披露，期限不超过36个月；签约、提款、实际回购未确认；回购到期日待查报告书。 需核同一计划剩余额度、流通市值及量价。中期：锂价、产能及现金流；锂并非铜；财报与估值未统一核验，不自动升重点。",
+      "buyback_records": [
+        {
+          "id": "20261119",
+          "status": "loan",
+          "date": "2026-11-24",
+          "subject": "上市公司",
+          "loan_cap_100m": 3.6,
+          "plan_min_100m": 2,
+          "plan_max_100m": 4,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "维护公司价值及股东权益",
+          "source": "https://www.cfi.net.cn/p20261123001617.html",
+          "additional_sources": [],
+          "notes": "工商银行新余高新支行；11月23日晚披露，期限不超过36个月；签约、提款、实际回购未确认；回购到期日待查报告书。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ]
+    },
+    {
+      "code": "300723",
+      "name": "一品红",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "专项贷款承诺待执行"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-26",
+      "updated_at": "2026-11-26",
+      "company_evidence": [],
+      "review": "短期：贷款承诺函11月23日出具，期限不超过3年；回购价格上限42元，期限不超过3个月；签约、提款、成交未确认。 需核同一计划剩余额度、流通市值及量价。中期：药品销售及研发兑现；非直接养老政策受益；财报与估值未统一核验，不自动升重点。",
+      "buyback_records": [
+        {
+          "id": "20261123",
+          "status": "loan",
+          "date": "2026-11-26",
+          "subject": "上市公司",
+          "loan_cap_100m": 2.25,
+          "plan_min_100m": 2,
+          "plan_max_100m": 3,
+          "actual_100m": null,
+          "deadline": "2027-02-22",
+          "purpose": "股权激励或员工持股及维护价值（出售）",
+          "source": "https://www.cfi.cn/p20261126000724.html",
+          "additional_sources": [
+            "https://www.cfi.net.cn/p20261123001536.html"
+          ],
+          "notes": "兴业银行广州分行；贷款承诺函11月23日出具，期限不超过3年；回购价格上限42元，期限不超过3个月；签约、提款、成交未确认。 截止日按董事会期限推算，待正式到期日核准。",
+          "evidence_level": "公告全文或公告镜像"
+        }
+      ]
+    },
+    {
+      "code": "603786",
+      "name": "科博达",
+      "themes": [
+        "buyback",
+        "equipment"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "专项贷款承诺待执行"
+        },
+        {
+          "theme": "equipment",
+          "logic": "汽车电子订单及客户集中度"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-26",
+      "updated_at": "2026-11-26",
+      "company_evidence": [],
+      "review": "短期：11月26日公开、公告列表标27日；贷款不超过36个月，回购上限56元，期限6个月；实际成交及提款未确认。 需核同一计划剩余额度、流通市值及量价。中期：汽车电子订单及客户集中度；财报与估值未统一核验，不自动升重点。",
+      "buyback_records": [
+        {
+          "id": "20261123",
+          "status": "loan",
+          "date": "2026-11-26",
+          "subject": "上市公司",
+          "loan_cap_100m": 2.25,
+          "plan_min_100m": 1.5,
+          "plan_max_100m": 2.5,
+          "actual_100m": null,
+          "deadline": "2027-05-22",
+          "purpose": "员工股权激励或持股计划",
+          "source": "https://finance.eastmoney.com/a/202611263940638740.html",
+          "additional_sources": [
+            "https://www.cfi.net.cn/p20261123002378.html",
+            "https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=603786&endDate=2026-11-27&name=%E7%A7%91%E5%8D%9A%E8%BE%BE&orgId=DR0000117&startDate=2026-11-27&url=disclosure%2Flist%2Fsearch"
+          ],
+          "notes": "招商银行上海分行；11月26日公开、公告列表标27日；贷款不超过36个月，回购上限56元，期限6个月；实际成交及提款未确认。 截止日按董事会期限推算，待正式到期日核准。",
+          "evidence_level": "公告目录及财经报道"
+        }
+      ]
+    },
+    {
+      "code": "688343",
+      "name": "云天励飞",
+      "themes": [
+        "buyback",
+        "compute"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "专项贷款承诺待执行"
+        },
+        {
+          "theme": "compute",
+          "logic": "AI推理芯片商业化、亏损及现金流风险"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-26",
+      "updated_at": "2026-11-26",
+      "company_evidence": [],
+      "review": "短期：11月26日公开、公告列表标27日；贷款期限3年、回购上限75元，期限3个月；签约、提款、成交未确认。 需核同一计划剩余额度、流通市值及量价。中期：AI推理芯片商业化、亏损及现金流风险；财报与估值未统一核验，不自动升重点。",
+      "buyback_records": [
+        {
+          "id": "20261125",
+          "status": "loan",
+          "date": "2026-11-26",
+          "subject": "上市公司",
+          "loan_cap_100m": 0.45,
+          "plan_min_100m": 0.25,
+          "plan_max_100m": 0.5,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "员工持股或股权激励",
+          "source": "https://www.caiwennews.com/article/1719940.shtml",
+          "additional_sources": [
+            "https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=688343&endDate=2026-11-27&name=%E4%BA%91%E5%A4%A9%E5%8A%B1%E9%A3%9E&orgId=9900047695&startDate=2026-11-27&url=disclosure%2Flist%2Fsearch"
+          ],
+          "notes": "中国银行深圳龙岗支行；11月26日公开、公告列表标27日；贷款期限3年、回购上限75元，期限3个月；签约、提款、成交未确认。",
+          "evidence_level": "公告目录及财经报道"
+        }
+      ]
+    },
+    {
+      "code": "003816",
+      "name": "中国广核",
+      "themes": [
+        "equipment"
+      ],
+      "horizons": [
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "equipment",
+          "logic": "核电项目实际开工；远期资产投产，短期主要为资本开支"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-26",
+      "updated_at": "2026-11-26",
+      "company_evidence": [],
+      "review": "台山3号机组11月25日全面建设，单台1200MW；中期核工程进度、资本开支和债务，不能当期计入发电收入；未核估值及量价。"
     }
   ],
   "change_log": [
@@ -4082,6 +4398,10 @@
     {
       "date": "2026-11-25",
       "summary": "补核大族数控、华懋科技、真爱美家原待核线索及埃泰克既有提议，分别确认贷款承诺，真爱美家第一/第三期独立保留；新增历史补录杰华特，11月17日首次增持。候选112只、重点26只不变。历史对账底表未并入网站。"
+    },
+    {
+      "date": "2026-11-26",
+      "summary": "新增6家回购专项贷款观察（震裕、瑞丰、赣锋、一品红、科博达、云天励飞），其中震裕历史首笔回购；大族数控确认贷款到账及回购完成，不再计剩余买盘；新增中国广核台山3号机组开工观察；11月25日123家承诺统计与旧额度分离。全部原候选的现存记录、重点26只及事件关联做结构复查，未完成全量财报/行情横向比较，不强制换榜。"
     }
   ],
   "archived": [],
@@ -4089,9 +4409,9 @@
     "baseline_issuers": 902,
     "baseline_events": 1110,
     "baseline_date": "2026-10-31",
-    "november_issuers": 111,
-    "november_loan_cap_100m": 229.56,
-    "november_date": "2026-11-23",
+    "november_issuers": 123,
+    "november_loan_cap_100m": null,
+    "november_date": "2026-11-25",
     "status": "部分样本，历史全量对账未完成",
     "sources": [
       {
@@ -4105,8 +4425,12 @@
       {
         "title": "证券时报贷款明细数据库（待全量获取）",
         "url": "https://www.stcn.com/dc/jdsj.html?type=hgzczdk"
+      },
+      {
+        "title": "11月25日累计123家承诺统计（未给总额）",
+        "url": "https://finance.eastmoney.com/a/202611263939939469.html"
       }
     ],
-    "notes": "贷款承诺、签约、提款、买入、剩余买盘分别核验；当前候选含普通回购和未核验线索，不可作为902家覆盖率分子。"
+    "notes": "贷款承诺、签约、提款、买入、剩余买盘分别核验；当前候选含普通回购和未核验线索，不可作为902家覆盖率分子。 229.56亿元为截至11月23日的111家公司旧统计，不与11月25日123家公司拼接；最新总额未知。"
   }
 }
