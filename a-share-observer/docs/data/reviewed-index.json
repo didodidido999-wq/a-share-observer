@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-26T20:13:50.450772+00:00",
+  "generated_at": "2026-11-27T07:46:38.922868+00:00",
   "by_code": {
     "000656.SZ": [
       {
@@ -292,6 +292,67 @@
         "note": "公司公告11月25日收盘0.61元/股，已连续10个交易日低于1元；连续20个交易日每日收盘低于1元是终止上市条件之一。本记录不表示已满足该条件或已有退市决定。 精确公开时刻未核验，不用于历史可知回放。",
         "status": "verified",
         "available_at": "2026-11-26T07:45:08+00:00"
+      },
+      {
+        "id": "ruimao-face-value-delisting-warning-20261126-v1",
+        "revision": 1,
+        "supersedes": null,
+        "code": "600180.SH",
+        "kind": "event",
+        "metric_id": "delisting_risk_warning",
+        "value": null,
+        "unit": "",
+        "data_date": "2026-11-26",
+        "document_date": "2026-11-27",
+        "published_at": null,
+        "observed_at": "2026-11-27T07:46:00+00:00",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-27/1225690197.PDF",
+        "source_title": "瑞茂通股价低于1元第三次退市风险提示（2026-133）",
+        "note": "公司公告11月26日收盘0.67元/股，连续11个交易日低于1元；连续20个交易日每日收盘低于1元是终止上市条件之一，不表示已达到条件或已被决定退市。 精确公开时刻未核验，不用于历史可知回放。",
+        "status": "verified",
+        "available_at": "2026-11-27T07:46:00+00:00"
+      }
+    ],
+    "603398.SH": [
+      {
+        "id": "mubang-risk-warning-transition-20261127-v1",
+        "revision": 1,
+        "supersedes": null,
+        "code": "603398.SH",
+        "kind": "event",
+        "metric_id": "other_risk_warning",
+        "value": null,
+        "unit": "",
+        "data_date": "2026-11-27",
+        "document_date": "2026-11-26",
+        "published_at": null,
+        "observed_at": "2026-11-27T07:46:00+00:00",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-27/1225690857.PDF",
+        "source_title": "沐邦高科撤销退市风险警示、继续实施其他风险警示暨停牌（2026-101）",
+        "note": "公告确认11月27日停牌一天；按公告安排11月30日复牌，撤销退市风险警示但继续实施其他风险警示，简称由*ST沐邦改为ST沐邦，仍在风险警示板，日涨跌幅限制仍为10%。 精确公开时刻未核验，不用于历史可知回放。",
+        "status": "verified",
+        "available_at": "2026-11-27T07:46:00+00:00"
+      }
+    ],
+    "600381.SH": [
+      {
+        "id": "qinghai-spring-risk-warnings-removal-20261127-v1",
+        "revision": 1,
+        "supersedes": null,
+        "code": "600381.SH",
+        "kind": "event",
+        "metric_id": "other_risk_warning",
+        "value": null,
+        "unit": "",
+        "data_date": "2026-11-27",
+        "document_date": "2026-11-27",
+        "published_at": null,
+        "observed_at": "2026-11-27T07:46:00+00:00",
+        "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-27/1225690996.PDF",
+        "source_title": "青海春天撤销退市风险警示及其他风险警示暨停牌（2026-076）",
+        "note": "公告确认11月27日停牌一天；按公告安排11月30日复牌，同日起撤销退市风险警示及其他风险警示，简称由*ST春天改为青海春天，日涨跌幅限制仍为10%。 精确公开时刻未核验，不用于历史可知回放。",
+        "status": "verified",
+        "available_at": "2026-11-27T07:46:00+00:00"
       }
     ]
   },
