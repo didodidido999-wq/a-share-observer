@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-27T07:35:25.546047+00:00",
+  "generated_at": "2026-11-27T07:39:11.828888+00:00",
   "current": {
     "schema_version": 1,
     "model_version": "breadth-trend-v1",
@@ -2556,27 +2556,27 @@
       "forecast_id": "research-20261127T073525Z-095ad5e606",
       "horizon": 1,
       "judgment": "abstain",
-      "due_date": null,
-      "status": "not_activated"
+      "due_date": "2026-11-30",
+      "status": "pending"
     },
     {
       "forecast_id": "research-20261127T073525Z-095ad5e606",
       "horizon": 5,
       "judgment": "up",
-      "due_date": null,
-      "status": "not_activated"
+      "due_date": "2026-12-04",
+      "status": "pending"
     },
     {
       "forecast_id": "research-20261127T073525Z-095ad5e606",
       "horizon": 20,
       "judgment": "abstain",
-      "due_date": null,
-      "status": "not_activated"
+      "due_date": "2026-12-25",
+      "status": "pending"
     }
   ],
   "reviews": [],
   "background": {
-    "observed_at": "2026-11-27T07:35:25.546047+00:00",
+    "observed_at": "2026-11-27T07:39:11.828888+00:00",
     "items": [
       {
         "title": "三季度经济：增长与需求分项",
@@ -3025,7 +3025,8 @@
     "research-20261123T085142Z-b256da3334": "2026-11-23T08:58:58.402820+00:00",
     "research-20261124T074005Z-e690facb78": "2026-11-24T07:48:39.404034+00:00",
     "research-20261125T073554Z-c42cdec64f": "2026-11-25T07:39:50.181977+00:00",
-    "research-20261126T073849Z-313ea16be3": "2026-11-26T07:47:35.251630+00:00"
+    "research-20261126T073849Z-313ea16be3": "2026-11-26T07:47:35.251630+00:00",
+    "research-20261127T073525Z-095ad5e606": "2026-11-27T07:39:11.828888+00:00"
   },
   "calendar_status": "verified_file_present",
   "review_policy": "每日记录与核对；每周复盘错误；每月候选版本影子检验。保留原预测，禁止事后调参美化成绩。尚未证明准确率提升。"

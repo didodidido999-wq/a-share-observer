@@ -2426,6 +2426,16 @@
         "calendar_hash": "a0fbf232f060fb166eb0601fd2abdd13b96d3a801c3d081fedf0bb1926b21316"
       },
       "hash": "e3dd99f16b6644ad524a8e7a7294e0975193b31920fbe8d81643d1c917adec82"
+    },
+    {
+      "sequence": 38,
+      "previous_hash": "e3dd99f16b6644ad524a8e7a7294e0975193b31920fbe8d81643d1c917adec82",
+      "kind": "activation",
+      "payload": {
+        "forecast_id": "research-20261127T073525Z-095ad5e606",
+        "activated_at": "2026-11-27T07:39:11.828888+00:00"
+      },
+      "hash": "be8033519ac6a4b84d88138860dfa7c70c6149a25a50c2823ac8ab6a27ab6f13"
     }
   ]
 }
