@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "as_of": "2026-11-27",
-  "updated_at": "2026-11-27T13:36:42Z",
+  "updated_at": "2026-11-27T13:40:09Z",
   "scope": "人工整理的部分核验观察池；含历史资金证据与单独标识的PCF估算线索，非全量名单、实时持仓或投资评级。",
   "coverage": {
     "loan": "证监会截至2026-10末902家发行人、1110单公告为回填基准；本文件仅部分候选；11月26日四大行合计超6000亿为合同及额度承诺不同口径，非实际提款；新增案例仍非全量。",
@@ -1316,6 +1316,24 @@
       "subject": "上市公司",
       "kind": "回购融资承诺",
       "basis": "巨潮公告索引＋财经报道：https://tw.tradingview.com/news/gelonghui%3Acd0c10fa1acdf%3A0/；贷款原文及提款待核。"
+    },
+    {
+      "code": "600699",
+      "name": "均胜电子",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-27",
+      "quantity": "实际成交未核",
+      "cash": "2.7亿元贷款承诺",
+      "funding": "农行宁波鄞州分行，3年；非实际放款",
+      "source": "https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-11-27/600699_20261127_RRGW.pdf",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "上交所原公告；1.5—3亿元注销式回购，11月25日股东会通过后12个月内实施；合同、提款、成交待核。"
     }
   ]
 }
