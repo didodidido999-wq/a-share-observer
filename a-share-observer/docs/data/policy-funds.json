@@ -1,21 +1,21 @@
 {
   "schema_version": 1,
-  "as_of": "2026-11-26",
-  "updated_at": "2026-11-26T13:33:51.234Z",
-  "scope": "人工整理的部分核验观察池；不是五类资金全量名单、动态实时持仓、完整ETF底仓或投资评级。",
+  "as_of": "2026-11-27",
+  "updated_at": "2026-11-27T09:34:00Z",
+  "scope": "人工整理的部分核验观察池；含历史资金证据与单独标识的PCF估算线索，非全量名单、实时持仓或投资评级。",
   "coverage": {
-    "loan": "证监会截至2026-10末902家发行人、1110单公告为回填基准；本文件仅部分候选",
+    "loan": "证监会截至2026-10末902家发行人、1110单公告为回填基准；本文件仅部分候选；11月26日四大行合计超6000亿为合同及额度承诺不同口径，非实际提款；新增案例仍非全量。",
     "swap": "第三批互换便利已知操作规模1000亿元；逐只股票买入名单未披露",
     "insurance": "仅部分有公开持仓证据的候选，未完成险资全部账户核查",
     "state": "国新诚通等仅部分公开事件",
-    "etf": "首批18只ETF前十大180条、去重107只的2026-11-16历史基准；本文件只展示少量样例，不是完整107只"
+    "etf": "历史基准：2026-11-16前十大去重107只。11月23日上市首日PCF媒体估算926只；本池仅含少量具名样本，PCF为申赎篮子估算，不是实仓或实际买入。"
   },
   "overview": [
     {
       "key": "loan",
       "label": "回购增持贷款",
       "value": "约4400亿元",
-      "basis": "截至2026年10月底累计申请额度上限，含中国国新、中国诚通；不是放款额",
+      "basis": "10月底累计申请上限（含国新、诚通）；最新11月26日四大行合同及承诺合计超6000亿，口径不同、不相加、非实际放款。",
       "source": "https://www.csrc.gov.cn/csrc/c100028/c7668092/content.shtml"
     },
     {
@@ -29,7 +29,7 @@
       "key": "etf",
       "label": "主动ETF",
       "value": "约360亿元",
-      "basis": "首批18只募集额，不是待买入规模",
+      "basis": "18只募集额；11月23日上市；PCF为篮子估算，并非待买入资金或真实持仓。",
       "source": "https://pdf.dfcfw.com/pdf/H2_AN202611171831792655_1.pdf"
     },
     {
@@ -204,7 +204,7 @@
       "source": "https://pdf.dfcfw.com/pdf/H2_AN202611171831792655_1.pdf",
       "subject": "首批主动ETF",
       "kind": "基金持仓快照",
-      "basis": "汇总频次；来源为单基金示例，详见18份基准公告"
+      "basis": "汇总频次；来源为单基金示例，详见18份基准公告；2026-11-23 PCF估算：报道估算持仓≥3亿元，不等于实际持仓，见个股政策证据"
     },
     {
       "code": "300750",
@@ -224,7 +224,7 @@
       "source": "https://pdf.dfcfw.com/pdf/H2_AN202611171831792655_1.pdf",
       "subject": "首批主动ETF",
       "kind": "基金持仓快照",
-      "basis": "汇总频次；非全部实际持仓"
+      "basis": "汇总频次；非全部实际持仓；2026-11-23 PCF估算：报道估算持仓≥3亿元，不等于实际持仓，见个股政策证据"
     },
     {
       "code": "300308",
@@ -243,7 +243,7 @@
       "source": "https://static.cninfo.com.cn/finalpage/2026-11-25/1225686830.PDF",
       "subject": "上市公司",
       "kind": "股份回购计划",
-      "basis": "11月18日提议、23日董事会通过；已开专户，尚未披露首次成交。ETF及险资标签为独立历史线索。"
+      "basis": "11月18日提议、23日董事会通过；已开专户，尚未披露首次成交。ETF及险资标签为独立历史线索。；2026-11-23 PCF估算：报道估算持仓≥2亿元，不等于实际持仓，见个股政策证据"
     },
     {
       "code": "600690",
@@ -551,6 +551,681 @@
       "subject": "上市公司",
       "kind": "回购融资承诺",
       "basis": "计划0.25—0.5亿元；11月26日公开、公告列表标27日；贷款期限3年、回购上限75元，期限3个月；签约、提款、成交未确认。 https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=688343&endDate=2026-11-27&name=%E4%BA%91%E5%A4%A9%E5%8A%B1%E9%A3%9E&orgId=9900047695&startDate=2026-11-27&url=disclosure%2Flist%2Fsearch"
+    },
+    {
+      "code": "603950",
+      "name": "长源东谷",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得股票回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-27",
+      "quantity": "未核实",
+      "cash": "贷款承诺上限1.8亿元",
+      "funding": "兴业银行襄阳分行；承诺并非实际放款",
+      "source": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12725543&stockid=603950",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "兴业银行襄阳分行；期限≤36个月，回购上限55元，董事会11月19日通过，回购期≤3个月；实际提款及成交未证实。"
+    },
+    {
+      "code": "002858",
+      "name": "力盛体育",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得股票回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-27",
+      "quantity": "未核实",
+      "cash": "承诺上限待核",
+      "funding": "贷款银行待核；承诺并非实际放款",
+      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12727060&stockid=002858",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "11月26日董事会通过；连续20个交易日跌幅超过20%，符合现行护盘式回购规则；回购上限15元，期限3个月；贷款承诺金额待核；实际提款及成交未证实。"
+    },
+    {
+      "code": "603686",
+      "name": "福龙马",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得股票回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-27",
+      "quantity": "未核实",
+      "cash": "贷款承诺上限0.9亿元",
+      "funding": "中信银行龙岩分行；承诺并非实际放款",
+      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12726151&stockid=603686",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "中信银行龙岩分行；贷款≤36个月，回购上限18元，董事会11月25日通过，回购期≤6个月；实际提款及成交未证实。"
+    },
+    {
+      "code": "002166",
+      "name": "莱茵生物",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得股票回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-27",
+      "quantity": "未核实",
+      "cash": "贷款承诺上限0.9亿元",
+      "funding": "中信银行桂林分行；承诺并非实际放款",
+      "source": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12726296&stockid=002166",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "中信银行桂林分行；贷款3年且不超过回购资金总额90%，上限9.56元，回购期12个月；实际提款及成交未证实。"
+    },
+    {
+      "code": "002988",
+      "name": "豪美新材",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得股票回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-27",
+      "quantity": "未核实",
+      "cash": "贷款承诺上限1.8亿元",
+      "funding": "兴业银行佛山分行；承诺并非实际放款",
+      "source": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12726147&stockid=002988",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "兴业银行佛山分行；贷款≤3年，承诺函有效至2027-06-30；回购上限42.34元，回购期3个月；实际提款及成交未证实。"
+    },
+    {
+      "code": "300592",
+      "name": "华凯易佰",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得股票回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-26",
+      "quantity": "未核实",
+      "cash": "贷款承诺上限0.5亿元",
+      "funding": "中信银行；承诺并非实际放款",
+      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12725758&stockid=300592",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "董事会11月25日通过；中信银行，回购上限23.83元，回购期3个月；贷款额度由媒体汇总交叉核对；实际提款及成交未证实。"
+    },
+    {
+      "code": "688449",
+      "name": "联芸科技",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得股票回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-27",
+      "quantity": "未核实",
+      "cash": "贷款承诺上限0.45亿元",
+      "funding": "宁波银行杭州分行；承诺并非实际放款",
+      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?CompanyCode=82491728&gather=1&id=12725619",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "宁波银行杭州分行；贷款≤3年，回购上限62.65元；实际提款及成交未证实。"
+    },
+    {
+      "code": "688006",
+      "name": "杭可科技",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得股票回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-26",
+      "quantity": "未核实",
+      "cash": "贷款承诺上限0.9亿元",
+      "funding": "工商银行；承诺并非实际放款",
+      "source": "https://www.caizhongshe.cn/article-7531696674495461363.html",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "工商银行；贷款承诺，详细条款待原公告核准；实际提款及成交未证实。财经媒体汇总，待交易所原文核验。"
+    },
+    {
+      "code": "002370",
+      "name": "亚太药业",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得股票回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-26",
+      "quantity": "未核实",
+      "cash": "贷款承诺上限0.36亿元",
+      "funding": "农业银行；承诺并非实际放款",
+      "source": "https://www.caizhongshe.cn/article-7531696674495461363.html",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "农业银行；回购上限6元，期限≤12个月；实际提款及成交未证实。财经媒体汇总，待交易所原文核验。"
+    },
+    {
+      "code": "600519",
+      "name": "贵州茅台",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥3亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "600036",
+      "name": "招商银行",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥3亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "603259",
+      "name": "药明康德",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥3亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601857",
+      "name": "中国石油",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥3亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "600030",
+      "name": "中信证券",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥3亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601318",
+      "name": "中国平安",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥3亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "600919",
+      "name": "江苏银行",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥3亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "600900",
+      "name": "长江电力",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥3亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "600887",
+      "name": "伊利股份",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥3亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "002371",
+      "name": "北方华创",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥3亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601088",
+      "name": "中国神华",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥3亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601398",
+      "name": "工商银行",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601601",
+      "name": "中国太保",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601899",
+      "name": "紫金矿业",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "600066",
+      "name": "宇通客车",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601919",
+      "name": "中远海控",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601939",
+      "name": "建设银行",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601225",
+      "name": "陕西煤业",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601166",
+      "name": "兴业银行",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "000338",
+      "name": "潍柴动力",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601988",
+      "name": "中国银行",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "600938",
+      "name": "中国海油",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "600150",
+      "name": "中国船舶",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "600276",
+      "name": "恒瑞医药",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601288",
+      "name": "农业银行",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601328",
+      "name": "交通银行",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "601211",
+      "name": "国泰海通",
+      "tags": [
+        "etf"
+      ],
+      "status": "unknown",
+      "action": "首批主动ETF上市日PCF篮子估算",
+      "event_date": null,
+      "report_date": "2026-11-23",
+      "disclosed": "2026-11-23",
+      "quantity": "份额对应篮子估算",
+      "cash": "报道估算持仓≥2亿元",
+      "funding": "申赎清单PCF推算，不等于基金实际全量持仓或买入",
+      "source": "https://finance.sina.com.cn/roll/2026-11-23/doc-inizszeh8358303.shtml",
+      "subject": "首批18只主动ETF",
+      "kind": "PCF估算线索",
+      "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
     }
   ]
 }
