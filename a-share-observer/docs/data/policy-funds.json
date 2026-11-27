@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "as_of": "2026-11-27",
-  "updated_at": "2026-11-27T09:34:00Z",
+  "updated_at": "2026-11-27T13:36:42Z",
   "scope": "人工整理的部分核验观察池；含历史资金证据与单独标识的PCF估算线索，非全量名单、实时持仓或投资评级。",
   "coverage": {
     "loan": "证监会截至2026-10末902家发行人、1110单公告为回填基准；本文件仅部分候选；11月26日四大行合计超6000亿为合同及额度承诺不同口径，非实际提款；新增案例仍非全量。",
@@ -1226,6 +1226,96 @@
       "subject": "首批18只主动ETF",
       "kind": "PCF估算线索",
       "basis": "媒体根据11月23日上市首日申赎清单估算；待基金逐只原始PCF复核；并非实时持仓。"
+    },
+    {
+      "code": "688387",
+      "name": "信科移动",
+      "tags": [
+        "loan"
+      ],
+      "status": "executed",
+      "action": "控股股东首次实际增持；后续获贷款承诺报道",
+      "event_date": "2026-11-24",
+      "disclosed": "2026-11-27",
+      "quantity": "200万股",
+      "cash": "1899.07万元（实际成交）",
+      "funding": "自有及自筹；1.8亿元中行湖北分行贷款承诺据11月27日报道，首笔实际用贷未证实",
+      "source": "https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-11-25/688387_20261125_GIXE.pdf",
+      "subject": "中国信科集团",
+      "kind": "股东增持",
+      "basis": "上交所11月25日原公告；计划不超过2亿元、6个月；贷款原文待补：https://tw.tradingview.com/news/gelonghui%3Ad0995f4feacdf%3A0/"
+    },
+    {
+      "code": "300870",
+      "name": "欧陆通",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-27",
+      "quantity": "实际成交未核",
+      "cash": "0.9亿元贷款承诺",
+      "funding": "中信银行深圳分行，≤3年；非实际放款",
+      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12728298&stockid=300870",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "公告全文索引及财经报道；0.5—1亿元回购，股权激励或员工持股；签约、提款、成交待核。"
+    },
+    {
+      "code": "301035",
+      "name": "润丰股份",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得回购专项贷款承诺",
+      "event_date": "2026-11-26",
+      "disclosed": "2026-11-27",
+      "quantity": "实际成交未核",
+      "cash": "1.8亿元贷款承诺",
+      "funding": "兴业银行潍坊分行，36个月；非实际放款",
+      "source": "https://cfi.net.cn/p20261127000934.html",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "公司公告全文转载；1—2亿元注销式回购，股东会批准后12个月实施；签约、提款、成交待核。"
+    },
+    {
+      "code": "300737",
+      "name": "科顺股份",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得回购专项贷款承诺（媒体转述）",
+      "event_date": null,
+      "disclosed": "2026-11-27",
+      "quantity": "实际成交未核",
+      "cash": "0.9亿元贷款承诺",
+      "funding": "兴业银行佛山分行，≤3年；非实际放款",
+      "source": "https://tw.tradingview.com/news/gelonghui%3A7c768daacacdf%3A0/",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "财经媒体引用公司披露，原贷款公告及实际签约、提款、成交待核。"
+    },
+    {
+      "code": "603661",
+      "name": "恒林股份",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-27",
+      "quantity": "实际成交未核",
+      "cash": "0.9亿元贷款承诺",
+      "funding": "工行湖州分行；非实际放款",
+      "source": "https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=603661&endDate=2026-11-28&name=%E6%81%92%E6%9E%97%E8%82%A1%E4%BB%BD&orgId=9900022987&startDate=2026-11-28&url=disclosure%2Flist%2Fsearch",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "巨潮公告索引＋财经报道：https://tw.tradingview.com/news/gelonghui%3Acd0c10fa1acdf%3A0/；贷款原文及提款待核。"
     }
   ]
 }
