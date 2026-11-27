@@ -2,7 +2,7 @@
   "schema_version": 1,
   "version": "cross-index-policy-research-v1.1",
   "kind": "scenario_research_not_scored_forecast",
-  "generated_at": "2026-11-27T18:15:15.223690+00:00",
+  "generated_at": "2026-11-27T18:26:14.514393+00:00",
   "data_date": "2026-11-27",
   "headline": "多组指数同步改善，观察政策能否确认扩散",
   "scenario": "broad_improvement",
@@ -1676,7 +1676,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 7.3,
+      "age_days": 7.4,
       "evidence_id": "pbc-202610-financial-market-operations-v1",
       "title": "10月金融市场：银行间资金利率回落",
       "kind": "statistic",
@@ -2953,5 +2953,5 @@
       "sha256": "4981e7b817e8070a5a4a9ff8376f78b18a5481908add2d28ebf7d9190199910c"
     }
   ],
-  "input_digest": "feccc4f174023a01ead2a9ff1e91fa4b22552ccbe8b0f11c9d6cb7cc5065d98a"
+  "input_digest": "40b5b889c766b493d09411d51495c300941aeb041a1d251778d096e97c9ca439"
 }
