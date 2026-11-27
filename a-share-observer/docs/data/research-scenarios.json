@@ -2,7 +2,7 @@
   "schema_version": 1,
   "version": "cross-index-policy-research-v1.1",
   "kind": "scenario_research_not_scored_forecast",
-  "generated_at": "2026-11-27T17:36:33.344076+00:00",
+  "generated_at": "2026-11-27T17:38:05.004463+00:00",
   "data_date": "2026-11-27",
   "headline": "多组指数同步改善，观察政策能否确认扩散",
   "scenario": "broad_improvement",
@@ -2624,7 +2624,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 0.5,
+      "age_days": 0.6,
       "evidence_id": "sc-20261127-capital-market-stability-v1",
       "title": "国常会部署资本市场投融资改革与稳市机制",
       "kind": "policy",
@@ -2953,5 +2953,5 @@
       "sha256": "4981e7b817e8070a5a4a9ff8376f78b18a5481908add2d28ebf7d9190199910c"
     }
   ],
-  "input_digest": "c16df6af7e67c2235e9ebf9f66e4d4d37315afe92f4086201297ba106dd7b820"
+  "input_digest": "d855c14949373af1a8c611805180999a6923015b8f61c04a66fd736318cbf3c0"
 }
