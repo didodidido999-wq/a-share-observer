@@ -399,7 +399,11 @@
         "601003",
         "603661",
         "300316",
-        "002917"
+        "002917",
+        "688387",
+        "300870",
+        "301035",
+        "300737"
       ]
     }
   ],
@@ -7512,24 +7516,33 @@
           "date": "2026-11-26",
           "stage": "回购提议",
           "source": "https://finance.eastmoney.com/a/202611263940755962.html"
+        },
+        {
+          "date": "2026-11-27",
+          "stage": "专项贷款承诺（非实际放款）",
+          "source": "https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=603661&endDate=2026-11-28&name=%E6%81%92%E6%9E%97%E8%82%A1%E4%BB%BD&orgId=9900022987&startDate=2026-11-28&url=disclosure%2Flist%2Fsearch"
         }
       ],
-      "review": "新增研究观察，财报、估值、量价与风险待核，不自动升为重点。",
+      "review": "短期：核实同一期后续实际成交、剩余计划、期限与量价；中期：补充最新财报、订单、现金流、估值及减持风险；现有证据不足以升为重点。",
       "buyback_records": [
         {
           "id": "disclosure-20261126-company-proposal",
-          "status": "proposal",
-          "date": "2026-11-26",
+          "status": "loan",
+          "date": "2026-11-27",
           "subject": "上市公司",
-          "loan_cap_100m": null,
+          "loan_cap_100m": 0.9,
           "plan_min_100m": 0.5,
           "plan_max_100m": 1,
           "actual_100m": null,
           "deadline": null,
           "purpose": "员工持股或股权激励",
-          "source": "https://finance.eastmoney.com/a/202611263940755962.html",
-          "notes": "回购预案，上限39.78元",
-          "evidence_level": "财经媒体公告汇总，待逐份交易所原文对账"
+          "source": "https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=603661&endDate=2026-11-28&name=%E6%81%92%E6%9E%97%E8%82%A1%E4%BB%BD&orgId=9900022987&startDate=2026-11-28&url=disclosure%2Flist%2Fsearch",
+          "notes": "巨潮索引确认贷款承诺公告；媒体转述工行湖州分行9000万元；前次回购预案0.5—1亿元，原贷款全文与方案实施、实际签约/提款/成交待核。",
+          "evidence_level": "巨潮公告索引＋财经报道",
+          "additional_sources": [
+            "https://tw.tradingview.com/news/gelonghui%3Acd0c10fa1acdf%3A0/",
+            "https://finance.eastmoney.com/a/202611263940755962.html"
+          ]
         }
       ]
     },
@@ -8134,6 +8147,202 @@
         }
       ],
       "review": "新增研究观察，财报、估值、量价与风险待核，不自动升为重点。"
+    },
+    {
+      "code": "688387",
+      "name": "信科移动",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "具名增持回购披露；核对后续资金执行"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-27",
+      "updated_at": "2026-11-27",
+      "company_evidence": [
+        {
+          "date": "2026-11-25",
+          "stage": "股东首次实际增持",
+          "source": "https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-11-25/688387_20261125_GIXE.pdf"
+        }
+      ],
+      "review": "短期：核实同一期后续实际成交、剩余计划、期限与量价；中期：补充最新财报、订单、现金流、估值及减持风险；现有证据不足以升为重点。",
+      "buyback_records": [
+        {
+          "id": "20261124-shareholder",
+          "status": "executed",
+          "date": "2026-11-27",
+          "subject": "中国信息通信科技集团有限公司",
+          "loan_cap_100m": 1.8,
+          "plan_min_100m": null,
+          "plan_max_100m": 2,
+          "actual_100m": 0.189907,
+          "deadline": null,
+          "purpose": "控股股东增持",
+          "source": "https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-11-25/688387_20261125_GIXE.pdf",
+          "additional_sources": [
+            "https://tw.tradingview.com/news/gelonghui%3Ad0995f4feacdf%3A0/"
+          ],
+          "notes": "11月24日首次增持200万股、1899.07万元，持股41.01%→41.07%；11月27日媒体转述中行湖北分行1.8亿元专项贷款承诺、3年，原贷款公告待核；首次交易实际用贷未证实；增持期自11月24日起6个月，仅有上限，剩余可实施上限1.810093亿元非承诺买盘。",
+          "evidence_level": "实际增持上交所原公告；贷款承诺财经报道待原文"
+        }
+      ]
+    },
+    {
+      "code": "300870",
+      "name": "欧陆通",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "具名增持回购披露；核对后续资金执行"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-27",
+      "updated_at": "2026-11-27",
+      "company_evidence": [
+        {
+          "date": "2026-11-27",
+          "stage": "专项贷款承诺（非实际放款）",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12728298&stockid=300870"
+        }
+      ],
+      "review": "短期：核实同一期后续实际成交、剩余计划、期限与量价；中期：补充最新财报、订单、现金流、估值及减持风险；现有证据不足以升为重点。",
+      "buyback_records": [
+        {
+          "id": "20261123",
+          "status": "loan",
+          "date": "2026-11-27",
+          "subject": "上市公司",
+          "loan_cap_100m": 0.9,
+          "plan_min_100m": 0.5,
+          "plan_max_100m": 1,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "员工持股或股权激励",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12728298&stockid=300870",
+          "additional_sources": [
+            "https://tw.tradingview.com/news/gelonghui%3Aa80d50046acdf%3A0/"
+          ],
+          "notes": "11月23日董事会通过回购；中信银行深圳分行承诺0.9亿元，期限≤3年；实际签约、提款、成交未核，回购截止日待原方案核对。",
+          "evidence_level": "公告全文索引及财经报道"
+        }
+      ]
+    },
+    {
+      "code": "301035",
+      "name": "润丰股份",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "具名增持回购披露；核对后续资金执行"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-27",
+      "updated_at": "2026-11-27",
+      "company_evidence": [
+        {
+          "date": "2026-11-27",
+          "stage": "专项贷款承诺（非实际放款）",
+          "source": "https://cfi.net.cn/p20261127000934.html"
+        }
+      ],
+      "review": "短期：核实同一期后续实际成交、剩余计划、期限与量价；中期：补充最新财报、订单、现金流、估值及减持风险；现有证据不足以升为重点。",
+      "buyback_records": [
+        {
+          "id": "20261123",
+          "status": "loan",
+          "date": "2026-11-27",
+          "subject": "上市公司",
+          "loan_cap_100m": 1.8,
+          "plan_min_100m": 1,
+          "plan_max_100m": 2,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "注销并减少注册资本",
+          "source": "https://cfi.net.cn/p20261127000934.html",
+          "additional_sources": [
+            "https://finance.eastmoney.com/a/202611273941892463.html"
+          ],
+          "notes": "11月26日取得兴业银行潍坊分行承诺，36个月；回购上限60元，股东会通过后12个月内实施，具体股东会批准及实际交易待核；贷款不等于提款。",
+          "evidence_level": "公司公告全文转载"
+        }
+      ]
+    },
+    {
+      "code": "300737",
+      "name": "科顺股份",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "具名增持回购披露；核对后续资金执行"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-27",
+      "updated_at": "2026-11-27",
+      "company_evidence": [
+        {
+          "date": "2026-11-27",
+          "stage": "专项贷款承诺（非实际放款）",
+          "source": "https://tw.tradingview.com/news/gelonghui%3A7c768daacacdf%3A0/"
+        }
+      ],
+      "review": "短期：核实同一期后续实际成交、剩余计划、期限与量价；中期：补充最新财报、订单、现金流、估值及减持风险；现有证据不足以升为重点。",
+      "buyback_records": [
+        {
+          "id": "20261123",
+          "status": "loan",
+          "date": "2026-11-27",
+          "subject": "上市公司",
+          "loan_cap_100m": 0.9,
+          "plan_min_100m": null,
+          "plan_max_100m": null,
+          "actual_100m": null,
+          "deadline": null,
+          "purpose": "待核",
+          "source": "https://tw.tradingview.com/news/gelonghui%3A7c768daacacdf%3A0/",
+          "additional_sources": [
+            "https://money.finance.sina.com.cn/corp/go.php/vCB_AllBulletin/stockid/300737.phtml"
+          ],
+          "notes": "兴业银行佛山分行承诺9000万元、≤3年；媒体转述，贷款原公告、回购计划具体金额/期限与成交仍待核。",
+          "evidence_level": "财经报道，原公告待补"
+        }
+      ]
     }
   ],
   "change_log": [
@@ -8164,6 +8373,10 @@
     {
       "date": "2026-11-27",
       "summary": "六项稳市政策归组；新增79只去重研究候选、36只资金证据或PCF估算样本。回购历史全量仍待对账；核心研究股不自动升档。"
+    },
+    {
+      "date": "2026-11-27",
+      "summary": "增量核验信科移动控股股东实际增持及贷款承诺报道、欧陆通、润丰股份、科顺股份贷款承诺，恒林股份由回购预案升级为贷款承诺线索；来源分级，未确认提款不计成交。新增4只观察，重点未重排；全候选统一财报、估值及量价筛选仍未完成。"
     }
   ],
   "archived": [],
