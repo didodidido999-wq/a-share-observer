@@ -1092,6 +1092,38 @@
       "metrics": [],
       "interpretation": "六张网政策进一步细化，后续核验运营商资本开支、采购与设备交付。",
       "limitations": "公开正文有删减，未核实预算及上市公司实际订单；观察时间不倒填。"
+    },
+    {
+      "id": "pbc-20261127-overnight-repo-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "人民银行11月27日开展7940亿元隔夜逆回购",
+      "kind": "policy",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026112708520656646/index.html",
+      "source_name": "中国人民银行公开市场业务操作室",
+      "published_at": "2026-11-27T09:20:30+08:00",
+      "published_precision": "datetime",
+      "published_date": "2026-11-27",
+      "observed_at": "2026-11-27T13:38:17Z",
+      "available_at": "2026-11-27T13:38:17Z",
+      "period": "2026-11-27，隔夜期",
+      "summary": "人民银行以固定利率、数量招标方式开展7940亿元隔夜逆回购，投标量与中标量均为7940亿元，利率为1.25%。",
+      "metrics": [
+        {
+          "name": "隔夜逆回购中标量",
+          "value": 7940,
+          "unit": "亿元",
+          "basis": "当日隔夜逆回购操作毛额"
+        },
+        {
+          "name": "隔夜操作利率",
+          "value": 1.25,
+          "unit": "%",
+          "basis": "隔夜逆回购固定操作利率"
+        }
+      ],
+      "interpretation": "隔夜、七天及中期操作按期限单列。",
+      "limitations": "本公告不提供到期对照，不能单独推算净投放，也不代表股票资金流入。"
     }
   ],
   "events": [
