@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-11-27T13:37:27Z",
+  "checked_at": "2026-11-27T13:40:09Z",
   "records": [
     {
       "id": "nbs-2026q3-gdp-v1",
@@ -1034,6 +1034,64 @@
       ],
       "interpretation": "对算力硬件、有色、化工已有研究方向提供行业层证据；电网设备、新能源及汽车不能从总利润增速直接外推，关注订单、产品结构与回款。",
       "limitations": "行业口径不是上市公司利润或政策资金成交；未取得一致预期；本次观察晚于盘中，不倒填历史可用时间。"
+    },
+    {
+      "id": "sc-20261127-capital-market-stability-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "国常会部署资本市场投融资改革与稳市机制",
+      "kind": "policy",
+      "source_url": "https://www.news.cn/20261127/4a8fe3d751b44b8f98a17ede3f78fd1b/c.html",
+      "source_name": "新华社",
+      "published_at": "2026-11-27T12:24:37+08:00",
+      "published_precision": "datetime",
+      "published_date": "2026-11-27",
+      "observed_at": "2026-11-27T13:40:09Z",
+      "available_at": "2026-11-27T13:40:09Z",
+      "period": "2026-11-27国常会",
+      "summary": "要求落实存量、谋划增量政策，推动分红回购，优化中央汇金类平准基金功能，强化稳市流动性保障；完善保险、企业年金、社保中长期资金入市支持政策。",
+      "metrics": [],
+      "interpretation": "稳市和长期资金制度支持强化；观察两项结构性工具、具名ETF持仓及后续配套实施。",
+      "limitations": "会议没有公布新增额度、实际买入清单或新增工具生效日期；不从行情倒推国家队交易。首次观察在收盘之后。"
+    },
+    {
+      "id": "csrc-20261127-stability-implementation-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "证监会部署贯彻11月27日国务院常务会议精神",
+      "kind": "official_commentary",
+      "source_url": "https://www.csrc.gov.cn/csrc/c100028/c7673674/content.shtml",
+      "source_name": "中国证监会",
+      "published_at": null,
+      "published_precision": "date",
+      "published_date": "2026-11-27",
+      "observed_at": "2026-11-27T13:40:09Z",
+      "available_at": "2026-11-28T00:00:00+08:00",
+      "availability_boundary": "2026-11-28T00:00:00+08:00",
+      "period": "2026-11-27",
+      "summary": "部署用好两项结构性货币政策工具，完善长期资金入市渠道与长周期考核，防范输入性风险，深化改革与全链条监管。",
+      "metrics": [],
+      "interpretation": "后续核验实际操作、正式实施细则、资金主体及交易披露。",
+      "limitations": "贯彻部署不是新一批额度公告；仅知发布日期，严格历史时点按次日可用。"
+    },
+    {
+      "id": "miit-20261126-next-gen-network-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "三部门印发新一代通信网建设实施方案",
+      "kind": "policy",
+      "source_url": "https://www.miit.gov.cn/zwgk/zcwj/wjfb/tz/art/2026/art_808db1814bb74a0e87965d66e74f5b4b.html",
+      "source_name": "工业和信息化部、国家网信办、国家发展改革委",
+      "published_at": "2026-11-26T08:36:00+08:00",
+      "published_precision": "datetime",
+      "published_date": "2026-11-26",
+      "observed_at": "2026-11-27T13:40:09Z",
+      "available_at": "2026-11-27T13:40:09Z",
+      "period": "工信部联通信〔2026〕267号，11月17日成文、26日公布",
+      "summary": "经国务院同意推进新一代通信网建设，官方解读包含5G-A/6G、万兆光网、卫星互联网及融合网络。",
+      "metrics": [],
+      "interpretation": "六张网政策进一步细化，后续核验运营商资本开支、采购与设备交付。",
+      "limitations": "公开正文有删减，未核实预算及上市公司实际订单；观察时间不倒填。"
     }
   ],
   "events": [
