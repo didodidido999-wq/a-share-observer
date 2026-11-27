@@ -8383,6 +8383,103 @@
           "evidence_level": "财经报道，原公告待补"
         }
       ]
+    },
+    {
+      "code": "600699",
+      "name": "均胜电子",
+      "themes": [
+        "buyback"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "股东会通过注销式回购，获得专项贷款承诺"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-27",
+      "updated_at": "2026-11-27",
+      "company_evidence": [
+        {
+          "date": "2026-11-27",
+          "stage": "回购专项贷款承诺（非实际放款）",
+          "source": "https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-11-27/600699_20261127_RRGW.pdf"
+        }
+      ],
+      "review": "短期跟踪正式签约、提款、回购首笔及价格上限30元；中期核汽车电子订单、盈利质量、现金流及估值；未确认实际成交，不升重点。",
+      "buyback_records": [
+        {
+          "id": "20261103",
+          "status": "loan",
+          "date": "2026-11-27",
+          "subject": "上市公司",
+          "loan_cap_100m": 2.7,
+          "plan_min_100m": 1.5,
+          "plan_max_100m": 3,
+          "actual_100m": null,
+          "deadline": "2027-11-25",
+          "purpose": "注销并减少注册资本",
+          "source": "https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-11-27/600699_20261127_RRGW.pdf",
+          "notes": "11月25日股东会通过；农行宁波鄞州分行承诺2.7亿元，3年；正式合同及提款、实际回购未知。回购上限30元，期限自股东会通过12个月。",
+          "evidence_level": "上交所原公告"
+        }
+      ]
+    },
+    {
+      "code": "002466",
+      "name": "天齐锂业",
+      "themes": [
+        "buyback",
+        "metal"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "董事会通过4—8亿元回购方案，贷款未确认"
+        },
+        {
+          "theme": "metal",
+          "logic": "锂资源价格和成本周期待核"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-27",
+      "updated_at": "2026-11-27",
+      "company_evidence": [
+        {
+          "date": "2026-11-27",
+          "stage": "董事会通过回购方案（无专项贷款确认）",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12726774&stockid=002466"
+        }
+      ],
+      "review": "短期核首次成交、回购上限53.08元与价格位置；中期核锂价、项目成本、资产负债、现金流和估值。计划不等于买入，不列贷款证据。",
+      "buyback_records": [
+        {
+          "id": "20261126",
+          "status": "planned",
+          "date": "2026-11-27",
+          "subject": "上市公司",
+          "loan_cap_100m": null,
+          "plan_min_100m": 4,
+          "plan_max_100m": 8,
+          "actual_100m": null,
+          "deadline": "2027-11-26",
+          "purpose": "员工持股或股权激励",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12726774&stockid=002466",
+          "notes": "11月26日董事会批准，11月27日公告；期限12个月，价格上限53.08元，自有资金或自筹资金，专项贷款、提款和实际回购均未证实。",
+          "evidence_level": "公司公告全文转载"
+        }
+      ]
     }
   ],
   "change_log": [
@@ -8421,6 +8518,10 @@
     {
       "date": "2026-11-27",
       "summary": "新增国常会稳市部署、通信网实施方案、广东算力规划；关联政策方向。逐一复核26只重点的最新可得融资风险数据（均截至11月25日），保留排序；全202只完成现有记录结构复查，个股财报/估值/最新量价全量比较未完成。"
+    },
+    {
+      "date": "2026-11-27",
+      "summary": "补充均胜电子2.7亿元专项贷款承诺、1.5—3亿元注销式回购，及天齐锂业4—8亿元普通回购正式方案；两者均未核实实际成交，天齐不计贷款名单；新增普通观察两只。"
     }
   ],
   "archived": [],
