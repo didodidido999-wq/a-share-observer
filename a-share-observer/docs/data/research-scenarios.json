@@ -2,7 +2,7 @@
   "schema_version": 1,
   "version": "cross-index-policy-research-v1.1",
   "kind": "scenario_research_not_scored_forecast",
-  "generated_at": "2026-11-27T07:35:27.344934+00:00",
+  "generated_at": "2026-11-27T17:36:33.344076+00:00",
   "data_date": "2026-11-27",
   "headline": "多组指数同步改善，观察政策能否确认扩散",
   "scenario": "broad_improvement",
@@ -432,7 +432,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 39.2,
+      "age_days": 39.7,
       "evidence_id": "nbs-2026q3-gdp-v1",
       "title": "三季度经济：增长与需求分项",
       "kind": "statistic",
@@ -513,7 +513,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 17.6,
+      "age_days": 18.1,
       "evidence_id": "nbs-202610-prices-v1",
       "title": "10月物价：消费与生产价格分化",
       "kind": "statistic",
@@ -607,7 +607,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 17.6,
+      "age_days": 18.1,
       "evidence_id": "nbs-202610-prices-comment-v1",
       "title": "统计局解读：能源价格传导",
       "kind": "official_commentary",
@@ -651,7 +651,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 14.6,
+      "age_days": 15.1,
       "evidence_id": "ndrc-20261112-fuel-price-v1",
       "title": "成品油调价：生效日期与传导范围",
       "kind": "policy",
@@ -722,7 +722,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 13.9,
+      "age_days": 14.4,
       "evidence_id": "pbc-202610-financial-statistics-v1",
       "title": "10月金融统计：社融存量与货币增速",
       "kind": "statistic",
@@ -839,7 +839,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 13.3,
+      "age_days": 13.7,
       "evidence_id": "nbs-202611-early-materials-v1",
       "title": "11月上旬生产资料：多数品种旬环比回落",
       "kind": "statistic",
@@ -968,7 +968,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 13.9,
+      "age_days": 14.4,
       "evidence_id": "pbc-20261116-outright-repo-plan-v1",
       "title": "11月16日买断式逆回购：已公告计划，结果待核验",
       "kind": "policy",
@@ -1037,7 +1037,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 11.2,
+      "age_days": 11.7,
       "evidence_id": "nbs-202610-economy-v1",
       "title": "10月经济数据：工业增长，消费偏弱、投资下降",
       "kind": "statistic",
@@ -1154,7 +1154,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 10.3,
+      "age_days": 10.7,
       "evidence_id": "pbc-20261117-overnight-repo-v1",
       "title": "11月17日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1223,7 +1223,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 9.3,
+      "age_days": 9.7,
       "evidence_id": "pbc-20261118-overnight-repo-v1",
       "title": "11月18日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1292,7 +1292,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 17.6,
+      "age_days": 18.1,
       "evidence_id": "mof-20261109-us-tariff-v1",
       "title": "对美加征关税措施：24%税率继续暂停两个月",
       "kind": "policy",
@@ -1363,7 +1363,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 8.3,
+      "age_days": 8.7,
       "evidence_id": "pbc-20261119-overnight-repo-v1",
       "title": "11月19日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1432,7 +1432,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 8.2,
+      "age_days": 8.7,
       "evidence_id": "pbc-20261119-treasury-cash-deposit-v1",
       "title": "11月19日中央国库现金管理第23期招标结果",
       "kind": "policy",
@@ -1501,7 +1501,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 7.3,
+      "age_days": 7.7,
       "evidence_id": "pbc-20261120-overnight-repo-v1",
       "title": "11月20日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1570,7 +1570,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 6.6,
+      "age_days": 7.1,
       "evidence_id": "mof-202610-fiscal-receipts-spending-v1",
       "title": "1–10月财政收支：一般预算与土地收入分化",
       "kind": "statistic",
@@ -1584,7 +1584,7 @@
         },
         {
           "name": "全国一般公共预算支出同比",
-          "value": 1.0,
+          "value": 1,
           "unit": "%",
           "basis": "1–10月累计同比"
         },
@@ -1645,7 +1645,7 @@
           },
           {
             "name": "全国一般公共预算支出同比",
-            "value": 1.0,
+            "value": 1,
             "unit": "%",
             "basis": "1–10月累计同比"
           },
@@ -1676,7 +1676,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 6.9,
+      "age_days": 7.3,
       "evidence_id": "pbc-202610-financial-market-operations-v1",
       "title": "10月金融市场：银行间资金利率回落",
       "kind": "statistic",
@@ -1769,7 +1769,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 4.3,
+      "age_days": 4.7,
       "evidence_id": "pbc-20261123-overnight-repo-v1",
       "title": "11月23日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1838,7 +1838,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.6,
+      "age_days": 4.1,
       "evidence_id": "ndrc-20261120-government-investment-dispatch-v1",
       "title": "发改委调度政府投资项目建设与资金支付",
       "kind": "official_commentary",
@@ -1882,7 +1882,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.6,
+      "age_days": 4.1,
       "evidence_id": "ndrc-20261123-eldercare-childcare-plan-v1",
       "title": "四部门印发养老和托育服务体系建设方案",
       "kind": "policy",
@@ -1964,7 +1964,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.3,
+      "age_days": 3.7,
       "evidence_id": "pbc-20261124-overnight-repo-v1",
       "title": "11月24日隔夜逆回购操作结果",
       "kind": "policy",
@@ -2033,7 +2033,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.3,
+      "age_days": 3.7,
       "evidence_id": "nbs-20261124-material-prices-v1",
       "title": "11月中旬流通领域生产资料价格",
       "kind": "statistic",
@@ -2114,7 +2114,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.1,
+      "age_days": 3.5,
       "evidence_id": "pbc-20261124-hk-central-bank-bills-v1",
       "title": "人民银行在香港发行两期央票",
       "kind": "policy",
@@ -2207,7 +2207,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 2.9,
+      "age_days": 3.4,
       "evidence_id": "pbc-20261125-7d-repo-tender-plan-v1",
       "title": "央行预告11月25日5000亿元7天期逆回购",
       "kind": "policy",
@@ -2264,7 +2264,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 2.9,
+      "age_days": 3.3,
       "evidence_id": "pbc-20261125-mlf-tender-plan-v1",
       "title": "央行预告11月25日8000亿元一年期MLF",
       "kind": "policy",
@@ -2321,7 +2321,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 2.3,
+      "age_days": 2.7,
       "evidence_id": "pbc-20261125-overnight-repo-v1",
       "title": "人民银行11月25日开展6170亿元隔夜逆回购",
       "kind": "policy",
@@ -2390,7 +2390,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 1.3,
+      "age_days": 1.7,
       "evidence_id": "pbc-20261126-overnight-repo-v1",
       "title": "人民银行11月26日开展5715亿元隔夜逆回购",
       "kind": "policy",
@@ -2454,6 +2454,370 @@
         ],
         "interpretation": "作为银行间短期流动性背景观察，隔夜操作与其他期限分别记录。",
         "limitations": "本公告未披露同期到期量，不能单独推算净投放，也不代表A股资金流入。"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 0.7,
+      "evidence_id": "nbs-20261127-profits-v1",
+      "title": "1—10月工业企业利润增长16.0%，行业分化明显",
+      "kind": "statistic",
+      "fact": "规上工业利润同比增长16.0%，10月单月增长20.1%。电子设备制造、有色冶炼、化工利润增长较快，汽车、电力生产供应利润下降；应收账款、产成品存货均同比增加。",
+      "metrics": [
+        {
+          "name": "规上工业利润累计同比",
+          "value": 16,
+          "unit": "%",
+          "basis": "1—10月累计；电子设备约数"
+        },
+        {
+          "name": "10月单月利润同比",
+          "value": 20.1,
+          "unit": "%",
+          "basis": "10月单月"
+        },
+        {
+          "name": "电子设备制造利润累计同比",
+          "value": 100,
+          "unit": "%",
+          "basis": "1—10月累计；电子设备约数"
+        },
+        {
+          "name": "有色冶炼加工利润累计同比",
+          "value": 71.7,
+          "unit": "%",
+          "basis": "1—10月累计；电子设备约数"
+        },
+        {
+          "name": "化工利润累计同比",
+          "value": 50.3,
+          "unit": "%",
+          "basis": "1—10月累计；电子设备约数"
+        },
+        {
+          "name": "汽车制造利润累计同比",
+          "value": -26,
+          "unit": "%",
+          "basis": "1—10月累计；电子设备约数"
+        },
+        {
+          "name": "电气机械利润累计同比",
+          "value": -8,
+          "unit": "%",
+          "basis": "1—10月累计；电子设备约数"
+        },
+        {
+          "name": "电力热力生产供应利润累计同比",
+          "value": -18.4,
+          "unit": "%",
+          "basis": "1—10月累计；电子设备约数"
+        },
+        {
+          "name": "10月末应收账款同比",
+          "value": 10.5,
+          "unit": "%",
+          "basis": "10月末"
+        },
+        {
+          "name": "10月末产成品存货同比",
+          "value": 12,
+          "unit": "%",
+          "basis": "10月末"
+        }
+      ],
+      "role": "待研究证据",
+      "mechanism": "尚无经人工核验的具体传导规则。",
+      "scenario_effect": "只列为待研究，不自动改变方向。",
+      "counter_evidence": "未研究不等于中性或没有影响。",
+      "watch": "核实政策工具、覆盖对象、生效与执行。",
+      "source_url": "https://www.stats.gov.cn/sj/zxfb/202611/t20261127_1965949.html",
+      "available_at": "2026-11-27T13:37:27Z",
+      "published_at": "2026-11-27T09:30:00+08:00",
+      "publication_precision": "datetime",
+      "period": "2026年1—10月累计及10月单月",
+      "route": {
+        "page": "policy",
+        "anchor": "nbs-20261127-profits-v1"
+      },
+      "evidence_snapshot": {
+        "id": "nbs-20261127-profits-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "1—10月工业企业利润增长16.0%，行业分化明显",
+        "kind": "statistic",
+        "source_url": "https://www.stats.gov.cn/sj/zxfb/202611/t20261127_1965949.html",
+        "source_name": "国家统计局",
+        "published_at": "2026-11-27T09:30:00+08:00",
+        "published_precision": "datetime",
+        "published_date": "2026-11-27",
+        "observed_at": "2026-11-27T13:37:27Z",
+        "available_at": "2026-11-27T13:37:27Z",
+        "period": "2026年1—10月累计及10月单月",
+        "summary": "规上工业利润同比增长16.0%，10月单月增长20.1%。电子设备制造、有色冶炼、化工利润增长较快，汽车、电力生产供应利润下降；应收账款、产成品存货均同比增加。",
+        "metrics": [
+          {
+            "name": "规上工业利润累计同比",
+            "value": 16,
+            "unit": "%",
+            "basis": "1—10月累计；电子设备约数"
+          },
+          {
+            "name": "10月单月利润同比",
+            "value": 20.1,
+            "unit": "%",
+            "basis": "10月单月"
+          },
+          {
+            "name": "电子设备制造利润累计同比",
+            "value": 100,
+            "unit": "%",
+            "basis": "1—10月累计；电子设备约数"
+          },
+          {
+            "name": "有色冶炼加工利润累计同比",
+            "value": 71.7,
+            "unit": "%",
+            "basis": "1—10月累计；电子设备约数"
+          },
+          {
+            "name": "化工利润累计同比",
+            "value": 50.3,
+            "unit": "%",
+            "basis": "1—10月累计；电子设备约数"
+          },
+          {
+            "name": "汽车制造利润累计同比",
+            "value": -26,
+            "unit": "%",
+            "basis": "1—10月累计；电子设备约数"
+          },
+          {
+            "name": "电气机械利润累计同比",
+            "value": -8,
+            "unit": "%",
+            "basis": "1—10月累计；电子设备约数"
+          },
+          {
+            "name": "电力热力生产供应利润累计同比",
+            "value": -18.4,
+            "unit": "%",
+            "basis": "1—10月累计；电子设备约数"
+          },
+          {
+            "name": "10月末应收账款同比",
+            "value": 10.5,
+            "unit": "%",
+            "basis": "10月末"
+          },
+          {
+            "name": "10月末产成品存货同比",
+            "value": 12,
+            "unit": "%",
+            "basis": "10月末"
+          }
+        ],
+        "interpretation": "对算力硬件、有色、化工已有研究方向提供行业层证据；电网设备、新能源及汽车不能从总利润增速直接外推，关注订单、产品结构与回款。",
+        "limitations": "行业口径不是上市公司利润或政策资金成交；未取得一致预期；本次观察晚于盘中，不倒填历史可用时间。"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 0.5,
+      "evidence_id": "sc-20261127-capital-market-stability-v1",
+      "title": "国常会部署资本市场投融资改革与稳市机制",
+      "kind": "policy",
+      "fact": "要求落实存量、谋划增量政策，推动分红回购，优化中央汇金类平准基金功能，强化稳市流动性保障；完善保险、企业年金、社保中长期资金入市支持政策。",
+      "metrics": [],
+      "role": "待研究证据",
+      "mechanism": "尚无经人工核验的具体传导规则。",
+      "scenario_effect": "只列为待研究，不自动改变方向。",
+      "counter_evidence": "未研究不等于中性或没有影响。",
+      "watch": "核实政策工具、覆盖对象、生效与执行。",
+      "source_url": "https://www.news.cn/20261127/4a8fe3d751b44b8f98a17ede3f78fd1b/c.html",
+      "available_at": "2026-11-27T13:40:09Z",
+      "published_at": "2026-11-27T12:24:37+08:00",
+      "publication_precision": "datetime",
+      "period": "2026-11-27国常会",
+      "route": {
+        "page": "policy",
+        "anchor": "sc-20261127-capital-market-stability-v1"
+      },
+      "evidence_snapshot": {
+        "id": "sc-20261127-capital-market-stability-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "国常会部署资本市场投融资改革与稳市机制",
+        "kind": "policy",
+        "source_url": "https://www.news.cn/20261127/4a8fe3d751b44b8f98a17ede3f78fd1b/c.html",
+        "source_name": "新华社",
+        "published_at": "2026-11-27T12:24:37+08:00",
+        "published_precision": "datetime",
+        "published_date": "2026-11-27",
+        "observed_at": "2026-11-27T13:40:09Z",
+        "available_at": "2026-11-27T13:40:09Z",
+        "period": "2026-11-27国常会",
+        "summary": "要求落实存量、谋划增量政策，推动分红回购，优化中央汇金类平准基金功能，强化稳市流动性保障；完善保险、企业年金、社保中长期资金入市支持政策。",
+        "metrics": [],
+        "interpretation": "稳市和长期资金制度支持强化；观察两项结构性工具、具名ETF持仓及后续配套实施。",
+        "limitations": "会议没有公布新增额度、实际买入清单或新增工具生效日期；不从行情倒推国家队交易。首次观察在收盘之后。"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 0.1,
+      "evidence_id": "csrc-20261127-stability-implementation-v1",
+      "title": "证监会部署贯彻11月27日国务院常务会议精神",
+      "kind": "official_commentary",
+      "fact": "部署用好两项结构性货币政策工具，完善长期资金入市渠道与长周期考核，防范输入性风险，深化改革与全链条监管。",
+      "metrics": [],
+      "role": "解释性证据",
+      "mechanism": "官方统计解读帮助识别价格来源，不新增独立政策工具。",
+      "scenario_effect": "解释成本分化，不作为另一份独立利好重复计数。",
+      "counter_evidence": "与原统计引用同源，不增加独立证据数量。",
+      "watch": "等待实际措施与后续统计验证。",
+      "source_url": "https://www.csrc.gov.cn/csrc/c100028/c7673674/content.shtml",
+      "available_at": "2026-11-28T00:00:00+08:00",
+      "published_at": null,
+      "publication_precision": "date",
+      "period": "2026-11-27",
+      "route": {
+        "page": "policy",
+        "anchor": "csrc-20261127-stability-implementation-v1"
+      },
+      "evidence_snapshot": {
+        "id": "csrc-20261127-stability-implementation-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "证监会部署贯彻11月27日国务院常务会议精神",
+        "kind": "official_commentary",
+        "source_url": "https://www.csrc.gov.cn/csrc/c100028/c7673674/content.shtml",
+        "source_name": "中国证监会",
+        "published_at": null,
+        "published_precision": "date",
+        "published_date": "2026-11-27",
+        "observed_at": "2026-11-27T13:40:09Z",
+        "available_at": "2026-11-28T00:00:00+08:00",
+        "availability_boundary": "2026-11-28T00:00:00+08:00",
+        "period": "2026-11-27",
+        "summary": "部署用好两项结构性货币政策工具，完善长期资金入市渠道与长周期考核，防范输入性风险，深化改革与全链条监管。",
+        "metrics": [],
+        "interpretation": "后续核验实际操作、正式实施细则、资金主体及交易披露。",
+        "limitations": "贯彻部署不是新一批额度公告；仅知发布日期，严格历史时点按次日可用。"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 1.7,
+      "evidence_id": "miit-20261126-next-gen-network-v1",
+      "title": "三部门印发新一代通信网建设实施方案",
+      "kind": "policy",
+      "fact": "经国务院同意推进新一代通信网建设，官方解读包含5G-A/6G、万兆光网、卫星互联网及融合网络。",
+      "metrics": [],
+      "role": "待研究证据",
+      "mechanism": "尚无经人工核验的具体传导规则。",
+      "scenario_effect": "只列为待研究，不自动改变方向。",
+      "counter_evidence": "未研究不等于中性或没有影响。",
+      "watch": "核实政策工具、覆盖对象、生效与执行。",
+      "source_url": "https://www.miit.gov.cn/zwgk/zcwj/wjfb/tz/art/2026/art_808db1814bb74a0e87965d66e74f5b4b.html",
+      "available_at": "2026-11-27T13:40:09Z",
+      "published_at": "2026-11-26T08:36:00+08:00",
+      "publication_precision": "datetime",
+      "period": "工信部联通信〔2026〕267号，11月17日成文、26日公布",
+      "route": {
+        "page": "policy",
+        "anchor": "miit-20261126-next-gen-network-v1"
+      },
+      "evidence_snapshot": {
+        "id": "miit-20261126-next-gen-network-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "三部门印发新一代通信网建设实施方案",
+        "kind": "policy",
+        "source_url": "https://www.miit.gov.cn/zwgk/zcwj/wjfb/tz/art/2026/art_808db1814bb74a0e87965d66e74f5b4b.html",
+        "source_name": "工业和信息化部、国家网信办、国家发展改革委",
+        "published_at": "2026-11-26T08:36:00+08:00",
+        "published_precision": "datetime",
+        "published_date": "2026-11-26",
+        "observed_at": "2026-11-27T13:40:09Z",
+        "available_at": "2026-11-27T13:40:09Z",
+        "period": "工信部联通信〔2026〕267号，11月17日成文、26日公布",
+        "summary": "经国务院同意推进新一代通信网建设，官方解读包含5G-A/6G、万兆光网、卫星互联网及融合网络。",
+        "metrics": [],
+        "interpretation": "六张网政策进一步细化，后续核验运营商资本开支、采购与设备交付。",
+        "limitations": "公开正文有删减，未核实预算及上市公司实际订单；观察时间不倒填。"
+      }
+    },
+    {
+      "current_eligible": true,
+      "freshness": "current_review_window",
+      "age_days": 0.7,
+      "evidence_id": "pbc-20261127-overnight-repo-v1",
+      "title": "人民银行11月27日开展7940亿元隔夜逆回购",
+      "kind": "policy",
+      "fact": "人民银行以固定利率、数量招标方式开展7940亿元隔夜逆回购，投标量与中标量均为7940亿元，利率为1.25%。",
+      "metrics": [
+        {
+          "name": "隔夜逆回购中标量",
+          "value": 7940,
+          "unit": "亿元",
+          "basis": "当日隔夜逆回购操作毛额"
+        },
+        {
+          "name": "隔夜操作利率",
+          "value": 1.25,
+          "unit": "%",
+          "basis": "隔夜逆回购固定操作利率"
+        }
+      ],
+      "role": "待研究证据",
+      "mechanism": "尚无经人工核验的具体传导规则。",
+      "scenario_effect": "只列为待研究，不自动改变方向。",
+      "counter_evidence": "未研究不等于中性或没有影响。",
+      "watch": "核实政策工具、覆盖对象、生效与执行。",
+      "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026112708520656646/index.html",
+      "available_at": "2026-11-27T13:38:17Z",
+      "published_at": "2026-11-27T09:20:30+08:00",
+      "publication_precision": "datetime",
+      "period": "2026-11-27，隔夜期",
+      "route": {
+        "page": "policy",
+        "anchor": "pbc-20261127-overnight-repo-v1"
+      },
+      "evidence_snapshot": {
+        "id": "pbc-20261127-overnight-repo-v1",
+        "revision": 1,
+        "supersedes": null,
+        "title": "人民银行11月27日开展7940亿元隔夜逆回购",
+        "kind": "policy",
+        "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026112708520656646/index.html",
+        "source_name": "中国人民银行公开市场业务操作室",
+        "published_at": "2026-11-27T09:20:30+08:00",
+        "published_precision": "datetime",
+        "published_date": "2026-11-27",
+        "observed_at": "2026-11-27T13:38:17Z",
+        "available_at": "2026-11-27T13:38:17Z",
+        "period": "2026-11-27，隔夜期",
+        "summary": "人民银行以固定利率、数量招标方式开展7940亿元隔夜逆回购，投标量与中标量均为7940亿元，利率为1.25%。",
+        "metrics": [
+          {
+            "name": "隔夜逆回购中标量",
+            "value": 7940,
+            "unit": "亿元",
+            "basis": "当日隔夜逆回购操作毛额"
+          },
+          {
+            "name": "隔夜操作利率",
+            "value": 1.25,
+            "unit": "%",
+            "basis": "隔夜逆回购固定操作利率"
+          }
+        ],
+        "interpretation": "隔夜、七天及中期操作按期限单列。",
+        "limitations": "本公告不提供到期对照，不能单独推算净投放，也不代表股票资金流入。"
       }
     }
   ],
@@ -2589,5 +2953,5 @@
       "sha256": "4981e7b817e8070a5a4a9ff8376f78b18a5481908add2d28ebf7d9190199910c"
     }
   ],
-  "input_digest": "549056178f711afb86195d4fe9ec9ff7e09da64629245d05b96bef958a6dc8dd"
+  "input_digest": "c16df6af7e67c2235e9ebf9f66e4d4d37315afe92f4086201297ba106dd7b820"
 }

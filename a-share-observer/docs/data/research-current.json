@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-27T07:39:11.828888+00:00",
+  "generated_at": "2026-11-27T17:36:31.533754+00:00",
   "current": {
     "schema_version": 1,
     "model_version": "breadth-trend-v1",
@@ -2576,7 +2576,7 @@
   ],
   "reviews": [],
   "background": {
-    "observed_at": "2026-11-27T07:39:11.828888+00:00",
+    "observed_at": "2026-11-27T17:36:31.533754+00:00",
     "items": [
       {
         "title": "三季度经济：增长与需求分项",
@@ -2943,6 +2943,76 @@
         "available_at": "2026-11-26T13:47:19+00:00"
       },
       {
+        "title": "1—10月工业企业利润增长16.0%，行业分化明显",
+        "fact": "规上工业利润同比增长16.0%，10月单月增长20.1%。电子设备制造、有色冶炼、化工利润增长较快，汽车、电力生产供应利润下降；应收账款、产成品存货均同比增加。",
+        "analysis": "对算力硬件、有色、化工已有研究方向提供行业层证据；电网设备、新能源及汽车不能从总利润增速直接外推，关注订单、产品结构与回款。",
+        "limitations": "行业口径不是上市公司利润或政策资金成交；未取得一致预期；本次观察晚于盘中，不倒填历史可用时间。",
+        "source_url": "https://www.stats.gov.cn/sj/zxfb/202611/t20261127_1965949.html",
+        "evidence_id": "nbs-20261127-profits-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "nbs-20261127-profits-v1"
+        },
+        "data_date": "2026年1—10月累计及10月单月",
+        "available_at": "2026-11-27T13:37:27Z"
+      },
+      {
+        "title": "国常会部署资本市场投融资改革与稳市机制",
+        "fact": "要求落实存量、谋划增量政策，推动分红回购，优化中央汇金类平准基金功能，强化稳市流动性保障；完善保险、企业年金、社保中长期资金入市支持政策。",
+        "analysis": "稳市和长期资金制度支持强化；观察两项结构性工具、具名ETF持仓及后续配套实施。",
+        "limitations": "会议没有公布新增额度、实际买入清单或新增工具生效日期；不从行情倒推国家队交易。首次观察在收盘之后。",
+        "source_url": "https://www.news.cn/20261127/4a8fe3d751b44b8f98a17ede3f78fd1b/c.html",
+        "evidence_id": "sc-20261127-capital-market-stability-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "sc-20261127-capital-market-stability-v1"
+        },
+        "data_date": "2026-11-27国常会",
+        "available_at": "2026-11-27T13:40:09Z"
+      },
+      {
+        "title": "证监会部署贯彻11月27日国务院常务会议精神",
+        "fact": "部署用好两项结构性货币政策工具，完善长期资金入市渠道与长周期考核，防范输入性风险，深化改革与全链条监管。",
+        "analysis": "后续核验实际操作、正式实施细则、资金主体及交易披露。",
+        "limitations": "贯彻部署不是新一批额度公告；仅知发布日期，严格历史时点按次日可用。",
+        "source_url": "https://www.csrc.gov.cn/csrc/c100028/c7673674/content.shtml",
+        "evidence_id": "csrc-20261127-stability-implementation-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "csrc-20261127-stability-implementation-v1"
+        },
+        "data_date": "2026-11-27",
+        "available_at": "2026-11-28T00:00:00+08:00"
+      },
+      {
+        "title": "三部门印发新一代通信网建设实施方案",
+        "fact": "经国务院同意推进新一代通信网建设，官方解读包含5G-A/6G、万兆光网、卫星互联网及融合网络。",
+        "analysis": "六张网政策进一步细化，后续核验运营商资本开支、采购与设备交付。",
+        "limitations": "公开正文有删减，未核实预算及上市公司实际订单；观察时间不倒填。",
+        "source_url": "https://www.miit.gov.cn/zwgk/zcwj/wjfb/tz/art/2026/art_808db1814bb74a0e87965d66e74f5b4b.html",
+        "evidence_id": "miit-20261126-next-gen-network-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "miit-20261126-next-gen-network-v1"
+        },
+        "data_date": "工信部联通信〔2026〕267号，11月17日成文、26日公布",
+        "available_at": "2026-11-27T13:40:09Z"
+      },
+      {
+        "title": "人民银行11月27日开展7940亿元隔夜逆回购",
+        "fact": "人民银行以固定利率、数量招标方式开展7940亿元隔夜逆回购，投标量与中标量均为7940亿元，利率为1.25%。",
+        "analysis": "隔夜、七天及中期操作按期限单列。",
+        "limitations": "本公告不提供到期对照，不能单独推算净投放，也不代表股票资金流入。",
+        "source_url": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125475/2026112708520656646/index.html",
+        "evidence_id": "pbc-20261127-overnight-repo-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "pbc-20261127-overnight-repo-v1"
+        },
+        "data_date": "2026-11-27，隔夜期",
+        "available_at": "2026-11-27T13:38:17Z"
+      },
+      {
         "title": "中国国债2年收益率",
         "fact": "1.214%",
         "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
@@ -2992,10 +3062,10 @@
       },
       {
         "title": "融资交易背景",
-        "fact": "融资余额 21213.859 亿元；净买入 -208.142 亿元",
+        "fact": "融资余额 21055.789 亿元；净买入 -158.07 亿元",
         "analysis": "杠杆资金的边际变化需结合成交规模与价格确认，单日净买入不代表持续增量资金。",
         "limitations": "融资不是全部散户或主力资金；ETF份额变化也不能确认汇金买卖。未纳入方向规则。",
-        "data_date": "2026-11-25",
+        "data_date": "2026-11-26",
         "source_url": "https://data.eastmoney.com/rzrq/total.html",
         "route": {
           "page": "capital",
