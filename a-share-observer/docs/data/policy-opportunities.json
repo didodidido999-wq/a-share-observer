@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "as_of": "2026-11-27",
-  "checked_at": "2026-11-27",
+  "as_of": "2026-11-28",
+  "checked_at": "2026-11-28",
   "scope": "统一观察清单合并短中期政策研究和增持回购候选，按代码去重。短期5—20个交易日，中期1—6个月；重点为研究顺序，非交易评级。历史902家及11月披露123家公司仍未全量对账；待核线索不计为确认贷款或成交。 六项稳市政策分组采用公开可溯源样本；互换便利无逐股名单、两融仅经营传导观察、主动ETF PCF估算非真实持仓。",
   "method": "2008历史参照：稳市资金→经济政策→真实订单/资源价格→利润增量；不直接复制历史板块。",
   "events": [
@@ -435,6 +435,16 @@
       "next_date": null,
       "next": "核验地方预算、算力项目招标、实际国产设备采购、交付/回款及用电效率；不以目标推算上市公司利润",
       "source": "https://www.21jingji.com/article/20261127/herald/a9808cd82872ed5a6f0178bf60f1910d.html"
+    },
+    {
+      "id": "pbc-financial-stability-20261127",
+      "title": "央行金融稳定报告：研究非银流动性机制",
+      "date": "2026-11-27",
+      "status": "published",
+      "summary": "11月27日发布《中国金融稳定报告（2026）》。新华财经11月28日引述：研究建立特定情景下向非银机构提供流动性的机制性安排，发挥两项支持资本市场货币政策工具作用，丰富长期资金渠道。是研究部署，不是新工具落地、额度或买入公告；央行发布索引已核，报告正文直连未取得。",
+      "next_date": null,
+      "next": "等待正式制度文件、触发条件、工具规模及实际操作；区分非银流动性和股票直接买入。",
+      "source": "https://www.cnfin.com/yw-lb/detail/20261128/4501641_1.html"
     }
   ],
   "themes": [
@@ -479,7 +489,8 @@
         "marketmaking",
         "fees",
         "swap",
-        "state-council-stability-20261127"
+        "state-council-stability-20261127",
+        "pbc-financial-stability-20261127"
       ],
       "logic": "融资空间和成交活跃→利息、佣金、信息服务收入",
       "verify": "两融余额、成交额、做市资格和经纪业务数据",
@@ -683,7 +694,8 @@
         "loan",
         "swap",
         "etf",
-        "state-council-stability-20261127"
+        "state-council-stability-20261127",
+        "pbc-financial-stability-20261127"
       ],
       "logic": "跟踪具名机构实际持仓及交易，资金证据单独核实",
       "verify": "基金报告、权益变动、股东持仓及交易公告",
@@ -4321,9 +4333,15 @@
       "priority": "观察",
       "state": "active",
       "added_at": "2026-11-24",
-      "updated_at": "2026-11-24",
-      "company_evidence": [],
-      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险"
+      "updated_at": "2026-11-28",
+      "company_evidence": [
+        {
+          "date": "2026-11-27",
+          "stage": "国新产业资本11月18—25日自有资金增持427.56万股，7%→8%",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12725589&stockid=002039"
+        }
+      ],
+      "review": "研究初选；尚待逐股核验最新财报、估值、量价、减持及现金流风险\n2026-11-28：同一增持计划（含首次）累计12,826,954股，已超过600万股下限，但仍在履行中，无明确上限；不能将最低目标已达视为未来确定买盘。11月27日收20.31元；核来水、电价、债务、现金流及后续权益公告。未完成全池横评，维持观察。"
     },
     {
       "code": "600886",
@@ -4771,8 +4789,14 @@
       "priority": "观察",
       "state": "active",
       "added_at": "2026-11-26",
-      "updated_at": "2026-11-26",
-      "company_evidence": [],
+      "updated_at": "2026-11-28",
+      "company_evidence": [
+        {
+          "date": "2026-11-27",
+          "stage": "补核专项贷款承诺公告全文；金额无变化",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12725431&stockid=688343"
+        }
+      ],
       "review": "短期：11月26日公开、公告列表标27日；贷款期限3年、回购上限75元，期限3个月；签约、提款、成交未确认。 需核同一计划剩余额度、流通市值及量价。中期：AI推理芯片商业化、亏损及现金流风险；财报与估值未统一核验，不自动升重点。",
       "buyback_records": [
         {
@@ -4786,12 +4810,13 @@
           "actual_100m": null,
           "deadline": null,
           "purpose": "员工持股或股权激励",
-          "source": "https://www.caiwennews.com/article/1719940.shtml",
+          "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12725431&stockid=688343",
           "additional_sources": [
-            "https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=688343&endDate=2026-11-27&name=%E4%BA%91%E5%A4%A9%E5%8A%B1%E9%A3%9E&orgId=9900047695&startDate=2026-11-27&url=disclosure%2Flist%2Fsearch"
+            "https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=688343&endDate=2026-11-27&name=%E4%BA%91%E5%A4%A9%E5%8A%B1%E9%A3%9E&orgId=9900047695&startDate=2026-11-27&url=disclosure%2Flist%2Fsearch",
+            "https://www.caiwennews.com/article/1719940.shtml"
           ],
           "notes": "中国银行深圳龙岗支行；11月26日公开、公告列表标27日；贷款期限3年、回购上限75元，期限3个月；签约、提款、成交未确认。",
-          "evidence_level": "公告目录及财经报道"
+          "evidence_level": "公司公告全文转载"
         }
       ]
     },
@@ -7504,30 +7529,38 @@
       "priority": "观察",
       "state": "active",
       "added_at": "2026-11-27",
-      "updated_at": "2026-11-27",
+      "updated_at": "2026-11-28",
       "company_evidence": [
         {
           "date": "2026-11-26",
           "stage": "回购计划",
           "source": "https://www.caizhongshe.cn/article-7531696674495461363.html"
+        },
+        {
+          "date": "2026-11-24",
+          "stage": "回购计划升级：贷款承诺，执行待核",
+          "source": "https://www.cfi.net.cn/p20261123002336.html"
         }
       ],
-      "review": "新增研究观察，财报、估值、量价与风险待核，不自动升为重点。",
+      "review": "新增研究观察，财报、估值、量价与风险待核，不自动升为重点。\n2026-11-28补核：11月20日董事会通过，12个月；工行广西分行承诺9000万元，期限≤3年；未核合同、提款或成交。 核首笔成交和经营质量，维持观察。",
       "buyback_records": [
         {
           "id": "disclosure-20261126-company-planned",
-          "status": "planned",
-          "date": "2026-11-26",
+          "status": "loan",
+          "date": "2026-11-24",
           "subject": "上市公司",
-          "loan_cap_100m": null,
+          "loan_cap_100m": 0.9,
           "plan_min_100m": 0.5,
           "plan_max_100m": 1,
           "actual_100m": null,
           "deadline": null,
-          "purpose": "待核",
-          "source": "https://www.caizhongshe.cn/article-7531696674495461363.html",
-          "notes": "上限4.98元",
-          "evidence_level": "财经媒体公告汇总，待逐份交易所原文对账"
+          "purpose": "股权激励",
+          "source": "https://www.cfi.net.cn/p20261123002336.html",
+          "notes": "11月20日董事会通过，12个月；工行广西分行承诺9000万元，期限≤3年；未核合同、提款或成交。",
+          "evidence_level": "公司公告全文转载（金额另核承诺函）",
+          "additional_sources": [
+            "https://www.caizhongshe.cn/article-7531696674495461363.html"
+          ]
         }
       ]
     },
@@ -7651,30 +7684,39 @@
       "priority": "观察",
       "state": "active",
       "added_at": "2026-11-27",
-      "updated_at": "2026-11-27",
+      "updated_at": "2026-11-28",
       "company_evidence": [
         {
           "date": "2026-11-26",
           "stage": "回购计划",
           "source": "https://www.caizhongshe.cn/article-7531696674495461363.html"
+        },
+        {
+          "date": "2026-11-26",
+          "stage": "回购计划升级：贷款承诺，执行待核",
+          "source": "https://www.cfi.net.cn/p20261126000937.html"
         }
       ],
-      "review": "新增研究观察，财报、估值、量价与风险待核，不自动升为重点。",
+      "review": "新增研究观察，财报、估值、量价与风险待核，不自动升为重点。\n2026-11-28补核：11月24日董事会通过，3个月；工行深圳分行承诺7200万元，期限≤3年；额度来源为承诺函转载，回购报告书证实专项贷款安排。签约、提款、成交未核。 核首笔成交和经营质量，维持观察。",
       "buyback_records": [
         {
           "id": "disclosure-20261126-company-planned",
-          "status": "planned",
+          "status": "loan",
           "date": "2026-11-26",
           "subject": "上市公司",
-          "loan_cap_100m": null,
+          "loan_cap_100m": 0.72,
           "plan_min_100m": 0.4,
           "plan_max_100m": 0.8,
           "actual_100m": null,
           "deadline": null,
-          "purpose": "待核",
-          "source": "https://www.caizhongshe.cn/article-7531696674495461363.html",
-          "notes": "上限16.45元，期限3个月",
-          "evidence_level": "财经媒体公告汇总，待逐份交易所原文对账"
+          "purpose": "维护公司价值及股东权益；后续出售，未出售才注销",
+          "source": "https://www.cfi.net.cn/p20261126000937.html",
+          "notes": "11月24日董事会通过，3个月；工行深圳分行承诺7200万元，期限≤3年；额度来源为承诺函转载，回购报告书证实专项贷款安排。签约、提款、成交未核。",
+          "evidence_level": "公司公告全文转载（金额另核承诺函）",
+          "additional_sources": [
+            "https://www.caizhongshe.cn/article-7531696674495461363.html",
+            "https://www.yfbzb.com/inviteBid/detail/20261125_651117612.html"
+          ]
         }
       ]
     },
@@ -8480,6 +8522,67 @@
           "evidence_level": "公司公告全文转载"
         }
       ]
+    },
+    {
+      "code": "688484",
+      "name": "南芯科技",
+      "themes": [
+        "buyback",
+        "semi"
+      ],
+      "horizons": [
+        "short",
+        "medium"
+      ],
+      "drivers": [
+        {
+          "theme": "buyback",
+          "logic": "专项贷款承诺1.8亿元，11月24日首次回购2541.55万元；实际用贷未知"
+        },
+        {
+          "theme": "semi",
+          "logic": "电源管理芯片需求及研发商业化，盈利尚待修复"
+        }
+      ],
+      "priority": "观察",
+      "state": "active",
+      "added_at": "2026-11-28",
+      "updated_at": "2026-11-28",
+      "company_evidence": [
+        {
+          "date": "2026-11-20",
+          "stage": "新增专项贷款回购账户",
+          "source": "https://www.cfi.net.cn/p20261119000809.html"
+        },
+        {
+          "date": "2026-11-25",
+          "stage": "首次回购910895股，25415480.53元",
+          "source": "https://www.cfi.net.cn/p20261124001156.html"
+        }
+      ],
+      "review": "短期：剩余计划下限7458.45万元、上限1.745845亿元；11月27日收28.41元，首次回购不能确认使用专项贷款。中期：前三季归母亏损8895万元、扣非亏损1.01亿元、经营现金流-1.46亿元（财报报道）；优先验证转盈与现金流，不升重点。",
+      "buyback_records": [
+        {
+          "id": "20261027",
+          "status": "executed",
+          "date": "2026-11-25",
+          "subject": "上市公司",
+          "loan_cap_100m": 1.8,
+          "plan_min_100m": 1,
+          "plan_max_100m": 2,
+          "actual_100m": 0.2541548053,
+          "deadline": "2027-10-26",
+          "purpose": "员工持股或股权激励",
+          "source": "https://www.cfi.net.cn/p20261124001156.html",
+          "additional_sources": [
+            "https://wap.stockstar.com/detail/RB2026111800004341",
+            "https://www.cfi.net.cn/p20261119000809.html",
+            "https://www.sohu.com/a/1093953128_122021998"
+          ],
+          "notes": "11月18日贷款承诺报道；工行上海市张江科技支行，期限≤3年。11月20日披露专项贷款专户；11月24日首次实际回购910895股。签约、提款、当笔用贷未知。",
+          "evidence_level": "公司公告全文转载及贷款承诺报道"
+        }
+      ]
     }
   ],
   "change_log": [
@@ -8522,6 +8625,10 @@
     {
       "date": "2026-11-27",
       "summary": "补充均胜电子2.7亿元专项贷款承诺、1.5—3亿元注销式回购，及天齐锂业4—8亿元普通回购正式方案；两者均未核实实际成交，天齐不计贷款名单；新增普通观察两只。"
+    },
+    {
+      "date": "2026-11-28",
+      "summary": "补核黔源电力国新产业资本7%→8%自有资金增持；新增南芯科技首次回购及贷款承诺，柳钢、金奥博原计划补证升级，云天励飞承诺补全文；新增央行金融稳定报告非银流动性研究节点。仅局部核验，未完成全池最新财务/量价横评，保留重点排名。"
     }
   ],
   "archived": [],
