@@ -29,7 +29,7 @@ function showTab(name,focus=false){
 function mount(){
  const host=$('policy-funds-content');if(!host||ready)return;ready=true;
  host.replaceChildren();
- const head=el('div',undefined,'pf-heading');const heading=el('div');heading.append(el('span','POLICY FUND EVIDENCE / 资金证据','pf-kicker'),el('h2','政策资金股票观察池'),note('一股一行，资金事件按主体分开。仅显示已收录证据，不等于完整名单、实时买入或买入建议。'));head.append(heading);host.append(head);
+ const head=el('div',undefined,'pf-heading');const heading=el('div');heading.append(el('span','POLICY FUND EVIDENCE / 资金证据','pf-kicker'),el('h2','政策资金股票观察池'),note('资金事件按股票和主体分开。仅显示已收录证据，不等于完整名单、实时买入或买入建议。'));head.append(heading);host.append(head);
  const stats=el('div',undefined,'pf-overview');stats.id='pf-overview';host.append(stats);
  const warning=el('div',undefined,'pf-coverage');warning.id='pf-coverage';host.append(warning);
  const panel=el('section',undefined,'pf-workspace');panel.setAttribute('aria-label','政策资金股票观察池');
@@ -79,7 +79,7 @@ function renderOverview(){
  for(const r of data.overview||[]){const box=el('div',undefined,'pf-stat');box.append(el('span',r.label,'pf-stat-label'),el('strong',r.value,'pf-stat-value'),el('small',r.basis,'pf-stat-foot'),link('核验口径 ↗',r.source));host.append(box);}
  const cov=$('pf-coverage');cov.replaceChildren();
  cov.append(el('strong','覆盖范围 · 部分核验样本'));
- cov.append(note('已收录 '+data.stocks.length+' 只去重股票；证监会902家、1110单只是历史对账基准，并非本站当前覆盖率。互换便利实际逐股标的仍未知。'));
+ cov.append(note('已收录 '+new Set(data.stocks.map(r=>r.code)).size+' 只去重股票、'+data.stocks.length+' 条事件；证监会902家、1110单只是历史对账基准，并非本站当前覆盖率。互换便利实际逐股标的仍未知。'));
  const det=el('details');det.append(el('summary','查看五类资金的数据缺口'));for(const [k,v] of Object.entries(data.coverage||{}))det.append(note((sources[k]||k)+'：'+v));cov.append(det);
  cov.append(el('small','快照核查基准 '+(data.as_of||'未知')+' · 非实时更新 · 日期均为北京时间'));
 }
@@ -102,13 +102,13 @@ function listRows(){
 function renderListing(){
  if(!data)return;
  for(const b of $('pf-quick').querySelectorAll('button[data-quick]'))b.setAttribute('aria-pressed',String(b.dataset.quick===state.quick));
- const rows=listRows(),target=$('pf-rows');$('pf-results').textContent='显示 '+rows.length+' / '+data.stocks.length+' 只 · 仅展示已收录案例 · '+(state.selectedSources.length?(state.combine==='and'?'多来源交集':'多来源并集'):'单来源筛选');
+ const rows=listRows(),target=$('pf-rows');$('pf-results').textContent='显示 '+rows.length+' / '+data.stocks.length+' 条事件 · 仅展示已收录案例 · '+(state.selectedSources.length?(state.combine==='and'?'多来源交集':'多来源并集'):'单来源筛选');
  target.replaceChildren();
  if(!rows.length){target.append(el('div',state.quick==='quality'?'尚无逐股核实完成的中长线A级评级；不能用资金事件代替基本面结论。':'当前条件下没有已核验证据；不代表市场上不存在符合条件的股票。','pf-empty'));return;}
  const head=el('div',undefined,'pf-table-head');for(const h of ['股票','资金线索','最新可核验事件','证据','基本面 / 估值','披露日','关注'])head.append(el('span',h));target.append(head);
  for(const r of rows){
  const row=el('div',undefined,'pf-row');
- const name=el('button',undefined,'pf-stock');name.type='button';name.dataset.open=r.code;name.append(el('strong',r.name),el('small',r.code));row.append(name);
+ const name=el('button',undefined,'pf-stock');name.type='button';name.dataset.open=String(data.stocks.indexOf(r));name.append(el('strong',r.name),el('small',r.code));row.append(name);
  const tags=el('div',undefined,'pf-tags');for(const t of r.tags.slice(0,2))tags.append(label(sources[t]));if(r.tags.length>2)tags.append(label('+'+(r.tags.length-2)));row.append(tags);
  const action=el('div',undefined,'pf-action');action.append(el('strong',r.action),el('small',r.cash&&r.cash!=='—'?r.cash:'金额未披露或不适用'));row.append(action);
  row.append(label(statuses[r.status]||'待验证','pf-status-'+r.status));
@@ -119,7 +119,7 @@ function renderListing(){
  }
 }
 function openDetail(id,trigger){
- const r=data.stocks.find(x=>code(x)===id);if(!r)return;state.active=r;state.detail='summary';returnFocus=trigger||document.activeElement;const back=$('pf-backdrop');back.hidden=false;document.body.classList.add('pf-drawer-open');drawDetail();$('pf-drawer').focus();
+ const r=data.stocks[Number(id)];if(!r)return;state.active=r;state.detail='summary';returnFocus=trigger||document.activeElement;const back=$('pf-backdrop');back.hidden=false;document.body.classList.add('pf-drawer-open');drawDetail();$('pf-drawer').focus();
 }
 function closeDetail(restore=true){
  const back=$('pf-backdrop');if(!back||back.hidden)return;back.hidden=true;document.body.classList.remove('pf-drawer-open');state.active=null;if(restore&&returnFocus?.isConnected)returnFocus.focus();
@@ -136,7 +136,7 @@ function drawDetail(){
  }else if(state.detail==='events'){
   const dl=el('dl',undefined,'pf-meta');
   for(const [k,v] of [['动作类型',r.kind],['资金主体',r.subject],['实际交易或累计进展截至',r.event_date||'未单独确认'],['持仓报告期',r.report_date||'不适用'],['公告日期',r.disclosed||'待核'],['本系统样本日期',data.as_of],['数量',r.quantity||'—'],['金额',r.cash||'—'],['资金口径',r.funding]]){dl.append(el('dt',k),el('dd',v));}
-  body.append(dl,note('一个股票可能有多笔不同主体的事件；当前仅展示已核实的一条代表性记录，不是完整事件台账。'));
+  body.append(dl,note('一个股票可能有多笔不同主体的事件；当前仅展示所选事件，不是完整事件台账。'));
  }else{
   body.append(el('h3','财务质量：待评估'),note('需补齐最近三年营收、扣非净利、ROE/ROIC、经营现金流、自由现金流与负债变化。'));
   body.append(el('h3','未来2—3年成长：待评估'),note('需有公司披露的订单、产能、行业需求及竞争壁垒证据，并附验证节点；不得将研究假设当作业绩预测。'));
