@@ -36,13 +36,13 @@ async function load(force=false){if(loadPromise)return loadPromise;
 const keys=Object.keys(fileNames).filter(k=>force||!data[k]);if(!keys.length)return;
 loadPromise=Promise.allSettled(keys.map(async k=>{try{const r=await root.fetch('data/'+fileNames[k],{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const j=await r.json();if(!valid(k,j))throw Error('数据结构不完整');data[k]=j;delete errors[k];}catch(e){errors[k]=String(e.message||e);}})).finally(()=>{loadPromise=null;});
 return loadPromise;}
-function stocks(includeArchived=false){const m=new Map();for(const s of data.opportunities?.stocks||[])if(includeArchived||s.state!=='archived')m.set(s.code,{...s,old:null});
-for(const old of data.funds?.stocks||[]){if(m.has(old.code))m.get(old.code).old=old;else if(includeArchived||!(data.opportunities?.stocks||[]).some(s=>s.code===old.code&&s.state==='archived'))m.set(old.code,{code:old.code,name:old.name,priority:'观察',horizons:[],themes:[],drivers:[],old,review:'只有资金线索，未完成研究评估'});}
+function stocks(includeArchived=false){const m=new Map();for(const s of data.opportunities?.stocks||[])if(includeArchived||s.state!=='archived')m.set(s.code,{...s,old:null,oldRecords:[]});
+for(const old of data.funds?.stocks||[]){if(m.has(old.code)){const s=m.get(old.code);s.oldRecords.push(old);if(!s.old||String(old.disclosed||'')>=String(s.old.disclosed||''))s.old=old;}else if(includeArchived||!(data.opportunities?.stocks||[]).some(s=>s.code===old.code&&s.state==='archived'))m.set(old.code,{code:old.code,name:old.name,priority:'观察',horizons:[],themes:[],drivers:[],old,oldRecords:[old],review:'只有资金线索，未完成研究评估'});}
 return [...m.values()].sort((a,b)=>(a.core_rank||999999)-(b.core_rank||999999)||a.code.localeCompare(b.code));}
 function allFundEntries(s){
 const rows=(s.buyback_records||[]).map(r=>({kind:'buyback',r,status:stockStatuses.has(r.status)?r.status:'unknown',sources:['buyback',...(hasNum(r.loan_cap_100m)||r.status==='loan'?['loan']:[])]}));
-if(s.old){
- const r=s.old,src=unique((r.tags||[]).filter(t=>sourceNames[t]));let primary=[];
+for(const r of (s.oldRecords|| (s.old?[s.old]:[]))){
+ const src=unique((r.tags||[]).filter(t=>sourceNames[t]));let primary=[];
  const kind=(r.kind||'')+' '+(r.action||'');
  if(/基金持仓|ETF前十大/.test(kind)&&src.includes('etf'))primary=['etf'];
  else if(/机构持仓/.test(kind)&&src.includes('insurance'))primary=['insurance'];
