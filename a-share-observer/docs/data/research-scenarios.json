@@ -2,7 +2,7 @@
   "schema_version": 1,
   "version": "cross-index-policy-research-v1.1",
   "kind": "scenario_research_not_scored_forecast",
-  "generated_at": "2026-11-27T18:26:14.514393+00:00",
+  "generated_at": "2026-11-28T17:13:29.631420+00:00",
   "data_date": "2026-11-27",
   "headline": "多组指数同步改善，观察政策能否确认扩散",
   "scenario": "broad_improvement",
@@ -432,7 +432,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 39.7,
+      "age_days": 40.6,
       "evidence_id": "nbs-2026q3-gdp-v1",
       "title": "三季度经济：增长与需求分项",
       "kind": "statistic",
@@ -513,7 +513,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 18.1,
+      "age_days": 19.1,
       "evidence_id": "nbs-202610-prices-v1",
       "title": "10月物价：消费与生产价格分化",
       "kind": "statistic",
@@ -607,7 +607,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 18.1,
+      "age_days": 19.1,
       "evidence_id": "nbs-202610-prices-comment-v1",
       "title": "统计局解读：能源价格传导",
       "kind": "official_commentary",
@@ -651,7 +651,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 15.1,
+      "age_days": 16.1,
       "evidence_id": "ndrc-20261112-fuel-price-v1",
       "title": "成品油调价：生效日期与传导范围",
       "kind": "policy",
@@ -722,7 +722,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 14.4,
+      "age_days": 15.3,
       "evidence_id": "pbc-202610-financial-statistics-v1",
       "title": "10月金融统计：社融存量与货币增速",
       "kind": "statistic",
@@ -839,7 +839,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 13.7,
+      "age_days": 14.7,
       "evidence_id": "nbs-202611-early-materials-v1",
       "title": "11月上旬生产资料：多数品种旬环比回落",
       "kind": "statistic",
@@ -968,7 +968,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 14.4,
+      "age_days": 15.3,
       "evidence_id": "pbc-20261116-outright-repo-plan-v1",
       "title": "11月16日买断式逆回购：已公告计划，结果待核验",
       "kind": "policy",
@@ -1037,7 +1037,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 11.7,
+      "age_days": 12.6,
       "evidence_id": "nbs-202610-economy-v1",
       "title": "10月经济数据：工业增长，消费偏弱、投资下降",
       "kind": "statistic",
@@ -1154,7 +1154,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 10.7,
+      "age_days": 11.7,
       "evidence_id": "pbc-20261117-overnight-repo-v1",
       "title": "11月17日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1223,7 +1223,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 9.7,
+      "age_days": 10.7,
       "evidence_id": "pbc-20261118-overnight-repo-v1",
       "title": "11月18日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1292,7 +1292,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 18.1,
+      "age_days": 19.1,
       "evidence_id": "mof-20261109-us-tariff-v1",
       "title": "对美加征关税措施：24%税率继续暂停两个月",
       "kind": "policy",
@@ -1363,7 +1363,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 8.7,
+      "age_days": 9.7,
       "evidence_id": "pbc-20261119-overnight-repo-v1",
       "title": "11月19日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1432,7 +1432,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 8.7,
+      "age_days": 9.6,
       "evidence_id": "pbc-20261119-treasury-cash-deposit-v1",
       "title": "11月19日中央国库现金管理第23期招标结果",
       "kind": "policy",
@@ -1501,7 +1501,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 7.7,
+      "age_days": 8.7,
       "evidence_id": "pbc-20261120-overnight-repo-v1",
       "title": "11月20日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1570,7 +1570,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 7.1,
+      "age_days": 8.1,
       "evidence_id": "mof-202610-fiscal-receipts-spending-v1",
       "title": "1–10月财政收支：一般预算与土地收入分化",
       "kind": "statistic",
@@ -1676,7 +1676,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 7.4,
+      "age_days": 8.3,
       "evidence_id": "pbc-202610-financial-market-operations-v1",
       "title": "10月金融市场：银行间资金利率回落",
       "kind": "statistic",
@@ -1769,7 +1769,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 4.7,
+      "age_days": 5.7,
       "evidence_id": "pbc-20261123-overnight-repo-v1",
       "title": "11月23日隔夜逆回购操作结果",
       "kind": "policy",
@@ -1838,7 +1838,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 4.1,
+      "age_days": 5.1,
       "evidence_id": "ndrc-20261120-government-investment-dispatch-v1",
       "title": "发改委调度政府投资项目建设与资金支付",
       "kind": "official_commentary",
@@ -1882,7 +1882,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 4.1,
+      "age_days": 5.1,
       "evidence_id": "ndrc-20261123-eldercare-childcare-plan-v1",
       "title": "四部门印发养老和托育服务体系建设方案",
       "kind": "policy",
@@ -1964,7 +1964,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.7,
+      "age_days": 4.7,
       "evidence_id": "pbc-20261124-overnight-repo-v1",
       "title": "11月24日隔夜逆回购操作结果",
       "kind": "policy",
@@ -2033,7 +2033,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.7,
+      "age_days": 4.7,
       "evidence_id": "nbs-20261124-material-prices-v1",
       "title": "11月中旬流通领域生产资料价格",
       "kind": "statistic",
@@ -2114,7 +2114,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.5,
+      "age_days": 4.5,
       "evidence_id": "pbc-20261124-hk-central-bank-bills-v1",
       "title": "人民银行在香港发行两期央票",
       "kind": "policy",
@@ -2207,7 +2207,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.4,
+      "age_days": 4.3,
       "evidence_id": "pbc-20261125-7d-repo-tender-plan-v1",
       "title": "央行预告11月25日5000亿元7天期逆回购",
       "kind": "policy",
@@ -2264,7 +2264,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 3.4,
+      "age_days": 4.3,
       "evidence_id": "pbc-20261125-mlf-tender-plan-v1",
       "title": "央行预告11月25日8000亿元一年期MLF",
       "kind": "policy",
@@ -2321,7 +2321,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 2.7,
+      "age_days": 3.7,
       "evidence_id": "pbc-20261125-overnight-repo-v1",
       "title": "人民银行11月25日开展6170亿元隔夜逆回购",
       "kind": "policy",
@@ -2390,7 +2390,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 1.7,
+      "age_days": 2.7,
       "evidence_id": "pbc-20261126-overnight-repo-v1",
       "title": "人民银行11月26日开展5715亿元隔夜逆回购",
       "kind": "policy",
@@ -2459,7 +2459,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 0.7,
+      "age_days": 1.7,
       "evidence_id": "nbs-20261127-profits-v1",
       "title": "1—10月工业企业利润增长16.0%，行业分化明显",
       "kind": "statistic",
@@ -2624,7 +2624,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 0.6,
+      "age_days": 1.5,
       "evidence_id": "sc-20261127-capital-market-stability-v1",
       "title": "国常会部署资本市场投融资改革与稳市机制",
       "kind": "policy",
@@ -2667,7 +2667,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 0.1,
+      "age_days": 1.1,
       "evidence_id": "csrc-20261127-stability-implementation-v1",
       "title": "证监会部署贯彻11月27日国务院常务会议精神",
       "kind": "official_commentary",
@@ -2711,7 +2711,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 1.7,
+      "age_days": 2.7,
       "evidence_id": "miit-20261126-next-gen-network-v1",
       "title": "三部门印发新一代通信网建设实施方案",
       "kind": "policy",
@@ -2754,7 +2754,7 @@
     {
       "current_eligible": true,
       "freshness": "current_review_window",
-      "age_days": 0.7,
+      "age_days": 1.7,
       "evidence_id": "pbc-20261127-overnight-repo-v1",
       "title": "人民银行11月27日开展7940亿元隔夜逆回购",
       "kind": "policy",
@@ -2953,5 +2953,5 @@
       "sha256": "4981e7b817e8070a5a4a9ff8376f78b18a5481908add2d28ebf7d9190199910c"
     }
   ],
-  "input_digest": "40b5b889c766b493d09411d51495c300941aeb041a1d251778d096e97c9ca439"
+  "input_digest": "5689f2bc5d0e6787a895bdb54eff90b483ac58849d13479a7e4b674f85970874"
 }

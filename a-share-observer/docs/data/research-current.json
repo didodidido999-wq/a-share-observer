@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-27T18:26:19.358821+00:00",
+  "generated_at": "2026-11-28T17:13:27.784846+00:00",
   "current": {
     "schema_version": 1,
     "model_version": "breadth-trend-v1",
@@ -2576,7 +2576,7 @@
   ],
   "reviews": [],
   "background": {
-    "observed_at": "2026-11-27T18:26:19.358821+00:00",
+    "observed_at": "2026-11-28T17:13:27.784846+00:00",
     "items": [
       {
         "title": "三季度经济：增长与需求分项",
@@ -3013,12 +3013,26 @@
         "available_at": "2026-11-27T13:38:17Z"
       },
       {
+        "title": "央行发布《中国金融稳定报告（2026）》",
+        "fact": "研究建立特定情景下向非银机构提供流动性的机制性安排，发挥两项支持资本市场的货币政策工具作用，持续丰富中长期资金来源。",
+        "analysis": "非银流动性机制处于研究阶段，后续核对正式文件、适用条件、实施与实际交易。",
+        "limitations": "央行原始发布索引链接：https://www.pbc.gov.cn/goutongjiaoliu/113456/113469/2026112718161199485/index.html；正文直连未成功，内容据新华财经11月28日转述。非新增额度或逐股买入。",
+        "source_url": "https://www.cnfin.com/yw-lb/detail/20261128/4501641_1.html",
+        "evidence_id": "pbc-financial-stability-20261127-v1",
+        "route": {
+          "page": "policy",
+          "anchor": "pbc-financial-stability-20261127-v1"
+        },
+        "data_date": "2026-11-27",
+        "available_at": "2026-11-28T13:27:35Z"
+      },
+      {
         "title": "中国国债2年收益率",
-        "fact": "1.214%",
+        "fact": "1.2094%",
         "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
         "limitations": "短历史、公布时刻未核验；仅当前背景，不纳入方向规则或历史14:45回放。",
         "source_url": "https://data.eastmoney.com/cjsj/zmgzsyl.html",
-        "data_date": "2026-11-26",
+        "data_date": "2026-11-27",
         "route": {
           "page": "macro",
           "anchor": "risk-macro-section"
@@ -3026,11 +3040,11 @@
       },
       {
         "title": "中国国债10年收益率",
-        "fact": "1.5912%",
+        "fact": "1.5972%",
         "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
         "limitations": "短历史、公布时刻未核验；仅当前背景，不纳入方向规则或历史14:45回放。",
         "source_url": "https://data.eastmoney.com/cjsj/zmgzsyl.html",
-        "data_date": "2026-11-26",
+        "data_date": "2026-11-27",
         "route": {
           "page": "macro",
           "anchor": "risk-macro-section"
@@ -3038,11 +3052,11 @@
       },
       {
         "title": "Shibor隔夜",
-        "fact": "1.273%",
+        "fact": "1.28%",
         "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
         "limitations": "短历史、公布时刻未核验；仅当前背景，不纳入方向规则或历史14:45回放。",
         "source_url": "https://data.eastmoney.com/shibor/shibor.aspx",
-        "data_date": "2026-11-26",
+        "data_date": "2026-11-27",
         "route": {
           "page": "macro",
           "anchor": "risk-macro-section"
@@ -3050,11 +3064,11 @@
       },
       {
         "title": "Shibor1周",
-        "fact": "1.367%",
+        "fact": "1.377%",
         "analysis": "资金价格影响估值折现及融资成本；利率下行也可能反映需求偏弱，不能单向解释为股市利好。",
         "limitations": "短历史、公布时刻未核验；仅当前背景，不纳入方向规则或历史14:45回放。",
         "source_url": "https://data.eastmoney.com/shibor/shibor.aspx",
-        "data_date": "2026-11-26",
+        "data_date": "2026-11-27",
         "route": {
           "page": "macro",
           "anchor": "risk-macro-section"
