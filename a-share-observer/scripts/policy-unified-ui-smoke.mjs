@@ -13,6 +13,8 @@ try{for(const viewport of [{width:1280,height:850},{width:390,height:844}]){
  await page.evaluate(()=>{Date.now=()=>Date.parse('2026-11-24T12:00:00Z');window.MarketScopePolicy.render({state:{selected:'2026-11-13'}});});
  await page.locator('.pw-stock-row').first().waitFor();
  const sourceAudit=await page.evaluate(()=>{const s=window.AniuPolicyWorkspace.stocks().find(x=>x.code==='600690');return s?window.AniuPolicyWorkspace.matchingFundEntries(s,'insurance').map(e=>e.status):[];});if(sourceAudit.length)check(sourceAudit.every(s=>s==='unknown'),'insurance tag inherited unrelated company buyback status');
+ const stateAudit=await page.evaluate(()=>{const s=window.AniuPolicyWorkspace.stocks().find(x=>x.code==='002039');return s?window.AniuPolicyWorkspace.matchingFundEntries(s,'state').map(e=>e.r.action):[];});
+ check(stateAudit.includes('国新产业资本持股由6%升至7%')&&stateAudit.includes('国新产业资本持股由7%升至8%'),'multiple state events lost');
  const core=research.stocks.filter(s=>s.priority==='重点'&&s.state!=='archived').map(s=>s.code).sort();
  const displayed=(await page.locator('.pw-stock-row').evaluateAll(ns=>ns.map(n=>n.dataset.code))).sort();
  check(JSON.stringify(core)===JSON.stringify(displayed),'default core membership changed');
