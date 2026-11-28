@@ -23,8 +23,9 @@ try{
   check(await page.locator('.pf-row').count()===fixture.stocks.filter(x=>x.status==='executed').length,'Status filtering incorrect');
   await page.locator('#pf-reset').click();
   await page.locator('#pf-search').fill('002039');
-  check(await page.locator('.pf-row').count()===1,'Code search incorrect');
-  await page.locator('.pf-stock').click();
+  check(await page.locator('.pf-row').count()===fixture.stocks.filter(x=>x.code==='002039').length,'Code search incorrect');
+  const oldRow=page.locator('.pf-row').filter({hasText:'国新产业资本持股由6%升至7%'});
+  await oldRow.locator('.pf-stock').click();
   check(await page.locator('.pf-drawer').count()===1||await page.locator('#pf-drawer').isVisible(),'Detail drawer missing');
   check(await page.getByText('自有资金；不是专项贷款买入').isVisible(),'Funding-source qualification missing');
   await page.keyboard.press('Escape');
