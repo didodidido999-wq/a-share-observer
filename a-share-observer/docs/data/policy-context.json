@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-11-27T13:40:09Z",
+  "checked_at": "2026-11-28T13:27:35Z",
   "records": [
     {
       "id": "nbs-2026q3-gdp-v1",
@@ -1124,6 +1124,25 @@
       ],
       "interpretation": "隔夜、七天及中期操作按期限单列。",
       "limitations": "本公告不提供到期对照，不能单独推算净投放，也不代表股票资金流入。"
+    },
+    {
+      "id": "pbc-financial-stability-20261127-v1",
+      "revision": 1,
+      "supersedes": null,
+      "title": "央行发布《中国金融稳定报告（2026）》",
+      "kind": "official_commentary",
+      "source_url": "https://www.cnfin.com/yw-lb/detail/20261128/4501641_1.html",
+      "source_name": "新华财经引述中国人民银行；央行发布索引已核",
+      "published_at": null,
+      "published_precision": "date",
+      "published_date": "2026-11-27",
+      "observed_at": "2026-11-28T13:27:35Z",
+      "available_at": "2026-11-28T13:27:35Z",
+      "period": "2026-11-27",
+      "summary": "研究建立特定情景下向非银机构提供流动性的机制性安排，发挥两项支持资本市场的货币政策工具作用，持续丰富中长期资金来源。",
+      "metrics": [],
+      "interpretation": "非银流动性机制处于研究阶段，后续核对正式文件、适用条件、实施与实际交易。",
+      "limitations": "央行原始发布索引链接：https://www.pbc.gov.cn/goutongjiaoliu/113456/113469/2026112718161199485/index.html；正文直连未成功，内容据新华财经11月28日转述。非新增额度或逐股买入。"
     }
   ],
   "events": [
