@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "as_of": "2026-11-27",
-  "updated_at": "2026-11-27T13:40:09Z",
+  "as_of": "2026-11-28",
+  "updated_at": "2026-11-28T13:27:35Z",
   "scope": "人工整理的部分核验观察池；含历史资金证据与单独标识的PCF估算线索，非全量名单、实时持仓或投资评级。",
   "coverage": {
     "loan": "证监会截至2026-10末902家发行人、1110单公告为回填基准；本文件仅部分候选；11月26日四大行合计超6000亿为合同及额度承诺不同口径，非实际提款；新增案例仍非全量。",
@@ -547,10 +547,10 @@
       "quantity": "未确认",
       "cash": "贷款承诺上限0.45亿元",
       "funding": "中国银行深圳龙岗支行；承诺上限0.45亿元；实际提款及当笔用贷未确认",
-      "source": "https://www.caiwennews.com/article/1719940.shtml",
+      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12725431&stockid=688343",
       "subject": "上市公司",
       "kind": "回购融资承诺",
-      "basis": "计划0.25—0.5亿元；11月26日公开、公告列表标27日；贷款期限3年、回购上限75元，期限3个月；签约、提款、成交未确认。 https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=688343&endDate=2026-11-27&name=%E4%BA%91%E5%A4%A9%E5%8A%B1%E9%A3%9E&orgId=9900047695&startDate=2026-11-27&url=disclosure%2Flist%2Fsearch"
+      "basis": "计划0.25—0.5亿元；11月26日公开、公告列表标27日；贷款期限3年、回购上限75元，期限3个月；签约、提款、成交未确认。 https://www.cninfo.com.cn/new/commonUrl/pageOfSearch?code=688343&endDate=2026-11-27&name=%E4%BA%91%E5%A4%A9%E5%8A%B1%E9%A3%9E&orgId=9900047695&startDate=2026-11-27&url=disclosure%2Flist%2Fsearch；2026-11-28补核公司公告全文：https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12725431&stockid=688343"
     },
     {
       "code": "603950",
@@ -1334,6 +1334,96 @@
       "subject": "上市公司",
       "kind": "回购融资承诺",
       "basis": "上交所原公告；1.5—3亿元注销式回购，11月25日股东会通过后12个月内实施；合同、提款、成交待核。"
+    },
+    {
+      "code": "002039",
+      "name": "黔源电力",
+      "tags": [
+        "state"
+      ],
+      "status": "executed",
+      "action": "国新产业资本持股由7%升至8%",
+      "event_date": "2026-11-25",
+      "disclosed": "2026-11-27",
+      "quantity": "427.56万股（11月18—25日）",
+      "cash": "未披露",
+      "funding": "自有资金；非专项贷款",
+      "source": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12725589&stockid=002039",
+      "subject": "国新产业资本管理有限公司",
+      "kind": "股东增持",
+      "basis": "公告2026-056；持股3420.4941万股。含首次累计1282.6954万股，已超600万股计划下限；计划仍在履行，无明确上限。"
+    },
+    {
+      "code": "688484",
+      "name": "南芯科技",
+      "tags": [
+        "loan"
+      ],
+      "status": "executed",
+      "action": "同一计划已获贷款承诺并首次回购",
+      "event_date": "2026-11-24",
+      "disclosed": "2026-11-25",
+      "quantity": "910,895股",
+      "cash": "2541.548053万元实际成交；另1.8亿元贷款承诺",
+      "funding": "当笔用贷未确认；工行上海市张江科技支行专项贷款承诺，期限≤3年",
+      "source": "https://www.cfi.net.cn/p20261124001156.html",
+      "subject": "上市公司",
+      "kind": "公司回购",
+      "basis": "计划1—2亿元，2027-10-26截止，股权激励/员工持股；贷款专户与用贷不同。贷款承诺报道：https://wap.stockstar.com/detail/RB2026111800004341；公司专户公告：https://www.cfi.net.cn/p20261119000809.html"
+    },
+    {
+      "code": "601003",
+      "name": "柳钢股份",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-24",
+      "quantity": "未核实际回购",
+      "cash": "0.9亿元贷款承诺",
+      "funding": "工行广西分行，期限≤3年，计划0.5—1亿元，12个月，股权激励",
+      "source": "https://www.cfi.net.cn/p20261123002336.html",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "原计划补证，未确认签约、提款或实际成交"
+    },
+    {
+      "code": "002917",
+      "name": "金奥博",
+      "tags": [
+        "loan"
+      ],
+      "status": "planned",
+      "action": "取得回购专项贷款承诺",
+      "event_date": null,
+      "disclosed": "2026-11-26",
+      "quantity": "未核实际回购",
+      "cash": "0.72亿元贷款承诺",
+      "funding": "工行深圳分行，期限≤3年，计划0.4—0.8亿元，3个月，维护价值、后续出售；承诺函金额转载：https://www.yfbzb.com/inviteBid/detail/20261125_651117612.html",
+      "source": "https://www.cfi.net.cn/p20261126000937.html",
+      "subject": "上市公司",
+      "kind": "回购融资承诺",
+      "basis": "原计划补证，未确认签约、提款或实际成交"
+    },
+    {
+      "code": "688845",
+      "name": "傲拓科技",
+      "tags": [
+        "etf"
+      ],
+      "status": "executed",
+      "action": "南方均衡主动ETF（158900）IPO网下获配且网下全体足额缴款",
+      "event_date": "2026-11-25",
+      "disclosed": "2026-11-27",
+      "quantity": "1,681股",
+      "cash": "30,560.58元认购额",
+      "funding": "公募基金普通IPO网下认购；非二级市场交易、非互换便利",
+      "source": "https://www.cfi.net.cn/p20261126002342.html",
+      "subject": "南方均衡配置主动管理交易型开放式股票证券投资基金",
+      "kind": "IPO网下配售",
+      "basis": "基金具名配售公告及发行结果网下零弃购相互印证：https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12726740&stockid=688845；登记到账及后续持仓待基金披露；金额极小，不据此升重点或解释为主动重仓。"
     }
   ]
 }
